@@ -1,0 +1,9 @@
+---
+# tasks file for setup.sync
+   - name: Setting Dictionary Name for Proxy Inside
+     set_fact:
+        versalex: "{{group_item.value}}"
+        
+   - name: Creates Sync file in Harmony Master conf folder
+     template: src=Sync.xml.j2 dest="{{versalex.install_location}}conf/Sync.xml"
+     when:  play_hosts.index(inventory_hostname) == 0   

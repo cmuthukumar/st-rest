@@ -1,0 +1,56 @@
+---
+# tasks file for pre_setup
+- block:
+     
+   - name: Include setting up dataset
+     include: setup_dataset.yml grp_name="{{item}}"
+     with_items:
+        - 'tpnodes-versalex'
+        - 'proxy'
+   # - name: Include Node Specific Variables for TPNode Proxy
+     # include_vars:
+         # dir: "{{role_path}}/res1/"
+         # files_matching: "versalex.yml"
+     # when: "'versalex' in inventory_hostname"
+     # delegate_to: 127.0.0.1
+     # ignore_errors: yes
+     
+   # - name: Setting Nodes Count for Proxy
+     # set_fact:        
+       # vex_count: "{{ groups['proxy'] | length | int}}"
+     # when: "'tpnodes-versalex' in inventory_hostname"       
+     # delegate_to: 127.0.0.1
+     
+   # - name: TestProfile map for TP Node Side
+     # template: src=setup_tp_testprofile.j2 dest="{{role_path}}/res/{{inventory_hostname}}-{{item}}.yml"
+     # when: "'servers-versalex' in inventory_hostname"
+     # with_items:
+        # - 'proxy'
+     # delegate_to: 127.0.0.1
+     
+   # - name: Include Node Specific Variables for Servers Proxy
+     # include_vars: "{{role_path}}/res/{{inventory_hostname}}-tpmap.yml"
+     # # when: "'servers-versalex' in inventory_hostname"
+     # delegate_to: 127.0.0.1
+     # ignore_errors: yes
+     
+   # - name: Print Included Vars for Servers Proxy
+     # debug: msg="Key {{item.key}} values{{item.value}}"
+     # with_dict: "{{dataset}}"   
+     
+   # - name: Configure TP Side Nodes
+     # include: configure_tp.yml
+     # with_dict: "{{ dataset | default({}) }}"
+     # # when: "'servers-versalex' in inventory_hostname"
+     # loop_control:
+        # loop_var: conf_server
+     # run_once: true   
+   # - name: Configure TP Side Nodes
+     # include: configure_tp.yml
+     # static: no
+     # when: vex_product is defined and not include_vars_status | failed and vex_product != 'VLProxy' and node_type == 'Receiver'
+   # - name: Configure Post Setup Configs
+     # include: post_setup.yml
+     # when: vex_product is defined and vex_product != 'VLProxy'
+- rescue:
+   - fail: msg="Setup Test Profile Module Failed" 

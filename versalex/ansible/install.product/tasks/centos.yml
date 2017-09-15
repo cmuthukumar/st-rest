@@ -1,0 +1,33 @@
+---
+# tasks file for install.apps
+- name: Install Unzip package for running bin file in CentOS
+  yum: name=unzip state=present
+  
+- name: Install Development tools package
+  yum: name="@Development tools" state=present
+     
+- name: "Install python-lxml packages(required for maven_artifact) on CentOS or Redhat machines"
+  yum: name=python-lxml state=installed
+  retries: 3
+  delay: 5  
+  until: install_lxml|success
+  register: install_lxml
+  
+# - name: "Install python2.7 in OS if python 3 is default"
+  # include: "install_centos_py27.yml"
+  # when: ansible_distribution_version | int >= 9
+  
+- name: "Add Hosts in /etc/hosts File"
+  lineinfile: dest=/etc/hosts  line="{{hostvars[inventory_hostname].ansible_default_ipv4.address}} {{inventory_hostname}}" state=present insertafter=EOF
+  when: hostvars[inventory_hostname].ansible_default_ipv4.address is defined
+#     with_items: "{{groups['all']}}"
+
+- name: Install RNG-tools required for Random Number Generation using YUM
+  yum: name=rng-tools state=present
+  
+- name: Run RNGD Service
+  service: name=rngd state=restarted
+  register: rngd_status
+  retries: 3
+  delay: 10
+  until: rngd_status|success

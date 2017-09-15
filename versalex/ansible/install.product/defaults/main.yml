@@ -1,0 +1,26 @@
+---
+# defaults file for install.apps
+kk:
+    docker: "false"
+    find_version_url: "http://contd.cleo.com/nexus/service/local/artifact/maven/resolve"
+    download_version_url: "http://contd.cleo.com/nexus/service/local/artifact/maven/content"
+    nexus_repoid: InstallerSnapshots
+    nexus_groupid: com.cleo.installers
+    port: 5080
+    #nexus_artifactid: Harmony 
+    nexus_classifier: linux64-jre18
+    nexus_packaging: bin    
+    download_location: "/home/SystemTestNew/vexdownload/"                 
+    license_nexus_repourl: "http://contd.cleo.com/nexus/service/local/artifact/maven/content"
+    license_nexus_repoid: cleo
+    license_nexus_groupid: com.cleo.util
+    license_nexus_artifactid: LexiComLicenser_2
+    license_nexus_version: LATEST
+    license_CompanyName: Cleo
+    license_SerialNumber: KY
+    license_KeyExpiration: 300
+    license_Product: Harmony
+    license_Limit_HSP: 0
+    license_Limit_Anyother: 0
+    license_Trust: 1
+    license_Unify: 1

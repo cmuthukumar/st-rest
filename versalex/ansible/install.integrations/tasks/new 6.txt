@@ -1,0 +1,45 @@
+- name: Configure LDAP in Remote Machines
+  shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupOptions "{{versalex.vex_product}}" "{{versalex.install_location}}" "LDAP" "{{item.value.type}}" "{{item.value.host}}" "{{item.value.port}}" "{{item.value.secuirtymode}}" "{{item.value.basedn}}" "{{item.value.username}}" "{{item.value.fullnameattrib}}" "{{item.value.homedirattrib}}" "{{item.value.emailattrib}}" "{{item.value.searchfilter}}" "{{item.value.usernameattrib}}" "zzzzers"
+  environment:
+     CLASSPATH: ":{{versalex.install_location}}SetupOptions.jar:{{versalex.install_location}}lib/*:{{versalex.install_location}}lib/help/*:{{versalex.install_location}}lib/hibernate/*:{{versalex.install_location}}lib/secureshare/*:{{versalex.install_location}}webserver/AjaxSwing/lib/*:{{versalex.install_location}}lib/json/*"
+  args:
+     chdir: "{{versalex.install_location}}"
+  with_dict: "{{configure_apps['ldapservers'] | default({}) }}"
+  register: ldap_config
+  retries: 3
+  delay: 5  
+  until: ldap_config|success
+  
+- name: Downlaod DB artifact from Maven Central
+  maven_artifact: 
+    group_id: "{{item.value.maven_groupid}}"
+    artifact_id: "{{item.value.maven_artifactid}}"
+    version: "{{item.value.maven_version}}"
+    dest: "{{versalex.install_location}}lib/ext/{{item.value.maven_destfilename}}"
+  with_dict: "{{configure_apps['dbservers'] | default({}) }}"
+  register: mysql_download
+  ignore_errors: yes
+  
+- name: Configure DB in Remote Machines
+  shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupOptions "{{versalex.vex_product}}" "{{versalex.install_location}}" "DB" "jdbc:{{item.value.db_type}}://{{hostvars[item.value.node_ip]['ansible_eth0']['ipv4']['address']}}:{{item.value.port}}/{{item.value.dbname}}" "{{item.value.driver_str}}" "{{item.value.username}}" "{{item.value.password}}" 1 "jdbc:{{item.value.db_type}}://{{hostvars[item.value.node_ip]['ansible_eth0']['ipv4']['address']}}:{{item.value.port}}/{{item.value.dbname}}"
+  environment:
+     CLASSPATH: ":{{versalex.install_location}}SetupOptions.jar:{{versalex.install_location}}lib/*:{{versalex.install_location}}lib/help/*:{{versalex.install_location}}lib/hibernate/*:{{versalex.install_location}}lib/secureshare/*:{{versalex.install_location}}webserver/AjaxSwing/lib/*:{{versalex.install_location}}lib/json/*"
+  args:
+     chdir: "{{versalex.install_location}}"
+  with_dict: "{{configure_apps['dbservers'] | default({}) }}"
+  register: db_config
+  retries: 3
+  delay: 5  
+  until: db_config|success
+  
+- name: Configure PROXY in Remote Machines on VersalEx Products
+  shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupOptions "{{versalex.vex_product}}" "{{versalex.install_location}}" "PROXY" "{{item.value.type}}" "{{hostvars[item.value.node_ip]['ansible_eth0']['ipv4']['address'] }}" "{{item.value.port}}" "{{item.value.revfwdproxy}}"
+  environment:
+     CLASSPATH: ":{{versalex.install_location}}SetupOptions.jar:{{versalex.install_location}}lib/*:{{versalex.install_location}}lib/help/*:{{versalex.install_location}}lib/hibernate/*:{{versalex.install_location}}lib/secureshare/*:{{versalex.install_location}}webserver/AjaxSwing/lib/*:{{versalex.install_location}}lib/json/*"
+  args:
+     chdir: "{{versalex.install_location}}"
+  with_dict: "{{configure_apps['vlproxies'] | default({}) }}"         
+  register: proxy_config
+  retries: 3
+  delay: 5  
+  until: proxy_config|success

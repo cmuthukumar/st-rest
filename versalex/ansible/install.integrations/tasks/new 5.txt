@@ -1,0 +1,2 @@
+Harmony1,com.cleo.installers,Harmony,5.3-SNAPSHOT,linux64-jre17,bin,/OverNight/Installers/Harmony1/,10.80.80.179,5080,root,Adm1n11,/OverNight/Installers/Installers_Proxy/,/OverNight/Conf/license_key.txt
+Harmony2,com.cleo.installers,Harmony,5.3-SNAPSHOT,linux64-jre17,bin,/OverNight/Installers/Harmony2/,10.80.80.180,5080,root,Adm1n11,/OverNight/Installers/test/,/OverNight/Conf/license_key.txt

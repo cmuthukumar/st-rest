@@ -1,0 +1,52 @@
+   - name: Install CentOS Related Dependencies 
+     include: centos.yml
+     when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'   
+   - name: Creates Role Based Location Directory
+     file: path="{{playbook_dir}}/results/{{role_path |basename}}/{{inventory_hostname}}/" state=directory
+     delegate_to: 127.0.0.1
+   - name: Ensure NFS service started and enabled
+     service: name="{{ item }}" state=started enabled=yes
+     with_items:
+        - rpcbind
+        - nfslock
+        - nfs
+   - name: Creates Shares Destination Path Directory
+     file: path="{{item.value.dest_path}}" state=directory
+     with_dict: "{{configure_apps['shares'] | default({})}}"
+     when: configure_apps['shares'] is defined
+   - name: Creates Shares Source Path Directory
+     file: path="{{item.value.src_path}}" state=directory
+     with_dict: "{{configure_apps['shares'] | default({}) }}"
+     when: configure_apps['shares'] is defined
+   - name: Copy SetupVersalEx Jar File to remote location
+     copy: src="{{configure_apps.checkout_dir}}/non-shipped/test/automation/systemtesting/target/SetupOptions.jar" dest="{{configure_apps.install_location}}"
+     when: configure_apps.vex_product != 'VLProxy'
+   - name: Configure SHARES in Remote Machines
+     shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupOptions "{{configure_apps.vex_product}}" "{{configure_apps.install_location}}" "SHARE" "{{item.value.customvars_macro}}"
+     environment:
+       CLASSPATH: ":{{configure_apps.install_location}}SetupOptions.jar:{{configure_apps.install_location}}lib/*:{{configure_apps.install_location}}lib/help/*:{{configure_apps.install_location}}lib/hibernate/*:{{configure_apps.install_location}}lib/secureshare/*:{{configure_apps.install_location}}webserver/AjaxSwing/lib/*:{{configure_apps.install_location}}lib/json/*"
+     args:
+       chdir: "{{configure_apps.install_location}}"
+     with_dict: "{{configure_apps['shares']}}"
+     when: configure_apps.vex_product != 'VLProxy'
+     register: shares_config
+     retries: 3
+     delay: 5  
+     until: shares_config|success   
+   - name: Setup Shares in Server boxes
+     mount:
+       name: "{{item.value.dest_path}}"
+       src: "{{hostvars[item.value.node_ip]['ansible_eth0']['ipv4']['address'] }}:{{item.value.src_path}}"
+       state: mounted
+       fstype: "nfs"
+     sudo_user: root 
+     with_dict: "{{configure_apps['shares']}}"
+     when: configure_apps.vex_product != 'VLProxy'
+   # - name: Setup Shares in Server boxes
+     # shell: "mount -t nfs {{hostvars[item.value.node_ip]['ansible_eth0']['ipv4']['address'] }}:{{item.value.src_path}} {{item.value.dest_path}}"
+     # with_dict: "{{configure_apps['shares']}}"         
+     # when: configure_apps.vex_product != 'VLProxy'
+     # register: share_config
+     # retries: 3
+     # delay: 5  
+     # until: share_config|success

@@ -1,0 +1,4 @@
+---
+- hosts: versalex
+  roles:
+    - {role: setup.sync }

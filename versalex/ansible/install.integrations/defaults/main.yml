@@ -1,0 +1,4 @@
+---
+# defaults file for install.integrations
+
+#app_image: "mysql:latest"

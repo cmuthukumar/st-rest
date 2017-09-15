@@ -1,0 +1,35 @@
+[all]
+servers-integrations-1 ansible_ssh_host=67.207.93.57  appl=mysql subtype=integrations
+servers-integrations-1 ansible_ssh_host=67.207.93.57 appl=mysql subtype=integrations
+servers-versalex-1 ansible_ssh_host=159.203.181.5  appl=harmony subtype=versalex
+servers-versalex-2 ansible_ssh_host=174.138.41.239  appl=harmony subtype=versalex
+servers-versalex-1 ansible_ssh_host=159.203.181.5 appl=harmony subtype=versalex
+servers-versalex-2 ansible_ssh_host=174.138.41.239 appl=harmony subtype=versalex
+servers-proxy-1 ansible_ssh_host=67.205.153.229  appl=proxy subtype=proxy
+servers-proxy-2 ansible_ssh_host=198.211.98.231  appl=proxy subtype=proxy
+servers-proxy-1 ansible_ssh_host=67.205.153.229 appl=proxy subtype=proxy
+servers-proxy-2 ansible_ssh_host=198.211.98.231 appl=proxy subtype=proxy
+[servers-versalex]
+servers-versalex-1 ansible_ssh_host=159.203.181.5  appl=harmony subtype=versalex
+servers-versalex-2 ansible_ssh_host=174.138.41.239  appl=harmony subtype=versalex
+[integrations]
+servers-integrations-1 ansible_ssh_host=67.207.93.57  appl=mysql subtype=integrations
+[servers]
+servers-integrations-1 ansible_ssh_host=67.207.93.57 appl=mysql subtype=integrations
+servers-versalex-1 ansible_ssh_host=159.203.181.5 appl=harmony subtype=versalex
+servers-versalex-2 ansible_ssh_host=174.138.41.239 appl=harmony subtype=versalex
+servers-proxy-1 ansible_ssh_host=67.205.153.229 appl=proxy subtype=proxy
+servers-proxy-2 ansible_ssh_host=198.211.98.231 appl=proxy subtype=proxy
+[ungrouped]
+localhost
+[servers-proxy]
+servers-proxy-1 ansible_ssh_host=67.205.153.229  appl=proxy subtype=proxy
+servers-proxy-2 ansible_ssh_host=198.211.98.231  appl=proxy subtype=proxy
+[servers-integrations]
+servers-integrations-1 ansible_ssh_host=67.207.93.57  appl=mysql subtype=integrations
+[versalex]
+servers-versalex-1 ansible_ssh_host=159.203.181.5  appl=harmony subtype=versalex
+servers-versalex-2 ansible_ssh_host=174.138.41.239  appl=harmony subtype=versalex
+[proxy]
+servers-proxy-1 ansible_ssh_host=67.205.153.229  appl=proxy subtype=proxy
+servers-proxy-2 ansible_ssh_host=198.211.98.231  appl=proxy subtype=proxy

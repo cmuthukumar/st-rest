@@ -1,0 +1,39 @@
+---
+- hosts: "{{machine_type}}"
+  strategy: free
+  gather_facts: no
+  pre_tasks:
+    - block:  
+       - name: Checking Python 2.7 available or not in Linux Systems
+         raw: python --version
+         register: py_version
+       - debug: msg="Pre Tasks Completed::{{py_version}}"
+       - name: Install Python Headers and Libs required for ansible core modules
+         include: "{{playbook_dir}}/install.product/tasks/install_pythonlibs.yml"
+       # - name: Call Install Product with Versalex Configs
+         # include_role:
+            # name: "install.product"
+         # with_dict: "{{install_apps}}"
+      rescue:
+       - debug: msg="Failed to check/install python 2.7 version..."
+      always:      
+       - name: Gather Facts for Remote Hosts now
+         setup:
+         
+- hosts: "{{machine_type}}"         
+  roles:
+    # # - { role: "install.product", setname: "{{versalex}}"}
+     - { role: "install.product" ,mach_type: "{{machine_type}}" }    
+# - hosts: "{{machine_type}}-versalex"    
+  # tasks:
+    # - name: Include Install Product Role
+      # include_role:
+        # name: "install.product"
+      # vars:
+        # mach_type: "{{machine_type}}"      
+      # with_dict: "{{ versalex }}"
+      # loop_control:
+        # loop_var: group_item
+      # delegate_to: 127.0.0.1        
+    # - name: Print Variables from Maven
+      # debug: msg="Hosts File Path Group_name  and stage{{stage}}"

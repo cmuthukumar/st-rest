@@ -1,0 +1,10 @@
+---
+docker: "true"
+image: "mysql:latest"
+use_dockerfile: "false"
+src_dir: "/home/SystemTest/DockerFiles/"
+dest_dir: "/root/DockerFile/"
+image_name: testdockerfile
+expose_port: 3306
+image_tag: latest
+image_args: "MYSQL_ROOT_PASSWORD=testdocker"

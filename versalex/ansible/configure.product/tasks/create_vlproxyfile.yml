@@ -1,0 +1,43 @@
+---
+   - name: Remove VLProxy File if exists
+     file:
+      path: "{{playbook_dir}}/results/vlproxy.txt"
+      state: absent
+     delegate_to: 127.0.0.1
+     
+   - name: Create VLProxy  File
+     lineinfile:
+       create: yes
+       dest: "{{playbook_dir}}/results/vlproxy.txt"
+       line: "{{item.line}}"
+       state: present
+       insertafter: "{{item.insertafter}}"
+     with_items:
+        - {  line: 'Admin', insertafter: EOF}
+        - {  line: '2', insertafter: EOF}
+        - {  line: '', insertafter: EOF}
+     delegate_to: 127.0.0.1
+     
+   - name: Add Serial Numbers to VLProxy files for different hosts
+     lineinfile:
+        create: yes
+        dest: "{{playbook_dir}}/results/vlproxy.txt"
+        regexp: "{{item.regexp}}"
+        line: "{{item.line}}"
+        state: present
+        backrefs: "{{item.backrefs}}"
+        insertafter: "{{item.insertafter}}"
+     with_items:
+        - { regexp: '(.*)' , line: "\\1,{{serialno}}",backrefs: yes, insertafter: EOF }
+     delegate_to: 127.0.0.1
+     
+   - name: Save VLProxy Configs
+     lineinfile:
+        create: yes
+        dest: "{{playbook_dir}}/results/vlproxy.txt"
+        line: "{{item.line}}"
+        state: present
+        insertafter: "{{item.insertafter}}"
+     with_items:
+        - {  line: '0',insertafter: EOF}
+     delegate_to: 127.0.0.1

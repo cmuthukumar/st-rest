@@ -1,0 +1,27 @@
+---
+{% for usrkey,usrval in software.items() recursive %}
+{% if subtype in usrkey %}
+{{subtype}}:
+{% for ukey in usrval recursive %}
+{% if appl in ukey.name %}
+    {{ukey.name}}:        
+{% for ikey,ival in ukey.items() %}
+        {{ikey}}: "{{ival}}"
+{% endfor %}
+{% endif %}  
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% if dataset is defined %}
+{% for usrkey,usrval in dataset.items() recursive %}
+{% if subtype in usrkey %}
+dataset:
+{% for ukey in usrval recursive %}
+    {{ukey.name}}:
+{% for ikey,ival in ukey.items() %}
+        {{ikey}}: {{ival}}
+{% endfor %}    
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}

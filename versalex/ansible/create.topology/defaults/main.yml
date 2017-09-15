@@ -1,0 +1,4 @@
+---
+# defaults file for create.topology
+machine_type: digitalocean
+do_token: 3722b41e3aab0efb96af5aa45dbd0c9a358988c8d0bde96ee46b5e82f4aecdb7

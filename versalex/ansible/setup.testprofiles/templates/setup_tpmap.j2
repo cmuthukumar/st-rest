@@ -1,0 +1,18 @@
+---
+dataset:
+{% set loop_start = [1] %}
+{% for usrkey,usrval in dataset.items() recursive %}
+{% set total_hst = (usrval.total | int / tp_count | int) %}
+    {{usrkey}}:
+{% for h in groups['tpnodes-versalex'] %}  
+{% for pr in groups['servers-proxy'] %}  
+        - hname: {{h}}
+          proxy_ip: {{pr}}
+{% endfor %}
+{% for innerkey,innerval in dataset[usrkey|lower].items() %}
+          {{innerkey}}: "{{innerval}}"
+{% endfor %}          
+{% if loop_start.append(loop_start.pop()+total_hst |int) %}{% endif %}
+{% endfor %}
+{% if loop_start.append((1/loop_start.pop() |int|abs + 1)) %}{% endif %}
+{% endfor %}

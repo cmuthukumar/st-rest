@@ -1,0 +1,14 @@
+---
+configure_apps:
+    vex_product: VLProxy
+    vex_heapmem_min: 256M
+    vex_heapmem_max: 24576M
+    vex_jmx_port: 2098    
+    vlproxyfile: vlproxy
+    checkout_dir: "/root/workspace/LoadTesting/"
+    install_location: "/root/VLProxy/"
+    vlproxies:
+        RevProxyHttpPorts:
+            filepath: revproxy.txt
+        MaxLogFileSize:
+            filepath: logfilesize.txt

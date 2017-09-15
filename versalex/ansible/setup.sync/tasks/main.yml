@@ -1,0 +1,7 @@
+---
+# tasks file for setup.sync
+   - name: Include Configure Product Role with Versalex
+     include: create_sync.yml
+     with_dict: "{{ versalex | default({}) }}"
+     loop_control:
+        loop_var: group_item     

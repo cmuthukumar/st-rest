@@ -1,0 +1,32 @@
+---
+# tasks file for install.integrations
+- block:
+    - name: Include Install Product Role with Versalex
+      include: "install_flow.yml"
+      #debug: msg="TestType Key- {{item.key}} Test Val -{{item.value}}"      
+      with_dict: "{{ integrations | default({}) }}"
+      when: "'integrations' in subtype"
+      loop_control:
+         loop_var: group_item
+    # - name: "Install (Versalex/Non Versalex) Dockerized Install"
+      # include: "dockerized_install.yml"
+      # when: item.0.type == "{{install_groups}}"
+      # with_subelements:
+        # - "{{systestnodes}}"
+        # - "{{thirdparty_confs}}"
+        # - skip_missing: true
+      # register: install_docker_status
+      # retries: 3
+      # delay: 5  
+      # until: install_docker_status|success
+  rescue:
+    - fail: msg="Install Apps failed for Dockerized"
+      when: item.failed==true
+      with_items: "{{ install_status.results }}"    
+#  include: install_versalex.yml app_name="{{item.key}}"          
+   # - name: Install Versalex (Dockerized Install)
+   # #  include: install_versalex.yml app_name="{{item.key}}"
+     # when: item.value.docker == 'false'
+     # with_dict: "{{install_apps}}"
+# - name: Print Node Specific Variables
+ # debug: msg="Dockerize flag is {{dockerize}} and VersalEx ArtifactId {{versalex_artifactid}}"

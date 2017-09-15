@@ -1,0 +1,6 @@
+---
+- hosts: "{{server_conf}}:{{tp_conf}}"
+  roles:
+     - { role: setup.testprofiles }
+     # - { role: setup.testprofiles/pre_setup, grp_name: 'tpnodes-versalex', when: "'servers-versalex' in inventory_hostname" }
+     # - { role: setup.testprofiles/pre_setup, grp_name: 'proxy', when: "'servers-versalex' in inventory_hostname" }     

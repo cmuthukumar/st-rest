@@ -1,0 +1,27 @@
+---
+# tasks file for setup.versalex
+    - name: Check to see if pip is already installed.
+      command: "pip --version"
+      ignore_errors: true
+      changed_when: false # read-only task
+      always_run: true # for check mode
+      register: pip_is_installed
+    - name: Download pip.
+      get_url: url=https://bootstrap.pypa.io/get-pip.py dest="/root/"
+      when: pip_is_installed.rc != 0
+    - name: Install pip.
+      command: "python /root/get-pip.py"
+      become: yes
+      when: pip_is_installed.rc != 0  
+    - pip: name=httplib2
+      # run_once: true
+    - name: Application Name in Check Versalex Process
+      debug: msg="App Name is"
+    - name: Check VersalEx Process Status using Web URL
+      uri:
+       url: "http://localhost:{{port}}/{{name}}"
+      register: vex_url_status
+      until: vex_url_status|failed!={{condition}}
+      retries: 1
+      delay: 5
+      ignore_errors: "{{ignore_flag}}" 

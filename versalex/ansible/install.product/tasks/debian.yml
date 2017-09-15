@@ -1,0 +1,25 @@
+---
+# tasks file for install.apps
+- name: Install Unzip package for running bin file in debian
+  apt: name=unzip state=present
+
+- name: "Install python-lxml packages(required for maven_artifact) on Debian based (Ubuntu)  machines"
+  apt: name=python-lxml state=latest
+  retries: 3
+  delay: 5  
+  until: install_lxml|success
+  register: install_lxml
+  
+- name: Install RNG-tools required for Random Number Generation using APT
+  apt: name=rng-tools state=present
+  
+- name: "Install python2.7 in deian OS if python 3 is default"
+  include: "install_debian_py27.yml"
+  when: ansible_distribution_version | int >= 15
+    
+- name: Run RNGD Service using Debian
+  service: name=rng-tools state=restarted
+  register: rngd_status
+  retries: 3
+  delay: 10
+  until: rngd_status|success

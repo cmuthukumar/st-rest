@@ -1,0 +1,8 @@
+   - name: "Edit Versalex.lax  File"
+     lineinfile:
+       create: no
+       dest: "{{versalex.install_location}}{{versalex.dname}}c.lax"
+       line: "-Xms{{versalex.vex_heapmem_min}} -Xmx{{versalex.vex_heapmem_max}} -XX:+HeapDumpOnOutOfMemoryError -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port={{versalex.vex_jmx_port}} -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname={{ansible_ssh_host}}"
+       state: present       
+       insertafter: EOF
+     register: harmonyc_lax

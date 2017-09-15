@@ -1,0 +1,23 @@
+   - name: Creates Shares  Directory
+     file: path="{{versalex.client_local_path}}" state=directory
+
+   - name: Setup Shares in Client boxes
+     mount:
+       name: "{{versalex.client_local_path}}"
+       src: "{{hostvars[item]['ansible_eth0']['ipv4']['address'] }}:{{hostvars[item]['server_share_path']}}"
+       state: mounted
+       fstype: "nfs"     
+     #with_dict: "{{configure_apps['nfs_client_shares'] | default({}) }}"
+     with_items: "{{groups[servers.groupname] | default({})}}"
+     register: shares_client
+     retries: 3
+     delay: 5
+     until: shares_client|success     
+   # - name: Setup Shares in Server boxes
+     # shell: "mount -t nfs {{hostvars[item.value.node_ip]['ansible_eth0']['ipv4']['address'] }}:{{item.value.src_path}} {{item.value.dest_path}}"
+     # with_dict: "{{configure_apps['shares']}}"         
+     # when: configure_apps.vex_product != 'VLProxy'
+     # register: share_config
+     # retries: 3
+     # delay: 5  
+     # until: share_config|success
