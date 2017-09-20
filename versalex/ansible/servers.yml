@@ -1,10 +1,4 @@
 ---
-# vex_product: Harmony
-# checkout_dir: "/root/workspace/LoadTesting"
-# install_location: "/root/Harmony/"
-# node_type: Receiver
-# vex_port: 5080
-# schedule_actions: true
 machine_type: digitalocean
 do_token: 3722b41e3aab0efb96af5aa45dbd0c9a358988c8d0bde96ee46b5e82f4aecdb7
 hardware:
@@ -13,7 +7,7 @@ hardware:
         ram_size: 1gb
         region: nyc1
         image_name: "centos-6-x64"
-        qty: 2
+        qty: 3
    integrations:           
       - name: mysql
         ram_size: 1gb
@@ -25,7 +19,7 @@ hardware:
         ram_size: 1gb
         region: nyc1
         image_name: "centos-6-x64"
-        qty: 2        
+        qty: 1        
 software:
    versalex:
       - name: harmony

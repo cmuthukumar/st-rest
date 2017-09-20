@@ -1,0 +1,6 @@
+---
+# tasks file for setup.group.vars
+- name: Create Group Vars
+  template: src="templates/setup_groupvars.j2" dest="{{playbook_dir}}/group_vars/{{machine_type}}.yml"
+  delegate_to: 127.0.0.1
+  

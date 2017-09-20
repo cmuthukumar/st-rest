@@ -13,7 +13,7 @@ hardware:
         ram_size: 1gb
         region: nyc1
         image_name: "centos-6-x64"
-        qty: 2
+        qty: 3
    integrations:           
       - name: mysql
         ram_size: 1gb

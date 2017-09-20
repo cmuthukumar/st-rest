@@ -1,0 +1,7 @@
+#Wed Sep 20 06:39:43 CDT 2017
+license.extensionb3=[iT|-m$Ac-rHLK-rUJK-rk$r-L$gX-aAMB-mkmd
+license.extensionb2=[nTA-5hrc-zgUK-rVJR-s^0f-H$g1-aA\#[-mRZU
+license.extensionb1=[bTA-5{2c-rgUK-rVJR-s^0r-H$g1-aA\#[-mRZU
+license.key=uvTA-uI&c-LgUK-rGjF-M&X\!-&$Ii-QA7B-m[0E
+license.owner=Cleo
+license.hash=1QJNH42|ev7w1a

@@ -1,0 +1,5 @@
+---
+# tasks file for setup.host.vars
+- name: Create Host Level Vars
+  template: src=setup_hostvars.j2 dest="{{playbook_dir}}/host_vars/{{inventory_hostname}}.yml"
+  delegate_to: 127.0.0.1

@@ -1,0 +1,9 @@
+---
+proxy:
+    vlproxy:        
+        install_location: "/root/VLProxy/"
+        version: "5.3.0-SNAPSHOT"
+        name: "vlproxy"
+        vex_jmx_port: "3022"
+  
+serialno: 

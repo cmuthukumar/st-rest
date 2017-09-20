@@ -2,21 +2,14 @@
 - hosts: localhost
   connection: local
   vars_files:      
-     - "{{machine_type}}.yml"       
-  tasks:
-    - name: Include Vars
-      include_vars: "vars/defaults.yml"
-      
-    - name: Create Group Vars
-      template: src="templates/setup_groupvars.j2" dest="{{playbook_dir}}/group_vars/{{machine_type}}.yml"
-      
-- hosts: "{{machine_type}}"   
-  vars_files:  
-    - "{{machine_type}}.yml"
-  tasks:     
-    - name: Print Host Level Vars
-      debug: msg="SUB Type{{subtype}} App={{appl}}"
-      
-    - name: Create Host Level Vars
-      template: src=setup_hostvars.j2 dest="{{playbook_dir}}/host_vars/{{inventory_hostname}}.yml"
-      delegate_to: 127.0.0.1
+     - "{{machine_type}}.yml"
+     # - "vars/defaults.yml"
+  roles:    
+     - { role: "setup.group.vars" }
+     
+- hosts: "{{machine_type}}"
+  connection: local
+  vars_files:      
+     - "{{machine_type}}.yml"
+  roles:    
+     - { role: "setup.host.vars" }

@@ -1,0 +1,13 @@
+data:
+    artifactId: VLProxy
+    baseVersion: 5.3.0-SNAPSHOT
+    classifier: linux64-jre18
+    extension: bin
+    groupId: com.cleo.installers
+    presentLocally: true
+    repositoryPath: /com/cleo/installers/VLProxy/5.3.0-SNAPSHOT/VLProxy-5.3.0-20170821.041320-317-linux64-jre18.bin
+    sha1: 1d87ba8963df9a984a59ce922634dba54641b7b3
+    snapshot: true
+    snapshotBuildNumber: 317
+    snapshotTimeStamp: 1503288800000
+    version: 5.3.0-20170821.041320-317

@@ -23,17 +23,4 @@
 - hosts: "{{machine_type}}"         
   roles:
     # # - { role: "install.product", setname: "{{versalex}}"}
-     - { role: "install.product" ,mach_type: "{{machine_type}}" }    
-# - hosts: "{{machine_type}}-versalex"    
-  # tasks:
-    # - name: Include Install Product Role
-      # include_role:
-        # name: "install.product"
-      # vars:
-        # mach_type: "{{machine_type}}"      
-      # with_dict: "{{ versalex }}"
-      # loop_control:
-        # loop_var: group_item
-      # delegate_to: 127.0.0.1        
-    # - name: Print Variables from Maven
-      # debug: msg="Hosts File Path Group_name  and stage{{stage}}"
+     - { role: "install.product" ,mach_type: "{{machine_type}}" }
