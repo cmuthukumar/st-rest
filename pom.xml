@@ -5,6 +5,7 @@
 
     <groupId>com.cleo.test</groupId>
     <artifactId>st</artifactId>
+    <packaging>pom</packaging>
     <version>0.1-SNAPSHOT</version>
     <name>SysTest</name>
 
@@ -22,7 +23,6 @@
     <dependency>
         <groupId>com.cleo</groupId>
         <artifactId>efss</artifactId>
-        <packaging>pom</packaging>
         <version>5.4.1-SNAPSHOT</version>
     </dependency>
 
