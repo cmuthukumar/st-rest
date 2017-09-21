@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.cleo.test</groupId>
-    <artifactId>systest</artifactId>
+    <artifactId>st</artifactId>
     <packaging>pom</packaging>
     <version>0.1-SNAPSHOT</version>
     <name>SysTest</name>
@@ -16,6 +16,17 @@
         <!-- leaving client out since it adds a fair amount of time and usually is not necessary -->
         <!-- to build the client module as part of this use the "full" profile (mvn clean install -Pfull) -->
     </modules>
+    <dependencies>
 
+
+
+    <dependency>
+        <groupId>com.cleo</groupId>
+        <artifactId>efss</artifactId>
+        <packaging>pom</packaging>
+        <version>5.4.1-SNAPSHOT</version>
+    </dependency>
+
+    </dependencies>
 
 </project>
