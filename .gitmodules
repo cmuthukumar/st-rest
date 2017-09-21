@@ -4,3 +4,7 @@
 [submodule "st_ev"]
 	path = ev
 	url = https://github.com/CleoDev/ev.git
+[submodule "efss"]
+	path = efss
+	url = https://github.com/CleoDev/EFSS.git
+	branch = 5.4.1-Maintenance
