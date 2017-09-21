@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
 
-    <parent>
-        <groupId>com.cleo.test.automation</groupId>
-        <artifactId>systemtesting</artifactId>
+  <parent>
+        <groupId>com.cleo.test</groupId>
+        <artifactId>systest</artifactId>
         <version>0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
 
 
-    <groupId>com.cleo.test.automation.systemtesting</groupId>
+    <groupId>com.cleo.test.automation.systest</groupId>
     <artifactId>systest_jars</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -172,6 +169,33 @@
             </build>
         </profile>
 
+
+        <profile>
+            <id>SetupSync</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <directory>${project.basedir}/target/SetupTestProfile/</directory>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <version>3.0.2</version>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <addClasspath>true</addClasspath>
+                                    <mainClass>com.cleo.systest.SetupSync</mainClass>
+                                </manifest>
+                            </archive>
+                        </configuration>
+
+                    </plugin>
+                </plugins>
+                <finalName>SetupSync</finalName>
+            </build>
+        </profile>
 
         <profile>
             <id>SetupSchedule</id>
