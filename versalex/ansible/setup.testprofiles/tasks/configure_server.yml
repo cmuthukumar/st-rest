@@ -2,8 +2,8 @@
    - name: Print Hostvars
      debug: msg="Versalex name{{versalex.name}}"     
 
-   # - name: Copy SetupOptions Jar File to remote location
-     # copy: src="/root/workspace/EFSS/non-shipped/test/automation/systemtesting/setup_versalex/target/systest_jars-0.1-SNAPSHOT.jar" dest="{{versalex.install_location}}/SetupTestProfile.jar"
+   - name: Copy SetupOptions Jar File to remote location
+     copy: src="/root/workspace/EFSS/non-shipped/test/automation/systemtesting/setup_versalex/target/systest_jars-0.1-SNAPSHOT.jar" dest="{{versalex.install_location}}/SetupTestProfile.jar"
 
    - name: Set Dataset key
      set_fact:

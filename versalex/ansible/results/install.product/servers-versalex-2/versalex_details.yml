@@ -1,13 +1,13 @@
 data:
     artifactId: Harmony
-    baseVersion: 5.3.0-SNAPSHOT
+    baseVersion: 5.4.1-SNAPSHOT
     classifier: linux64-jre18
     extension: bin
     groupId: com.cleo.installers
     presentLocally: true
-    repositoryPath: /com/cleo/installers/Harmony/5.3.0-SNAPSHOT/Harmony-5.3.0-20170821.041014-319-linux64-jre18.bin
-    sha1: 651c0099d3c50421fd58620bfdda2757fbab4037
+    repositoryPath: /com/cleo/installers/Harmony/5.4.1-SNAPSHOT/Harmony-5.4.1-20170920.163202-506-linux64-jre18.bin
+    sha1: 6cde56086114e785a8e780f2517076338cfce381
     snapshot: true
-    snapshotBuildNumber: 319
-    snapshotTimeStamp: 1503288614000
-    version: 5.3.0-20170821.041014-319
+    snapshotBuildNumber: 506
+    snapshotTimeStamp: 1505925122000
+    version: 5.4.1-20170920.163202-506
