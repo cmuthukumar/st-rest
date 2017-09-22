@@ -9,6 +9,13 @@
     <version>0.1-SNAPSHOT</version>
     <name>SysTest</name>
 
+    <parent>
+        <groupId>com.cleo</groupId>
+        <artifactId>efss</artifactId>
+        <version>5.4.1-SNAPSHOT</version>
+        <relativePath>../efss/pom.xml</relativePath>
+    </parent>
+
 
     <modules>
         <module>efss</module>
@@ -18,13 +25,6 @@
     </modules>
     <dependencies>
 
-
-
-    <dependency>
-        <groupId>com.cleo</groupId>
-        <artifactId>efss</artifactId>
-        <version>5.4.1-SNAPSHOT</version>
-    </dependency>
 
     </dependencies>
 
