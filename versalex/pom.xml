@@ -53,7 +53,7 @@
         <dependency>
             <groupId>com.cleo.api</groupId>
             <artifactId>lexbean</artifactId>
-            <version>5.3-SNAPSHOT</version>
+            <version>5.4.1-SNAPSHOT</version>
         </dependency>
 
 
@@ -71,12 +71,12 @@
         <dependency>
             <groupId>com.cleo.product</groupId>
             <artifactId>LexiCom</artifactId>
-            <version>5.3-SNAPSHOT</version>
+            <version>5.4.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.cleo.base</groupId>
             <artifactId>VLTriggers</artifactId>
-            <version>5.3-SNAPSHOT</version>
+            <version>5.4.1-SNAPSHOT</version>
         </dependency>
 
 
@@ -85,16 +85,196 @@
             <artifactId>opencsv</artifactId>
             <version>3.7</version>
         </dependency>
-
+        
+        <dependency>
+            <groupId>co.escapeideas.maven</groupId>
+            <artifactId>ansible-maven-plugin</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+    
     </dependencies>
     <profiles>
+    
+ <profile>
+<id>create-nodes</id>
+    <activation>
+    <activeByDefault>false</activeByDefault>
+    </activation>
+   <build>
+    <plugins>
+       <plugin>
+            <groupId>co.escapeideas.maven</groupId>
+            <artifactId>ansible-maven-plugin</artifactId>
+            <version>1.2.0</version>
+       <executions>            
+           <execution>
+              <id>ansible-playbook</id>
+              <phase>validate</phase>
+              <goals>
+            <goal>playbook</goal>                              
+              </goals>
+              <configuration>
+              <playbook>${playbook.path}</playbook>
+              <failOnAnsibleError>true</failOnAnsibleError>
+              <extraVars>machine_type=${machine_type}</extraVars>
+              <extraVars>control_flag=${control_flag}</extraVars>
+              <logDirectory>/home/SystemTestNew/</logDirectory>
+              <privateKey>/root/.ssh/id_rsa</privateKey>
+              <promoteDebugAsInfo>true</promoteDebugAsInfo>
+            </configuration>
+            </execution>
+       </executions>
+          </plugin>  
+    </plugins>
+  </build>
+ </profile>
+ 
+<profile>
+<id>install-product</id>
+    <activation>
+    <activeByDefault>false</activeByDefault>
+    </activation>
+   <build>
+    <plugins>
+       <plugin>
+            <groupId>co.escapeideas.maven</groupId>
+            <artifactId>ansible-maven-plugin</artifactId>
+            <version>1.2.0</version>
+            <executions>
+                <execution>
+                <id>install-versalex</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>playbook</goal>                              
+                </goals>
+                <configuration>
+                    <playbook>${playbook.path}</playbook>
+                    <inventory>${host.filepath}</inventory>
+                    <failOnAnsibleError>true</failOnAnsibleError>
+                    <extraVars>machine_type=${machine_type}</extraVars>                               
+                    <logDirectory>/home/SystemTestNew/</logDirectory>
+                    <privateKey>/root/.ssh/id_rsa</privateKey>
+                    <promoteDebugAsInfo>true</promoteDebugAsInfo>
+                </configuration>
+                </execution>
+            </executions>
+          </plugin>  
+    </plugins>
+   </build>
+ </profile>
+ 
+ 
+  <profile>
+<id>install-integrations</id>
+    <activation>
+    <activeByDefault>false</activeByDefault>
+    </activation>
+   <build>
+    <plugins>
+       <plugin>
+            <groupId>co.escapeideas.maven</groupId>
+            <artifactId>ansible-maven-plugin</artifactId>
+            <version>1.2.0</version>
+            <executions>
+                <execution>
+                <id>install-thirdparty</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>playbook</goal>                              
+                </goals>
+                <configuration>
+                    <playbook>${playbook.path}</playbook>
+                    <inventory>${host.filepath}</inventory>
+                    <failOnAnsibleError>true</failOnAnsibleError>
+                    <extraVars>group_name=${group.name}</extraVars>                               
+                    <logDirectory>/home/SystemTestNew/</logDirectory>
+                    <privateKey>/root/.ssh/id_rsa</privateKey>
+                    <promoteDebugAsInfo>true</promoteDebugAsInfo>
+                </configuration>
+                </execution>
+            </executions>
+          </plugin>  
+    </plugins>
+   </build>
+ </profile>
+ 
+  <profile>
+<id>configure-versalex</id>
+    <activation>
+    <activeByDefault>false</activeByDefault>
+    </activation>
+   <build>
+    <plugins>
+       <plugin>
+            <groupId>co.escapeideas.maven</groupId>
+            <artifactId>ansible-maven-plugin</artifactId>
+            <version>1.2.0</version>
+                <executions>
+                <execution>
+                <id>configure-versalex</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>playbook</goal>                              
+                </goals>
+                <configuration>
+                    <playbook>${playbook.path}</playbook>
+                    <inventory>${host.filepath}</inventory>
+                    <failOnAnsibleError>true</failOnAnsibleError>
+    <!--                 <extraVars>stage="ConfigureVersalex" group_name=${group.name}</extraVars>                               
+     -->                <logDirectory>/home/SystemTestNew/</logDirectory>
+                    <privateKey>/root/.ssh/id_rsa</privateKey>
+                    <promoteDebugAsInfo>true</promoteDebugAsInfo>
+                </configuration>
+                </execution>
+            </executions>
+          </plugin>  
+    </plugins>
+   </build>
+ </profile>
+ 
+ 
+  
+  <profile>
+<id>setup-testprofiles</id>
+    <activation>
+    <activeByDefault>false</activeByDefault>
+    </activation>
+   <build>
+    <plugins>
+       <plugin>
+            <groupId>co.escapeideas.maven</groupId>
+            <artifactId>ansible-maven-plugin</artifactId>
+            <version>1.2.0</version>
+            <executions>
+                <execution>
+                <id>setup-testprofiles</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>playbook</goal>                              
+                </goals>
+                <configuration>
+                    <playbook>${playbook.path}</playbook>
+                    <inventory>${host.filepath}</inventory>
+                    <failOnAnsibleError>true</failOnAnsibleError>
+                    <logDirectory>/home/SystemTestNew/</logDirectory>
+                    <privateKey>/root/.ssh/id_rsa</privateKey>
+                    <promoteDebugAsInfo>true</promoteDebugAsInfo>
+                </configuration>
+                </execution>
+            </executions>
+          </plugin>  
+    </plugins>
+   </build>
+</profile>   
+       
+    
         <profile>
             <id>SetupOptions</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
             <build>
-                <directory>${project.basedir}/target/SetupOptions/</directory>
+                <directory>${project.basedir}/ansible/lib/</directory>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -122,7 +302,7 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <build>
-                <directory>${project.basedir}/target/SetupVersalex/</directory>
+                <directory>${project.basedir}/ansible/lib/</directory>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -150,7 +330,7 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <build>
-                <directory>${project.basedir}/target/SetupTestProfile/</directory>
+                <directory>${project.basedir}/ansible/lib/</directory>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -178,7 +358,7 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <build>
-                <directory>${project.basedir}/target/SetupTestProfile/</directory>
+                <directory>${project.basedir}/ansible/lib/</directory>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -205,7 +385,7 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <build>
-                <directory>${project.basedir}/target/SetupSchedule/</directory>
+                <directory>${project.basedir}/ansible/lib/</directory>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -235,7 +415,7 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <build>
-                <directory>${project.basedir}/target/SetupVersalex_New/</directory>
+                <directory>${project.basedir}/ansible/lib/</directory>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
