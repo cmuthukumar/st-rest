@@ -3,7 +3,7 @@
   vars_files:
      - "{{machine_type}}.yml"
   roles:
-    - {role: create.topology, machine_type: "{{machine_type}}" }
+    - {role: create.topology, machine_type: "{{machine_type}}" , control_flag: "{{control_flag}}" }
       # - "tpnodes.yml"
   # roles:
      # - {role: create.topology }

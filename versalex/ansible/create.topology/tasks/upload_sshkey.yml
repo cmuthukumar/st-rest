@@ -1,0 +1,22 @@
+---
+    # - name: Print Create Droplet Vars with Stride
+      # debug: msg="test check type:{{mac_type}}-{{swtype}} ramsize:{{outer_item.ram_size}} image name:{{outer_item.image_name}} Sequence Item {{item}}"
+      # with_sequence: start=1 end="{{outer_item.qty}}" stride=1
+
+    - name: Ensure Public/Private Key Pair Generated in Local System and Copied to SSH dir
+      user: >
+       name=root
+       generate_ssh_key=yes
+       ssh_key_file=.ssh/id_rsa
+
+    - name: Upload and Ensure SSH Key Exists in Digital Ocean account, Retries 3 times with delay of 5 seconds, if failure
+      digital_ocean: >
+       state=present
+       command=ssh
+       name=muthutest
+       ssh_pub_key={{ lookup('file','~/.ssh/id_rsa.pub')}}
+       api_token={{do_token}}            
+      register: uploadstatus
+      retries: 3
+      delay: 20
+      until: uploadstatus|success

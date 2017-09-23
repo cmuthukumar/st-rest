@@ -5,7 +5,7 @@
         versalex: "{{group_item.value}}"
 
    - name: Copy SetupOptions Jar File to remote location
-     copy: src="/root/SysTest/st/versalex/target/SetupTestProfile/SetupTestProfile.jar" dest="{{versalex.install_location}}/SetupSync.jar"
+     copy: src="{{playbook_dir}}/lib/SetupSync.jar" dest="{{versalex.install_location}}/SetupSync.jar"
         
    - name: Setup Sync in Master Versalex
      shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupSync "{{versalex.install_location}}" "{{hostvars[item]['serialno']}}" "{{hostvars[item]['ansible_eth0']['ipv4']['address']}}" "{{versalex.port}}"

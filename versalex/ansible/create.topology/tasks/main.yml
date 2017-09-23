@@ -1,7 +1,7 @@
 ---
 # tasks file for create.topology
     - name: Include Create Machines Role
-      include: "create_flow.yml"
+      include: "control_flow.yml"
       vars:
         mach_type: "{{machine_type}}"      
       with_dict: "{{ hardware |default({}) }}"
@@ -11,46 +11,5 @@
     - name: Create Hosts Inventory File
       template:
          src: create_hosts.j2
-         dest: "{{playbook_dir}}/inventory/{{machine_type}}"         
-         
-    # - name: Refresh Host Inventory file
-      # meta: refresh_inventory
-      # ignore_errors: yes
-   # - name: Ensure Public/Private Key Pair Generated in Local System and Copied to SSH dir
-     # user: >
-       # name=root
-       # generate_ssh_key=yes
-       # ssh_key_file=.ssh/id_rsa
-   # - name: Upload and Ensure SSH Key Exists in Digital Ocean account, Retries 3 times with delay of 5 seconds, if failure
-     # digital_ocean: >
-       # state=present
-       # command=ssh
-       # name=muthutest
-       # ssh_pub_key={{ lookup('file','~/.ssh/id_rsa.pub')}}
-       # api_token={{do_token}}            
-     # register: systestres
-     # retries: 3
-     # delay: 20
-     # until: systestres|success   
-   # - name: Write Vars names
-     # debug: msg="Vars Names:{{item.0.type}}"
-     # with_subelements:
-       # - "{{systestnodes}}"
-       # - hardwareconfs
-     # register: vars_details
-     # retries: 3
-     # delay: 5  
-     # until: vars_details|success         
-         
-   # - name: Include Creating Droplet playbook
-     # include: create_droplet.yml
-     # with_subelements:
-        # - "{{systestnodes}}"
-        # - configs
-        # - skip_missing: true
-     # loop_control:
-        # loop_var: outer_item
-     # register: machine_details
-     # retries: 3
-     # delay: 5  
-     # until: machine_details|success
+         dest: "{{playbook_dir}}/inventory/{{machine_type}}"
+      when: "'create' in control_flag"

@@ -1,0 +1,40 @@
+---
+    # - name: Print Create Droplet Vars with Stride
+      # debug: msg="test check type:{{mac_type}}-{{swtype}} ramsize:{{outer_item.ram_size}} image name:{{outer_item.image_name}} Sequence Item {{item}}"
+      # with_sequence: start=1 end="{{outer_item.qty}}" stride=1
+
+    - name: Remove Droplet from Stack
+      digital_ocean: 
+         unique_name: yes
+         state: deleted
+         name: "{{mac_type}}-{{swtype}}-{{item}}"
+         api_token: "{{do_token}}"
+         size_id: "{{outer_item.ram_size}}"
+         region_id: "{{outer_item.region}}"
+         image_id: "{{outer_item.image_name}}"
+      with_sequence: start=1 end="{{outer_item.qty}}" stride=1       
+      register: droplet_details
+      retries: 3
+      delay: 5  
+      until: droplet_details|success
+
+    - name: Printing of Create Results
+      debug: msg="Dropltet Deleted is {{droplet_details.results}}"
+    
+    # - name: Remove Droplet using Id
+      # digital_ocean: 
+         # state: deleted
+         # id: "{{ item.droplet.image.id }}"
+         # api_token: "{{do_token}}"
+      # with_items: "{{droplet_details.results}}"
+      # register: deleted_details
+      # retries: 3
+      # delay: 5  
+      # until: deleted_details|success
+      
+    # - name: Printing of Results
+      # debug: msg="Dropltet Deleted is {{item}}"
+      # with_items: "{{deleted_details}}"
+
+    # - name: Wait for SSH to come up
+      # wait_for: host="{{item.droplet.ip_address}}" port=22  state=stopped
