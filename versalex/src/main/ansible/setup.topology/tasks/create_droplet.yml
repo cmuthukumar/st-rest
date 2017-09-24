@@ -1,8 +1,4 @@
 ---
-    # - name: Print Create Droplet Vars with Stride
-      # debug: msg="test check type:{{mac_type}}-{{swtype}} ramsize:{{outer_item.ram_size}} image name:{{outer_item.image_name}} Sequence Item {{item}}"
-      # with_sequence: start=1 end="{{outer_item.qty}}" stride=1
-   
     - name: Create  Droplet and Ensure it exists,Retries 3 times with delay of 5 seconds, if failure
       digital_ocean: 
          state: present
@@ -19,17 +15,7 @@
       retries: 3
       delay: 5  
       until: droplet_details|success
-      
-    # - name: Printing IP Address of Machine
-      # debug: msg="Dropltet  IP address is::{{item.droplet.ip_address}}"
-      # with_items: "{{droplet_details.results}}"
-    # - name: Add Host to Known Hosts file in LocalHost
-      # known_hosts: name="{{item.droplet.ip_address}}" key="{{item.droplet.ip_address}} {{systestres.ssh_key.public_key}}"
-      # with_items: "{{droplet_details.results}}"
-    # - name: "Add IP's of Machines Created in Digital Ocean to Groups of Groups"
-      # add_host: name="{{outer_item.0.type}}-{{outer_item.1.set}}"  groups="{{outer_item.0.type}}:children" ansible_ssh_private_key_file='/root/.ssh/id_rsa' ansible_ssh_common_args='-o PubkeyAuthentication=yes' ansible_ssh_common_args='-o StrictHostKeyChecking=no' ansible_ssh_common_args='-o UserKnownHostsFile=/dev/null'
-      # with_items: "{{droplet_details.results}}"
-      
+          
     - name: "Add IP's of Machines Created in Digital Ocean to Groups"
       add_host: 
         name: "{{item.droplet.name}} ansible_ssh_host={{item.droplet.ip_address}}  appl={{outer_item.name}} subtype={{swtype}}"

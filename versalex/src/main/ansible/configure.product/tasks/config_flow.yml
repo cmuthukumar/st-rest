@@ -23,14 +23,6 @@
       - name: Configure Shares in Client Nodes
         include: configure_client_share.yml
         when: "'versalex' in subtype and versalex.server_share_path is not defined"
-      
-      - name: Create VLProxy File for configuration
-        include: create_vlproxyfile.yml
-        when: "'versalex' in subtype"
-
-      - name: Configure VLProxy File 
-        include: configure_vlproxy.yml
-        when:  "'proxy' in subtype"
-
+ 
       - name: Restart VersalEx Process 
         include: restart_versalex.yml

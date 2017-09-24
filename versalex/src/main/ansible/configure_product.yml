@@ -16,5 +16,5 @@
       # template: src=test_type.j2 dest="{{playbook_dir}}/group_vars/{{item.type}}.yml"
       # with_items: "{{systestnodes}}"  
   roles:
+     - { role: configure.product/vlproxy,email_on_fail_addr: 'muthukumarc@cleo.com' }
      - { role: configure.product }
-     

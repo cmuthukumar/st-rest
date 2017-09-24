@@ -4,11 +4,7 @@
    - name: Setting Dictionary Name for Proxy Inside
      set_fact:
         versalex: "{{group_item.value}}"
-     # when: (proxy is defined and proxy.name is defined)
-    
-   # - name: Print Debug Messages
-     # debug: msg="{{versalex.install_location}}"
-        
+
    - name: Install CentOS Related Dependencies 
      include: centos.yml
      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'     
@@ -47,53 +43,3 @@
    - fail: msg="Install Apps failed Non Docker"
      when: item.failed==true
      with_items: "{{ install_status.results }}"
-########### OLD ######
-    # - set_fact:
-        # install_item: "{{item}}"
-    # - set_fact: { "{{item.key}}": "{{item.value}}" }     
-      # with_dict: "{{install_item.value}}"
-    # - debug: msg="Install Loc-{{install_location}}"
-    # - name: Check file exists or not 
-      # stat: path="{{ inventory_hostname }}.yml"
-      # register: chk_varsfile
-      
-    # - name: Include Node Specific Variables
-      # include_vars: "{{ inventory_hostname }}.yml"
-      # register: include_vars_status      
-      # ignore_errors: yes
-      
-    # - name: Pring Include Status
-      # debug: msg="Include Status:{{include_vars_status}}"  
-  
-     
-    # - name: "Install Versalex (Non Dockerized Install)"    
-      # include: "install_versalex.yml"
-      # with_dict: "{{install_apps}}"
-      # register: install_status
-      # retries: 3
-      # delay: 5  
-      # until: install_status|success
-    # - name: "Install Versalex (Non Dockerized Install)"
-      # include: "install_versalex.yml"
-      # when: item.0.type == "{{install_groups}}"
-      # with_subelements:
-        # - "{{systestnodes}}"
-        # - "{{install_product_confs}}"
-        # - skip_missing: true
-      # register: install_non_docker_status
-      # retries: 3
-      # delay: 5  
-      # until: install_non_docker_status|success
-    # - name: "Install Versalex (Non Dockerized Install)"
-      # include: "install_versalex.yml"
-      # when: item.value.docker == 'false' and not include_vars_status | failed
-      # with_dict: "{{install_apps | default({}) }}  "
-      # register: install_non_docker_status
-   
-#  include: install_versalex.yml app_name="{{item.key}}"          
-   # - name: Install Versalex (Dockerized Install)
-   # #  include: install_versalex.yml app_name="{{item.key}}"
-     # when: item.value.docker == 'false'
-     # with_dict: "{{install_apps}}"
-# - name: Print Node Specific Variables
- # debug: msg="Dockerize flag is {{dockerize}} and VersalEx ArtifactId {{versalex_artifactid}}"

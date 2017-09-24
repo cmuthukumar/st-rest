@@ -22,5 +22,4 @@
          
 - hosts: "{{machine_type}}"         
   roles:
-    # # - { role: "install.product", setname: "{{versalex}}"}
      - { role: "install.product" ,mach_type: "{{machine_type}}" }

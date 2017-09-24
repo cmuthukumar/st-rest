@@ -1,0 +1,20 @@
+---
+# tasks for carrying out configs flow
+  - name: Setting Dictionary Name for Proxy Inside
+    set_fact:
+       versalex: "{{group_item.value}}"
+    
+  - include_vars:
+        file: config.yml
+
+  - name: Print Install Loc
+    debug: msg="Install Loc {{versalex.install_location}}"  
+  
+  - name: Gather Serial Nos from Versalex 
+    include: get_serialno.yml
+            
+  - name: Configure VLProxy File 
+    include: create_properties.yml
+
+  - name: Restart VersalEx Process 
+    include: restart_versalex.yml

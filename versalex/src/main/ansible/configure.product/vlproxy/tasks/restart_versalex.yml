@@ -1,4 +1,5 @@
 ---
+# with_dict: "{{configure_apps['dbservers'] | default({}) }}"
 - name: Shutdown VersalEx Process ..after LDAP and DB Configs
   shell: "{{item}}"
   args:

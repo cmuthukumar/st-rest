@@ -7,9 +7,3 @@
       with_dict: "{{ hardware |default({}) }}"
       loop_control:
          loop_var: group_item
-         
-    - name: Create Hosts Inventory File
-      template:
-         src: create_hosts.j2
-         dest: "{{playbook_dir}}/inventory/{{machine_type}}"
-      when: "'create' in control_flag"

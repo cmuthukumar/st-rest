@@ -1,0 +1,4 @@
+---
+# tasks file for create.topology
+   - name: Generate and upload sshkeys to digitalocean
+     include: "upload_sshkey.yml"

@@ -1,0 +1,6 @@
+---
+# tasks file for create.topology
+- name: Create Hosts Inventory File
+  template:
+     src: create_hosts.j2
+     dest: "{{playbook_dir}}/inventory/{{machine_type}}"

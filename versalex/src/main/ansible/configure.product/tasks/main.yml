@@ -13,13 +13,13 @@
         loop_control:
            loop_var: group_item
            
-      - name: Include Configure Product Role with Proxy
-        include: "config_flow.yml"
-          #debug: msg="TestType Key- {{item.key}} Test Val -{{item.value}}"      
-        with_dict: "{{ proxy | default({}) }}"
-        # when: versalex is defined
-        when: "'proxy' in subtype"
-        loop_control:
-           loop_var: group_item             
+      # - name: Include Configure Product Role with Proxy
+        # include: "config_flow.yml"
+          # #debug: msg="TestType Key- {{item.key}} Test Val -{{item.value}}"      
+        # with_dict: "{{ proxy | default({}) }}"
+        # # when: versalex is defined
+        # when: "'proxy' in subtype"
+        # loop_control:
+           # loop_var: group_item             
   rescue:
       - fail: msg="Configure Product Module failed"

@@ -1,0 +1,29 @@
+---
+config_password : 'Admin'
+email_on_fail_addr : 
+execute_on_fail_command : 
+external_address : 
+internal_ftp_address : 
+internal_ftp_mask : 
+log_external_address : No
+mail_server_address : 
+mail_server_password : 
+mail_server_username : 
+max_log_file_size : 5
+port_backlog : 50
+proxy_https_ports : 8080
+remote_read_timeout : 150
+reverse_proxy_explicit_ftp_ports : 9000 
+reverse_proxy_ftp_data_ports : 9100-9200
+reverse_proxy_ftp_ports : 9021
+reverse_proxy_http_ports : 80
+reverse_proxy_https_ports : 443
+reverse_proxy_implicit_ftps_ports : 9990
+reverse_proxy_load_balancing : Yes
+reverse_proxy_oftp_ports : 3305
+reverse_proxy_oftps_ports : 6619
+reverse_proxy_retry :
+reverse_proxy_sshftp_ports : 9022
+serial_numbers : 
+unknown_partner_msg_action : 'Defer'
+vl_read_timeout : 150

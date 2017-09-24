@@ -1,7 +1,7 @@
 ---
 # tasks file for setup.testprofiles
 - block:
-  - name: Include Node Specific Variables for TPNode Proxy
+   - name: Include Node Specific Variables for TPNode Proxy
      include_vars:
          dir: "{{playbook_dir}}/dataset/"
          files_matching: "tpnodes-versalex.yml"
