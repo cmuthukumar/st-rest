@@ -12,7 +12,8 @@
   
   - name: Gather Serial Nos from Versalex 
     include: get_serialno.yml
-            
+    delegate_to: 127.0.0.1
+     
   - name: Configure VLProxy File 
     include: create_properties.yml
 
