@@ -20,6 +20,7 @@
        - name: Gather Facts for Remote Hosts now
          setup:
          
-- hosts: "{{machine_type}}"         
+- hosts: "{{machine_type}}"
+  strategy: free        
   roles:
      - { role: "install.product" ,mach_type: "{{machine_type}}" }

@@ -17,9 +17,9 @@
      file: path="{{versalex.install_location}}" state=directory force=yes
      when: versalex.name is defined
      
-   - name: Debug MSGS
-     debug: msg="Install Loc {{versalex.install_location}} "
-     when: versalex.name is defined
+   # - name: Debug MSGS
+     # debug: msg="Install Loc {{versalex.install_location}} "
+     # when: versalex.name is defined
      
    - include: "download_versalex.yml"
      when: versalex.name is defined

@@ -14,21 +14,26 @@
       return_content: yes
      register: latestversalex
      delegate_to: 127.0.0.1
+     
    - name: Latest versalex version Results
      debug: msg="{{ (latestversalex.content | from_json)['data']['version'] }}"
      delegate_to: 127.0.0.1
+     
    - name: Creates Each Node Directory under Results Folder
      file: path="{{playbook_dir}}/results/{{role_path |basename}}/{{inventory_hostname}}" state=directory
      delegate_to: 127.0.0.1
+     
    - name: Set Latest versalex version Variable
      set_fact:
         vex_version: "{{(latestversalex.content | from_json)['data']['version']}}"
    - name: Convert and Store Versalex Product Details to YAML file in Results Folder
      copy: content="{{ (latestversalex.content | from_json) | to_nice_yaml}}" dest="{{playbook_dir}}/results/{{role_path |basename}}/{{inventory_hostname}}/versalex_details.yml"
      delegate_to: 127.0.0.1
+     
    - name: Creates Download Location Directory
      file: path="{{versalex.download_location}}" state=directory
      delegate_to: 127.0.0.1
+     
    - name: Download Latest Versalex installer from Nexus Repository
      get_url:
       url: "{{versalex.download_version_url}}?r={{versalex.nexus_repoid}}&g={{versalex.nexus_groupid}}&a={{versalex.dname}}&c={{versalex.nexus_classifier}}&p={{versalex.nexus_packaging}}&v={{vex_version}}"
