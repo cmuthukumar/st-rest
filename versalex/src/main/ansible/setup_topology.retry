@@ -1,5 +1,0 @@
-servers-integrations-1 ansible_ssh_host=192.34.57.35 appl=mysql subtype=integrations
-servers-proxy-1 ansible_ssh_host=67.207.89.32 appl=proxy subtype=proxy
-servers-versalex-1 ansible_ssh_host=159.203.190.107 appl=harmony subtype=versalex
-servers-versalex-2 ansible_ssh_host=165.227.192.45 appl=harmony subtype=versalex
-servers-versalex-3 ansible_ssh_host=165.227.192.111 appl=harmony subtype=versalex
