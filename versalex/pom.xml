@@ -340,7 +340,7 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <build>
-                <directory>${project.basedir}/ansible/lib/</directory>
+                <directory>${project.basedir}/src/main/ansible/lib/</directory>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -368,7 +368,7 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <build>
-                <directory>${project.basedir}/ansible/lib/</directory>
+                <directory>${project.basedir}/src/main/ansible/lib/</directory>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -396,7 +396,7 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <build>
-                <directory>${project.basedir}/ansible/lib/</directory>
+                <directory>${project.basedir}/src/main/ansible/lib/</directory>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -424,7 +424,7 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <build>
-                <directory>${project.basedir}/ansible/lib/</directory>
+                <directory>${project.basedir}/src/main/ansible/lib/</directory>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -451,7 +451,7 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <build>
-                <directory>${project.basedir}/ansible/lib/</directory>
+                <directory>${project.basedir}/src/main/ansible/lib/</directory>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -481,7 +481,7 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <build>
-                <directory>${project.basedir}/ansible/lib/</directory>
+                <directory>${project.basedir}/src/main/ansible/lib/</directory>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
