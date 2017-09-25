@@ -146,6 +146,7 @@
               </goals>
               <configuration>
               <playbook>${playbook.path}</playbook>
+              <inventory>${host.filepath}</inventory>
               <failOnAnsibleError>true</failOnAnsibleError>
               <extraVars>machine_type=${machine.type}</extraVars>
               <logDirectory>/home/SystemTestNew/</logDirectory>
@@ -180,6 +181,7 @@
                 </goals>
                 <configuration>
                     <playbook>${playbook.path}</playbook>
+                    <inventory>${host.filepath}</inventory>
                     <failOnAnsibleError>true</failOnAnsibleError>
                     <extraVars>machine_type=${machine.type}</extraVars>                               
                     <logDirectory>/home/SystemTestNew/</logDirectory>
@@ -214,6 +216,7 @@
                 </goals>
                 <configuration>
                     <playbook>${playbook.path}</playbook>
+                    <inventory>${host.filepath}</inventory>
                     <failOnAnsibleError>true</failOnAnsibleError>
                     <extraVars>machine_type=${machine.type}</extraVars>                               
                     <logDirectory>/home/SystemTestNew/</logDirectory>
@@ -247,8 +250,8 @@
                 </goals>
                 <configuration>
                     <playbook>${playbook.path}</playbook>
-<!--                     <inventory>${host.filepath}</inventory>
- -->                    <failOnAnsibleError>true</failOnAnsibleError>
+                   <inventory>${host.filepath}</inventory>
+                     <failOnAnsibleError>true</failOnAnsibleError>
                         <extraVars>machine_type=${machine.type}</extraVars>                               
     <!--                 <extraVars>stage="ConfigureVersalex" group_name=${group.name}</extraVars>                               
      -->                <logDirectory>/home/SystemTestNew/</logDirectory>
