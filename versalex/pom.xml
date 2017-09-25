@@ -114,7 +114,7 @@
               <configuration>
               <playbook>${playbook.path}</playbook>
               <failOnAnsibleError>true</failOnAnsibleError>
-              <extraVars>machine_type=${machine_type}</extraVars>
+              <extraVars>machine_type=${machine.type}</extraVars>
               <logDirectory>/home/SystemTestNew/</logDirectory>
               <privateKey>/root/.ssh/id_rsa</privateKey>
               <promoteDebugAsInfo>true</promoteDebugAsInfo>
@@ -147,7 +147,7 @@
               <configuration>
               <playbook>${playbook.path}</playbook>
               <failOnAnsibleError>true</failOnAnsibleError>
-              <extraVars>machine_type=${machine_type}</extraVars>
+              <extraVars>machine_type=${machine.type}</extraVars>
               <logDirectory>/home/SystemTestNew/</logDirectory>
               <privateKey>/root/.ssh/id_rsa</privateKey>
               <promoteDebugAsInfo>true</promoteDebugAsInfo>
@@ -180,9 +180,8 @@
                 </goals>
                 <configuration>
                     <playbook>${playbook.path}</playbook>
-                    <inventory>${host.filepath}</inventory>
                     <failOnAnsibleError>true</failOnAnsibleError>
-                    <extraVars>machine_type=${machine_type}</extraVars>                               
+                    <extraVars>machine_type=${machine.type}</extraVars>                               
                     <logDirectory>/home/SystemTestNew/</logDirectory>
                     <privateKey>/root/.ssh/id_rsa</privateKey>
                     <promoteDebugAsInfo>true</promoteDebugAsInfo>
@@ -215,9 +214,8 @@
                 </goals>
                 <configuration>
                     <playbook>${playbook.path}</playbook>
-                    <inventory>${host.filepath}</inventory>
                     <failOnAnsibleError>true</failOnAnsibleError>
-                    <extraVars>group_name=${group.name}</extraVars>                               
+                    <extraVars>machine_type=${machine.type}</extraVars>                               
                     <logDirectory>/home/SystemTestNew/</logDirectory>
                     <privateKey>/root/.ssh/id_rsa</privateKey>
                     <promoteDebugAsInfo>true</promoteDebugAsInfo>
@@ -229,8 +227,8 @@
    </build>
  </profile>
  
-  <profile>
-<id>configure-versalex</id>
+<profile>
+<id>configure-product</id>
     <activation>
     <activeByDefault>false</activeByDefault>
     </activation>
@@ -242,15 +240,50 @@
             <version>1.2.0</version>
                 <executions>
                 <execution>
-                <id>configure-versalex</id>
+                <id>configure-product</id>
                 <phase>initialize</phase>
                 <goals>
                   <goal>playbook</goal>                              
                 </goals>
                 <configuration>
                     <playbook>${playbook.path}</playbook>
-                    <inventory>${host.filepath}</inventory>
-                    <failOnAnsibleError>true</failOnAnsibleError>
+<!--                     <inventory>${host.filepath}</inventory>
+ -->                    <failOnAnsibleError>true</failOnAnsibleError>
+                        <extraVars>machine_type=${machine.type}</extraVars>                               
+    <!--                 <extraVars>stage="ConfigureVersalex" group_name=${group.name}</extraVars>                               
+     -->                <logDirectory>/home/SystemTestNew/</logDirectory>
+                    <privateKey>/root/.ssh/id_rsa</privateKey>
+                    <promoteDebugAsInfo>true</promoteDebugAsInfo>
+                </configuration>
+                </execution>
+            </executions>
+          </plugin>  
+    </plugins>
+   </build>
+ </profile>
+ 
+  <profile>
+<id>setup-sync</id>
+    <activation>
+    <activeByDefault>false</activeByDefault>
+    </activation>
+   <build>
+    <plugins>
+       <plugin>
+            <groupId>co.escapeideas.maven</groupId>
+            <artifactId>ansible-maven-plugin</artifactId>
+            <version>1.2.0</version>
+                <executions>
+                <execution>
+                <id>setup-sync</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>playbook</goal>                              
+                </goals>
+                <configuration>
+                    <playbook>${playbook.path}</playbook>
+<!--                     <inventory>${host.filepath}</inventory>
+ -->                    <failOnAnsibleError>true</failOnAnsibleError>
     <!--                 <extraVars>stage="ConfigureVersalex" group_name=${group.name}</extraVars>                               
      -->                <logDirectory>/home/SystemTestNew/</logDirectory>
                     <privateKey>/root/.ssh/id_rsa</privateKey>
@@ -287,6 +320,8 @@
                     <playbook>${playbook.path}</playbook>
                     <inventory>${host.filepath}</inventory>
                     <failOnAnsibleError>true</failOnAnsibleError>
+                    <extraVars>server_conf=${server.conf}</extraVars>
+                    <extraVars>tp_conf=${tp.conf}</extraVars>
                     <logDirectory>/home/SystemTestNew/</logDirectory>
                     <privateKey>/root/.ssh/id_rsa</privateKey>
                     <promoteDebugAsInfo>true</promoteDebugAsInfo>
