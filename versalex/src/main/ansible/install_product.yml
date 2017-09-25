@@ -9,7 +9,7 @@
          register: py_version
        - debug: msg="Pre Tasks Completed::{{py_version}}"
        - name: Install Python Headers and Libs required for ansible core modules
-         include: "{{playbook_dir}}/install.product/tasks/install_pythonlibs.yml"
+         include: "{{playbook_dir}}/roles/install.product/tasks/install_pythonlibs.yml"
        # - name: Call Install Product with Versalex Configs
          # include_role:
             # name: "install.product"
