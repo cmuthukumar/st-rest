@@ -24,7 +24,7 @@
   register: karafc
   
 - name: Copy SetupOptions Jar File to remote location
-  copy: src="{{playbook_dir}}/lib/" dest="{{versalex.install_location}}"
+  copy: src="{{playbook_dir}}/lib/" dest="{{versalex.install_location}}lib/"
 
 - name: Download DB artifact from Maven Central
   maven_artifact: 
