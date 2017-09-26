@@ -17,8 +17,8 @@
        chdir: "{{versalex.install_location}}"
      register: installres
      
-   - name: Installation Results
-     debug: msg="Install Results-{{installres}}"
+   # - name: Installation Results
+     # debug: msg="Install Results-{{installres}}"
      
    - name: Start VersalEx Process After Install
      shell: "./{{versalex.dname}}d start"
@@ -37,7 +37,7 @@
       chdir: "{{versalex.install_location}}"
      register: serifile
 
-   - name: set the serial number fact
+   - name: Set the serial number fact
      set_fact:
         serial_no: "{{ serifile.stdout }}"
         

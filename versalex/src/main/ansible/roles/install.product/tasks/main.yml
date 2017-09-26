@@ -3,15 +3,15 @@
     - name: Include Install Product Role with Versalex
       include: "install_flow.yml"
       #debug: msg="TestType Key- {{item.key}} Test Val -{{item.value}}"      
-      with_dict: "{{ versalex | default({}) }}"
-      when: "'versalex' in subtype"
+      with_dict: "{{ prod_name | default({}) }}"
+      when: prod_name in subtype
       loop_control:
          loop_var: group_item
 
-    - name: Include Install Product Role with VLProxy confs
-      include: "install_flow.yml"
-      #debug: msg="TestType Key- {{item.key}} Test Val -{{item.value}}"
-      with_dict: "{{ proxy | default({}) }}"
-      when: "'proxy' in subtype"
-      loop_control:
-         loop_var: group_item
+    # - name: Include Install Product Role with VLProxy confs
+      # include: "install_flow.yml"
+      # #debug: msg="TestType Key- {{item.key}} Test Val -{{item.value}}"
+      # with_dict: "{{ proxy | default({}) }}"
+      # when: "'proxy' in subtype"
+      # loop_control:
+         # loop_var: group_item

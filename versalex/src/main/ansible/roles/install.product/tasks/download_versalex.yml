@@ -2,8 +2,8 @@
    # - name: Include Main Default Vars
      # include_vars: "defaults/main.yml"
 
-   - name: Print Debug Msg
-     debug: msg="Location {{versalex.install_location}}  "
+   # - name: Print Debug Msg
+     # debug: msg="Location {{versalex.install_location}}  "
      
    - name: "Find Latest Versalex installer from Nexus Repository"
      uri:
@@ -26,6 +26,7 @@
    - name: Set Latest versalex version Variable
      set_fact:
         vex_version: "{{(latestversalex.content | from_json)['data']['version']}}"
+        
    - name: Convert and Store Versalex Product Details to YAML file in Results Folder
      copy: content="{{ (latestversalex.content | from_json) | to_nice_yaml}}" dest="{{playbook_dir}}/results/{{role_path |basename}}/{{inventory_hostname}}/versalex_details.yml"
      delegate_to: 127.0.0.1

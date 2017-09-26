@@ -23,6 +23,7 @@
      
    - include: "download_versalex.yml"
      when: versalex.name is defined
+     run_once: true
  
    - name: Generate License Keys in Each Node
      include: "setup_vexlicense.yml"

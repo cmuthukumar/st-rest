@@ -23,4 +23,5 @@
 - hosts: "{{machine_type}}"
   strategy: free        
   roles:
-     - { role: "install.product" ,mach_type: "{{machine_type}}" }
+     - { role: "install.product" ,mach_type: "{{machine_type}}",prod_name: "versalex" }
+     - { role: "install.product" ,mach_type: "{{machine_type}}",prod_name: "proxy" }
