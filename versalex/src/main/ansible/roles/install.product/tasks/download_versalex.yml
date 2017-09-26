@@ -35,10 +35,22 @@
      file: path="{{versalex.download_location}}" state=directory
      delegate_to: 127.0.0.1
      
-   - name: Download Latest Versalex installer from Nexus Repository
-     get_url:
-      url: "{{versalex.download_version_url}}?r={{versalex.nexus_repoid}}&g={{versalex.nexus_groupid}}&a={{versalex.dname}}&c={{versalex.nexus_classifier}}&p={{versalex.nexus_packaging}}&v={{vex_version}}"
-      dest: "{{versalex.download_location}}"
-     register: versalexres
-     run_once: false
-     delegate_to: 127.0.0.1
+   # - name: Download Latest Versalex installer from Nexus Repository
+     # get_url:
+      # url: "{{versalex.download_version_url}}?r={{versalex.nexus_repoid}}&g={{versalex.nexus_groupid}}&a={{versalex.dname}}&c={{versalex.nexus_classifier}}&p={{versalex.nexus_packaging}}&v={{vex_version}}"
+      # dest: "{{versalex.download_location}}"
+     # register: versalexres
+     # run_once: false
+     # delegate_to: 127.0.0.1
+
+   - name: Download DB artifact from Maven Central
+     maven_artifact: 
+        group_id: "{{versalex.nexus_groupid}}"
+        artifact_id: "{{versalex.dname}}"
+        version: "{{versalex.version}}"
+        classifier: "{{versalex.classifier}}"
+        extension: "{{versalex.type}}"
+        repository_url: "{{versalex.nexus_maven_repourl}}"
+        dest: "{{versalex.download_location}}"
+        
+     

@@ -12,6 +12,7 @@ defaults:
         server_share_path: "/root/share1/"
         server_custom_macro: "%wmdatas%=/root/share1/"
         docker: "false"
+        nexus_maven_repourl: http://10.80.80.156/nexus/content/repositories/InstallerSnapshots/
         find_version_url: "http://contd.cleo.com/nexus/service/local/artifact/maven/resolve"
         download_version_url: "http://contd.cleo.com/nexus/service/local/artifact/maven/content"
         nexus_repoid: InstallerSnapshots
