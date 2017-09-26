@@ -11,8 +11,8 @@
 # Copy the properties-cipher jar into the installation
 - name: Copy properties-cipher jar
   copy:
-    src: "{{ download_location }}/properties-cipher.jar"
-    dest: "{{ versalex.install_location }}lib/properties-cipher.jar"
+    src: "{{ download_location }}lib/properties-cipher.jar"
+    dest: "{{ versalex.install_location }}properties-cipher.jar"
 
 # Create a default.properties file from a template & copy to the installation
 - name: Copy updated properties from template

@@ -1,7 +1,7 @@
 ---
 # tasks file for versalex.apps
  - block:
-   - name: Setting Dictionary Name for Proxy Inside
+   - name: Setting Dictionary Name for Versalex Inside
      set_fact:
         versalex: "{{group_item.value}}"
 
@@ -24,7 +24,7 @@
    - include: "download_versalex.yml"
      when: versalex.name is defined
      delegate_to: 127.0.0.1
-     run_once: true
+     # run_once: true
  
    - name: Generate License Keys in Each Node
      include: "setup_vexlicense.yml"
@@ -37,6 +37,9 @@
      delay: 5  
      until: install_status|success
      when: versalex.name is defined
+     
+   - name: Print Last Include Task Results
+     debug: msg="Install_status results {{install_status}}"
    # - name: Call Create VLProxy File
      # include: "create_vlproxyfile.yml"
      # when: versalex.name != 'VLProxy' 
