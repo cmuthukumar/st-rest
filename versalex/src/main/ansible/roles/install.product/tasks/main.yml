@@ -3,8 +3,7 @@
     - name: Include Install Product Role with Versalex
       include: "install_flow.yml"
       #debug: msg="TestType Key- {{item.key}} Test Val -{{item.value}}"      
-      with_dict: "{{ prod_name | default({}) }}"
-      when: prod_name in subtype
+      with_dict: "{{ prod_name | default({}) }}"      
       loop_control:
          loop_var: group_item
 
