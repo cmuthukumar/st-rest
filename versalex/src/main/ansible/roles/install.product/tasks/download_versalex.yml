@@ -23,9 +23,9 @@
      file: path="{{playbook_dir}}/results/{{role_path |basename}}/{{inventory_hostname}}" state=directory
      delegate_to: 127.0.0.1
      
-   - name: Set Latest versalex version Variable
-     set_fact:
-        vex_version: "{{(latestversalex.content | from_json)['data']['version']}}"
+   # - name: Set Latest versalex version Variable
+     # set_fact:
+        # vex_version: "{{(latestversalex.content | from_json)['data']['version']}}"
         
    # - name: Convert and Store Versalex Product Details to YAML file in Results Folder
      # copy: content="{{ (latestversalex.content | from_json) | to_nice_yaml}}" dest="{{playbook_dir}}/results/{{role_path |basename}}/{{inventory_hostname}}/versalex_details.yml"
@@ -43,14 +43,15 @@
      # run_once: false
      # delegate_to: 127.0.0.1
 
-   - name: Download DB artifact from Maven Central
+   - name: Download Versalex Bin Package from Nexus  Central
      maven_artifact: 
-        group_id: "{{versalex.nexus_groupid}}"
-        artifact_id: "{{versalex.dname}}"
-        version: "{{versalex.version}}"
-        classifier: "{{versalex.classifier}}"
-        extension: "{{versalex.type}}"
-        repository_url: "{{versalex.nexus_maven_repourl}}"
-        dest: "{{versalex.download_location}}"
-        
+            group_id: "{{versalex.nexus_groupid}}"
+            artifact_id: "{{versalex.dname}}"
+            version: latest
+            classifier: "{{versalex.nexus_classifier}}"
+            extension: "{{versalex.nexus_packaging}}"
+            repository_url: "{{versalex.nexus_maven_repourl}}"
+            dest: "{{versalex.download_location}}"
+            state: present
+     delegate_to: 127.0.0.1   
      

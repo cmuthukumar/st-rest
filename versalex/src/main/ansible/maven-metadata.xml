@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>com.cleo.installers</groupId>
+  <artifactId>Harmony</artifactId>
+  <version>5.4.1-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20170920.163202</timestamp>
+      <buildNumber>506</buildNumber>
+    </snapshot>
+    <lastUpdated>20170920163202</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>5.4.1-20170920.163202-506</value>
+        <updated>20170920163202</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <classifier>linux64-jre18</classifier>
+        <extension>bin</extension>
+        <value>5.4.1-20170920.163202-506</value>
+        <updated>20170920163202</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <classifier>windows64-jre18</classifier>
+        <extension>exe</extension>
+        <value>5.4.1-20170920.163202-506</value>
+        <updated>20170920163202</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>

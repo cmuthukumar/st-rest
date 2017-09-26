@@ -9,10 +9,10 @@
    # - versalex.name: Removes Install Location Directory
      # file: path="{{versalex.install_location}}"  state=absent force=yes
    - name: Copy Installer to Remote Install Location
-     copy: src="{{versalexres['dest']}}" dest="{{versalex.install_location}}" mode=0777
+     copy: src="{{versalex.download_location}}" dest="{{versalex.install_location}}" mode=0777
      
    - name: Install VersalEx Installer in Silent Mode   
-     shell: "./{{versalex.dname}}-{{vex_version}}-{{versalex.nexus_classifier}}.{{versalex.nexus_packaging}} -DUSER_INSTALL_DIR={{versalex.install_location}} -i  silent"
+     shell: "./{{versalex.dname}}-latest.{{versalex.nexus_packaging}} -DUSER_INSTALL_DIR={{versalex.install_location}} -i  silent"
      args:
        chdir: "{{versalex.install_location}}"
      register: installres

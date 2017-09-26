@@ -6,4 +6,3 @@ proxy:
         name: "vlproxy"
         vex_jmx_port: "3022"
   
-serialno: 

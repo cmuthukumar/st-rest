@@ -8,7 +8,7 @@
     serial_list: "{{ serial_list }} + [ '{{ hostvars[item]['serialno'] }}' ]"
   when: hostvars[item]['serialno'] is defined
   with_items: "{{ groups[ 'versalex' ] | default([]) }}"
-  
+  delegate_to: 127.0.0.1
   
 - name: Join the serial numbers into a comma separated list
   set_fact:

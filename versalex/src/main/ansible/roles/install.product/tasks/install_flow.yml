@@ -23,6 +23,7 @@
      
    - include: "download_versalex.yml"
      when: versalex.name is defined
+     delegate_to: 127.0.0.1
      run_once: true
  
    - name: Generate License Keys in Each Node
