@@ -6,6 +6,7 @@
 - name: Add serial numbers to list
   set_fact:
     serial_list: "{{ serial_list }} + [ '{{ hostvars[item]['serialno'] }}' ]"
+  when: hostvars[item]['serialno'] is defined
   with_items: "{{ groups[ 'versalex' ] | default([]) }}"
   
   
