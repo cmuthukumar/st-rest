@@ -24,8 +24,4 @@
   strategy: free        
   roles:
      - { role: "install.product" ,mach_type: "{{machine_type}}",prod_name: "versalex" }
-     
-- hosts: proxy
-  strategy: free        
-  roles:
      - { role: "install.product" ,mach_type: "{{machine_type}}",prod_name: "proxy" }
