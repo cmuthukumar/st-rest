@@ -31,7 +31,7 @@
         
       - name: Configure Shares in Server Nodes
         include: configure_server_share.yml
-        when: "'servers'  in machine_type and versalex.server_share_path is defined"
+        when: "'servers' in machine_type and versalex.server_share_path is defined"
         
       - name: Configure Shares in Client Nodes
         include: configure_client_share.yml
