@@ -1,8 +1,7 @@
 ---
 - hosts: localhost  
   vars_files:
-    - "{{machine_type}}.yml"
-  strategy: free
+    - "{{machine_type}}.yml"  
   
   roles:
     - {role: setup.topology/upload_sshkey }
