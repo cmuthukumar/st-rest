@@ -1,5 +1,6 @@
 ---
 # tasks for carrying out configs flow
+ - block:
       - name: Setting Dictionary Name for Proxy Inside
         set_fact:
            versalex: "{{group_item.value}}"
@@ -38,3 +39,6 @@
  
       - name: Restart VersalEx Process 
         include: restart_versalex.yml
+   rescue:
+      - fail: msg="Configure Applications failed"
+   

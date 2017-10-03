@@ -20,7 +20,7 @@
         state: present
   run_once: true
   with_items:
-    - { group: 'com.cleo.ep', artifact: 'properties-cipher', version: "{{ properties_cipher_version }}", type: 'jar', classifier: '' }  
+    - { group: 'com.cleo.ep', artifact: 'properties-cipher', version: "latest", type: 'jar', classifier: '' }  
   delegate_to: 127.0.0.1 
 
   
