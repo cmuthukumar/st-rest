@@ -2,24 +2,24 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-<!--   <parent>
+  <parent>
         <groupId>com.cleo.test</groupId>
         <artifactId>st</artifactId>
         <version>0.1-SNAPSHOT</version>
-    </parent> -->
+    </parent>
 
-    <groupId>com.cleo.systest</groupId>
-    <artifactId>versalex_setup</artifactId>
+    <groupId>com.cleo.test.automation.systest</groupId>
+    <artifactId>systest_jars</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>SetupVersalEx Product</name>
-   
+
     <distributionManagement>
-        <repository>
-            <id>nexusRepo</id>
+                <repository>
+            <id>cleo_systest</id>
             <name>SysTest releases</name>
-            <url>http://10.80.80.156/nexus/service/local/repositories/snapshots/content/</url>
+            <url>http://10.80.80.156/nexus/service/local/repo_groups/cleo/content/</url>
         </repository>
         <!-- Used to deploy artifacts automatically from jenkins -->
     <!--    <repository>
@@ -38,9 +38,9 @@
 
     <repositories>
 
-     <!--    <repository> -->
+        <repository>
             <!-- Official Cleo's repository -->
-<!--            <id>cleo_repo</id>
+           <id>cleo_repo</id>
             <name>Cleo's Repository</name>
             <url>http://contd.cleo.com/nexus/content/groups/public/</url>
             <releases>
@@ -49,7 +49,7 @@
             <snapshots>
                 <updatePolicy>never</updatePolicy>
             </snapshots> 
-        </repository> -->
+        </repository>
 
 
     </repositories>
