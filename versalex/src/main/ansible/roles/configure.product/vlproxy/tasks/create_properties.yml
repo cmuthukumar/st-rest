@@ -1,32 +1,55 @@
 ---
-- name: Download artifact from Nexus
-  local_action:
-      module: get_url
-      url: "{{ nexus_url }}&g={{ item.group }}&a={{ item.artifact }}&v={{ item.version }}&e={{ item.type }}&c={{ item.classifier }}"
-      dest: "{{ download_location }}/properties-cipher.jar"
+# - name: Download artifact from Nexus
+  # local_action:
+      # module: get_url
+      # url: "{{ nexus_url }}&g={{ item.group }}&a={{ item.artifact }}&v={{ item.version }}&e={{ item.type }}&c={{ item.classifier }}"
+      # dest: "{{ playbook_dir }}/library/properties-cipher.jar"
+  # run_once: true
+  # with_items:
+    # - { group: 'com.cleo.ep', artifact: 'properties-cipher', version: "{{ properties_cipher_version }}", type: 'jar', classifier: '' }
+  # delegate_to: 127.0.0.1
+
+- name: Download Properties Cipher Jar from Nexus Repo
+  maven_artifact: 
+        group_id: "{{item.group}}"
+        artifact_id: "{{item.artifact}}"
+        version: latest
+        extension: "jar"
+        repository_url: "{{versalex.nexus_prod_repourl}}"
+        dest: "{{playbook_dir}}/library/properties-cipher.jar"
+        state: present
   run_once: true
   with_items:
-    - { group: 'com.cleo.ep', artifact: 'properties-cipher', version: "{{ properties_cipher_version }}", type: 'jar', classifier: '' }
-    
+    - { group: 'com.cleo.ep', artifact: 'properties-cipher', version: "{{ properties_cipher_version }}", type: 'jar', classifier: '' }  
+  delegate_to: 127.0.0.1 
+
+  
 # Copy the properties-cipher jar into the installation
 - name: Copy properties-cipher jar
   copy:
-    src: "{{ download_location }}lib/properties-cipher.jar"
-    dest: "{{ versalex.install_location }}properties-cipher.jar"
-
+    src: "{{ playbook_dir }}/library/properties-cipher.jar"
+    dest: "{{ versalex.install_location }}lib/properties-cipher.jar"
+  
 # Create a default.properties file from a template & copy to the installation
 - name: Copy updated properties from template
   template:
     src: default.properties.j2
-    dest: "{{ versalex.install_location }}/default.properties"
-
+    dest: "{{ playbook_dir }}/library/default.properties"  
+  delegate_to: 127.0.0.1
+  
+- name: Copy default properties to remote versalex instance
+  copy:
+    src: "{{ playbook_dir }}/library/default.properties"
+    dest: "{{ versalex.install_location }}default.properties"
+  
 # Update encrypted properties in the installation
 - name: Update encrypted properties
-  shell: jre/bin/java -cp 'lib/*' com.cleo.VLProxy.PropertiesCipher
+  shell: jre/bin/java -cp $CLASSPATH com.cleo.VLProxy.PropertiesCipher
+  environment:
+     CLASSPATH: ":{{versalex.install_location}}lib/*"  
   args:
     chdir: "{{ versalex.install_location }}"
   register: properties_cipher_output
-
 
 # Verify the versalex group serial numbers have been added to the VLProxy configuration
 - name: Verify serial numbers

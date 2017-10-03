@@ -17,4 +17,4 @@
       # with_items: "{{systestnodes}}"  
   roles:
      - { role: configure.product/vlproxy,email_on_fail_addr: 'muthukumarc@cleo.com' }
-     - { role: configure.product }
+     - { role: configure.product, machine_type: "{{machine_type}}" }

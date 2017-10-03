@@ -1,35 +1,35 @@
 [all]
-servers-integrations-1 ansible_ssh_host=165.227.206.121  appl=mysql subtype=integrations
-servers-integrations-1 ansible_ssh_host=165.227.206.121 appl=mysql subtype=integrations
-servers-versalex-1 ansible_ssh_host=165.227.193.80  appl=harmony subtype=versalex
-servers-versalex-2 ansible_ssh_host=198.199.85.160  appl=harmony subtype=versalex
-servers-versalex-3 ansible_ssh_host=165.227.202.171  appl=harmony subtype=versalex
-servers-versalex-1 ansible_ssh_host=165.227.193.80 appl=harmony subtype=versalex
-servers-versalex-2 ansible_ssh_host=198.199.85.160 appl=harmony subtype=versalex
-servers-versalex-3 ansible_ssh_host=165.227.202.171 appl=harmony subtype=versalex
-servers-proxy-1 ansible_ssh_host=165.227.206.183  appl=proxy subtype=proxy
-servers-proxy-1 ansible_ssh_host=165.227.206.183 appl=proxy subtype=proxy
+servers-integrations-1 ansible_ssh_host=165.227.91.230  appl=mysql subtype=integrations
+servers-integrations-1 ansible_ssh_host=165.227.91.230 appl=mysql subtype=integrations
+servers-versalex-1 ansible_ssh_host=162.243.173.16  appl=harmony subtype=versalex
+servers-versalex-2 ansible_ssh_host=67.205.157.210  appl=harmony subtype=versalex
+servers-versalex-3 ansible_ssh_host=192.34.57.232  appl=harmony subtype=versalex
+servers-versalex-1 ansible_ssh_host=162.243.173.16 appl=harmony subtype=versalex
+servers-versalex-2 ansible_ssh_host=67.205.157.210 appl=harmony subtype=versalex
+servers-versalex-3 ansible_ssh_host=192.34.57.232 appl=harmony subtype=versalex
+servers-proxy-1 ansible_ssh_host=67.207.82.76  appl=proxy subtype=proxy
+servers-proxy-1 ansible_ssh_host=67.207.82.76 appl=proxy subtype=proxy
 [servers-versalex]
-servers-versalex-1 ansible_ssh_host=165.227.193.80  appl=harmony subtype=versalex
-servers-versalex-2 ansible_ssh_host=198.199.85.160  appl=harmony subtype=versalex
-servers-versalex-3 ansible_ssh_host=165.227.202.171  appl=harmony subtype=versalex
+servers-versalex-1 ansible_ssh_host=162.243.173.16  appl=harmony subtype=versalex
+servers-versalex-2 ansible_ssh_host=67.205.157.210  appl=harmony subtype=versalex
+servers-versalex-3 ansible_ssh_host=192.34.57.232  appl=harmony subtype=versalex
 [integrations]
-servers-integrations-1 ansible_ssh_host=165.227.206.121  appl=mysql subtype=integrations
+servers-integrations-1 ansible_ssh_host=165.227.91.230  appl=mysql subtype=integrations
 [servers]
-servers-integrations-1 ansible_ssh_host=165.227.206.121 appl=mysql subtype=integrations
-servers-versalex-1 ansible_ssh_host=165.227.193.80 appl=harmony subtype=versalex
-servers-versalex-2 ansible_ssh_host=198.199.85.160 appl=harmony subtype=versalex
-servers-versalex-3 ansible_ssh_host=165.227.202.171 appl=harmony subtype=versalex
-servers-proxy-1 ansible_ssh_host=165.227.206.183 appl=proxy subtype=proxy
+servers-integrations-1 ansible_ssh_host=165.227.91.230 appl=mysql subtype=integrations
+servers-versalex-1 ansible_ssh_host=162.243.173.16 appl=harmony subtype=versalex
+servers-versalex-2 ansible_ssh_host=67.205.157.210 appl=harmony subtype=versalex
+servers-versalex-3 ansible_ssh_host=192.34.57.232 appl=harmony subtype=versalex
+servers-proxy-1 ansible_ssh_host=67.207.82.76 appl=proxy subtype=proxy
 [ungrouped]
 localhost
 [servers-proxy]
-servers-proxy-1 ansible_ssh_host=165.227.206.183  appl=proxy subtype=proxy
+servers-proxy-1 ansible_ssh_host=67.207.82.76  appl=proxy subtype=proxy
 [servers-integrations]
-servers-integrations-1 ansible_ssh_host=165.227.206.121  appl=mysql subtype=integrations
+servers-integrations-1 ansible_ssh_host=165.227.91.230  appl=mysql subtype=integrations
 [versalex]
-servers-versalex-1 ansible_ssh_host=165.227.193.80  appl=harmony subtype=versalex
-servers-versalex-2 ansible_ssh_host=198.199.85.160  appl=harmony subtype=versalex
-servers-versalex-3 ansible_ssh_host=165.227.202.171  appl=harmony subtype=versalex
+servers-versalex-1 ansible_ssh_host=162.243.173.16  appl=harmony subtype=versalex
+servers-versalex-2 ansible_ssh_host=67.205.157.210  appl=harmony subtype=versalex
+servers-versalex-3 ansible_ssh_host=192.34.57.232  appl=harmony subtype=versalex
 [proxy]
-servers-proxy-1 ansible_ssh_host=165.227.206.183  appl=proxy subtype=proxy
+servers-proxy-1 ansible_ssh_host=67.207.82.76  appl=proxy subtype=proxy

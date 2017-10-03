@@ -8,7 +8,7 @@
         <version>0.1-SNAPSHOT</version>
     </parent> -->
 
-    <groupId>com.cleo.systest</groupId>
+    <groupId>com.cleo.st</groupId>
     <artifactId>versalex_setup</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>

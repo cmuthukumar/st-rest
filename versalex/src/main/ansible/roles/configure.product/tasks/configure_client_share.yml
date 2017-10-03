@@ -8,7 +8,7 @@
        state: mounted
        fstype: "nfs"     
      #with_dict: "{{configure_apps['nfs_client_shares'] | default({}) }}"
-     with_items: "{{groups[servers.groupname] | default({})}}"
+     with_items: "{{groups['servers-versalex'] | default({})}}"
      register: shares_client
      retries: 3
      delay: 5

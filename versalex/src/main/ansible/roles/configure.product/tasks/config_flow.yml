@@ -11,6 +11,18 @@
       - name: Install Debian Related Dependencies
         include: debian.yml
         when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+      - name: Download SysTest Jar from Nexus Repo
+        maven_artifact: 
+                group_id: "{{versalex.nexus_systest_groupid}}"
+                artifact_id: "{{versalex.nexus_systest_artifactid}}"
+                version: latest
+                extension: "jar"
+                repository_url: "{{versalex.nexus_systest_repourl}}"
+                dest: "{{playbook_dir}}/library/"
+                state: present
+        run_once: true
+        delegate_to: 127.0.0.1        
         
       - name: Configure VersalEx Product
         include: configure_versalex.yml
@@ -18,11 +30,11 @@
         
       - name: Configure Shares in Server Nodes
         include: configure_server_share.yml
-        when: "'versalex' in subtype and versalex.server_share_path is defined"
+        when: "'servers'  in machine_type and versalex.server_share_path is defined"
         
       - name: Configure Shares in Client Nodes
         include: configure_client_share.yml
-        when: "'versalex' in subtype and versalex.server_share_path is not defined"
+        when: "'tpnodes' in machine_type"
  
       - name: Restart VersalEx Process 
         include: restart_versalex.yml

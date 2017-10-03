@@ -13,10 +13,15 @@ defaults:
         server_custom_macro: "%wmdatas%=/root/share1/"
         docker: "false"
         nexus_maven_repourl: "http://10.80.80.156/nexus/service/local/repositories/InstallerSnapshots/content/"
+        nexus_systest_repourl: "http://10.80.80.156/nexus/service/local/repositories/snapshots/content/"
+        nexus_prod_repourl: "http://10.10.1.57/nexus/service/local/repo_groups/cleo/content/"
         find_version_url: "http://contd.cleo.com/nexus/service/local/artifact/maven/resolve"
         download_version_url: "http://contd.cleo.com/nexus/service/local/artifact/maven/content"
         nexus_repoid: InstallerSnapshots
         nexus_groupid: com.cleo.installers
+        nexus_systest_groupid: com.cleo.systest
+        nexus_systest_artifactid: versalex_setup
+        nexus_systest_version: 0.1-SNAPSHOT
         #nexus_artifactid: Harmony 
         nexus_classifier: linux64-jre18
         nexus_packaging: bin    
