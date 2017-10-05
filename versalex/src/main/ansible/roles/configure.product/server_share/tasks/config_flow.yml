@@ -1,0 +1,8 @@
+---
+# tasks for carrying out configs flow
+  - name: Setting Dictionary Name for Proxy Inside
+    set_fact:
+       vex: "{{group_item.value}}"
+  
+  - name: Configure Shares in Server Nodes
+    include: configure_server_share.yml

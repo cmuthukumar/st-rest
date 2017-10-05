@@ -1,12 +1,12 @@
    - name: Creates Shares Destination Path Directory
-     file: path="{{versalex.server_share_path}}" state=directory
+     file: path="{{vex.server_share_path}}" state=directory
      # when: versalex.server_share_path is defined     
 
    - name: "Add Dir Entry to /etc/exports file"
      lineinfile:
         create: yes
         dest: "/etc/exports"
-        line: "{{versalex.server_share_path}}  *(rw,sync,no_root_squash,no_subtree_check)"
+        line: "{{vex.server_share_path}}  *(rw,sync,no_root_squash,no_subtree_check)"
         state: present
         insertafter: EOF
      # when: versalex.server_share_path is defined     

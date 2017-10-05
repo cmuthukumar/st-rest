@@ -1,0 +1,11 @@
+---
+# tasks file for configure.product
+- block:
+      - name: Configure Server Side Shares
+        include: "config_flow.yml"
+        with_dict: "{{ shares | default({}) }}"
+        # when: "'shares' in subtype"
+        loop_control:
+           loop_var: group_item
+  rescue:
+      - fail: msg="Configure Product Module failed"

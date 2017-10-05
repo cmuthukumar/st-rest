@@ -12,6 +12,7 @@
         when: "'versalex' in subtype"
         loop_control:
            loop_var: group_item
+        tags: centos
            
       # - name: Include Configure Product Role with Proxy
         # include: "config_flow.yml"

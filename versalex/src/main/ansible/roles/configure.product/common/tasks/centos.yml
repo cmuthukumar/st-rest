@@ -1,0 +1,38 @@
+---
+   # - name: Stop RPCBind and NFS Service
+     # service: name="{{ item }}" state=stopped
+     # with_items:
+        # - rpcbind
+        # - nfs
+   - name: Install NFS on CentOS or Redhat machines
+     yum: name="{{ item }}" state=installed
+     with_items:
+        - nfs-utils
+        - nfs-utils-lib
+     register: install_nfs
+     retries: 3
+     delay: 5  
+     until: install_nfs|success
+   - name: Ensure NFS service started and enabled
+     service: name="{{ item }}" state=started enabled=yes
+     with_items:
+        - rpcbind
+        - nfslock
+        - nfs
+     register: restart_nfs
+     retries: 3
+     delay: 5  
+     until: restart_nfs|success
+   # - name: "Install lxml packages(required for maven_artifact) on CentOS or Redhat machines"
+     # yum: name="{{ item }}" state=installed
+     # with_items:
+       # - libxslt-devel
+       # - libxml2-devel
+     # register: install_lxml
+     # retries: 3
+     # delay: 5  
+     # until: install_lxml|success
+   # - name: Install lxml package using pip
+     # pip:
+      # name: lxml
+     # ignore_errors: yes

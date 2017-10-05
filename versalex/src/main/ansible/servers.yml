@@ -19,7 +19,13 @@ hardware:
         ram_size: 1gb
         region: nyc1
         image_name: "centos-6-x64"
-        qty: 1        
+        qty: 1
+   shares:           
+      - name: share
+        ram_size: 1gb
+        region: nyc1
+        image_name: "centos-6-x64"
+        qty: 1          
 software:
    versalex:
       - name: harmony
@@ -33,7 +39,10 @@ software:
       - name: vlproxy
         version: 5.4.1-SNAPSHOT
         install_location: "/root/VLProxy/"
-        vex_jmx_port: 3022     
+        vex_jmx_port: 3022
+   shares:           
+      - name: share
+        server_share_path: "/root/share/"   
 dataset:
    versalex:
       - name: as2

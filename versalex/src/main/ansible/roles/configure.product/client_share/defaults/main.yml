@@ -1,0 +1,4 @@
+---
+# nexus_url: http://10.10.1.57/nexus/service/local/artifact/maven/content?r=cleo
+# download_location: "/home/SystemTestNew/vexdownload/"
+# properties_cipher_version: "5.4.1-SNAPSHOT"

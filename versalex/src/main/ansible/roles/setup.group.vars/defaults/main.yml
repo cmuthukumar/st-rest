@@ -1,6 +1,8 @@
 ---
 # defaults file for setup.group.vars
 defaults:
+    share:
+        server_share_path: "/root/share/"
     versalex: &vexref
         vex_heapmem_min: 256M
         vex_heapmem_max: 2048M
@@ -9,8 +11,8 @@ defaults:
         karaf_heapmem_max: 2G
         port: 5080
         karaf_jmx_port: 2099
-        server_share_path: "/root/share1/"
-        server_custom_macro: "%wmdatas%=/root/share1/"
+        custom_macro: "%datashare%=/root/share/"
+        client_local_path: "/root/share/"
         docker: "false"
         nexus_maven_repourl: "http://10.80.80.156/nexus/service/local/repositories/InstallerSnapshots/content/"
         nexus_systest_repourl: "http://10.80.80.156/nexus/service/local/repositories/snapshots/content/"

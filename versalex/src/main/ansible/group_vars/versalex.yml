@@ -1,38 +1,4 @@
 ---
-shares:
-  share:
-    hostname: "servers-shares-1"
-    server_share_path: "/root/share/"
-proxy:
-  vlproxy:
-    hostname: "servers-proxy-1"
-    karaf_heapmem_max: "2G"
-    karaf_jmx_port: "2099"
-    vex_heapmem_max: "2048M"
-    nexus_prod_repourl: "http://10.10.1.57/nexus/service/local/repo_groups/cleo/content/"
-    port: "8080"
-    nexus_packaging: "bin"
-    vex_heapmem_min: "256M"
-    find_version_url: "http://contd.cleo.com/nexus/service/local/artifact/maven/resolve"
-    download_location: "/home/SystemTestNew/vexdownload/"
-    nexus_classifier: "linux64-jre18"
-    nexus_maven_repourl: "http://10.80.80.156/nexus/service/local/repositories/InstallerSnapshots/content/"
-    nexus_systest_version: "0.1-SNAPSHOT"
-    vex_jmx_port: "2098"
-    node_ip: "proxy1"
-    nexus_groupid: "com.cleo.installers"
-    custom_macro: "%datashare%=/root/share/"
-    nexus_systest_repourl: "http://10.80.80.156/nexus/service/local/repositories/snapshots/content/"
-    nexus_systest_groupid: "com.cleo.systest"
-    nexus_repoid: "InstallerSnapshots"
-    client_local_path: "/root/share/"
-    type: "http"
-    nexus_systest_artifactid: "versalex_setup"
-    revfwdproxy: "true"
-    dname: "VLProxy"
-    docker: "false"
-    karaf_heapmem_min: "256M"
-    download_version_url: "http://contd.cleo.com/nexus/service/local/artifact/maven/content"
 versalex:
   harmony:
     hostname: "servers-versalex-1"
@@ -76,29 +42,6 @@ versalex:
     docker: "false"
     karaf_heapmem_min: "256M"
     download_version_url: "http://contd.cleo.com/nexus/service/local/artifact/maven/content"
-integrations:
-  mysql:
-    hostname: "servers-integrations-1"
-    username: "root"
-    maven_destfilename: "mysqltest24.jar"
-    password: "testdocker"
-    app_type: "mysql"
-    maven_artifactid: "mysql-connector-java"
-    node_ip: "dbsrv1"
-    image_name: "testdockerfile"
-    dbname: "mysql"
-    app_srcdir: "/home/SystemTest/DockerFiles/"
-    app_args: "MYSQL_ROOT_PASSWORD=testdocker"
-    driver_str: "com.mysql.jdbc.Driver"
-    app_port: "3306"
-    use_docker_image: "true"
-    maven_groupid: "mysql"
-    maven_version: "5.1.24"
-    docker: "true"
-    image_tag: "latest"
-    type: "db"
-    port: "3306"
-    app_destdir: "/root/DockerFile/"
 dataset:
   as2:
     action_range: 1-1

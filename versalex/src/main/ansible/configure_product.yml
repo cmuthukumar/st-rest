@@ -1,20 +1,15 @@
 ---
 - hosts: "{{machine_type}}"
-  # vars_files:
-     # - "{{playbook_dir}}/configure.product/defaults/main.yml"
-     # - "systest_new.yml"
-  # tasks:
-    # - name: "Print Dictionary"
-      # debug: msg="Item---{{outer_item.0.type}}"
-      # with_subelements:
-         # - "{{systestnodes}}"
-         # - configs
-         # - skip_missing: true
-      # loop_control    :
-         # loop_var: outer_item
-    # - name: Test Type
-      # template: src=test_type.j2 dest="{{playbook_dir}}/group_vars/{{item.type}}.yml"
-      # with_items: "{{systestnodes}}"  
   roles:
      - { role: configure.product/vlproxy,email_on_fail_addr: 'muthukumarc@cleo.com' }
      - { role: configure.product, machine_type: "{{machine_type}}" }
+
+- hosts: shares
+  roles:
+    - { role: configure.product/common}
+    - { role: configure.product/server_share }
+    
+- hosts: versalex
+  roles: 
+    - { role: configure.product/common}
+    - { role: configure.product/client_share }      

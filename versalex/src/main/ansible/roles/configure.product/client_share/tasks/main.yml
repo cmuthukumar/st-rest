@@ -1,0 +1,11 @@
+---
+# tasks file for configure.product
+- block:
+      - name: Configure Client Side Shares
+        include: "config_flow.yml"
+        with_dict: "{{ versalex | default({}) }}"
+        # when: "'versalex' in subtype"
+        loop_control:
+           loop_var: group_item
+  rescue:
+      - fail: msg="Configure Product Module failed"

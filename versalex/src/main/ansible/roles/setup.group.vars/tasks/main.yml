@@ -3,4 +3,9 @@
 - name: Create Group Vars
   template: src="templates/setup_groupvars.j2" dest="{{playbook_dir}}/group_vars/{{machine_type}}.yml"
   delegate_to: 127.0.0.1
+ 
+- name: Create Group Vars Prod Level
+  template: src="templates/setup_groupvars_prod.j2" dest="{{playbook_dir}}/group_vars/{{item.key}}.yml"
+  with_dict: "{{software}}"
+  delegate_to: 127.0.0.1
   
