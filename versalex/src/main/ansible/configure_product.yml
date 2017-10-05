@@ -1,15 +1,39 @@
 ---
 - hosts: "{{machine_type}}"
   roles:
-     - { role: configure.product/vlproxy,email_on_fail_addr: 'muthukumarc@cleo.com' }
-     - { role: configure.product, machine_type: "{{machine_type}}" }
+    - { role: configure.product/common}
 
 - hosts: shares
-  roles:
-    - { role: configure.product/common}
-    - { role: configure.product/server_share }
-    
+  tasks:
+    - name: Configure Server Side Shares
+      include_role:
+        name: configure.product/server_share
+      with_dict: "{{ shares | default({}) }}"
+      loop_control:
+          loop_var: srvr_share
+          
 - hosts: versalex
-  roles: 
-    - { role: configure.product/common}
-    - { role: configure.product/client_share }      
+  roles:
+    - { role: configure.product/client_share}
+
+- hosts: "{{machine_type}}"
+  roles:
+    - { role: configure.product }
+
+- hosts: proxy  
+  roles:
+    - { role: configure.product/vlproxy,email_on_fail_addr: 'muthukumarc@cleo.com' }
+    
+  # tasks:
+    # - name: include configure product role with proxy
+      # include_role:
+        # name: configure.product/vlproxy
+      # vars:
+        # email_on_fail_addr: 'muthukumarc@cleo.com' 
+      # with_dict: "{{ proxy | default({}) }}"    
+      # loop_control:
+         # loop_var: group_item     
+# - hosts: "{{machine_type}}"
+  # roles:
+    # # - { role: configure.product/common}
+    # - { role: configure.product }          

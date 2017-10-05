@@ -7,8 +7,8 @@
   - include_vars:
         file: config.yml
 
-  - name: Print Install Loc
-    debug: msg="Install Loc {{versalex.install_location}}"  
+  # - name: Print Install Loc
+    # debug: msg="Install Loc {{versalex.install_location}}"  
   
   - name: Gather Serial Nos from Versalex 
     include: get_serialno.yml

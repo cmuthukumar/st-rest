@@ -1,9 +1,11 @@
 ---
 # tasks for carrying out configs flow
-  - name: Setting Dictionary Name for Proxy Inside
+  - name: Setting Dictionary Name for Client Share
     set_fact:
-       vex: "{{group_item.value}}"
+       vexcli: "{{cli_share.value}}"
 
+  - name: Print Client value
+    debug: msg="Client val {{vexcli}}"
+  
   - name: Configure Shares in Client Nodes
     include: configure_client_share.yml
-    when: "'versalex' in subtype"

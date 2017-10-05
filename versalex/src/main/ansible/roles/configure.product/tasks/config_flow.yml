@@ -1,20 +1,10 @@
 ---
 # tasks for carrying out configs flow
  - block:
-      - name: Setting Dictionary Name for Proxy Inside
+      - name: Setting Dictionary Name Config Versalex
         set_fact:
            versalex: "{{group_item.value}}"
-        
-      - name: Install CentOS Related Dependencies 
-        include: centos.yml
-        when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
-        
-      - name: Install Debian Related Dependencies
-        include: debian.yml
-        when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-
-        
       - name: Download SysTest Jar from Nexus Repo
         maven_artifact: 
                 group_id: "{{versalex.nexus_systest_groupid}}"
@@ -30,17 +20,10 @@
       - name: Configure VersalEx Product
         include: configure_versalex.yml
         when: "'versalex' in subtype"
-        
-      # - name: Configure Shares in Server Nodes
-        # include: configure_server_share.yml
-        # when: "'servers' in machine_type and versalex.server_share_path is defined"
-        
-      # - name: Configure Shares in Client Nodes
-        # include: configure_client_share.yml
-        # when: "'tpnodes' in machine_type"
  
       - name: Restart VersalEx Process 
         include: restart_versalex.yml
+        when: "'versalex' in subtype"
    rescue:
       - fail: msg="Configure Applications failed"
    

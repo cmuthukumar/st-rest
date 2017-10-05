@@ -1,12 +1,10 @@
 ---
 # tasks file for configure.product
 - block:
-      - name: Include Configure Product Role with Versalex
-        include: "config_flow.yml"
-        with_dict: "{{ proxy | default({}) }}"
-        when: "'proxy' in subtype"
-        loop_control:
-           loop_var: group_item
-           
+    - name: Configure Client Side Shares
+      include: "config_flow.yml"
+      with_dict: "{{ proxy | default({}) }}"
+      loop_control:
+          loop_var: group_item
   rescue:
       - fail: msg="Configure Product Module failed"

@@ -1,7 +1,4 @@
 ---
-# - name: "Calling Heap Mem Configuration"
-  # include: configure_heap_jmx.yml
-  
 - name: "Edit Versalex.lax  File"
   lineinfile:
      create: no

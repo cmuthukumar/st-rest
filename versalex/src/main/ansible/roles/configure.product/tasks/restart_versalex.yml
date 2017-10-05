@@ -1,14 +1,20 @@
 ---
-- name: Shutdown VersalEx Process ..after LDAP and DB Configs
-  shell: "{{item}}"
-  args:
-    chdir: "{{versalex.install_location}}"
-  with_items:
-    - ./{{versalex.dname}}d stop
-  register: stopvexstatus
-  
-- name: Stop Results
-  debug: msg="Stop Resultls {{stopvexstatus}} versalex_artifactid {{versalex.dname}}"
+# - name: Shutdown VersalEx Process ..after LDAP and DB Configs
+  # shell: "{{item}}"
+  # args:
+    # chdir: "{{versalex.install_location}}"
+  # with_items:
+    # - ./{{versalex.dname}}d stop
+  # register: stopvexstatus
+
+
+- name: Kill Java Processes running on Remote System
+  shell: "kill $(ps aux | grep -i java | grep -v 'grep' | awk '{print $2}')"
+  register: javakill_status
+  ignore_errors: True 
+     
+# - name: Stop Results
+  # debug: msg="Stop Resultls {{stopvexstatus}} versalex_artifactid {{versalex.dname}}"
   
 - name: Wait for port 5080 to get Stopped
   wait_for: port=5080 delay=10 state=stopped
@@ -20,3 +26,7 @@
   with_items:
     - ./{{versalex.dname}}d start
   register: startvexstatus
+
+# - name: Wait for Versalex Port to Come up
+  # wait_for: host="{{ansible_ssh_host}}" port="{{versalex.port}}" delay=10 timeout=320 state=started  
+  

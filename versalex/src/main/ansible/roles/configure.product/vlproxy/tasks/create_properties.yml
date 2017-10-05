@@ -22,7 +22,6 @@
   with_items:
     - { group: 'com.cleo.ep', artifact: 'properties-cipher', version: "latest", type: 'jar', classifier: '' }  
   delegate_to: 127.0.0.1 
-
   
 # Copy the properties-cipher jar into the installation
 - name: Copy properties-cipher jar
@@ -52,14 +51,14 @@
   register: properties_cipher_output
 
 # Verify the versalex group serial numbers have been added to the VLProxy configuration
-- name: Verify serial numbers
-  assert:
-    that:
-      - "'{{ hostvars[item]['serialno'] }}' in properties_cipher_output.stdout"
-    msg: "Serial number '{{ hostvars[item]['serialno'] }}' for {{ hostvars[item]['inventory_hostname'] }} not configured."
-  with_items: "{{ groups[ 'versalex' ] }}"
-  register: verify_serial
-  until: not verify_serial |  failed
-  retries: 3
-  delay: 4
-  ignore_errors: true
+# - name: Verify serial numbers
+  # assert:
+    # that:
+      # - "'{{ hostvars[item]['serialno'] }}' in properties_cipher_output.stdout"
+    # msg: "Serial number '{{ hostvars[item]['serialno'] }}' for {{ hostvars[item]['inventory_hostname'] }} not configured."
+  # with_items: "{{ groups[ 'versalex' ] }}"
+  # register: verify_serial
+  # until: not verify_serial |  failed
+  # retries: 3
+  # delay: 4
+  # ignore_errors: true
