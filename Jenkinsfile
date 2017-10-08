@@ -12,8 +12,8 @@ sh "cd ${env.WORKSPACE}/versalex/"
 env.JAVA_HOME="${tool 'JDK1.8'}"
 env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
 sh 'java -version'
-withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: '683540f0-61a9-48c1-acef-dc5520fb6466', passwordVariable: 'GITPWD', usernameVariable: 'GITUSR']]) {
- stage('Clean workspace') {
+//withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: '683540f0-61a9-48c1-acef-dc5520fb6466', passwordVariable: 'GITPWD', usernameVariable: 'GITUSR']]) {
+stage('Clean') {
     deleteDir()
     sh 'ls -lah'
 }   
@@ -36,7 +36,5 @@ def stvexImage=docker.build('st-versalex:1.0','.')
 
     }
 }
-
-
 
 }
