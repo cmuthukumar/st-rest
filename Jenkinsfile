@@ -10,7 +10,7 @@ env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
 sh 'java -version'
 stage('CheckOut')
 {
-checkout scm
+checkout([$class: 'GitSCM', branches: [[name: 'S-11540-merge-versalex-ansible-code']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '683540f0-61a9-48c1-acef-dc5520fb6466', url: 'https://github.com/CleoDev/st.git']]])
 
 globals("${env.BRANCH_NAME}")
 sh 'printenv'
