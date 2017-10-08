@@ -24,7 +24,7 @@ checkout scm
 
 sh 'printenv'
 
-def stvexImage=docker.build('st-versalex:1.0','.')
+def stvexImage=docker.build('st-versalex:1.0',"${env.WORKSPACE}")
 
     stvexImage.inside('-u root')
     {
