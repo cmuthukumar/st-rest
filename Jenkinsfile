@@ -8,7 +8,7 @@ node('SysTest'){
 // Clone Github and Checkout Branch to Specific Directory
 def mvnHome = tool 'Mvn3.3.9'
 env.WORKSPACE = pwd()
-sh "cd ${env.WORKSPACE}/versalex/"
+sh "cd ${env.WORKSPACE}"
 env.JAVA_HOME="${tool 'JDK1.8'}"
 env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
 sh 'java -version'
