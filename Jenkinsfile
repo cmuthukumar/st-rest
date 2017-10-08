@@ -27,7 +27,7 @@ sh 'printenv'
 
 def stvexImage=docker.build('st-versalex:1.0','.')
 
-    stvexImage.inside(-u root)
+    stvexImage.inside('-u root')
     {
 
         sh 'ansible --version'
