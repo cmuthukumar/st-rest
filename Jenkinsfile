@@ -24,12 +24,13 @@ checkout scm
 
 sh 'printenv'
 
-def stvexImage=docker.build('st-versalex:1.0',"${env.WORKSPACE}")
+def stvexImage=docker.build('st-versalex:1.0',"${env.WORKSPACE}/.")
 
     stvexImage.inside('-u root')
     {
 
         sh 'ansible --version'
+        
           //sh "${mvnHome}/bin/mvn -Pdeploy-nexus clean deploy -f '${env.WORKSPACE}/versalex/pom.xml' "
 
 
