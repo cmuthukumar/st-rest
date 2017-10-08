@@ -4,7 +4,7 @@ import hudson.slaves.*
 import hudson.plugins.sshslaves.*
 import hudson.model.Node
 
-node(){
+node{
 // Clone Github and Checkout Branch to Specific Directory
 def mvnHome = tool 'Mvn3.3.9'
 env.WORKSPACE = pwd()
