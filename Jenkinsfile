@@ -9,7 +9,10 @@ env.JAVA_HOME="${tool 'JDK1.8'}"
 env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
 sh 'java -version'
 //withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: '683540f0-61a9-48c1-acef-dc5520fb6466', passwordVariable: 'GITPWD', usernameVariable: 'GITUSR']]) {
-    
+ stage('Clean workspace') {
+    deleteDir()
+    sh 'ls -lah'
+}   
 stage('CheckOut')
 {
 checkout scm
@@ -18,7 +21,7 @@ checkout scm
 globals("${env.BRANCH_NAME}")
 sh 'printenv'
 
-def stvexImage=docker.build(st-versalex:1.0,.)
+def stvexImage=docker.build('st-versalex:1.0','.')
 
     stvexImage.inside(-u root)
     {
