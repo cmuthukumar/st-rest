@@ -16,7 +16,11 @@
      retries: 3
      delay: 5  
      until: install_lxml|success
-     
+
+   - easy_install:
+        name: lxml
+        state: latest
+        
    - name: Install NFS on CentOS or Redhat machines
      yum: name="{{ item }}" state=installed
      with_items:

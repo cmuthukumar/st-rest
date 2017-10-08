@@ -9,7 +9,7 @@
      delegate_to: 127.0.0.1
      ignore_errors: yes
 
-   - name: Include Configure Product Role with Versalex
+   - name: Setup Testprofiles in Server Side Nodes
      include: setup_flow.yml inc_file="configure_server"
      with_dict: "{{ versalex | default({}) }}"
      when: "'servers-versalex' in inventory_hostname"
@@ -24,44 +24,11 @@
      delegate_to: 127.0.0.1
      ignore_errors: yes
         
-   - name: Configure TP Side Nodes
+   - name: Setup Testprofiles in TP Side Nodes
      include: setup_flow.yml inc_file="configure_tp"
      with_dict: "{{ versalex | default({}) }}"
      when: "'tpnodes-versalex' in inventory_hostname"
      loop_control:
         loop_var: group_item
 - rescue:
-   - fail: msg="Setup Test Profile Module Failed" 
-     
-   # - name: Print Included Vars for TPNode Proxy
-     # debug: msg="Key {{item.key}} values{{item.value}}"
-     # with_dict: "{{dataset | default({})}}"
-     # when: "'tpnodes-versalex' in inventory_hostname"        
-   # - name: Configure TP Side Nodes
-     # include: configure_tp.yml
-     # static: no
-     # when: vex_product is defined and not include_vars_status | failed and vex_product != 'VLProxy' and node_type == 'Receiver'
-   # - name: Configure Post Setup Configs
-     # include: post_setup.yml
-     # when: vex_product is defined and vex_product != 'VLProxy'
-     
-   # - name: Include Node Specific Variables
-     # include_vars: "{{inventory_hostname}}.yml"
-     # register: include_vars_status
-     # ignore_errors: yes
-
-   # - name: Setting TpHost Count
-     # set_fact:        
-       # proxy_grp: "{{item}}"     
-     # with_items: "{{group_names}}"
-     # when: "'proxy' in item"
-     # delegate_to: 127.0.0.1
-
-   # - name: Include Configure Product Role with Versalex
-     # include: "pre_setup.yml" grp_name='tpnodes-versalex'
-     # when: "'servers-versalex' in inventory_hostname"
-     #debug: msg="TestType Key- {{item.key}} Test Val -{{item.value}}"      
-     # with_dict: "{{ versalex | default({}) }}"
-     # when: versalex is defined
-     # 1oop_control:
-        # loop_var: group_item
+   - fail: msg="Setup Test Profile Module Failed"     

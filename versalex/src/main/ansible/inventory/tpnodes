@@ -1,28 +1,28 @@
 [all]
-tpnodes-integrations-1 ansible_ssh_host=208.68.37.101  appl=mysql subtype=integrations
-tpnodes-integrations-1 ansible_ssh_host=208.68.37.101 appl=mysql subtype=integrations
-tpnodes-versalex-1 ansible_ssh_host=192.241.152.63  appl=harmony subtype=versalex
-tpnodes-versalex-2 ansible_ssh_host=165.227.92.177  appl=harmony subtype=versalex
-tpnodes-versalex-3 ansible_ssh_host=165.227.83.59  appl=harmony subtype=versalex
-tpnodes-versalex-1 ansible_ssh_host=192.241.152.63 appl=harmony subtype=versalex
-tpnodes-versalex-2 ansible_ssh_host=165.227.92.177 appl=harmony subtype=versalex
-tpnodes-versalex-3 ansible_ssh_host=165.227.83.59 appl=harmony subtype=versalex
+tpnodes-integrations-1 ansible_ssh_host=174.138.45.243  appl=mysql subtype=integrations
+tpnodes-integrations-1 ansible_ssh_host=174.138.45.243 appl=mysql subtype=integrations
+tpnodes-versalex-1 ansible_ssh_host=198.199.79.160  appl=harmony subtype=versalex
+tpnodes-versalex-2 ansible_ssh_host=165.227.205.117  appl=harmony subtype=versalex
+tpnodes-versalex-3 ansible_ssh_host=159.203.187.50  appl=harmony subtype=versalex
+tpnodes-versalex-1 ansible_ssh_host=198.199.79.160 appl=harmony subtype=versalex
+tpnodes-versalex-2 ansible_ssh_host=165.227.205.117 appl=harmony subtype=versalex
+tpnodes-versalex-3 ansible_ssh_host=159.203.187.50 appl=harmony subtype=versalex
 [integrations]
-tpnodes-integrations-1 ansible_ssh_host=208.68.37.101  appl=mysql subtype=integrations
+tpnodes-integrations-1 ansible_ssh_host=174.138.45.243  appl=mysql subtype=integrations
 [ungrouped]
 localhost
 [tpnodes]
-tpnodes-integrations-1 ansible_ssh_host=208.68.37.101 appl=mysql subtype=integrations
-tpnodes-versalex-1 ansible_ssh_host=192.241.152.63 appl=harmony subtype=versalex
-tpnodes-versalex-2 ansible_ssh_host=165.227.92.177 appl=harmony subtype=versalex
-tpnodes-versalex-3 ansible_ssh_host=165.227.83.59 appl=harmony subtype=versalex
+tpnodes-integrations-1 ansible_ssh_host=174.138.45.243 appl=mysql subtype=integrations
+tpnodes-versalex-1 ansible_ssh_host=198.199.79.160 appl=harmony subtype=versalex
+tpnodes-versalex-2 ansible_ssh_host=165.227.205.117 appl=harmony subtype=versalex
+tpnodes-versalex-3 ansible_ssh_host=159.203.187.50 appl=harmony subtype=versalex
 [tpnodes-integrations]
-tpnodes-integrations-1 ansible_ssh_host=208.68.37.101  appl=mysql subtype=integrations
+tpnodes-integrations-1 ansible_ssh_host=174.138.45.243  appl=mysql subtype=integrations
 [tpnodes-versalex]
-tpnodes-versalex-1 ansible_ssh_host=192.241.152.63  appl=harmony subtype=versalex
-tpnodes-versalex-2 ansible_ssh_host=165.227.92.177  appl=harmony subtype=versalex
-tpnodes-versalex-3 ansible_ssh_host=165.227.83.59  appl=harmony subtype=versalex
+tpnodes-versalex-1 ansible_ssh_host=198.199.79.160  appl=harmony subtype=versalex
+tpnodes-versalex-2 ansible_ssh_host=165.227.205.117  appl=harmony subtype=versalex
+tpnodes-versalex-3 ansible_ssh_host=159.203.187.50  appl=harmony subtype=versalex
 [versalex]
-tpnodes-versalex-1 ansible_ssh_host=192.241.152.63  appl=harmony subtype=versalex
-tpnodes-versalex-2 ansible_ssh_host=165.227.92.177  appl=harmony subtype=versalex
-tpnodes-versalex-3 ansible_ssh_host=165.227.83.59  appl=harmony subtype=versalex
+tpnodes-versalex-1 ansible_ssh_host=198.199.79.160  appl=harmony subtype=versalex
+tpnodes-versalex-2 ansible_ssh_host=165.227.205.117  appl=harmony subtype=versalex
+tpnodes-versalex-3 ansible_ssh_host=159.203.187.50  appl=harmony subtype=versalex
