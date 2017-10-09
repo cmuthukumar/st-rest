@@ -31,14 +31,16 @@ def systestvexImage=docker.build('st-versalex:1.0','.')
     try{
     if(${SkipPublish})
     {
-    stage('Deploy')
+        echo 'Skip Publishing'
+            }   
+else
+{
+  stage('Deploy')
         {
         sh "mvn -Pdeploy-nexus clean deploy -f '${env.WORKSPACE}/versalex/pom.xml' "    
         sh "cd ${workdir} && ansible-playbook setup_vars.yml -e machine_type=servers"
         sh 'touch test'
-            }
-            
-    }        
+}    
     stage('Create Nodes')
         {
         sh "mvn install -Pcreate-nodes -f '${env.WORKSPACE}/versalex/pom.xml'  -Dplaybook.path='${env.WORKSPACE}/versalex/src/main/ansible/setup_topology.yml' -Dmachine.type='servers' "     
