@@ -29,7 +29,7 @@ def systestvexImage=docker.build('st-versalex:1.0','.')
     systestvexImage.inside('-u root')
     {    
     try{
-    if(SkipPublish)
+    if(${SkipPublish})
     {
     stage('Deploy')
         {
