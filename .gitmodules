@@ -1,6 +1,3 @@
-[submodule "ev"]
-	path = ev
-	url = https://github.com/CleoDev/ev.git
 [submodule "st_ev"]
 	path = ev
 	url = https://github.com/CleoDev/ev.git
