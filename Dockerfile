@@ -30,8 +30,7 @@ RUN sed -i 's/#hash_behaviour = replace/hash_behaviour = merge/g' /etc/ansible/a
 #Install required dependencies
 RUN yum update -y && yum install -y \
     wget \
-    tar.x86_64 \
-    && yum -y clean all
+    tar.x86_64
     
 #install oracle jdk8
 RUN cd /opt/
