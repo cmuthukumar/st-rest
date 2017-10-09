@@ -46,6 +46,5 @@ def systestvexImage=docker.build('st-versalex:1.0','.')
             echo "End of Stages"
         }
     }
-}
 
 }
