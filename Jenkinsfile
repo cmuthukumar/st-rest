@@ -45,9 +45,5 @@ def systestvexImage=docker.build('st-versalex:1.0','.')
         }
     }
     
-   def createNodes()
-   {
-    
-    
-   }
+
 }
