@@ -6,7 +6,7 @@ import hudson.model.Node
 
 node('SysTest'){
 
-#Define env variables
+//Define env variables
 workdir = '${env.WORKSPACE}/versalex/src/main/ansible/'
 
 def mvnHome = tool 'Mvn3.3.9'
