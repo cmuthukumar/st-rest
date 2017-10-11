@@ -11,7 +11,10 @@
   
 - name: Install Development tools package
   yum: name="@Development tools" state=present
-
+  
+- pip:
+    name: lxml
+    
 - name: "Install python-lxml packages(required for maven_artifact) on CentOS or Redhat machines"
   yum: name=python-lxml state=installed
   retries: 3
