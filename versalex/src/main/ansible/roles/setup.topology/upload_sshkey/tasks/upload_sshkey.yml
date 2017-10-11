@@ -49,8 +49,8 @@
     - name: Print known hosts
       debug: msg="Knwn Hosts {{kn_hst}}"
       
-    - service:
-        name: sshd
-        state: restarted
+    # - service:
+        # name: sshd
+        # state: restarted
 
    
