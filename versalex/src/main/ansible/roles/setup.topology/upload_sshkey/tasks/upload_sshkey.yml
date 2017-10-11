@@ -24,3 +24,18 @@
       retries: 3
       delay: 20
       until: uploadstatus|success
+      
+    - name: Set authorized key took from file
+      authorized_key:
+        user: root
+        state: present
+        key: "{{ lookup('file','~/.ssh/id_rsa.pub') }}"      
+   
+    - name: Print SSH File
+      shell: cat ~/.ssh/id_rsa.pub 
+      register: kn_hst
+  
+    - name: Print known hosts
+      debug: msg="Knwn Hosts {{kn_hst}}"
+
+   
