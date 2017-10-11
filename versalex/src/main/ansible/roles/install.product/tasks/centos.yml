@@ -8,7 +8,6 @@
   with_items:
         - libxml2 
         - libxml2-devel
-        - libxml2-python
         - libxslt
         - libxslt-devel
         - python-devel
@@ -16,11 +15,11 @@
 # - name: Install python-devel package for running bin file in CentOS
   # yum: name=python-devel state=present
   
-- name: Install Development tools package
-  yum: name="@Development tools" state=present
+# - name: Install Development tools package
+  # yum: name="@Development tools" state=present
    
 - name: "Install python-lxml packages(required for maven_artifact) on CentOS or Redhat machines"
-  yum: name=python26-lxml.x86_64 state=installed
+  yum: name=python-lxml state=installed
   retries: 3
   delay: 5  
   until: install_lxml|success
@@ -34,6 +33,9 @@
 # - name: "Install python2.7 in OS if python 3 is default"
   # include: "install_centos_py27.yml"
   # when: ansible_distribution_version | int >= 9
+
+- name: Install using pip
+  shell: pip install --upgrade lxml
   
 - name: "Add Hosts in /etc/hosts File"
   lineinfile: dest=/etc/hosts  line="{{hostvars[inventory_hostname].ansible_default_ipv4.address}} {{inventory_hostname}}" state=present insertafter=EOF
