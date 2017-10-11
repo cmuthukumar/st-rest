@@ -72,6 +72,6 @@ def systestvexImage=docker.build('st-versalex:1.0','.')
        for(int i=0; i<params.size(); i++ )
         {
         println "Installing Product for ${params[i]}"
-           sh "cd ${workdir} && ansible-playbook install_product.yml -i inventory/ -e machine_type=${params[i]}"
+           sh "cd ${workdir} && ansible-playbook install_product.yml -c local -i inventory/ -e machine_type=${params[i]}"
         }
     }    

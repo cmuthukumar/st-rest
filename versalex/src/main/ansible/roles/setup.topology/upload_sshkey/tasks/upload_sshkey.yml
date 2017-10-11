@@ -2,7 +2,9 @@
     # - name: Print Create Droplet Vars with Stride
       # debug: msg="test check type:{{mac_type}}-{{swtype}} ramsize:{{outer_item.ram_size}} image name:{{outer_item.image_name}} Sequence Item {{item}}"
       # with_sequence: start=1 end="{{outer_item.qty}}" stride=1
-
+    - name: Prints python Ver
+      shell: python --version
+    
     - name: Install Pip Dopy
       pip: >
        name=dopy
