@@ -24,6 +24,9 @@
         ansible_host: "{{item.droplet.ip_address}}"
         groups: "{{mac_type}}-{{swtype}}"
         ansible_ssh_private_key_file: '/root/.ssh/id_rsa'
+        ansible_ssh_common_args: '-o PubkeyAuthentication=yes'
+        ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+        ansible_ssh_common_args: '-o UserKnownHostsFile=/dev/null'
       with_items: "{{droplet_details.results}}"
       
     - name: "Add IPs of Machines Created in Digital Ocean to Groups at Type Level"
@@ -34,6 +37,9 @@
         ansible_host: "{{item.droplet.ip_address}}"
         groups: "{{mac_type}}"
         ansible_ssh_private_key_file: '/root/.ssh/id_rsa'
+        ansible_ssh_common_args: '-o PubkeyAuthentication=yes'
+        ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+        ansible_ssh_common_args: '-o UserKnownHostsFile=/dev/null'
       with_items: "{{droplet_details.results}}"
 
     - name: "Add IP's of Machines Created in Digital Ocean to Groups Srvers"
@@ -44,9 +50,9 @@
         ansible_host: "{{item.droplet.ip_address}}"
         groups: "{{swtype}}"
         ansible_ssh_private_key_file: '/root/.ssh/id_rsa'
-        # ansible_ssh_common_args: '-o PubkeyAuthentication=yes'
-        # ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
-        # ansible_ssh_common_args: '-o UserKnownHostsFile=/dev/null'
+        ansible_ssh_common_args: '-o PubkeyAuthentication=yes'
+        ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+        ansible_ssh_common_args: '-o UserKnownHostsFile=/dev/null'
       with_items: "{{droplet_details.results}}"
     
     - name: Wait for SSH to come up
