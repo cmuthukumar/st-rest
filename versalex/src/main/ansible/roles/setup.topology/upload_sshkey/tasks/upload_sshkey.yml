@@ -17,7 +17,7 @@
       digital_ocean: >
        state=present
        command=ssh
-       name=st-versalex2
+       name=st-versalex
        ssh_pub_key={{ lookup('file','~/.ssh/id_rsa.pub')}}
        api_token={{do_token}}            
       register: uploadstatus
