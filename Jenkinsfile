@@ -4,14 +4,14 @@ import hudson.slaves.*
 import hudson.plugins.sshslaves.*
 import hudson.model.Node
 
-env.WORKSPACE = pwd()
+
 
 params = ['servers','tpnodes']
 //Define env variables
-workdir = "${env.WORKSPACE}/versalex/src/main/ansible/"
+workdir = "versalex/src/main/ansible/"
 
 node('SysTest') {
-
+env.WORKSPACE = pwd()
 def mvnHome = tool 'Mvn3.3.9'
 sh "cd ${env.WORKSPACE}"
 env.JAVA_HOME="${tool 'JDK1.8'}"
