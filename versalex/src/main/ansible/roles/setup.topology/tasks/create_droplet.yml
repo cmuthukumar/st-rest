@@ -20,12 +20,12 @@
       # shell: ssh-keyscan -H {{ item.droplet.ip_address }} >> ~/.ssh/known_hosts          
       # with_items: '{{ droplet_details.results }}'
 
-    - name: List Known Hosts file
-      shell: cat ~/.ssh/known_hosts 
-      register: kn_hst
+    # - name: List Known Hosts file
+      # shell: cat ~/.ssh/known_hosts 
+      # register: kn_hst
   
-    - name: Print known hosts
-      debug: msg="Knwn Hosts {{kn_hst}}"
+    # - name: Print known hosts
+      # debug: msg="Knwn Hosts {{kn_hst}}"
       
     - name: "Add IP's of Machines Created in Digital Ocean to Groups"
       add_host: 
