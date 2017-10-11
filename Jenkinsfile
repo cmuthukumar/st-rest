@@ -50,7 +50,10 @@ def systestvexImage=docker.build('st-versalex:1.0','.')
             echo "End of Create Node"
         }
     }
-    
+  
+}
+
+  
     def createNodes()
     {
     println "Inside Create Node"
@@ -67,4 +70,3 @@ def systestvexImage=docker.build('st-versalex:1.0','.')
     println "Inside Install Product"
        
     }    
-}
