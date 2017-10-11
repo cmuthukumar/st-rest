@@ -1,5 +1,6 @@
 ---
 - hosts: "{{machine_type}}"
+  connection: local
   strategy: free
   #gather_facts: no
   pre_tasks:
@@ -21,6 +22,7 @@
          setup:
          
 - hosts: "{{machine_type}}"
+  connection: local
   strategy: free        
   roles:
      - { role: "install.product" ,mach_type: "{{machine_type}}" }
