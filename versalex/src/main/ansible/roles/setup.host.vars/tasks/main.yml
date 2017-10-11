@@ -3,3 +3,9 @@
 - name: Create Host Level Vars
   template: src=setup_hostvars.j2 dest="{{playbook_dir}}/host_vars/{{inventory_hostname}}.yml"
   delegate_to: 127.0.0.1
+  
+- name: Add Known_hosts
+  known_hosts:
+    path: /root/.ssh/known_hosts
+    name: "{{inventory_hostname}}"
+    key: "{{ lookup('file','~/.ssh/id_rsa.pub')}}"  
