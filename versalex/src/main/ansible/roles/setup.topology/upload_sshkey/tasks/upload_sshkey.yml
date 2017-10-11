@@ -4,6 +4,9 @@
       # with_sequence: start=1 end="{{outer_item.qty}}" stride=1
     - name: Prints python Ver
       shell: python --version
+      register: pyVer
+      
+    - debug: msg="PYTHON Ver{{pyVer}}"
     
     - name: Install Pip Dopy
       pip: >

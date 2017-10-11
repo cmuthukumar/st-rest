@@ -36,7 +36,8 @@
 
 - name: Install using pip
   shell: pip install --upgrade lxml
-  
+  register: pyver
+
 - name: "Add Hosts in /etc/hosts File"
   lineinfile: dest=/etc/hosts  line="{{hostvars[inventory_hostname].ansible_default_ipv4.address}} {{inventory_hostname}}" state=present insertafter=EOF
   when: hostvars[inventory_hostname].ansible_default_ipv4.address is defined
