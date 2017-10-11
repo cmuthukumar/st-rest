@@ -2,19 +2,23 @@
 # tasks file for install.apps
 - name: Install Unzip package for running bin file in CentOS
   yum: name=unzip state=present
-
+          
 - name: Install libxslt-devel package for running bin file in CentOS
-  yum: name=libxslt-devel state=present
-
-- name: Install python-devel package for running bin file in CentOS
-  yum: name=python-devel state=present
+  yum: name="{{item}}" state=present
+  with_items:
+        - libxml2 
+        - libxml2-devel
+        - libxml2-python
+        - libxslt
+        - libxslt-devel
+        - python-devel
+        
+# - name: Install python-devel package for running bin file in CentOS
+  # yum: name=python-devel state=present
   
 - name: Install Development tools package
   yum: name="@Development tools" state=present
-  
-- pip:
-    name: lxml
-    
+   
 - name: "Install python-lxml packages(required for maven_artifact) on CentOS or Redhat machines"
   yum: name=python-lxml state=installed
   retries: 3
