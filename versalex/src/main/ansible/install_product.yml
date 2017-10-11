@@ -1,6 +1,5 @@
 ---
 - hosts: "{{machine_type}}"
-  connection: local
   strategy: free
   #gather_facts: no
   pre_tasks:
