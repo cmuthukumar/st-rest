@@ -5,7 +5,7 @@ import hudson.plugins.sshslaves.*
 import hudson.model.Node
 
 
-#Define Global Vars
+//Define Global Vars
 
 params = ['servers','tpnodes']
 workdir = "versalex/src/main/ansible/"
