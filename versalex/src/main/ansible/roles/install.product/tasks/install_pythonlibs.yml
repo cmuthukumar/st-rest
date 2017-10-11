@@ -9,6 +9,12 @@
   raw: apt-get -y install python-simplejson
   when: "'Ubuntu' in os_distro.stdout"
   ignore_errors: yes
+
+- name: "Install Yum centos-release-scl for python2.7 install"
+  yum: name=centos-release-scl state=present
+  
+- name: "Install Python 2.7 using Yum"
+  yum: name=python27 state=installed
   
 - name: Install Python Development Headers and Libraries  on Redhat CentOS based Systtems
   raw: yum -y install python-devel.x86_64

@@ -44,8 +44,7 @@
      # delegate_to: 127.0.0.1
 
    - name: Download Versalex Bin Package from Nexus  Central
-     local_action: maven_artifact
-     args:
+     maven_artifact:
         group_id: "{{versalex.nexus_groupid}}"
         artifact_id: "{{versalex.dname}}"
         version: latest
