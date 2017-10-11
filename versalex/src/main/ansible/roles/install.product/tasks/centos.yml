@@ -39,8 +39,8 @@
   register: pyver
 
 - name: "Add Hosts in /etc/hosts File"
-  lineinfile: dest=/etc/hosts  line="{{hostvars[inventory_hostname].ansible_default_ipv4.address}} {{inventory_hostname}}" state=present insertafter=EOF
-  when: hostvars[inventory_hostname].ansible_default_ipv4.address is defined
+  lineinfile: dest=/etc/hosts  line="{{ansible_ssh_host}} {{inventory_hostname}}" state=present insertafter=EOF
+  when: ansible_ssh_host is defined
 #     with_items: "{{groups['all']}}"
 
 - name: Install RNG-tools required for Random Number Generation using YUM
