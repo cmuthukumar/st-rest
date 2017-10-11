@@ -20,14 +20,14 @@
   yum: name="@Development tools" state=present
    
 - name: "Install python-lxml packages(required for maven_artifact) on CentOS or Redhat machines"
-  yum: name=python-lxml state=installed
+  yum: name=python26-lxml.x86_64 state=installed
   retries: 3
   delay: 5  
   until: install_lxml|success
   register: install_lxml
 
 - name: Checking Python 2.7 available or not in Linux Systems
-  raw: python --version
+  shell: python --version
   register: py_version
   
 - debug: msg="Pre Tasks Completed::{{py_version}}"  
