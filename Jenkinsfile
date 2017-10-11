@@ -4,10 +4,12 @@ import hudson.slaves.*
 import hudson.plugins.sshslaves.*
 import hudson.model.Node
 
-node('SysTest'){
+node('SysTest') {
 
 //Define env variables
 workdir = '${env.WORKSPACE}/versalex/src/main/ansible/'
+
+def params = ['servers','tpnodes']
 
 def mvnHome = tool 'Mvn3.3.9'
 env.WORKSPACE = pwd()
@@ -30,15 +32,18 @@ sh 'java -version'
        // checkout([$class: 'GitSCM', branches: [[name: 'S-11540-merge-versalex-ansible-code']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '683540f0-61a9-48c1-acef-dc5520fb6466', url: 'https://github.com/CleoDev/st.git']]])
         sh 'printenv'
             }
-def systestvexImage=docker.build('st-versalex:1.0','.')            
+def systestvexImage=docker.build('st-versalex:1.0','.')
     systestvexImage.inside('-u root')
     {    
     try{
     stage('Create Nodes')
-        {
-        sh "mvn install -Pcreate-nodes -f '${env.WORKSPACE}/versalex/pom.xml'  -Dplaybook.path='${env.WORKSPACE}/versalex/src/main/ansible/setup_topology.yml' -Dmachine.type='servers' "     
-        sh "mvn install -Psetup-vars -f '${env.WORKSPACE}/versalex/pom.xml'  -Dplaybook.path='${env.WORKSPACE}/versalex/src/main/ansible/setup_vars.yml' -Dmachine.type='servers' "
+            {
+                createNodes()
             }
+    stage('Install Product')
+            {
+                installProd()
+            }            
         }
         finally{
         
@@ -46,5 +51,20 @@ def systestvexImage=docker.build('st-versalex:1.0','.')
         }
     }
     
-
+    def createNodes()
+    {
+    println "Inside Create Node"
+        for(int i=0; i<params.size(); i++ )
+        {
+        println "Creating Nodes for ${params[i]}"
+           sh "cd ${workdir} && ansible-playbook setup_topology.yml -e machine_type=params[i]"
+           sh "cd ${workdir} && ansible-playbook setup_vars.yml -e machine_type=params[i]"
+        }
+    }
+    
+    def installProd()
+    {
+    println "Inside Install Product"
+       
+    }    
 }
