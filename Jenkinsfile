@@ -8,7 +8,7 @@ def params = ['servers','tpnodes']
 node('SysTest') {
 
 //Define env variables
-workdir = '${env.WORKSPACE}/versalex/src/main/ansible/'
+workdir = "${env.WORKSPACE}/versalex/src/main/ansible/"
 
 def mvnHome = tool 'Mvn3.3.9'
 env.WORKSPACE = pwd()
