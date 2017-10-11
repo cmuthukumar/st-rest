@@ -4,9 +4,9 @@ import hudson.slaves.*
 import hudson.plugins.sshslaves.*
 import hudson.model.Node
 
-def params = ['servers','tpnodes']
+params = ['servers','tpnodes']
 //Define env variables
-def workdir = "${env.WORKSPACE}/versalex/src/main/ansible/"
+workdir = "${env.WORKSPACE}/versalex/src/main/ansible/"
 
 node('SysTest') {
 
