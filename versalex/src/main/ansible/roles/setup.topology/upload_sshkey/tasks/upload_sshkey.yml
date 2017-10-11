@@ -3,6 +3,10 @@
       # debug: msg="test check type:{{mac_type}}-{{swtype}} ramsize:{{outer_item.ram_size}} image name:{{outer_item.image_name}} Sequence Item {{item}}"
       # with_sequence: start=1 end="{{outer_item.qty}}" stride=1
 
+    - name: Install Pip Dopy
+      pip: >
+       name=dopy
+      
     - name: Ensure Public/Private Key Pair Generated in Local System and Copied to SSH dir
       user: >
        name=root
