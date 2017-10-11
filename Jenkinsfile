@@ -60,8 +60,8 @@ def systestvexImage=docker.build('st-versalex:1.0','.')
         for(int i=0; i<params.size(); i++ )
         {
         println "Creating Nodes for ${params[i]}"
-           sh "cd ${workdir} && ansible-playbook setup_topology.yml -e machine_type=params[i]"
-           sh "cd ${workdir} && ansible-playbook setup_vars.yml -e machine_type=params[i]"
+           sh "cd ${workdir} && ansible-playbook setup_topology.yml -e machine_type='params[i]'"
+           sh "cd ${workdir} && ansible-playbook setup_vars.yml -e machine_type='params[i]'"
         }
     }
     
