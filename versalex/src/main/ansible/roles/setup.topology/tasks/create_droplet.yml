@@ -26,6 +26,13 @@
   
     - name: Print known hosts
       debug: msg="Knwn Hosts {{kn_hst}}"
+
+
+    - name: Set authorized key took from file
+      authorized_key:
+        user: root
+        state: present
+        key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
       
     - name: "Add IP's of Machines Created in Digital Ocean to Groups"
       add_host: 
