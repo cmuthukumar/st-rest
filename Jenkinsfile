@@ -37,7 +37,7 @@ def systestvexImage=docker.build('st-versalex:1.0','.')
     try{
     stage('Create Nodes')
             {
-                createNodes()
+                createNodes(params)
             }
     stage('Install Product')
             {
@@ -53,7 +53,7 @@ def systestvexImage=docker.build('st-versalex:1.0','.')
 }
 
   
-    def createNodes()
+    def createNodes(params)
     {
     println "Inside Create Node"
         for(int i=0; i<params.size(); i++ )
