@@ -5,12 +5,13 @@ import hudson.plugins.sshslaves.*
 import hudson.model.Node
 
 
+#Define Global Vars
 
 params = ['servers','tpnodes']
-//Define env variables
 workdir = "versalex/src/main/ansible/"
 
 node('SysTest') {
+
 env.WORKSPACE = pwd()
 def mvnHome = tool 'Mvn3.3.9'
 sh "cd ${env.WORKSPACE}"
@@ -61,7 +62,7 @@ def systestvexImage=docker.build('st-versalex:1.0','.')
         {
         println "Creating Nodes for ${params[i]}"
            sh "cd ${workdir} && ansible-playbook setup_topology.yml -c local -e machine_type=${params[i]}"
-           sh "cd ${workdir} && ansible-playbook setup_vars.yml -c local -e machine_type=${params[i]}"
+           sh "cd ${workdir} && ansible-playbook setup_vars.yml -c local -i inventory/ -e machine_type=${params[i]}"
         }
     }
     
@@ -71,6 +72,6 @@ def systestvexImage=docker.build('st-versalex:1.0','.')
        for(int i=0; i<params.size(); i++ )
         {
         println "Creating Nodes for ${params[i]}"
-           sh "cd ${workdir} && ansible-playbook install_product.yml -e machine_type=${params[i]}"
+           sh "cd ${workdir} && ansible-playbook install_product.yml -i inventory/ -e machine_type=${params[i]}"
         }
     }    
