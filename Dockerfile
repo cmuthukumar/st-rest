@@ -7,7 +7,7 @@ RUN \
 
 # Install EPEL repo and Python deps
 RUN yum -y install epel-release
-yum -y install PyYAML python-jinja2 python-httplib2 python-keyczar python-paramiko python-setuptools  python-pip
+RUN yum -y install PyYAML python-jinja2 python-httplib2 python-keyczar python-paramiko python-setuptools  python-pip
 RUN mkdir /etc/ansible/
 ARG ansible_ver=2.3.1.0
 
