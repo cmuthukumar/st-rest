@@ -2,10 +2,16 @@
 # tasks file for install.apps
 - name: Install Unzip package for running bin file in CentOS
   yum: name=unzip state=present
+
+- name: Install libxslt-devel package for running bin file in CentOS
+  yum: name=libxslt-devel state=present
+
+- name: Install python-devel package for running bin file in CentOS
+  yum: name=python-devel state=present
   
 - name: Install Development tools package
   yum: name="@Development tools" state=present
-     
+
 - name: "Install python-lxml packages(required for maven_artifact) on CentOS or Redhat machines"
   yum: name=python-lxml state=installed
   retries: 3
@@ -15,6 +21,9 @@
 
 - name: Checking Python 2.7 available or not in Linux Systems
   raw: python --version
+  register: py_version
+  
+- debug: msg="Pre Tasks Completed::{{py_version}}"  
 # - name: "Install python2.7 in OS if python 3 is default"
   # include: "install_centos_py27.yml"
   # when: ansible_distribution_version | int >= 9
