@@ -15,6 +15,7 @@ ARG ansible_ver=2.3.1.0
 RUN yum -y install ansible-$ansible_ver
 RUN echo -e '[local]\nlocalhost' > /etc/ansible/hosts
 RUN sed -i 's/#hash_behaviour = replace/hash_behaviour = merge/g' /etc/ansible/ansible.cfg
+RUN sed -i 's/#host_key_checking = False/host_key_checking = False/g' /etc/ansible/ansible.cfg
 
 #Install required dependencies
 RUN yum install -y \
