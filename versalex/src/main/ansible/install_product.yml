@@ -1,7 +1,7 @@
 ---
 - hosts: "{{machine_type}}"
   strategy: free
-  #gather_facts: no
+  gather_facts: no
   pre_tasks:
     - block:  
        - name: Checking Python 2.7 available or not in Linux Systems
