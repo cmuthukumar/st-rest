@@ -27,8 +27,8 @@
         # - kernel-devel
         # - python-pip
         
-- name: Install python-devel package for running bin file in CentOS
-  yum: name=python-devel state=present
+# - name: Install python-devel package for running bin file in CentOS
+  # yum: name=python-devel state=present
   
 - name: Install Development tools package
   yum: name="@Development tools" state=present

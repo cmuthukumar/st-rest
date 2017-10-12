@@ -7,7 +7,7 @@ import hudson.model.Node
 
 //Define Global Vars
 
-params = ['servers']
+params = ['servers','tpnodes']
 workdir = "versalex/src/main/ansible/"
 
 node('SysTest') {
@@ -45,8 +45,22 @@ sh 'java -version'
             }
     stage('Install Product')
             {
-                installProd()
-            }            
+                installProduct()
+            }
+
+    stage('Install Integrations')
+            {
+                installIntegrations()
+            } 
+            
+            
+    stage('Configure Product')
+            {
+                configProduct()
+            } 
+
+            
+            
         }
         finally{
         
@@ -68,7 +82,7 @@ sh 'java -version'
         }
     }
     
-    def installProd()
+    def installProduct()
     {
     println "Inside Install Product"
        for(int i=0; i<params.size(); i++ )
@@ -76,4 +90,28 @@ sh 'java -version'
         println "Installing Product for ${params[i]}"
            sh "cd ${workdir} && ansible-playbook install_product.yml -i inventory/ -e machine_type=${params[i]}"
         }
-    }    
+    }
+
+    def installIntegrations()
+    {
+    println "Inside Install Product"
+       for(int i=0; i<params.size(); i++ )
+        {
+        println "Installing Product for ${params[i]}"
+           sh "cd ${workdir} && ansible-playbook install_integrations.yml -i inventory/ -e machine_type=${params[i]}"
+        }
+    }
+    
+    def configProduct()
+    {
+    println "Inside Install Product"
+       for(int i=0; i<params.size(); i++ )
+        {
+        println "Installing Product for ${params[i]}"
+           sh "cd ${workdir} && ansible-playbook configure_product.yml -i inventory/ -e machine_type=${params[i]}"
+        }
+    }  
+
+
+    
+    
