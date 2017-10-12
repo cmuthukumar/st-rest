@@ -3,7 +3,7 @@
   yum: name=centos-release-scl state=present
   
 - name: "Install Python 2.7 using Yum"
-  yum: name=python27 state=installed
+  yum: name=python27 state=present
 
 - name: Check Version of python2.7
   command: "python --version"
