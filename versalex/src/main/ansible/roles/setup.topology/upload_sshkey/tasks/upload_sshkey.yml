@@ -2,11 +2,11 @@
     # - name: Print Create Droplet Vars with Stride
       # debug: msg="test check type:{{mac_type}}-{{swtype}} ramsize:{{outer_item.ram_size}} image name:{{outer_item.image_name}} Sequence Item {{item}}"
       # with_sequence: start=1 end="{{outer_item.qty}}" stride=1
-    - name: Prints python Ver
-      shell: python --version
-      register: pyVer
+    # - name: Prints python Ver
+      # shell: python --version
+      # register: pyVer
       
-    - debug: msg="PYTHON Ver{{pyVer}}"
+    # - debug: msg="PYTHON Ver{{pyVer}}"
     
     - name: Install Pip Dopy
       pip: >
@@ -47,12 +47,12 @@
         state: present
         key: "{{ lookup('file','~/.ssh/id_rsa.pub') }}"      
    
-    - name: Print SSH File
-      shell: cat ~/.ssh/id_rsa.pub 
-      register: kn_hst
+    # - name: Print SSH File
+      # shell: cat ~/.ssh/id_rsa.pub 
+      # register: kn_hst
   
-    - name: Print known hosts
-      debug: msg="Knwn Hosts {{kn_hst}}"
+    # - name: Print known hosts
+      # debug: msg="Knwn Hosts {{kn_hst}}"
       
     # - service:
         # name: sshd

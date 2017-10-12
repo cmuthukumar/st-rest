@@ -2,23 +2,23 @@
 - hosts: "{{machine_type}}"
   strategy: free
   # gather_facts: no
-  pre_tasks:
-    - block:  
-       - name: Checking Python 2.7 available or not in Linux Systems
-         raw: python --version
-         register: py_version
-       - debug: msg="Pre Tasks Completed::{{py_version}}"
-       - name: Install Python Headers and Libs required for ansible core modules
-         include: "{{playbook_dir}}/roles/install.product/tasks/install_pythonlibs.yml"
-       # - name: Call Install Product with Versalex Configs
-         # include_role:
-            # name: "install.product"
-         # with_dict: "{{install_apps}}"
-      rescue:
-       - debug: msg="Failed to check/install python 2.7 version..."
-      always:      
-       - name: Gather Facts for Remote Hosts now
-         setup:
+  # pre_tasks:
+    # - block:  
+       # - name: Checking Python 2.7 available or not in Linux Systems
+         # raw: python --version
+         # register: py_version
+       # - debug: msg="Pre Tasks Completed::{{py_version}}"
+       # - name: Install Python Headers and Libs required for ansible core modules
+         # include: "{{playbook_dir}}/roles/install.product/tasks/install_pythonlibs.yml"
+       # # - name: Call Install Product with Versalex Configs
+         # # include_role:
+            # # name: "install.product"
+         # # with_dict: "{{install_apps}}"
+      # rescue:
+       # - debug: msg="Failed to check/install python 2.7 version..."
+      # always:      
+       # - name: Gather Facts for Remote Hosts now
+         # setup:
          
 - hosts: "{{machine_type}}"
   strategy: free        

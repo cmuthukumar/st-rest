@@ -14,18 +14,18 @@
 - name: Install Unzip package for running bin file in CentOS
   yum: name=unzip state=present
           
-- name: Install libxslt-devel package for running bin file in CentOS
-  yum: name="{{item}}" state=present
-  with_items:
-        - libxml2 
-        - libxml2-devel
-        - libxslt
-        - libxslt-devel
-        - python-devel
-        - gcc
-        - gcc-c++
-        - kernel-devel
-        - python-pip
+# - name: Install libxslt-devel package for running bin file in CentOS
+  # yum: name="{{item}}" state=present
+  # with_items:
+        # - libxml2 
+        # - libxml2-devel
+        # - libxslt
+        # - libxslt-devel
+        # - python-devel
+        # - gcc
+        # - gcc-c++
+        # - kernel-devel
+        # - python-pip
         
 - name: Install python-devel package for running bin file in CentOS
   yum: name=python-devel state=present
@@ -33,7 +33,6 @@
 - name: Install Development tools package
   yum: name="@Development tools" state=present
    
-
 - name: Checking Python 2.7 available or not in Linux Systems
   shell: python --version
   register: py_version
@@ -64,5 +63,5 @@
   until: rngd_status|success  
   
 - name: Update /etc/hosts from inventory
-  lineinfile: dest=/etc/hosts regexp='.*{{item}}$' line="{{ansible_default_ipv4.address}} {{item}}" state=present
-  with_items: "{{groups.all}}"
+  lineinfile: dest=/etc/hosts regexp='.*{{inventory_hostname}}$' line="{{ansible_default_ipv4.address}} {{inventory_hostname}}" state=present
+  # with_items: "{{groups.all}}"
