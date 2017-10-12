@@ -33,12 +33,6 @@
 # - name: Install Development tools package
   # yum: name="@Development tools" state=present
    
-# - name: "Install python-lxml packages(required for maven_artifact) on CentOS or Redhat machines"
-  # yum: name=python-lxml state=present
-  # retries: 3
-  # delay: 5  
-  # until: install_lxml|success
-  # register: install_lxml
 
 - name: Checking Python 2.7 available or not in Linux Systems
   shell: python --version
@@ -53,10 +47,10 @@
 - name: Install Pip using YUM
   yum: name=python-pip state=present 
       
-- name: Install using pip
-  shell: pip install --upgrade lxml
-  register: pyver
-  
+- name: Install lxml using pip
+  pip: 
+    name: lxml
+
 - name: Install RNG-tools required for Random Number Generation using YUM
   yum: name=rng-tools state=present
   
