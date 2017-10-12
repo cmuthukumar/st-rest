@@ -48,12 +48,12 @@
   # include: "install_centos_py27.yml"
   # when: ansible_distribution_version | int >= 9
 
-# - name: Install Pip using YUM
-  # yum: name=python-pip state=present 
+- name: Install Pip using YUM
+  yum: name=python-pip state=present 
       
-# - name: Install using pip
-  # shell: pip install --upgrade lxml
-  # register: pyver
+- name: Install using pip
+  shell: pip install --upgrade lxml
+  register: pyver
 
 - name: Update /etc/hosts from inventory
   lineinfile: dest=/etc/hosts regexp='.*{{item}}$' line='{{hostvars[item].ansible_default_ipv4.address}} {{item}}' state=present
