@@ -5,12 +5,12 @@
 - name: "Install Python 2.7 using Yum"
   yum: name=python27 state=present
 
-- name: Check Version of python2.7
-  command: "/usr/bin/python2.7 --version"
-  register: python_check
+# - name: Check Version of python2.7
+  # command: "/usr/bin/python2.7 --version"
+  # register: python_check
   
-- name: Python Version
-  debug: msg="Python Version{{python_check}}"
+# - name: Python Version
+  # debug: msg="Python Version{{python_check}}"
   
 - name: Install openssl-devel present
   yum: name=openssl-devel state=present
