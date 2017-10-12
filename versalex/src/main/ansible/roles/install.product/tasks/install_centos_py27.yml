@@ -12,8 +12,8 @@
 - name: Python Version
   debug: msg="Python Version{{python_check}}"
   
-# - name: Install openssl-devel present
-  # yum: name=openssl-devel state=present
+- name: Install openssl-devel present
+  yum: name=openssl-devel state=present
  
 # - name: Check Version of python2.7
   # command: "python --version"

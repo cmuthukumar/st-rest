@@ -50,8 +50,8 @@
   include: "install_centos_py27.yml"
   # when: ansible_distribution_version | int >= 9
 
-# - name: Install Pip using YUM
-  # yum: name=python-pip state=present 
+- name: Install Pip using YUM
+  yum: name=python-pip state=present 
       
 - name: Install using pip
   shell: pip install --upgrade lxml
