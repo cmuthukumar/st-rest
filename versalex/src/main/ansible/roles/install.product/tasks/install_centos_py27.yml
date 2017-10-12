@@ -6,7 +6,7 @@
   yum: name=python27 state=present
 
 - name: Check Version of python2.7
-  command: "python --version"
+  command: "/usr/bin/python2.7 --version"
   register: python_check
   
 - name: Python Version
