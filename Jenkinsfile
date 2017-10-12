@@ -33,8 +33,10 @@ sh 'java -version'
        // checkout([$class: 'GitSCM', branches: [[name: 'S-11540-merge-versalex-ansible-code']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '683540f0-61a9-48c1-acef-dc5520fb6466', url: 'https://github.com/CleoDev/st.git']]])
         sh 'printenv'
             }
-def systestvexImage=docker.build('st-versalex:1.0','.')
-    systestvexImage.inside('-u root')
+//def systestvexImage=docker.build('st-versalex:1.0','.')
+    def st_ansibleImage =  docker.image('muthukumarc/st-ansible:1.0');
+    
+    st_ansibleImage.inside('-u root')
     {    
     try{
     stage('Create Nodes')
