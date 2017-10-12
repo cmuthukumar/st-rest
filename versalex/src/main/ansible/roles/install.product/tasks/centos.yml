@@ -25,6 +25,7 @@
         - gcc
         - gcc-c++
         - kernel-devel
+        - python-pip
         
 # - name: Install python-devel package for running bin file in CentOS
   # yum: name=python-devel state=present
@@ -51,13 +52,9 @@
 # - name: Install Pip using YUM
   # yum: name=python-pip state=present 
       
-# - name: Install using pip
-  # shell: pip install --upgrade lxml
-  # register: pyver
-
-- name: Update /etc/hosts from inventory
-  lineinfile: dest=/etc/hosts regexp='.*{{item}}$' line="{{ansible_default_ipv4.address}} {{item}}" state=present
-  with_items: "{{groups.all}}"
+- name: Install using pip
+  shell: pip install --upgrade lxml
+  register: pyver
   
 - name: Install RNG-tools required for Random Number Generation using YUM
   yum: name=rng-tools state=present
@@ -67,4 +64,8 @@
   register: rngd_status
   retries: 3
   delay: 10
-  until: rngd_status|success
+  until: rngd_status|success  
+  
+- name: Update /etc/hosts from inventory
+  lineinfile: dest=/etc/hosts regexp='.*{{item}}$' line="{{ansible_default_ipv4.address}} {{item}}" state=present
+  with_items: "{{groups.all}}"
