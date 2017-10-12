@@ -42,7 +42,11 @@
      # register: versalexres
      # run_once: false
      # delegate_to: 127.0.0.1
-
+   - name: Install lxml using pip Locally in Container
+     pip: 
+        name: lxml
+     delegate_to: 127.0.0.1
+    
    - name: Download Versalex Bin Package from Nexus  Central
      maven_artifact:
         group_id: "{{versalex.nexus_groupid}}"

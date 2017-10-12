@@ -50,7 +50,9 @@
 - name: Install lxml using pip
   pip: 
     name: lxml
-
+  environment:
+    PATH: "/usr/bin/python2.7:{{ ansible_env.PATH }}"
+    
 - name: Install RNG-tools required for Random Number Generation using YUM
   yum: name=rng-tools state=present
   
