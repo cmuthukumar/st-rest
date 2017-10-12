@@ -13,11 +13,11 @@
 # - name: Python Version
   # debug: msg="Python Version{{python_check}}"
   
-- name: Install Unzip package for running bin file in CentOS
-  yum: name=unzip state=present
+# - name: Install Unzip package for running bin file in CentOS
+  # yum: name=unzip state=present
   
-- name: Install Development tools package
-  yum: name="@Development tools" state=present
+# - name: Install Development tools package
+  # yum: name="@Development tools" state=present
      
 - name: "Install python-lxml packages(required for maven_artifact) on CentOS or Redhat machines"
   yum: name=python-lxml state=installed
@@ -31,15 +31,15 @@
   # when: hostvars[inventory_hostname].ansible_default_ipv4.address is defined
 #     with_items: "{{groups['all']}}"
 
-- name: Install RNG-tools required for Random Number Generation using YUM
-  yum: name=rng-tools state=present
+# - name: Install RNG-tools required for Random Number Generation using YUM
+  # yum: name=rng-tools state=present
   
-- name: Run RNGD Service
-  service: name=rngd state=restarted
-  register: rngd_status
-  retries: 3
-  delay: 10
-  until: rngd_status|success
+# - name: Run RNGD Service
+  # service: name=rngd state=restarted
+  # register: rngd_status
+  # retries: 3
+  # delay: 10
+  # until: rngd_status|success
 
 # - name: Install EPEL Linux CentOS 7
   # yum: name=epel-release

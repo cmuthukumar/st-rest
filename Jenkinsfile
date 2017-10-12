@@ -59,8 +59,6 @@ sh 'java -version'
                 configProduct()
             } 
 
-            
-            
         }
         finally{
         

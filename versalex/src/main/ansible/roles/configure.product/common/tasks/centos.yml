@@ -5,7 +5,7 @@
         # - rpcbind
         # - nfs
    - name: Install Libxml on CentOS or Redhat machines
-     yum: name="{{ item }}" state=installed
+     yum: name="{{ item }}" state=present
      with_items:
         - libxml2
         - libxml2-devel
@@ -16,10 +16,13 @@
      retries: 3
      delay: 5  
      until: install_lxml|success
-
-   - easy_install:
+     
+   - name: Install Pip using YUM
+     yum: name=python-pip state=present 
+  
+   - pip:
         name: lxml
-        state: latest
+        state: forceinstall
         
    - name: Install NFS on CentOS or Redhat machines
      yum: name="{{ item }}" state=installed
