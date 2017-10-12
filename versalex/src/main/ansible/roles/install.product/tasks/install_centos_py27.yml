@@ -14,7 +14,20 @@
   
 - name: Install openssl-devel present
   yum: name=openssl-devel state=present
- 
+
+- name: Install libxslt-devel package for running bin file in CentOS
+  yum: name="{{item}}" state=present
+  with_items:
+        - libxml2 
+        - libxml2-devel
+        - libxslt
+        - libxslt-devel
+        - python-devel
+        - gcc
+        - gcc-c++
+        - kernel-devel
+        - python-pip
+  
 # - name: Check Version of python2.7
   # command: "python --version"
   # register: python_check
