@@ -66,6 +66,6 @@
         # ansible_ssh_common_args: '-o UserKnownHostsFile=/dev/null'
       with_items: "{{droplet_details.results}}"
     
-    # - name: Wait for SSH to come up
-      # wait_for: host="{{item.droplet.ip_address}}" port=22 delay=5 timeout=320 state=started
-      # with_items: "{{droplet_details.results}}"
+    - name: Wait for SSH to come up
+      wait_for: host="{{item.droplet.ip_address}}" port=22 delay=5 timeout=320 state=started
+      with_items: "{{droplet_details.results}}"
