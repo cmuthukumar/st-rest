@@ -1,11 +1,11 @@
 ---
    - name: Download SysTest Jar from Nexus Repo
      maven_artifact: 
-            group_id: "{{versalex.nexus_systest_groupid}}"
-            artifact_id: "{{versalex.nexus_systest_artifactid}}"
+            group_id: "{{vexcli.nexus_systest_groupid}}"
+            artifact_id: "{{vexcli.nexus_systest_artifactid}}"
             version: latest
             extension: "jar"
-            repository_url: "{{versalex.nexus_systest_repourl}}"
+            repository_url: "{{vexcli.nexus_systest_repourl}}"
             dest: "{{playbook_dir}}/library/"
             state: present
      run_once: true
