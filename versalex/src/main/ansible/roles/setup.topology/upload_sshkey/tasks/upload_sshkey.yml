@@ -22,7 +22,12 @@
       retries: 3
       delay: 20
       until: deletestatus|success
-   
+
+    - name: Clean SSHKey files if Exists Locally
+      file:
+        state: absent
+        path: "/root/.ssh/"
+      
     - name: Ensure Public/Private Key Pair Generated in Local System and Copied to SSH dir
       user: >
        name=root

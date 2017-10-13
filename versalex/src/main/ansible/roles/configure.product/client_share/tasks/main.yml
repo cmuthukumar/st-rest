@@ -1,10 +1,12 @@
 ---
 # tasks file for configure.product
-- block:
+- block: 
     - name: Configure Client Side Shares
       include: "config_flow.yml"
       with_dict: "{{ versalex | default({}) }}"
       loop_control:
           loop_var: cli_share
+      when: "'versalex' in inventory_hostname"
+      
   rescue:
       - fail: msg="Configure Client Share failed"

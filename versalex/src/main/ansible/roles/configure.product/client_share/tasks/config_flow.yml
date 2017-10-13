@@ -4,8 +4,5 @@
     set_fact:
        vexcli: "{{cli_share.value}}"
 
-  - name: Print Client value
-    debug: msg="Client val {{vexcli}}"
-  
   - name: Configure Shares in Client Nodes
     include: configure_client_share.yml

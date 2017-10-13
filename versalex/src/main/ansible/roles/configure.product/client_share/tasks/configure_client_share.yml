@@ -31,7 +31,7 @@
    - name: Setup Shares in Client boxes
      mount:
        name: "{{vexcli.client_local_path}}"
-       src: "{{hostvars['servers-shares-1']['ansible_eth0']['ipv4']['address'] }}:{{item.value.server_share_path}}"
+       src: "{{hostvars[groups['shares'][0]]['ansible_eth0']['ipv4']['address']}}:{{item.value.server_share_path}}"
        state: mounted
        fstype: "nfs"     
      with_dict: "{{ shares }}"

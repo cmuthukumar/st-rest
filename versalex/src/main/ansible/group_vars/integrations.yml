@@ -1,7 +1,7 @@
 ---
 integrations:
   mysql:
-    hostname: "tpnodes-integrations-1"
+    hostname: "servers-integrations-1"
     username: "root"
     maven_destfilename: "mysqltest24.jar"
     password: "testdocker"

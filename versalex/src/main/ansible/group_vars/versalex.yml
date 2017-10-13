@@ -1,7 +1,7 @@
 ---
 versalex:
   harmony:
-    hostname: "tpnodes-versalex-1"
+    hostname: "servers-versalex-1"
     license_CompanyName: "Cleo"
     license_nexus_artifactid: "LexiComLicenser_2"
     karaf_heapmem_max: "2G"
@@ -42,3 +42,22 @@ versalex:
     docker: "false"
     karaf_heapmem_min: "256M"
     download_version_url: "http://contd.cleo.com/nexus/service/local/artifact/maven/content"
+dataset:
+  as2:
+    action_range: 1-1
+    create_certs: True
+    mailbox_custom_props: {}
+    host_custom_props: {}
+    action_custom_props: {}
+    host_range: 1-20
+    mailbox_range: 1-1
+    
+  ftp:
+    action_range: 1-1
+    create_certs: True
+    mailbox_custom_props: {}
+    host_custom_props: {}
+    action_custom_props: {}
+    host_range: 1-20
+    mailbox_range: 1-1
+    
