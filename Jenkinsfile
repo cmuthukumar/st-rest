@@ -59,6 +59,16 @@ sh 'java -version'
                 configProduct()
             } 
 
+    stage('Setup TestProfiles')
+            {
+                setupTestProfiles()
+            } 
+
+    stage('Setup Sync')
+            {
+                setupSync()
+            }             
+            
         }
         finally{
         
@@ -82,7 +92,7 @@ sh 'java -version'
     
     def installProduct()
     {
-    println "Inside Install Product"
+    println "Install Product"
        for(int i=0; i<params.size(); i++ )
         {
         println "Installing Product for ${params[i]}"
@@ -92,7 +102,7 @@ sh 'java -version'
 
     def installIntegrations()
     {
-    println "Inside Install Product"
+    println "Install Integrations"
        for(int i=0; i<params.size(); i++ )
         {
         println "Installing Product for ${params[i]}"
@@ -102,7 +112,7 @@ sh 'java -version'
     
     def configProduct()
     {
-    println "Inside Install Product"
+    println "Configuring Product with DB, LDAP, PROXY Configs"
        for(int i=0; i<params.size(); i++ )
         {
         println "Installing Product for ${params[i]}"
@@ -110,6 +120,21 @@ sh 'java -version'
         }
     }  
 
+    def setupTestProfiles()
+    {
+    println "Setup Test Profiles for Server and TP Side"
+   
+        println "Installing Product for ${params[i]}"
+           sh "cd ${workdir} && ansible-playbook setup_testprofiles.yml -i inventory/ -e server_conf=${params[0]} -e tp_conf=${params[1]}"
+     
+    } 
 
-    
+    def setupSync()
+    {
+    println "Setup Sync for Server Side"
+   
+        println "Installing Product for ${params[i]}"
+           sh "cd ${workdir} && ansible-playbook setup_sync.yml -i inventory/${params[0]} "
+     
+    } 
     

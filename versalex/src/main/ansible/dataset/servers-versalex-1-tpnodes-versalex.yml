@@ -2,8 +2,8 @@ dataset:
     as2:
   
         - hname: tpnodes-versalex-1
-          ip: 198.199.79.160
-          hr: 1-7
+          ip: 192.81.213.162
+          hr: 1-11
           action_range: "1-1"
           create_certs: "True"
           mailbox_range: "1-1"
@@ -17,23 +17,8 @@ dataset:
           
   
         - hname: tpnodes-versalex-2
-          ip: 165.227.205.117
-          hr: 7-13
-          action_range: "1-1"
-          create_certs: "True"
-          mailbox_range: "1-1"
-          name: "as2"
-          mailbox_custom_props: "{}"
-          host_range: "1-20"
-          action_custom_props: "{}"
-          host_custom_props: "{}"
-          total: "20"
-          schedule_actions: "True"
-          
-  
-        - hname: tpnodes-versalex-3
-          ip: 159.203.187.50
-          hr: 13-19
+          ip: 162.243.173.16
+          hr: 11-21
           action_range: "1-1"
           create_certs: "True"
           mailbox_range: "1-1"
@@ -48,8 +33,8 @@ dataset:
     ftp:
   
         - hname: tpnodes-versalex-1
-          ip: 198.199.79.160
-          hr: 1-7
+          ip: 192.81.213.162
+          hr: 1-11
           action_range: "1-1"
           create_certs: "True"
           mailbox_range: "1-1"
@@ -63,23 +48,8 @@ dataset:
           
   
         - hname: tpnodes-versalex-2
-          ip: 165.227.205.117
-          hr: 7-13
-          action_range: "1-1"
-          create_certs: "True"
-          mailbox_range: "1-1"
-          name: "ftp"
-          mailbox_custom_props: "{}"
-          host_range: "1-20"
-          action_custom_props: "{}"
-          host_custom_props: "{}"
-          total: "20"
-          schedule_actions: "True"
-          
-  
-        - hname: tpnodes-versalex-3
-          ip: 159.203.187.50
-          hr: 13-19
+          ip: 162.243.173.16
+          hr: 11-21
           action_range: "1-1"
           create_certs: "True"
           mailbox_range: "1-1"
