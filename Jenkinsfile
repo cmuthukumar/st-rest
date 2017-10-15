@@ -92,7 +92,7 @@ sh 'java -version'
     
     def installProduct()
     {
-    println "Install Product"
+    println "Install Product on both "
        for(int i=0; i<params.size(); i++ )
         {
         println "Installing Product for ${params[i]}"
@@ -124,7 +124,6 @@ sh 'java -version'
     {
     println "Setup Test Profiles for Server and TP Side"
    
-        println "Installing Product for ${params[i]}"
            sh "cd ${workdir} && ansible-playbook setup_testprofiles.yml -i inventory/ -e server_conf=${params[0]} -e tp_conf=${params[1]}"
      
     } 
@@ -132,8 +131,7 @@ sh 'java -version'
     def setupSync()
     {
     println "Setup Sync for Server Side"
-   
-        println "Installing Product for ${params[i]}"
+
            sh "cd ${workdir} && ansible-playbook setup_sync.yml -i inventory/${params[0]} "
      
     } 
