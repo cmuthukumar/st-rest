@@ -2,7 +2,7 @@
 - hosts: localhost
   connection: local
   vars_files:      
-     - "res/{{machine_type}}.yml"
+     - "{{machine_type}}.yml"
      # - "vars/defaults.yml"
   roles:    
      - { role: "setup.group.vars" }
