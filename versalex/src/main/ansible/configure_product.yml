@@ -14,7 +14,7 @@
           
 - hosts: versalex
   roles:
-    - { role: configure.product/client_share}
+    - { role: configure.product/client_share, when: shares is defined}
 
 - hosts: "{{machine_type}}"
   roles:

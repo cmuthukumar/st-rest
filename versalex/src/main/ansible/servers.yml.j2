@@ -1,0 +1,53 @@
+---
+hardware:
+   versalex:           
+      - name: {{srv_prod_name | default('', true) }}
+        ram_size: 1gb
+        region: nyc1
+        image_name: "centos-6-x64"
+        qty: {{srv_qty | default('', true)}}
+{% if (srv_integ_qty ==' ' and srv_integ_name == ' ')  %}
+   integrations:           
+      - name: {{srv_integ_name | default('', true) }}
+        ram_size: 1gb
+        region: nyc1
+        image_name: "centos-6-x64"
+        qty: {{srv_integ_qty | default('', true) }}
+{% endif %}        
+   proxy:           
+      - name: {{srv_proxy_name | default('', true) }}
+        ram_size: 1gb
+        region: nyc1
+        image_name: "centos-6-x64"
+        qty: {{srv_proxy_qty | default('', true) }}
+   shares:           
+      - name: share
+        ram_size: 1gb
+        region: nyc1
+        image_name: "centos-6-x64"
+        qty: 1          
+software:
+   versalex:
+      - name: {{srv_prod_name | default('', true) }}
+        version: {{srv_version | default('', true)}}
+        install_location: "/root/Harmony/"
+        vex_jmx_port: 3022
+   integrations:
+      - name: {{srv_integ_name | default('', true) }}
+        version: "mysql:latest"
+   proxy:
+      - name: vlproxy
+        version: 5.4.1-SNAPSHOT
+        install_location: "/root/VLProxy/"
+        vex_jmx_port: 3022
+   shares:           
+      - name: share
+        server_share_path: "/root/share/"   
+dataset:
+   versalex:
+      - name: as2
+        total: 20
+        schedule_actions: true  
+      - name: ftp
+        total: 20
+        schedule_actions: true         
