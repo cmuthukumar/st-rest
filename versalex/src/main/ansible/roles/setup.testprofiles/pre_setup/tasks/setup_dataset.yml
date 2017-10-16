@@ -5,15 +5,19 @@
      set_fact:        
        vex_count: "{{ groups[grp_name] | length | int}}"
      delegate_to: 127.0.0.1
-
-   - name: Install RSYNC packages on Local Host machine
-     yum: name=rsync state=present
-     delegate_to: 127.0.0.1
      
    - name: Install RSYNC packages
      yum: name=rsync state=present
      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
+   - name: Install RSYNC packages on Local Host machine
+     yum: name=rsync state=present     
+     register: rngd_status
+     retries: 3
+     delay: 10
+     until: rngd_status|success
+     delegate_to: 127.0.0.1     
+     
    - name: Creates Map Directory
      file:
        path: "{{playbook_dir}}/dataset/"

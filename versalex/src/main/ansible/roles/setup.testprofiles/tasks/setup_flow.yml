@@ -13,8 +13,10 @@
      with_dict: "{{ dataset | default({}) }}"
      # when: "'servers-versalex' in inventory_hostname"
      loop_control:
-        loop_var: conf_dataset
-     run_once: true   
+        loop_var: conf_dataset  
+
+   - name: Print Debug Msgs Setup Flow
+     debug: msg="Done with Config"   
    # - name: Configure TP Side Nodes
      # include: configure_tp.yml
      # static: no

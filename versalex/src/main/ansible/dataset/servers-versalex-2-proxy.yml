@@ -2,7 +2,7 @@ dataset:
     as2:
   
         - hname: servers-proxy-1
-          ip: 67.205.161.160
+          ip: 192.241.157.96
           hr: 1-21
           action_range: "1-1"
           create_certs: "True"
@@ -18,7 +18,7 @@ dataset:
     ftp:
   
         - hname: servers-proxy-1
-          ip: 67.205.161.160
+          ip: 192.241.157.96
           hr: 1-21
           action_range: "1-1"
           create_certs: "True"

@@ -12,7 +12,7 @@
    - name: Setup Testprofiles in Server Side Nodes
      include: setup_flow.yml inc_file="configure_server"
      with_dict: "{{ versalex | default({}) }}"
-     when: "'servers-versalex' in inventory_hostname"
+     when: "'servers-versalex' in inventory_hostname and  play_hosts.index(inventory_hostname) == 0"
      loop_control:
         loop_var: group_item     
 
@@ -30,5 +30,9 @@
      when: "'tpnodes-versalex' in inventory_hostname"
      loop_control:
         loop_var: group_item
+        
+   - name: Printing for Debug
+     debug: msg="Done with MEthod Call"
+  
 - rescue:
    - fail: msg="Setup Test Profile Module Failed"     
