@@ -6,26 +6,30 @@ hardware:
         region: nyc1
         image_name: "centos-6-x64"
         qty: {{srv_qty | default('', true)}}
-{% if (srv_integ_qty ==' ' and srv_integ_name == ' ')  %}
+{% if (srv_integ_qty ==' ' or srv_integ_name == ' ')  %}
    integrations:           
       - name: {{srv_integ_name | default('', true) }}
         ram_size: 1gb
         region: nyc1
         image_name: "centos-6-x64"
         qty: {{srv_integ_qty | default('', true) }}
-{% endif %}        
+{% endif %}
+{% if (srv_proxy_name ==' ' or srv_proxy_qty == ' ')  %}     
    proxy:           
       - name: {{srv_proxy_name | default('', true) }}
         ram_size: 1gb
         region: nyc1
         image_name: "centos-6-x64"
         qty: {{srv_proxy_qty | default('', true) }}
+{% endif %}
+{% if (srv_share_name ==' ' or srv_proxy_qty == ' ')  %} 
    shares:           
       - name: share
         ram_size: 1gb
         region: nyc1
         image_name: "centos-6-x64"
-        qty: 1          
+        qty: 1
+{% endif %}        
 software:
    versalex:
       - name: {{srv_prod_name | default('', true) }}

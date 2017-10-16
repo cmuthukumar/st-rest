@@ -25,7 +25,7 @@ hardware:
         ram_size: 1gb
         region: nyc1
         image_name: "centos-6-x64"
-        qty: 1          
+        qty: 1        
 software:
    versalex:
       - name: harmony

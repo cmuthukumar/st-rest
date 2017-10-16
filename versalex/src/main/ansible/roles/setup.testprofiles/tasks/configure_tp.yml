@@ -6,9 +6,12 @@
  - name: Set Dataset Key 
    set_fact:
         dset_key: "{{conf_dataset.key}}"
-
+        
  - name: Copy SetupOptions Jar File to remote location
-   copy: src="/root/workspace/EFSS/non-shipped/test/automation/systemtesting/setup_versalex/target/systest_jars-0.1-SNAPSHOT.jar" dest="{{versalex.install_location}}/SetupTestProfile.jar"
+   copy: src="{{playbook_dir}}/library/" dest="{{versalex.install_location}}lib/"
+         
+ # - name: Copy SetupOptions Jar File to remote location
+   # copy: src="/root/workspace/EFSS/non-shipped/test/automation/systemtesting/setup_versalex/target/systest_jars-0.1-SNAPSHOT.jar" dest="{{versalex.install_location}}/SetupTestProfile.jar"
 
  - name: Create Import Location Directory, if not Exists
    file: path="{{versalex.install_location}}systestcerts" state=directory
