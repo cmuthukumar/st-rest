@@ -5,6 +5,10 @@
      set_fact:        
        vex_count: "{{ groups[grp_name] | length | int}}"
      delegate_to: 127.0.0.1
+
+   - name: Install RSYNC packages on Local Host machine
+     yum: name=rsync state=present
+     delegate_to: 127.0.0.1
      
    - name: Install RSYNC packages
      yum: name=rsync state=present
