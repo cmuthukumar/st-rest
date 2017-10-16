@@ -47,7 +47,7 @@
         name: lxml
      delegate_to: 127.0.0.1
     
-   - name: Download Versalex Bin Package from Nexus  Central
+   - name: Download Versalex Bin Package from Nexus Central with Run Once enabled
      maven_artifact:
         group_id: "{{versalex.nexus_groupid}}"
         artifact_id: "{{versalex.dname}}"
