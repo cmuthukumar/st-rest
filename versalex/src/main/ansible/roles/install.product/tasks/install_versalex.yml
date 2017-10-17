@@ -10,27 +10,15 @@
      # file: path="{{versalex.install_location}}"  state=absent force=yes
    - name: Copy Installer to Remote Install Location
      copy: src="{{versalex.download_location}}" dest="{{versalex.install_location}}" mode=0777
-     
+   
    - name: Install VersalEx Installer in Silent Mode   
      shell: "./{{versalex.dname}}-latest.{{versalex.nexus_packaging}} -DUSER_INSTALL_DIR={{versalex.install_location}} -i  silent"
      args:
        chdir: "{{versalex.install_location}}"
      register: installres
-     
    # - name: Installation Results
      # debug: msg="Install Results-{{installres}}"
-     
-   - name: Start VersalEx Process After Install
-     shell: "./{{versalex.dname}}d start"
-     args:
-      chdir: "{{versalex.install_location}}"     
-     when: installres|changed
-     register: vex_start_status
-     
-   - name: Wait for Versalex Port to Come up
-     wait_for: host="{{ansible_ssh_host}}" port="{{versalex.port}}" delay=10 timeout=320 state=started
-     when: vex_start_status|changed and versalex.dname != 'VLProxy'
-     
+
    - name: Capture SerialNumber and Write Node File  
      shell: "./{{versalex.dname}}c -s license |grep 'Serial Number' | awk -F '=' '{print $2}' "
      args:
@@ -53,7 +41,19 @@
         - {  line: "{{serifile.stdout}}", insertafter: EOF}
      # when: versalex.name != 'VLProxy'   
      delegate_to: 127.0.0.1     
-
+     
+   # - name: Start VersalEx Process After Install
+     # shell: "./{{versalex.dname}}d start"
+     # args:
+      # chdir: "{{versalex.install_location}}"     
+     # when: installres|changed
+     # register: vex_start_status
+     
+   # - name: Wait for Versalex Port to Come up
+     # wait_for: host="{{ansible_ssh_host}}" port="{{versalex.port}}" delay=10 timeout=320 state=started
+     # when: vex_start_status|changed and versalex.dname != 'VLProxy'
+         
+     
    # - name: Remove VLProxy File if exists
      # file:
       # path: "{{playbook_dir}}/results/vlproxy.txt"

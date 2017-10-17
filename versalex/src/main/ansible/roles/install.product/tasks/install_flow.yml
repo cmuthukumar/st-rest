@@ -23,7 +23,8 @@
      
    - include: "download_versalex.yml"
      when: versalex.name is defined
-     delegate_to: 127.0.0.1
+     run_once: yes
+     delegate_to: 127.0.0.1      
      # run_once: true
  
    - name: Generate License Keys in Each Node
@@ -37,6 +38,21 @@
      delay: 5  
      until: install_status|success
      when: versalex.name is defined
+
+   - name: "Setup VLNavigator"    
+     include: "users.yml"
+     register: setup_vlnavigator
+     retries: 3
+     delay: 5  
+     until: setup_vlnavigator|success
+     when: versalex.name |lower != 'vlproxy'
+
+   - name: "Start Versalex Processes"    
+     include: "start_versalex.yml"
+     register: start_vex
+     retries: 3
+     delay: 5  
+     until: start_vex|success
      
    - name: Print Last Include Task Results
      debug: msg="Install_status results {{install_status}}"

@@ -5,9 +5,6 @@
      set_fact:
         versalex: "{{group_item.value}}"
 
-   # - name: Copy SetupOptions Jar File to remote location
-     # copy: src="/root/workspace/EFSS/non-shipped/test/automation/systemtesting/setup_versalex/target/systest_jars-0.1-SNAPSHOT.jar" dest="{{versalex.install_location}}/SetupTestProfile.jar"
-          
    - name: Configure {{inc_file}} Side Nodes
      include: "{{inc_file}}.yml"
      with_dict: "{{ dataset | default({}) }}"

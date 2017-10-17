@@ -11,7 +11,8 @@ defaults:
         karaf_heapmem_max: 2G
         port: 5080
         karaf_jmx_port: 2099
-        custom_macro: "%datashare%=/root/share/"
+        macro_name: "%datashare%"
+        custom_macro: "%datashare%=/root/share"
         client_local_path: "/root/share/"
         docker: "false"
         nexus_maven_repourl: "http://10.80.80.156/nexus/service/local/repositories/InstallerSnapshots/content/"

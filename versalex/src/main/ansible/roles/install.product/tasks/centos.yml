@@ -33,11 +33,11 @@
 - name: Install Development tools package
   yum: name="@Development tools" state=present
    
-- name: Checking Python 2.7 available or not in Linux Systems
-  shell: python --version
-  register: py_version
+# - name: Checking Python 2.7 available or not in Linux Systems
+  # shell: python --version
+  # register: py_version
   
-- debug: msg="Pre Tasks Completed::{{py_version}}"  
+# - debug: msg="Pre Tasks Completed::{{py_version}}"  
 
 # - name: "Install python2.7 With Deps"
   # include: "install_centos_py27.yml"

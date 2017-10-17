@@ -17,6 +17,12 @@
      delay: 10
      until: rngd_status|success
      delegate_to: 127.0.0.1     
+
+   # - name: Deletes Files in Dataset directory
+     # file: 
+        # path: "{{playbook_dir}}/dataset/"
+        # state: absent    
+     # delegate_to: 127.0.0.1
      
    - name: Creates Map Directory
      file:
@@ -24,7 +30,7 @@
        state: directory
        mode: 0777
      delegate_to: 127.0.0.1
-     
+   
    - name: TestProfile map for ServerSide
      template: src=setup_tp_testprofile.j2 dest="{{playbook_dir}}/dataset/{{inventory_hostname}}-{{grp_name}}.yml"
      delegate_to: 127.0.0.1

@@ -57,6 +57,5 @@
         repository_url: "{{versalex.nexus_maven_repourl}}"
         dest: "{{versalex.download_location}}"
         state: present
-     delegate_to: 127.0.0.1
-     run_once: true     
+     delegate_to: 127.0.0.1         
      
