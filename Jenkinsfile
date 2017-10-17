@@ -36,7 +36,7 @@ sh 'java -version'
 //def systestvexImage=docker.build('st-versalex:1.0','.')
     def st_ansibleImage =  docker.image('muthukumarc/st-ansible:1.0');
     
-    st_ansibleImage.inside('-u root')
+    st_ansibleImage.inside('-u root','-v /root/.ssh/:/root/.ssh/')
     {    
     try{
     stage('Create Nodes')
