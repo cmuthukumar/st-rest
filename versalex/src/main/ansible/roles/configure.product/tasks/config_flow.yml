@@ -19,11 +19,11 @@
         
       - name: Configure VersalEx Product
         include: configure_versalex.yml
-        when: "'versalex' in subtype"
+        # when: "'versalex' in subtype"
  
       - name: Restart VersalEx Process 
         include: restart_versalex.yml
-        when: "'versalex' in subtype"
+        # when: "'versalex' in subtype"
    rescue:
       - fail: msg="Configure Applications failed"
    

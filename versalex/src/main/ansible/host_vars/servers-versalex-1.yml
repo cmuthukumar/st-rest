@@ -6,15 +6,4 @@ versalex:
         name: "harmony"
         vex_jmx_port: "3022"
   
-dataset:
-    as2:
-        total: 20
-        name: as2
-        schedule_actions: True
-    
-    ftp:
-        total: 20
-        name: ftp
-        schedule_actions: True
-    
 serialno:  KY1435-FR8237

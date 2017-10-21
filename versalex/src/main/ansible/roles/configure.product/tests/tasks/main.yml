@@ -1,0 +1,19 @@
+---
+# tasks file for configure.product
+- block:
+    - name: Checking Proxy Status..
+      wait_for:
+        host: "{{ansible_ssh_host}}"
+        port: "8080"
+        state: started
+      when: "'proxy' in inventory_hostname"
+      register: proxy_status      
+
+    - name: Include Configure Product Role with Versalex
+      include: "validate.yml"
+      with_dict: "{{ versalex | default({}) }}"        
+      when: "'versalex' in inventory_hostname"
+      loop_control:
+          loop_var: group_item
+  rescue:
+      - fail: msg="Configure Product - Tests failed"

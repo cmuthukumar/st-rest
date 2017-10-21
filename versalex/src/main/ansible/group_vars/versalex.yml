@@ -1,7 +1,7 @@
 ---
 versalex:
   harmony:
-    hostname: "tpnodes-versalex-1"
+    hostname: "servers-versalex-1"
     license_CompanyName: "Cleo"
     license_nexus_artifactid: "LexiComLicenser_2"
     karaf_heapmem_max: "2G"

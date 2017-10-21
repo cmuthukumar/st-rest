@@ -1,8 +1,4 @@
 ---
-shares:
-  share:
-    hostname: "servers-shares-1"
-    server_share_path: "/root/share/"
 proxy:
   vlproxy:
     hostname: "servers-proxy-1"
@@ -18,7 +14,7 @@ proxy:
     nexus_classifier: "linux64-jre18"
     nexus_maven_repourl: "http://10.80.80.156/nexus/service/local/repositories/InstallerSnapshots/content/"
     nexus_systest_version: "0.1-SNAPSHOT"
-    vex_jmx_port: "2098"
+    vex_jmx_port: "3022"
     macro_name: "%datashare%"
     node_ip: "proxy1"
     nexus_groupid: "com.cleo.installers"
@@ -78,45 +74,7 @@ versalex:
     docker: "false"
     karaf_heapmem_min: "256M"
     download_version_url: "http://contd.cleo.com/nexus/service/local/artifact/maven/content"
-integrations:
-  mysql:
-    hostname: "servers-integrations-1"
-    username: "root"
-    maven_destfilename: "mysqltest24.jar"
-    password: "testdocker"
-    app_type: "mysql"
-    maven_artifactid: "mysql-connector-java"
-    node_ip: "dbsrv1"
-    image_name: "testdockerfile"
-    dbname: "mysql"
-    app_srcdir: "/home/SystemTest/DockerFiles/"
-    app_args: "MYSQL_ROOT_PASSWORD=testdocker"
-    driver_str: "com.mysql.jdbc.Driver"
-    app_port: "3306"
-    use_docker_image: "true"
-    maven_groupid: "mysql"
-    maven_version: "5.1.24"
-    docker: "true"
-    image_tag: "latest"
-    type: "db"
-    port: "3306"
-    app_destdir: "/root/DockerFile/"
-dataset:
-  as2:
-    action_range: 1-1
-    create_certs: True
-    mailbox_custom_props: {}
-    host_custom_props: {}
-    action_custom_props: {}
-    host_range: 1-20
-    mailbox_range: 1-1
-    
-  ftp:
-    action_range: 1-1
-    create_certs: True
-    mailbox_custom_props: {}
-    host_custom_props: {}
-    action_custom_props: {}
-    host_range: 1-20
-    mailbox_range: 1-1
-    
+shares:
+  share:
+    hostname: "servers-shares-1"
+    server_share_path: "/root/share/"

@@ -55,11 +55,7 @@
      until: start_vex|success
      
    - name: Print Last Include Task Results
-     debug: msg="Install_status results {{install_status}}"
-   # - name: Call Create VLProxy File
-     # include: "create_vlproxyfile.yml"
-     # when: versalex.name != 'VLProxy' 
-     # delegate_to: 127.0.0.1
+     debug: msg="Ending Flow"
    rescue:
    - fail: msg="Install Apps failed Non Docker"
      when: item.failed==true

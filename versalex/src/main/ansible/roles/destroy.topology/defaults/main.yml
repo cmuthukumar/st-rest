@@ -1,2 +1,3 @@
 ---
 # defaults file for destroy.topology
+do_token: "{{do_api_token}}"

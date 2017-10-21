@@ -1,6 +1,18 @@
----
+---       
 - hosts: "{{machine_type}}"
-  strategy: free
+  strategy: free        
+  roles:
+     - { role: "install.product" ,mach_type: "{{machine_type}}" }
+     
+- hosts: "versalex"
+  strategy: free        
+  roles:
+     - { role: "install.product/tests"  }     
+     
+#######Old Delete
+
+# - hosts: "{{machine_type}}"
+  # strategy: free
   # gather_facts: no
   # pre_tasks:
     # - block:  
@@ -20,7 +32,4 @@
        # - name: Gather Facts for Remote Hosts now
          # setup:
          
-- hosts: "{{machine_type}}"
-  strategy: free        
-  roles:
-     - { role: "install.product" ,mach_type: "{{machine_type}}" }
+         

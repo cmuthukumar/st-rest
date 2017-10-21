@@ -23,6 +23,11 @@
 - hosts: proxy  
   roles:
     - { role: configure.product/vlproxy,email_on_fail_addr: 'muthukumarc@cleo.com' }
+
+- hosts: "versalex:proxy"  
+  roles:
+    - { role: configure.product/tests}
+    
     
   # tasks:
     # - name: include configure product role with proxy

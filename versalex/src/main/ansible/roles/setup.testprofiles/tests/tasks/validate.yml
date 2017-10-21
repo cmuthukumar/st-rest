@@ -1,0 +1,37 @@
+---
+# tasks file for versalex.apps
+ - block:
+   - name: Setting Dictionary Name for Versalex Inside
+     set_fact:
+        versalex: "{{group_item.value}}"
+        
+   - name: Validate Connections and Certs with REST API for Versalex Products
+     uri:
+        url: "http://{{ansible_ssh_host}}:{{versalex.port}}/api/{{item}}"
+        method: GET
+        user: administrator
+        password: Admin
+        force_basic_auth: yes
+        # return_content: yes
+        status_code: 200
+     register: conn_certs_status
+     with_items:
+            - connections
+            - certs?filter=hasPrivateKey eq "true"
+     when: versalex.name | lower != 'vlproxy' and play_hosts.index(inventory_hostname) == 0
+     retries: 3
+     delay: 5  
+     until: conn_certs_status|success
+     
+   - name: Print REST Api status_code
+     debug: msg="Rest API Status {{item}}" 
+     with_items: "{{conn_certs_status.results}}"
+     
+   - name: Asser test profiles are created or not
+     assert:
+        that:
+            - "{{item.json.totalResults}} != 0"
+     with_items: "{{conn_certs_status.results}}"
+     
+   rescue:
+   - fail: msg="Setup Test Profile Validation Failed"
