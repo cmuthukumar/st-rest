@@ -1,0 +1,17 @@
+---
+# tasks file for download.product
+- block:     
+   - name: Install lxml using pip Locally in Container
+     pip: 
+        name: lxml
+     delegate_to: 127.0.0.1
+     
+   - name: Download Product Role with Versalex
+     include: "download_versalex.yml"
+     with_dict: "{{ prod_dict | default({}) }}"
+     when: prod_dict is defined        
+     loop_control:
+        loop_var: group_item
+     run_once: true       
+  rescue:
+      - fail: msg="Install Product Download Tasks failed"

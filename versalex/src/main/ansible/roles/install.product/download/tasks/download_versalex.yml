@@ -1,23 +1,12 @@
----  
-   # - name: Creates Each Node Directory under Results Folder
-     # file: path="{{playbook_dir}}/results/{{role_path |basename}}/{{inventory_hostname}}" state=directory
-     # delegate_to: 127.0.0.1
+---
    - name: Setting Dictionary Name for Versalex Inside
      set_fact:
         dload: "{{group_item.value}}"
-    
-   - name: Debug
-     debug: msg="Vars {{dload}}"
         
    - name: Creates Download Location Directory
      file: path="{{dload.download_location}}" state=directory
      delegate_to: 127.0.0.1
-
-   - name: Install lxml using pip Locally in Container
-     pip: 
-        name: lxml
-     delegate_to: 127.0.0.1
-    
+     
    - name: Download Versalex Bin Package from Nexus Central with Run Once enabled
      maven_artifact:
         group_id: "{{dload.nexus_groupid}}"
@@ -29,5 +18,5 @@
         dest: "{{dload.download_location}}"
         state: present
      delegate_to: 127.0.0.1
-     run_once: true     
+     # run_once: true     
      

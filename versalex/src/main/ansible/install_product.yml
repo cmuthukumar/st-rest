@@ -1,13 +1,57 @@
----       
-- hosts: "{{machine_type}}"
-  strategy: free        
+---
+- hosts: "versalex:proxy"
   roles:
-     - { role: "install.product" ,mach_type: "{{machine_type}}" }
-     
+    - { role: install.product/common}
+    
 - hosts: "versalex"
-  strategy: free        
   roles:
-     - { role: "install.product/tests"  }     
+    - { role: install.product/download, prod_dict: "{{ versalex }}" }
+
+- hosts: "proxy"
+  roles:
+    - { role: install.product/download, prod_dict: "{{ proxy }}" }
+
+- hosts: "versalex"
+  roles:
+    - { role: install.product/license }
+
+- hosts: "versalex"
+  roles:
+    - { role: install.product/install, prod_dict: "{{ versalex }}" } 
+    
+- hosts: "proxy"
+  roles:    
+    - { role: install.product/install, prod_dict: "{{ proxy }}" } 
+
+- hosts: "versalex"
+  roles:
+    - { role: install.product/users }    
+# - hosts: "versalex:proxy"
+  # tasks:
+    # - name: Download Versalex Products from Nexus
+      # include_role:
+        # name: install.product/download
+      # with_dict: "{{ versalex | default({}) }}"
+      # loop_control:
+          # loop_var: dload_prod
+          
+    # - name: Download Versalex Products from Nexus(For Proxy)
+      # include_role:
+        # name: install.product/download
+      # with_dict: "{{ proxy | default({}) }}"
+      # loop_control:
+          # loop_var: dload_prod         
+          
+   
+# - hosts: "{{machine_type}}"
+  # strategy: free        
+  # roles:
+     # - { role: "install.product" ,mach_type: "{{machine_type}}" }
+     
+# - hosts: "versalex"
+  # strategy: free        
+  # roles:
+     # - { role: "install.product/tests"  }     
      
 #######Old Delete
 

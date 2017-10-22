@@ -4,6 +4,16 @@ versalex:
         install_location: "/root/Harmony/"
         version: "5.4.1-SNAPSHOT"
         name: "harmony"
-        vex_jmx_port: "3022"
   
-serialno:  KY1435-FR8237
+dataset:
+    as2:
+        total: 20
+        name: as2
+        schedule_actions: True
+    
+    ftp:
+        total: 20
+        name: ftp
+        schedule_actions: True
+    
+serialno:  KY6151-FR3953

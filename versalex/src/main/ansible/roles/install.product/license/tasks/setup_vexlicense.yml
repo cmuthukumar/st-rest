@@ -1,0 +1,45 @@
+---
+   - name: Setting Dictionary Name for Versalex Inside
+     set_fact:
+        lic: "{{group_item.value}}"
+        
+   - name: Generate license props file from Yaml
+     blockinfile: 
+       dest: "{{playbook_dir}}/library/license.properties"
+       insertafter: EOF
+       create: yes
+       state: present
+       block: |
+           CompanyName = {{lic.license_CompanyName }}
+           SerialNumber = {{ lic.license_SerialNumber }}{{ 10000 | random}}
+           KeyExpiration = {{ lic.license_KeyExpiration }}
+           Product = {{ lic.name }}
+           Limit.HSP = {{ lic.license_Limit_HSP }}
+           Limit.Any.other = {{ lic.license_Limit_Anyother }}
+           Trust = {{ lic.license_Trust }}
+           Unify = {{ lic.license_Unify }}
+     delegate_to: 127.0.0.1
+     
+   - name: Download Latest License Generator Jar from Nexus Repository
+     get_url:
+       url: "{{lic.license_nexus_repourl}}?r={{lic.license_nexus_repoid}}&g={{lic.license_nexus_groupid}}&a={{lic.license_nexus_artifactid}}&e=jar&v={{lic.license_nexus_version}}"
+       dest: "{{playbook_dir}}/library/license.jar"     
+     delegate_to: 127.0.0.1
+     register: lic_download_status
+     retries: 3
+     delay: 10
+     until: lic_download_status|success
+     
+   - name: Generate License_Key file for each node using Licenser.Jar file
+     shell: "java -jar license.jar -f license.properties"
+     args:  
+       chdir: "{{playbook_dir}}/library/"
+     delegate_to: 127.0.0.1
+     register: lic_keyfile
+     ignore_errors: True
+     
+   - name: License Reads key file value
+     debug: msg="License Key File {{lic_keyfile}}"
+     
+   - name: Copy License Key file to Remote Each Node Folder
+     copy: src="{{playbook_dir}}/library/license_key.txt" dest="{{lic.install_location}}/"

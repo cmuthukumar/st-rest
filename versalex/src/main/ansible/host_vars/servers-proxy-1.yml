@@ -4,6 +4,5 @@ proxy:
         install_location: "/root/VLProxy/"
         version: "5.4.1-SNAPSHOT"
         name: "vlproxy"
-        vex_jmx_port: "3022"
   
 serialno: 
