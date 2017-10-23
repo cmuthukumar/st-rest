@@ -43,4 +43,3 @@
      
   - name: Wait for Versalex Port to Come up
     wait_for: host="{{ansible_ssh_host}}" port="{{usr.port}}" delay=10 timeout=320 state=started
-      

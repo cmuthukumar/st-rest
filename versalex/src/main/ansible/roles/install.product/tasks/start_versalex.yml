@@ -8,4 +8,5 @@
      
    - name: Wait for Versalex Port to Come up
      wait_for: host="{{ansible_ssh_host}}" port="{{versalex.port}}" delay=10 timeout=320 state=started
-     when: vex_start_status|changed and versalex.dname != 'VLProxy'
+     when: vex_start_status|changed and versalex.dname | lower != 'vlproxy'
+     

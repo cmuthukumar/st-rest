@@ -1,0 +1,4 @@
+---
+- hosts: "shares"
+  roles:
+     - { role: jmeter }

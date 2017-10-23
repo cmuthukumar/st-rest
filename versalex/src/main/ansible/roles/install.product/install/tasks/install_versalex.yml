@@ -22,7 +22,8 @@
      args:
        chdir: "{{install.install_location}}"
      register: installres
-
+     
+     
    - name: Capture SerialNumber and Write Node File  
      shell: "./{{install.dname}}c -s license |grep 'Serial Number' | awk -F '=' '{print $2}' "
      args:

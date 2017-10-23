@@ -23,7 +23,6 @@
  
       - name: Restart VersalEx Process 
         include: restart_versalex.yml
-        # when: "'versalex' in subtype"
    rescue:
       - fail: msg="Configure Applications failed"
    

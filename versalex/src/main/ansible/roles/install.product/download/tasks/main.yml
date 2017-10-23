@@ -8,8 +8,8 @@
      
    - name: Download Product Role with Versalex
      include: "download_versalex.yml"
-     with_dict: "{{ prod_dict | default({}) }}"
-     when: prod_dict is defined        
+     with_dict: "{{ prod_key | default({}) }}"
+     when: prod_key is defined        
      loop_control:
         loop_var: group_item
      run_once: true       

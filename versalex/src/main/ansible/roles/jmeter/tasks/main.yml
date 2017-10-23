@@ -1,0 +1,22 @@
+---
+# tasks file for jmeter
+- name: Create Jmeter Download Directory
+  file:
+    path: "{{ jmeter_dir_location }}"
+    state: directory
+
+- name: Install Unzip for Extracting
+  yum:
+    name: unzip
+    state: present
+    
+- name: Jmeter Download Latest Version
+  get_url:
+    url: "{{ jmeter_get_utl }}"
+    dest: "{{ jmeter_dir_location }}"
+    
+- name: Extract JMeter to Dest Dir
+  unarchive:
+    src: "{{ jmeter_get_utl }}"
+    dest: "{{ jmeter_dir_location }}"
+    remote_src: yes    

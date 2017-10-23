@@ -1,0 +1,4 @@
+---
+# defaults file for jmeter
+jmeter_get_utl: "http://www-us.apache.org/dist//jmeter/binaries/apache-jmeter-3.3.zip"
+jmeter_dir_location: "/root/jmeter/"

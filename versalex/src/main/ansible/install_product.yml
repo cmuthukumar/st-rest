@@ -1,79 +1,34 @@
 ---
 - hosts: "versalex:proxy"
+  strategy: free
   roles:
     - { role: install.product/common}
-    
-- hosts: "versalex"
-  roles:
-    - { role: install.product/download, prod_dict: "{{ versalex }}" }
-
-- hosts: "proxy"
-  roles:
-    - { role: install.product/download, prod_dict: "{{ proxy }}" }
 
 - hosts: "versalex"
+  strategy: free
   roles:
     - { role: install.product/license }
 
 - hosts: "versalex"
+  strategy: free
   roles:
     - { role: install.product/install, prod_dict: "{{ versalex }}" } 
     
 - hosts: "proxy"
+  strategy: free
   roles:    
     - { role: install.product/install, prod_dict: "{{ proxy }}" } 
 
 - hosts: "versalex"
+  strategy: free
   roles:
     - { role: install.product/users }    
-# - hosts: "versalex:proxy"
-  # tasks:
-    # - name: Download Versalex Products from Nexus
-      # include_role:
-        # name: install.product/download
-      # with_dict: "{{ versalex | default({}) }}"
-      # loop_control:
-          # loop_var: dload_prod
-          
-    # - name: Download Versalex Products from Nexus(For Proxy)
-      # include_role:
-        # name: install.product/download
-      # with_dict: "{{ proxy | default({}) }}"
-      # loop_control:
-          # loop_var: dload_prod         
-          
-   
-# - hosts: "{{machine_type}}"
-  # strategy: free        
-  # roles:
-     # - { role: "install.product" ,mach_type: "{{machine_type}}" }
-     
+    
 # - hosts: "versalex"
-  # strategy: free        
   # roles:
-     # - { role: "install.product/tests"  }     
-     
-#######Old Delete
+    # - { role: install.product/download, prod_key: "{{ versalex }}" }
 
-# - hosts: "{{machine_type}}"
-  # strategy: free
-  # gather_facts: no
-  # pre_tasks:
-    # - block:  
-       # - name: Checking Python 2.7 available or not in Linux Systems
-         # raw: python --version
-         # register: py_version
-       # - debug: msg="Pre Tasks Completed::{{py_version}}"
-       # - name: Install Python Headers and Libs required for ansible core modules
-         # include: "{{playbook_dir}}/roles/install.product/tasks/install_pythonlibs.yml"
-       # # - name: Call Install Product with Versalex Configs
-         # # include_role:
-            # # name: "install.product"
-         # # with_dict: "{{install_apps}}"
-      # rescue:
-       # - debug: msg="Failed to check/install python 2.7 version..."
-      # always:      
-       # - name: Gather Facts for Remote Hosts now
-         # setup:
-         
-         
+# - hosts: "proxy"
+  # roles:
+    # - { role: install.product/download, prod_key: "{{ proxy }}" }
+    
