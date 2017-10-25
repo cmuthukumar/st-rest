@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Sync by="root(Command line)" enc="3fe4a49d-e07a-4bff-a0bb-c6342b540d6b" modevent="Modified" modified="2017/02/27 17:36:32" moditem="Synchronization" modtype="System options" serial="{{inventory_hostname}}:{{hostvars[inventory_hostname]['serialno'][:6]}}(Harmony)">
-  <Versalex backup="False" id="bRUmbKL1iBw=&#10;" vlnalias="False"/>{% for h in groups['versalex'] %}
-{% if play_hosts.index(h) > 0 %}  
-  <Versalex address="{{hostvars[h]['ansible_eth0']['ipv4']['address']}}" alias="" backup="False" disabled="False" id="ZWKbA/A9P1wH28TSZ+5yPg==&#10;" location="" notinitialized="False" notsyncmessageidsandreceipts="True" port="5080" secure="False" syncpath="certs/*;data/*;conf/Options.xml;conf/Proxies.xml;conf/AS400.xml;conf/WinUnixFolders.xml;conf/Schedule.xml;hosts/Local Listener.xml;hosts/*.xml;conf/TradingPartners.xml;conf/ipbl.xml;importedIDPs/*.xml" vlnalias="False">
-{% endif %}
-{% endfor %}
-  </Versalex>
-</Sync>
