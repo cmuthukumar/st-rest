@@ -3,9 +3,10 @@
    - name: Setting Dictionary Name for Proxy Inside
      set_fact:
         versalex: "{{group_item.value}}"
-
+          
    - name: Copy SetupOptions Jar File to remote location
      copy: src="{{playbook_dir}}/library/" dest="{{versalex.install_location}}lib/"
+     when:  play_hosts.index(inventory_hostname) == 0
         
    - name: Setup Sync in Master Versalex
      shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupSync "{{versalex.install_location}}" "{{hostvars[item]['serialno']}}" "{{hostvars[item]['ansible_eth0']['ipv4']['address']}}" "{{versalex.port}}"
@@ -18,3 +19,34 @@
      with_items: "{{groups['versalex']}}"     
      register: profile_config
      ignore_errors: true
+     when:  play_hosts.index(inventory_hostname) == 0
+     
+   - name: Kill Harmony Processes Karaf and OSGI
+     shell: "kill -9 $(ps -aef |grep 'karaf.main' |grep -v grep |awk '{print $2 \"\t\" $3}')"
+     register: kill_status        
+     ignore_errors: yes
+     
+   - name: Print Kill Details
+     debug: msg="Kll Details:{{kill_status}}"     
+   
+   - name: Remove schedule Lock File if exists
+     file:
+         path: "{{versalex.install_location}}schedule.lck"
+         state: absent
+     ignore_errors: yes
+   # - name: Wait for port 5080 to get Stopped
+     # wait_for: host="{{inventory_hostname}}" port="{{versalex.port}}" delay=20 state=stopped
+
+   - name: Start VersalEx Product Daemon   
+     shell: "{{item}}"
+     args:
+       chdir: "{{versalex.install_location}}"
+     with_items:
+       - ./{{versalex.dname}}d start
+     register: startvexstatus
+
+   - name: Wait for port 5080 to get Started
+     wait_for: host="{{inventory_hostname}}" port="{{versalex.port}}" delay=20 state=started
+               
+     
+     

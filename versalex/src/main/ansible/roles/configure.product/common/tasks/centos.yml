@@ -1,27 +1,4 @@
 ---
-   # - name: Stop RPCBind and NFS Service
-     # service: name="{{ item }}" state=stopped
-     # with_items:
-        # - rpcbind
-        # - nfs
-   # - name: Install Libxml on CentOS or Redhat machines
-     # yum: name="{{ item }}" state=present
-     # with_items:
-        # - libxml2
-        # - libxml2-devel
-        # - libxml2-python
-        # - libxslt
-        # - libxslt-devel
-        # - pthon-devel
-        # - gcc
-        # - gcc-c++
-        # - kernel-devel
-        # - python-pip        
-     # register: install_lxml
-     # retries: 3
-     # delay: 5  
-     # until: install_lxml|success
-     
    - name: Install lxml using YUM
      yum: name=python-lxml state=present 
         
@@ -58,3 +35,26 @@
      # pip:
       # name: lxml
      # ignore_errors: yes
+     
+   # - name: Stop RPCBind and NFS Service
+     # service: name="{{ item }}" state=stopped
+     # with_items:
+        # - rpcbind
+        # - nfs
+   # - name: Install Libxml on CentOS or Redhat machines
+     # yum: name="{{ item }}" state=present
+     # with_items:
+        # - libxml2
+        # - libxml2-devel
+        # - libxml2-python
+        # - libxslt
+        # - libxslt-devel
+        # - pthon-devel
+        # - gcc
+        # - gcc-c++
+        # - kernel-devel
+        # - python-pip        
+     # register: install_lxml
+     # retries: 3
+     # delay: 5  
+     # until: install_lxml|success     

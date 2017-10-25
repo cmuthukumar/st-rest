@@ -12,14 +12,10 @@
       loop_control:
           loop_var: srvr_share
           
-- hosts: versalex
+- hosts: "{{machine_type}}"
   roles:
     - { role: configure.product/client_share, when: shares is defined}
 
 - hosts: "{{machine_type}}"
   roles:
     - { role: configure.product }
-
-- hosts: proxy  
-  roles:
-    - { role: configure.product/vlproxy,email_on_fail_addr: 'muthukumarc@cleo.com' }

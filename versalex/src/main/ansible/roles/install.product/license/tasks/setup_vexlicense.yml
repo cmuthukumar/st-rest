@@ -2,10 +2,21 @@
    - name: Setting Dictionary Name for Versalex Inside
      set_fact:
         lic: "{{group_item.value}}"
+
+   - name: Creates files dir
+     file: 
+        path: "{{playbook_dir}}/files/" 
+        state: directory        
         
+   - name: Create Lic hostname Dir
+     file:
+        path: "{{playbook_dir}}/files/{{inventory_hostname}}"
+        state: directory
+     delegate_to: 127.0.0.1
+     
    - name: Generate license props file from Yaml
      blockinfile: 
-       dest: "{{playbook_dir}}/library/license.properties"
+       dest: "{{playbook_dir}}/files/{{inventory_hostname}}/license.properties"
        insertafter: EOF
        create: yes
        state: present
@@ -23,7 +34,7 @@
    - name: Download Latest License Generator Jar from Nexus Repository
      get_url:
        url: "{{lic.license_nexus_repourl}}?r={{lic.license_nexus_repoid}}&g={{lic.license_nexus_groupid}}&a={{lic.license_nexus_artifactid}}&e=jar&v={{lic.license_nexus_version}}"
-       dest: "{{playbook_dir}}/library/license.jar"     
+       dest: "{{playbook_dir}}/files/{{inventory_hostname}}/license.jar"     
      delegate_to: 127.0.0.1
      register: lic_download_status
      retries: 3
@@ -33,7 +44,7 @@
    - name: Generate License_Key file for each node using Licenser.Jar file
      shell: "java -jar license.jar -f license.properties"
      args:  
-       chdir: "{{playbook_dir}}/library/"
+       chdir: "{{playbook_dir}}/files/{{inventory_hostname}}/"
      delegate_to: 127.0.0.1
      register: lic_keyfile
      ignore_errors: True
@@ -42,4 +53,4 @@
      debug: msg="License Key File {{lic_keyfile}}"
      
    - name: Copy License Key file to Remote Each Node Folder
-     copy: src="{{playbook_dir}}/library/license_key.txt" dest="{{lic.install_location}}/"
+     copy: src="{{playbook_dir}}/files/{{inventory_hostname}}/license_key.txt" dest="{{lic.install_location}}/"

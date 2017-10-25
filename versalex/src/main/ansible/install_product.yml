@@ -5,17 +5,16 @@
     - { role: install.product/common}
 
 - hosts: "versalex"
-  strategy: free
   roles:
     - { role: install.product/license }
 
 - hosts: "versalex"
-  strategy: free
+  # strategy: free
   roles:
     - { role: install.product/install, prod_dict: "{{ versalex }}" } 
     
 - hosts: "proxy"
-  strategy: free
+  # strategy: free
   roles:    
     - { role: install.product/install, prod_dict: "{{ proxy }}" } 
 

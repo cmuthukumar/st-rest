@@ -1,5 +1,5 @@
 ---
 shares:
   share:
-    hostname: "servers-shares-1"
+    hostname: "tpnodes-shares-1"
     server_share_path: "/root/share/"

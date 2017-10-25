@@ -11,7 +11,7 @@
      maven_artifact:
         group_id: "{{dload.nexus_groupid}}"
         artifact_id: "{{dload.dname}}"
-        version: latest
+        version: "{{dload.version}}"
         classifier: "{{dload.nexus_classifier}}"
         extension: "{{dload.nexus_packaging}}"
         repository_url: "{{dload.nexus_maven_repourl}}"

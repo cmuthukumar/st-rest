@@ -66,3 +66,7 @@ versalex:
     docker: "false"
     karaf_heapmem_min: "256M"
     download_version_url: "http://contd.cleo.com/nexus/service/local/artifact/maven/content"
+shares:
+  share:
+    hostname: "tpnodes-shares-1"
+    server_share_path: "/root/share/"

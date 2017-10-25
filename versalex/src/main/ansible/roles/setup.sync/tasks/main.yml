@@ -5,4 +5,4 @@
      with_dict: "{{ versalex | default({}) }}"
      loop_control:
         loop_var: group_item
-     when:  play_hosts.index(inventory_hostname) == 0        
+

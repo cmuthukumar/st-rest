@@ -1,37 +1,38 @@
 ---
-# tasks file for versalex.apps
+# tasks file for testprofile.apps
  - block:
    - name: Setting Dictionary Name for Versalex Inside
      set_fact:
-        versalex: "{{group_item.value}}"
+        testprofile: "{{group_item.value}}"
         
    - name: Validate Connections and Certs with REST API for Versalex Products
      uri:
-        url: "http://{{ansible_ssh_host}}:{{versalex.port}}/api/{{item}}"
+        url: "http://{{ansible_ssh_host}}:{{testprofile.port}}/api/{{item}}"
         method: GET
         user: administrator
         password: Admin
         force_basic_auth: yes
-        # return_content: yes
+        return_content: yes
         status_code: 200
      register: conn_certs_status
      with_items:
-            - connections
-            - certs?filter=hasPrivateKey eq "true"
-     when: versalex.name | lower != 'vlproxy' and play_hosts.index(inventory_hostname) == 0
+            - certs?filter=signatureAlgorithm eq  "MD5/RSA"
+     when:  testprofile.name | lower != 'vlproxy' and play_hosts.index(inventory_hostname) == 0
      retries: 3
      delay: 5  
      until: conn_certs_status|success
+     delegate_to: 127.0.0.1
      
    - name: Print REST Api status_code
      debug: msg="Rest API Status {{item}}" 
      with_items: "{{conn_certs_status.results}}"
-     
+     when: testprofile.name | lower != 'vlproxy' and play_hosts.index(inventory_hostname) == 0
+
    - name: Asser test profiles are created or not
      assert:
         that:
             - "{{item.json.totalResults}} != 0"
      with_items: "{{conn_certs_status.results}}"
-     
+     when: testprofile.name | lower != 'vlproxy' and play_hosts.index(inventory_hostname) == 0     
    rescue:
    - fail: msg="Setup Test Profile Validation Failed"

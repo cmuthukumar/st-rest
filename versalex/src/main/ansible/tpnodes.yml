@@ -17,15 +17,15 @@ hardware:
         ram_size: 1gb
         region: nyc1
         image_name: "centos-6-x64"
-        qty: 1
-   shares:           
-      - name: share
-        share_path: "/root/share/"          
+        qty: 1       
 software:
    versalex:
       - name: harmony
-        version: "5.4.1-SNAPSHOT"
+        version: "5.4.2-SNAPSHOT"
         install_location: "/root/Harmony/"
    integrations:
       - name: mysql
-        version: "mysql:latest"        
+        version: "mysql:latest"
+   shares:           
+      - name: share
+        share_path: "/root/share/"        

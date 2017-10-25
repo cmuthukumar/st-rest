@@ -6,3 +6,4 @@
       when: "'versalex' in subtype" 
       loop_control:
          loop_var: group_item
+      delegate_to: 127.0.0.1

@@ -2,7 +2,7 @@
 versalex:
     harmony:        
         install_location: "/root/Harmony/"
-        version: "5.4.1-SNAPSHOT"
+        version: "5.4.2-SNAPSHOT"
         name: "harmony"
   
 dataset:
@@ -16,4 +16,4 @@ dataset:
         name: ftp
         schedule_actions: True
     
-serialno:  KY9380-EQ5071
+serialno:  KY7965-TF8101

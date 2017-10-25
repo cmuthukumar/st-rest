@@ -27,14 +27,14 @@ hardware:
 software:
    versalex:
       - name: harmony
-        version: "5.4.1-SNAPSHOT"
+        version: "5.4.2-SNAPSHOT"
         install_location: "/root/Harmony/"
    integrations:
       - name: mysql
         version: "mysql:latest"
    proxy:
       - name: vlproxy
-        version: "5.4.1-SNAPSHOT"
+        version: "5.4.2-SNAPSHOT"
         install_location: "/root/VLProxy/"
    shares:           
       - name: share

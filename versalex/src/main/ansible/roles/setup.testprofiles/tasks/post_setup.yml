@@ -33,7 +33,6 @@
          chdir: "{{install_location}}"
        with_items:
          - ./{{vex_product}}d start
-       # when: vex_product is defined and vex_product != 'VLProxy'
        register: startvexstatus
        
      - name: Print Start Results Status

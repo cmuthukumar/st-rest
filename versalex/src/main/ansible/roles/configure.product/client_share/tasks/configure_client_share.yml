@@ -12,7 +12,7 @@
      delegate_to: 127.0.0.1 
      
    - name: Copy SetupOptions Jar File to remote location
-     copy: src="{{playbook_dir}}/library/" dest="{{vexcli.install_location}}lib/"
+     copy: src="{{playbook_dir}}/library/versalex_setup-latest.jar" dest="{{vexcli.install_location}}lib/"
    
    - name: Configure Shares in Remote Machines
      shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupOptions "{{vexcli.dname}}" "{{vexcli.install_location}}" "SHARE" "{{vexcli.custom_macro}}"
@@ -27,6 +27,9 @@
 
    - name: Creates Shares  Directory
      file: path="{{vexcli.client_local_path}}" state=directory
+
+   - name: Print IP of Shares
+     debug: msg="IPADd {{hostvars[groups['shares'][0]]['ansible_eth0']['ipv4']['address']}}"
      
    - name: Setup Shares in Client boxes
      mount:

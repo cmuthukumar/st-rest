@@ -15,10 +15,10 @@
      debug: msg="Kill Application Status {{javakill_status}}"
      
    - name: Copy Installer to Remote Install Location
-     copy: src="{{install.download_location}}" dest="{{install.install_location}}" mode=0777
+     copy: src="{{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}}" dest="{{install.install_location}}" mode=0777
    
    - name: Install VersalEx Installer in Silent Mode   
-     shell: "./{{install.dname}}-latest.{{install.nexus_packaging}} -DUSER_INSTALL_DIR={{install.install_location}} -i  silent"
+     shell: "./{{install.dname}}-{{install.version}}.{{install.nexus_packaging}} -DUSER_INSTALL_DIR={{install.install_location}} -i  silent"
      args:
        chdir: "{{install.install_location}}"
      register: installres

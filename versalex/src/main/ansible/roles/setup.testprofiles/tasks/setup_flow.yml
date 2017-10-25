@@ -8,10 +8,36 @@
    - name: Configure {{inc_file}} Side Nodes
      include: "{{inc_file}}.yml"
      with_dict: "{{ dataset | default({}) }}"
-     # when: "'servers-versalex' in inventory_hostname"
      loop_control:
         loop_var: conf_dataset  
 
+   # - name: Kill Harmony Processes Karaf and OSGI
+     # shell: "kill -9 $(ps -aef |grep 'karaf.main' |grep -v grep |awk '{print $2 \"\t\" $3}')"
+     # register: kill_status        
+     # ignore_errors: yes
+     
+   # - name: Print Kill Details
+     # debug: msg="Kll Details:{{kill_status}}"
+   
+   # - name: Remove schedule Lock File if exists
+     # file:
+         # path: "{{versalex.install_location}}schedule.lck"
+         # state: absent
+     
+   # # - name: Wait for port 5080 to get Stopped
+     # # wait_for: host="{{inventory_hostname}}" port="{{versalex.port}}" delay=20 state=stopped
+
+   # - name: Start VersalEx Product Daemon   
+     # shell: "{{item}}"
+     # args:
+       # chdir: "{{versalex.install_location}}"
+     # with_items:
+       # - ./{{versalex.dname}}d start
+     # register: startvexstatus
+
+   # - name: Wait for port 5080 to get Started
+     # wait_for: host="{{inventory_hostname}}" port="{{versalex.port}}" delay=20 state=started
+     
    - name: Print Debug Msgs Setup Flow
      debug: msg="Done with Config"   
    # - name: Configure TP Side Nodes
@@ -23,36 +49,3 @@
      # when: vex_product is defined and vex_product != 'VLProxy'
 - rescue:
    - fail: msg="Setup Test Profile Module Failed" 
-
-   
-   
-   
-   # - name: Setting TpHost Count
-     # set_fact:        
-       # tp_count: "{{ groups['tpnodes-versalex'] | length | int}}"
-
-   # - name: Install RSYNC packages
-     # yum: name=rsync state=present
-     # when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
-   # # - name: Call PreSetup Tasks
-     # # include: pre_setup.yml
-     # # when: "'servers-versalex' in inventory_hostname"
-
-   # - name: Creates Map Directory
-     # file:
-       # path: "{{role_path}}/res/"
-       # state: directory
-       # mode: 0777
-     # delegate_to: 127.0.0.1
-          
-   # - name: TestProfile map
-     # template: src=setup_testprofile.j2 dest="{{role_path}}/res/{{inventory_hostname}}-map.yml"
-     # # when: "'servers-versalex' in inventory_hostname"
-     # delegate_to: 127.0.0.1
-
-     
-   # - name: Include Node Specific Variables
-     # include_vars: "{{role_path}}/res/{{inventory_hostname}}-map.yml"
-     # # when: "'servers-versalex' in inventory_hostname"
-     # delegate_to: 127.0.0.1
-     # ignore_errors: yes   
