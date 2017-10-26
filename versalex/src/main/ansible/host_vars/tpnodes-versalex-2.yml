@@ -1,8 +1,0 @@
----
-versalex:
-    harmony:        
-        install_location: "/root/Harmony/"
-        version: "5.4.2-SNAPSHOT"
-        name: "harmony"
-  
-serialno:  KY1162-KW3419

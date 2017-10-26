@@ -1,7 +1,0 @@
-#Wed Oct 25 04:39:30 CDT 2017
-license.extensionb3=0iT|-m$Ak-ryLA-$UJK-rkKP-Lij%-aDMa-mkmd
-license.extensionb2=0nTA-5hrk-zZUA-$VJR-s^\#V-Hij[-aD\#X-mRZU
-license.extensionb1=0bTA-5{2k-rZUA-$VJR-s^\#P-Hij[-aD\#X-mRZU
-license.key=bvWA-uI&A-dZUA-$G8F-mFXY-&iIi-nDEa-R[0x
-license.owner=Cleo
-license.hash=XKDDIL|u2gv96

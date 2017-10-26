@@ -1,6 +1,0 @@
----
-integrations:
-    mysql:        
-        version: "mysql:latest"
-        name: "mysql"
-  
