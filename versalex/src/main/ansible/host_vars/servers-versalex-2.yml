@@ -1,19 +1,5 @@
----
 versalex:
-    harmony:        
-        install_location: "/root/Harmony/"
-        version: "5.4.2-SNAPSHOT"
-        name: "harmony"
-  
-dataset:
-    as2:
-        total: 20
-        name: as2
-        schedule_actions: True
-    
-    ftp:
-        total: 20
-        name: ftp
-        schedule_actions: True
-    
-serialno:  KY7965-TF8101
+  harmony:
+    install_location: /root/Harmony/
+    name: harmony
+    version: 5.4.5-SNAPSHOT

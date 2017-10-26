@@ -2,4 +2,10 @@
 - hosts: localhost
   tasks:
        - name: Test action 
-         local_action: hello
+         test_yaml:
+            usr_src: "servers.yml"
+            default_src: "defaults.yml"
+         register: test_res
+         
+       - name: Print Message
+         debug: var=test_res

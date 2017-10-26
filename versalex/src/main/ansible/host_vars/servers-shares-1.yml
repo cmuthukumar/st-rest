@@ -1,6 +1,4 @@
----
 shares:
-    share:        
-        share_path: "/root/share/"
-        name: "share"
-  
+  share:
+    name: share
+    share_path: /root/share/

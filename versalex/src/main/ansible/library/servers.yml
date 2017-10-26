@@ -1,0 +1,49 @@
+---
+hardware:
+   versalex:           
+      - name: harmony
+        ram_size: 1gb
+        region: nyc1
+        image_name: "centos-6-x64"
+        qty: 2
+   integrations:           
+      - name: mysql
+        ram_size: 1gb
+        region: nyc1
+        image_name: "centos-6-x64"
+        qty: 1
+   proxy:           
+      - name: proxy
+        ram_size: 1gb
+        region: nyc1
+        image_name: "centos-6-x64"
+        qty: 1
+   shares:           
+      - name: share
+        ram_size: 1gb
+        region: nyc1
+        image_name: "centos-6-x64"
+        qty: 1        
+software:
+   versalex:
+      - name: harmony
+        version: "5.4.2-SNAPSHOT"
+        install_location: "/root/Harmony/"
+   integrations:
+      - name: mysql
+        version: "mysql:latest"
+   proxy:
+      - name: vlproxy
+        version: "5.4.2-SNAPSHOT"
+        install_location: "/root/VLProxy/"
+   shares:           
+      - name: share
+        share_path: "/root/share/"   
+dataset:
+   versalex:
+      - name: as2
+        total: 20
+        schedule_actions: true  
+      - name: ftp
+        total: 20
+        schedule_actions: true         

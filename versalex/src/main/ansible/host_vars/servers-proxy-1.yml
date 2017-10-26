@@ -1,8 +1,5 @@
----
 proxy:
-    vlproxy:        
-        install_location: "/root/VLProxy/"
-        version: "5.4.2-SNAPSHOT"
-        name: "vlproxy"
-  
-serialno: 
+  vlproxy:
+    install_location: /root/VLProxy/
+    name: vlproxy
+    version: 5.4.2-SNAPSHOT
