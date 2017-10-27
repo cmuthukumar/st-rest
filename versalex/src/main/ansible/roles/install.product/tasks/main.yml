@@ -1,17 +1,11 @@
 ---
-# tasks file for versalex.apps
-    - name: Include Install Product Role with Versalex
-      include: "install_flow.yml"
-      #debug: msg="TestType Key- {{item.key}} Test Val -{{item.value}}"      
-      with_dict: "{{ versalex | default({}) }}"
-      when: "'versalex' in subtype" 
-      loop_control:
-         loop_var: group_item
-
-    - name: Include Install Product Role with VLProxy confs
-      include: "install_flow.yml"
-      #debug: msg="TestType Key- {{item.key}} Test Val -{{item.value}}"
-      with_dict: "{{ proxy | default({}) }}"
-      when: "'proxy' in subtype"
-      loop_control:
-         loop_var: group_item
+# tasks file for download.product
+- block:
+   - name: Install Product  with Versalex
+     include: "install_versalex.yml"
+     with_dict: "{{ prod_dict | default({}) }}"
+     when: prod_dict is defined        
+     loop_control:
+        loop_var: group_item  
+  rescue:
+      - fail: msg="Installing Product Tasks failed"

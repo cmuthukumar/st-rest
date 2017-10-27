@@ -11,23 +11,14 @@
 - hosts: "versalex"
   # strategy: free
   roles:
-    - { role: install.product/install, prod_dict: "{{ versalex }}" } 
+    - { role: install.product, prod_dict: "{{ versalex }}" } 
     
 - hosts: "proxy"
   # strategy: free
   roles:    
-    - { role: install.product/install, prod_dict: "{{ proxy }}" } 
+    - { role: install.product, prod_dict: "{{ proxy }}" } 
 
 - hosts: "versalex"
   strategy: free
   roles:
-    - { role: install.product/users }    
-    
-# - hosts: "versalex"
-  # roles:
-    # - { role: install.product/download, prod_key: "{{ versalex }}" }
-
-# - hosts: "proxy"
-  # roles:
-    # - { role: install.product/download, prod_key: "{{ proxy }}" }
-    
+    - { role: install.product/users } 

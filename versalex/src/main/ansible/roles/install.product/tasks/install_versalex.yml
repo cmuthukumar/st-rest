@@ -1,4 +1,11 @@
 ---
+   - name: Setting Dictionary Name for Versalex Inside
+     set_fact:
+        install: "{{group_item.value}}"
+        
+   - name: Creates Install Location Directory
+     file: path="{{install.install_location}}" state=directory force=yes
+ 
    - name: Kill Java Processes running on Remote System
      shell: "kill $(ps aux | grep -i java | grep -v 'grep' | awk '{print $2}')"
      register: javakill_status
@@ -6,23 +13,21 @@
    
    - name: Print Java Process Kill Status
      debug: msg="Kill Application Status {{javakill_status}}"
-   # - versalex.name: Removes Install Location Directory
-     # file: path="{{versalex.install_location}}"  state=absent force=yes
+     
    - name: Copy Installer to Remote Install Location
-     copy: src="{{versalex.download_location}}" dest="{{versalex.install_location}}" mode=0777
+     copy: src="{{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}}" dest="{{install.install_location}}" mode=0777
    
    - name: Install VersalEx Installer in Silent Mode   
-     shell: "./{{versalex.dname}}-latest.{{versalex.nexus_packaging}} -DUSER_INSTALL_DIR={{versalex.install_location}} -i  silent"
+     shell: "./{{install.dname}}-{{install.version}}.{{install.nexus_packaging}} -DUSER_INSTALL_DIR={{install.install_location}} -i  silent"
      args:
-       chdir: "{{versalex.install_location}}"
+       chdir: "{{install.install_location}}"
      register: installres
-   # - name: Installation Results
-     # debug: msg="Install Results-{{installres}}"
-
+     
+     
    - name: Capture SerialNumber and Write Node File  
-     shell: "./{{versalex.dname}}c -s license |grep 'Serial Number' | awk -F '=' '{print $2}' "
+     shell: "./{{install.dname}}c -s license |grep 'Serial Number' | awk -F '=' '{print $2}' "
      args:
-      chdir: "{{versalex.install_location}}"
+      chdir: "{{install.install_location}}"
      register: serifile
 
    - name: Set the serial number fact
@@ -39,64 +44,5 @@
        insertafter: "{{item.insertafter}}"
      with_items:
         - {  line: "{{serifile.stdout}}", insertafter: EOF}
-     # when: versalex.name != 'VLProxy'   
      delegate_to: 127.0.0.1     
      
-   # - name: Start VersalEx Process After Install
-     # shell: "./{{versalex.dname}}d start"
-     # args:
-      # chdir: "{{versalex.install_location}}"     
-     # when: installres|changed
-     # register: vex_start_status
-     
-   # - name: Wait for Versalex Port to Come up
-     # wait_for: host="{{ansible_ssh_host}}" port="{{versalex.port}}" delay=10 timeout=320 state=started
-     # when: vex_start_status|changed and versalex.dname != 'VLProxy'
-         
-     
-   # - name: Remove VLProxy File if exists
-     # file:
-      # path: "{{playbook_dir}}/results/vlproxy.txt"
-      # state: absent
-     # # when: versalex.name != 'VLProxy'   
-     # delegate_to: 127.0.0.1
-     
-   # - name: Create VLProxy  File
-     # lineinfile:
-       # create: yes
-       # dest: "{{playbook_dir}}/results/vlproxy.txt"
-       # line: "{{item.line}}"
-       # state: present
-       # insertafter: "{{item.insertafter}}"
-     # with_items:
-        # - {  line: 'Admin', insertafter: EOF}
-        # - {  line: '2', insertafter: EOF}
-        # - {  line: '', insertafter: EOF}
-     # # when: versalex.name != 'VLProxy'   
-     # delegate_to: 127.0.0.1
-     
-   # - name: Add Serial Numbers to VLProxy files for different hosts
-     # lineinfile:
-        # create: yes
-        # dest: "{{playbook_dir}}/results/vlproxy.txt"
-        # regexp: '(.*)'
-        # line: "{{item.line}}"
-        # state: present
-        # backrefs: "{{item.backrefs}}"
-        # # insertafter: "{{item.insertafter}}"
-     # with_items:
-        # - { line: "\\1,{{serifile.stdout}}", backrefs: yes ,insertafter: EOF }  
-     # # when: versalex.name != 'VLProxy'   
-     # delegate_to: 127.0.0.1
-   
-   # - name: Save VLProxy Configs
-     # lineinfile:
-        # create: yes
-        # dest: "{{playbook_dir}}/results/vlproxy.txt"
-        # line: "{{item.line}}"
-        # state: present
-        # insertafter: "{{item.insertafter}}"
-     # with_items:
-        # - {  line: '0',insertafter: EOF} 
-     # # when: versalex.name != 'VLProxy'        
-     # delegate_to: 127.0.0.1
