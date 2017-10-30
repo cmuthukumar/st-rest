@@ -1,0 +1,4 @@
+shares:
+  share:
+    name: share
+    share_path: /root/share/

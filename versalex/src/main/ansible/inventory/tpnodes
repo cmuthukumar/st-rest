@@ -1,0 +1,30 @@
+[all]
+tpnodes-integrations-1 ansible_ssh_host=67.205.157.91  appl=mysql subtype=integrations
+tpnodes-integrations-1 ansible_ssh_host=67.205.157.91 appl=mysql subtype=integrations
+tpnodes-versalex-1 ansible_ssh_host=192.34.61.169  appl=harmony subtype=versalex
+tpnodes-versalex-2 ansible_ssh_host=67.207.88.177  appl=harmony subtype=versalex
+tpnodes-versalex-1 ansible_ssh_host=192.34.61.169 appl=harmony subtype=versalex
+tpnodes-versalex-2 ansible_ssh_host=67.207.88.177 appl=harmony subtype=versalex
+tpnodes-shares-1 ansible_ssh_host=198.199.83.241  appl=share subtype=shares
+tpnodes-shares-1 ansible_ssh_host=198.199.83.241 appl=share subtype=shares
+[integrations]
+tpnodes-integrations-1 ansible_ssh_host=67.205.157.91  appl=mysql subtype=integrations
+[shares]
+tpnodes-shares-1 ansible_ssh_host=198.199.83.241  appl=share subtype=shares
+[ungrouped]
+localhost
+[tpnodes]
+tpnodes-integrations-1 ansible_ssh_host=67.205.157.91 appl=mysql subtype=integrations
+tpnodes-versalex-1 ansible_ssh_host=192.34.61.169 appl=harmony subtype=versalex
+tpnodes-versalex-2 ansible_ssh_host=67.207.88.177 appl=harmony subtype=versalex
+tpnodes-shares-1 ansible_ssh_host=198.199.83.241 appl=share subtype=shares
+[tpnodes-integrations]
+tpnodes-integrations-1 ansible_ssh_host=67.205.157.91  appl=mysql subtype=integrations
+[tpnodes-versalex]
+tpnodes-versalex-1 ansible_ssh_host=192.34.61.169  appl=harmony subtype=versalex
+tpnodes-versalex-2 ansible_ssh_host=67.207.88.177  appl=harmony subtype=versalex
+[tpnodes-shares]
+tpnodes-shares-1 ansible_ssh_host=198.199.83.241  appl=share subtype=shares
+[versalex]
+tpnodes-versalex-1 ansible_ssh_host=192.34.61.169  appl=harmony subtype=versalex
+tpnodes-versalex-2 ansible_ssh_host=67.207.88.177  appl=harmony subtype=versalex

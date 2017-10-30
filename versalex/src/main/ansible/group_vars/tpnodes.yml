@@ -1,0 +1,68 @@
+integrations:
+  mysql:
+    app_args: MYSQL_ROOT_PASSWORD=testdocker
+    app_destdir: /root/DockerFile/
+    app_port: 3306
+    app_srcdir: /home/SystemTest/DockerFiles/
+    app_type: mysql
+    dbname: mysql
+    docker: 'true'
+    driver_str: com.mysql.jdbc.Driver
+    image_name: testdockerfile
+    image_tag: latest
+    maven_artifactid: mysql-connector-java
+    maven_destfilename: mysqltest24.jar
+    maven_groupid: mysql
+    maven_version: 5.1.24
+    node_ip: dbsrv1
+    password: testdocker
+    port: 3306
+    type: db
+    use_docker_image: 'true'
+    username: root
+shares:
+  share:
+    server_share_path: /root/share/
+versalex:
+  harmony:
+    checkout_dir: /root/workspace/LoadTesting/
+    client_local_path: /root/share/
+    custom_macro: '%datashare%=/root/share'
+    dname: Harmony
+    docker: 'false'
+    download_location: /home/SystemTestNew/vexdownload/
+    download_version_url: http://contd.cleo.com/nexus/service/local/artifact/maven/content
+    find_version_url: http://contd.cleo.com/nexus/service/local/artifact/maven/resolve
+    install_location: /root/harmony/
+    karaf_heapmem_max: 2G
+    karaf_heapmem_min: 256M
+    karaf_jmx_port: 2099
+    license_CompanyName: Cleo
+    license_KeyExpiration: 300
+    license_Limit_Anyother: 0
+    license_Limit_HSP: 0
+    license_Product: Harmony
+    license_SerialNumber: KY
+    license_Trust: 1
+    license_Unify: 1
+    license_nexus_artifactid: LexiComLicenser_2
+    license_nexus_groupid: com.cleo.util
+    license_nexus_repoid: cleo
+    license_nexus_repourl: http://contd.cleo.com/nexus/service/local/artifact/maven/content
+    license_nexus_version: LATEST
+    macro_name: '%datashare%'
+    nexus_classifier: linux64-jre18
+    nexus_groupid: com.cleo.installers
+    nexus_maven_repourl: http://10.80.80.156/nexus/service/local/repositories/InstallerSnapshots/content/
+    nexus_packaging: bin
+    nexus_prod_repourl: http://10.10.1.57/nexus/service/local/repo_groups/cleo/content/
+    nexus_repoid: InstallerSnapshots
+    nexus_systest_artifactid: versalex_setup
+    nexus_systest_groupid: com.cleo.systest
+    nexus_systest_repourl: http://10.80.80.156/nexus/service/local/repositories/snapshots/content/
+    nexus_systest_version: 0.1-SNAPSHOT
+    port: 5080
+    server_custom_macro: '%wmdatas%=/root/share1/'
+    vex_heapmem_max: 2048M
+    vex_heapmem_min: 256M
+    vex_jmx_port: 2098

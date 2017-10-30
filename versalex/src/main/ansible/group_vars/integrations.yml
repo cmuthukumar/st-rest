@@ -1,0 +1,22 @@
+integrations:
+  mysql:
+    app_args: MYSQL_ROOT_PASSWORD=testdocker
+    app_destdir: /root/DockerFile/
+    app_port: 3306
+    app_srcdir: /home/SystemTest/DockerFiles/
+    app_type: mysql
+    dbname: mysql
+    docker: 'true'
+    driver_str: com.mysql.jdbc.Driver
+    image_name: testdockerfile
+    image_tag: latest
+    maven_artifactid: mysql-connector-java
+    maven_destfilename: mysqltest24.jar
+    maven_groupid: mysql
+    maven_version: 5.1.24
+    node_ip: dbsrv1
+    password: testdocker
+    port: 3306
+    type: db
+    use_docker_image: 'true'
+    username: root

@@ -1,0 +1,7 @@
+#Sat Oct 28 00:41:36 CDT 2017
+license.extensionb3=eiT|-m$AR-ryLK-$UJK-rkKj-LiQ%-aDM7-mkmd
+license.extensionb2=enTA-5hrR-zZUK-$VJR-s^\#I-HiQ[-aD\#e-mRZU
+license.extensionb1=ebTA-5{2R-rZUK-$VJR-s^\#j-HiQ[-aD\#e-mRZU
+license.key=Tv&A-uI&7-dZUK-$GJF-mFXq-&iIi-aDE7-J[0x
+license.owner=Cleo
+license.hash=CFS08X|r81ei2

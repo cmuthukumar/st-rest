@@ -2,9 +2,9 @@
 - hosts: "{{machine_type}}"
   connection: local
   tasks:
-        - name: Test Host vars 
+        - name: Create Host Vars
           setup_host_vars:
-            usr_src: "{{playbook_dir}}/files/servers.yml"
+            usr_src: "{{playbook_dir}}/files/{{machine_type}}.yml"
             hostvars_dest: "{{playbook_dir}}/host_vars/{{inventory_hostname}}.yml"
           register: host_vars
          
@@ -14,24 +14,11 @@
 - hosts: localhost
   connection: local
   tasks:          
-        - name: Test group vars 
+        - name: Create Group Vars 
           setup_group_vars:
-            usr_src: "{{playbook_dir}}/files/servers.yml"
+            usr_src: "{{playbook_dir}}/files/{{machine_type}}.yml"
             default_src: "{{playbook_dir}}/files/defaults.yml"
           register: group_vars
          
         - name: Print Group Vars Message
           debug: var=group_vars
-     
-  # vars_files:      
-     # - "{{machine_type}}.yml"
-     # # - "vars/defaults.yml"
-  # roles:    
-     # - { role: "setup.group.vars" }
-     
-# - hosts: "{{machine_type}}"
-  # connection: local
-  # vars_files:      
-     # - "{{machine_type}}.yml"
-  # roles:    
-     # - { role: "setup.host.vars" }

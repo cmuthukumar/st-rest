@@ -1,0 +1,4 @@
+integrations:
+  mysql:
+    name: mysql
+    version: mysql:latest

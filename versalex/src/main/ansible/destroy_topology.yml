@@ -1,7 +1,7 @@
 ---
 - hosts: localhost  
   vars_files:
-    - "{{machine_type}}.yml"
+    - "{{playbook_dir}}/files/{{machine_type}}.yml"
 
   roles:
     - {role: destroy.topology, machine_type: "{{machine_type}}"}

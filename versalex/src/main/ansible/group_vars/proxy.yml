@@ -1,0 +1,30 @@
+proxy:
+  vlproxy:
+    client_local_path: /root/share/
+    custom_macro: '%datashare%=/root/share'
+    dname: VLProxy
+    docker: 'false'
+    download_location: /home/SystemTestNew/vexdownload/
+    download_version_url: http://contd.cleo.com/nexus/service/local/artifact/maven/content
+    find_version_url: http://contd.cleo.com/nexus/service/local/artifact/maven/resolve
+    karaf_heapmem_max: 2G
+    karaf_heapmem_min: 256M
+    karaf_jmx_port: 2099
+    macro_name: '%datashare%'
+    nexus_classifier: linux64-jre18
+    nexus_groupid: com.cleo.installers
+    nexus_maven_repourl: http://10.80.80.156/nexus/service/local/repositories/InstallerSnapshots/content/
+    nexus_packaging: bin
+    nexus_prod_repourl: http://10.10.1.57/nexus/service/local/repo_groups/cleo/content/
+    nexus_repoid: InstallerSnapshots
+    nexus_systest_artifactid: versalex_setup
+    nexus_systest_groupid: com.cleo.systest
+    nexus_systest_repourl: http://10.80.80.156/nexus/service/local/repositories/snapshots/content/
+    nexus_systest_version: 0.1-SNAPSHOT
+    node_ip: proxy1
+    port: '8080'
+    revfwdproxy: 'true'
+    type: http
+    vex_heapmem_max: 2048M
+    vex_heapmem_min: 256M
+    vex_jmx_port: 2098

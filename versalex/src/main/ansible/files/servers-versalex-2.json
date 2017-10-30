@@ -1,0 +1,8 @@
+{
+  "serial": "KY6791-PB3593",
+  "alias": "servers-versalex-2",
+  "url": "http://198.199.88.248:5080",
+  "backup":true, 
+  "syncpath": "certs/*;data/*;conf/Options.xml;conf/Proxies.xml;conf/AS400.xml;conf/WinUnixFolders.xml;conf/Schedule.xml;hosts/Local Listener.xml;hosts/*.xml;conf/TradingPartners.xml;conf/ipbl.xml;importedIDPs/*.xml",
+  "enabled":true
+}

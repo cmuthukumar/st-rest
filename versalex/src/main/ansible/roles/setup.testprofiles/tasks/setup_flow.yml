@@ -10,42 +10,8 @@
      with_dict: "{{ dataset | default({}) }}"
      loop_control:
         loop_var: conf_dataset  
-
-   # - name: Kill Harmony Processes Karaf and OSGI
-     # shell: "kill -9 $(ps -aef |grep 'karaf.main' |grep -v grep |awk '{print $2 \"\t\" $3}')"
-     # register: kill_status        
-     # ignore_errors: yes
-     
-   # - name: Print Kill Details
-     # debug: msg="Kll Details:{{kill_status}}"
-   
-   # - name: Remove schedule Lock File if exists
-     # file:
-         # path: "{{versalex.install_location}}schedule.lck"
-         # state: absent
-     
-   # # - name: Wait for port 5080 to get Stopped
-     # # wait_for: host="{{inventory_hostname}}" port="{{versalex.port}}" delay=20 state=stopped
-
-   # - name: Start VersalEx Product Daemon   
-     # shell: "{{item}}"
-     # args:
-       # chdir: "{{versalex.install_location}}"
-     # with_items:
-       # - ./{{versalex.dname}}d start
-     # register: startvexstatus
-
-   # - name: Wait for port 5080 to get Started
-     # wait_for: host="{{inventory_hostname}}" port="{{versalex.port}}" delay=20 state=started
      
    - name: Print Debug Msgs Setup Flow
      debug: msg="Done with Config"   
-   # - name: Configure TP Side Nodes
-     # include: configure_tp.yml
-     # static: no
-     # when: vex_product is defined and not include_vars_status | failed and vex_product != 'VLProxy' and node_type == 'Receiver'
-   # - name: Configure Post Setup Configs
-     # include: post_setup.yml
-     # when: vex_product is defined and vex_product != 'VLProxy'
 - rescue:
    - fail: msg="Setup Test Profile Module Failed" 
