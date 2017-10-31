@@ -1,5 +1,3 @@
-# st
-System Testing
 #System Testing:-
 ##Purpose:-
   * Automating performance aspects of Versalex Products with respect to various load patterns and scenarios.
