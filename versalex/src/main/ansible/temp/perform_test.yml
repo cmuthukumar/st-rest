@@ -1,4 +1,0 @@
-
-sts: "shares"
-  roles:
-     - { role: jmeter }
