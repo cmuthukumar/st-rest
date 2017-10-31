@@ -1,5 +1,5 @@
----
-- hosts: localhost  
+
+sts: localhost  
   tasks:
     - name: Print Passed Values
       debug: msg="Server Prod name {{srv_qty}}"

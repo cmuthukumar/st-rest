@@ -1,5 +1,5 @@
----
-- hosts: localhost
+
+sts: localhost
   connection: local
   tasks:
     - name: Upload and Ensure SSH Key Exists in Digital Ocean account, Retries 3 times with delay of 5 seconds, if failure
