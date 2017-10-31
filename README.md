@@ -10,9 +10,9 @@
 
 ##Pipeline Stages:-
   * Checkout
-  * Create Machines
-  * Install Applications
-  * Configurre Versalex
+  * Create Nodes
+  * Install Product
+  * Configurre Product
   * Setup TestProfiles
   * Execution(Yet to Start)
   * Monitoring(Yet to Start)
