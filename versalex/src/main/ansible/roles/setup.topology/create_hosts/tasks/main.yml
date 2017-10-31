@@ -1,5 +1,10 @@
 ---
 # tasks file for create.topology
+- name: Create Inventory Dir
+  file: 
+    path: "{{playbook_dir}}/inventory/"
+    state: directory
+    
 - name: Create Hosts Inventory File
   template:
      src: create_hosts.j2
