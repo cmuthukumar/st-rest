@@ -2,6 +2,11 @@
 - hosts: "{{machine_type}}"
   connection: local
   tasks:
+        - name: Create Inventory Dir
+          file: 
+            path: "{{playbook_dir}}/host_vars/"
+            state: directory
+            
         - name: Create Host Vars
           setup_host_vars:
             usr_src: "{{playbook_dir}}/files/{{machine_type}}.yml"
@@ -13,7 +18,12 @@
           
 - hosts: localhost
   connection: local
-  tasks:          
+  tasks:
+        - name: Create Inventory Dir
+          file: 
+            path: "{{playbook_dir}}/group_vars/"
+            state: directory
+            
         - name: Create Group Vars 
           setup_group_vars:
             usr_src: "{{playbook_dir}}/files/{{machine_type}}.yml"

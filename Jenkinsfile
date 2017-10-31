@@ -36,7 +36,6 @@ sh 'java -version'
 //def systestvexImage=docker.build('st-versalex:1.0','.')
     def st_ansibleImage =  docker.image('cleo/ansible:st_1.0');
     withDockerRegistry([credentialsId: 'DockerCleoSysTest', url: 'https://hub.docker.com/r/cleo/ansible/']) {
-
     st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
     {    
     try{
