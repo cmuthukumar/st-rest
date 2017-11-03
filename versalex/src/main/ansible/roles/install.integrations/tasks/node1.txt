@@ -1,8 +1,0 @@
-Protocols:
-    AS2:
-    total: 1000
-    props_file: AS2.yml
-    
-    
-    FTP:
-    

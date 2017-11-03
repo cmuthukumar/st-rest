@@ -4,8 +4,6 @@
       file: path="{{app_destdir}}"  state=directory mode=0777
     - name: Copy Mysql Dockerfile  to Remote Location
       copy: src="{{app_sourcedir}}" dest="{{app_destdir}}"
-#    - name: Copy Mysql Dockerfile  to Remote Location
-#      copy: src="{{src_dir}}/docker-entrypoint.sh" dest="{{dest_dir}}"
     - name: Change Mode of  Dockerfile file to 0777
       file: path="{{app_destdir}}Dockerfile" mode=0777
     - name: Build Docker Image from Docker Hub and Run it
