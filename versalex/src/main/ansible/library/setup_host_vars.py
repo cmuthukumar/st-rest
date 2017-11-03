@@ -28,7 +28,7 @@ def build_host_vars(usr_src,hostvars_dest):
             for lk,lv in srvrs[k].items():
                 if k == 'dataset':
                     lk='dataset'
-                if lk in os.path.basename(hostvars_dest):
+                if lv in os.path.basename(hostvars_dest):
                     parent[lk] ={}
                     for key in lv:
                         parent[lk][key['name']] ={}
