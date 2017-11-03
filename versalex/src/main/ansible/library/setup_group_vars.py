@@ -25,8 +25,9 @@ import yaml
 import os
 
 
-def build_grp_vars(usr_src,default_src):
-    fileDir = os.path.dirname(os.path.realpath('__file__'))   
+def build_grp_vars(machine_type,usr_src,default_src):
+    fileDir = os.path.dirname(os.path.realpath('__file__'))
+    grpvar_path=fileDir+'/group_vars/'+machine_type
     # srvr_stream = open(os.path.join(fileDir, 'files/'+usr_src), "r") 
     srvr_stream = open(usr_src, "r")
     srvrs = yaml.load(srvr_stream)
@@ -53,13 +54,14 @@ def build_grp_vars(usr_src,default_src):
                             parent[lk][key['name']][dpk] =dpv
                             prod_grp[lk][key['name']][dpk] =dpv                            
                             prod_dest = lk + ".yml"
-                            prod_fpath=open(os.path.join(fileDir, 'group_vars/'+prod_dest),'w+')
+                            group_path=grpvar_path+'/'+prod_dest
+                            prod_fpath=open(group_path,'w+')
                             try:
                                 yaml.dump(prod_grp, prod_fpath, default_flow_style=False)
                                 # prod_path.update({lk: prod_fpath })
                             except yaml.YAMLError as err:
                                 print err
-    f= open(os.path.join(fileDir, 'group_vars/'+os.path.basename(usr_src)), 'w+')  
+    f= open(os.path.join(fileDir, 'group_vars/'+machine_type+'/'+os.path.basename(usr_src)), 'w+')  
     try:
         yaml.dump(parent, f, default_flow_style=False)
         result= {"status": "success", "groupVar_path": f.name}
@@ -71,11 +73,12 @@ def build_grp_vars(usr_src,default_src):
 def main():
     
     fields = {
+        "mach_type": {"required": True, "type": "str"},
         "usr_src": {"required": True, "type": "str"},
         "default_src": {"required": True, "type": "str" },
     }
     module = AnsibleModule(argument_spec=fields)
-    stat, result= build_grp_vars(module.params['usr_src'],module.params['default_src']) 
+    stat, result= build_grp_vars(module.params['mach_type'],module.params['usr_src'],module.params['default_src']) 
     if stat:
         module.exit_json(meta=result)
     else:
