@@ -61,11 +61,6 @@ defaults:
     vltrader:        
         checkout_dir: "/root/workspace/LoadTesting/"
         install_location: "/root/VLTrader/"
-        # vex_heapmem_min: 256M
-        # vex_heapmem_max: 2048M
-        # vex_jmx_port: 2098
-        # karaf_heapmem_min: 256M
-        # karaf_heapmem_max: 2G
         port: 5080
         karaf_jmx_port: 2099
         # server_share_path: "/root/share1/"

@@ -1,0 +1,22 @@
+---
+- include: setup_topology.yml
+- meta: refresh_inventory
+- include: setup_vars.yml        
+  vars:
+    - machine_type: "{{machine_type}}"
+- include: install_product.yml        
+  vars:
+    - machine_type: "{{machine_type}}"
+- include: install_integrations.yml        
+  vars:
+    - machine_type: "{{machine_type}}"
+- include: configure_product.yml        
+  vars:
+    - machine_type: "{{machine_type}}" 
+- include: configure_vlproxy.yml        
+  vars:
+    - machine_type: "{{machine_type}}"
+- include: setup_testprofiles.yml        
+  vars:
+    - machine_type: "{{machine_type}}"    
+            

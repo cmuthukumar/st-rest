@@ -1,6 +1,20 @@
 ---
 # tasks file for setup.testprofiles
 - block:
+   - name: Setting Group Name
+     set_fact:        
+       grp_name: 'tpnodes-versalex'
+     delegate_to: 127.0.0.1
+
+   - name: Setting Node Count for TPNodes
+     set_fact:        
+       vex_count: "{{ groups[grp_name] | length | int}}"
+     delegate_to: 127.0.0.1
+     
+   - name: TestProfile map for ServerSide
+     template: src=setup_tp_testprofile.j2 dest="{{playbook_dir}}/dataset/{{inventory_hostname}}-{{grp_name}}.yml"
+     delegate_to: 127.0.0.1
+
    - name: Include Node Specific Variables for TPNode Proxy
      include_vars:
          dir: "{{playbook_dir}}/dataset/"
