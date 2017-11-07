@@ -26,7 +26,7 @@
    - name: Setup Testprofiles in Server Side Nodes
      include: setup_flow.yml
      with_dict: "{{ versalex | default({}) }}"
-     when: "'servers-versalex' in inventory_hostname and  play_hosts.index(inventory_hostname) == 0"
+     when: "'servers-versalex-1' in inventory_hostname"
      loop_control:
         loop_var: group_item     
 
