@@ -1,0 +1,13 @@
+---
+# tasks file for install.integrations
+- block:
+    - name: Include Install Product Role with Versalex
+      include: "install_flow.yml"
+      with_dict: "{{ integrations | default({}) }}"
+      when: "'integrations' in subtype"
+      loop_control:
+         loop_var: group_item
+  rescue:
+    - fail: msg="Install Apps failed for Dockerized"
+      when: item.failed==true
+      with_items: "{{ install_status.results }}"    

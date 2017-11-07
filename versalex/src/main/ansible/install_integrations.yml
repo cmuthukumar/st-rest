@@ -1,0 +1,4 @@
+---
+- hosts: "{{machine_type}}"
+  roles:
+    - { role: install.integrations,mach_type: "{{machine_type}}" }

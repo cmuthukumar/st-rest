@@ -1,0 +1,146 @@
+---
+# defaults file for setup.group.vars
+defaults:
+    share:
+        server_share_path: "/root/share/"
+    versalex: &vexref
+        vex_heapmem_min: 256M
+        vex_heapmem_max: 2048M
+        vex_jmx_port: 2098
+        karaf_heapmem_min: 256M
+        karaf_heapmem_max: 2G
+        port: 5080
+        karaf_jmx_port: 2099
+        macro_name: "%datashare%"
+        custom_macro: "%datashare%=/root/share"
+        client_local_path: "/root/share/"
+        docker: "false"
+        nexus_maven_repourl: "http://10.80.80.156/nexus/service/local/repositories/InstallerSnapshots/content/"
+        nexus_systest_repourl: "http://10.80.80.156/nexus/service/local/repositories/snapshots/content/"
+        nexus_prod_repourl: "http://10.10.1.57/nexus/service/local/repo_groups/cleo/content/"
+        find_version_url: "http://contd.cleo.com/nexus/service/local/artifact/maven/resolve"
+        download_version_url: "http://contd.cleo.com/nexus/service/local/artifact/maven/content"
+        nexus_repoid: "InstallerSnapshots"
+        nexus_groupid: "com.cleo.installers"
+        nexus_systest_groupid: "com.cleo.systest"
+        nexus_systest_artifactid: "versalex_setup"
+        nexus_systest_version: "0.1-SNAPSHOT"
+        #nexus_artifactid: Harmony 
+        nexus_classifier: "linux64-jre18"
+        nexus_packaging: bin    
+        download_location: "/home/SystemTestNew/vexdownload/"                 
+    license: &lic
+        license_nexus_repourl: "http://contd.cleo.com/nexus/service/local/artifact/maven/content"
+        license_nexus_repoid: cleo
+        license_nexus_groupid: com.cleo.util
+        license_nexus_artifactid: LexiComLicenser_2
+        license_nexus_version: LATEST
+        license_CompanyName: Cleo
+        license_SerialNumber: KY
+        license_KeyExpiration: 300
+        license_Product: Harmony
+        license_Limit_HSP: 0
+        license_Limit_Anyother: 0
+        license_Trust: 1
+        license_Unify: 1        
+    harmony:        
+        checkout_dir: "/root/workspace/LoadTesting/"
+        install_location: "/root/harmony/"
+        # vex_heapmem_min: 256M
+        # vex_heapmem_max: 2048M
+        # vex_jmx_port: 2098
+        # karaf_heapmem_min: 256M
+        # karaf_heapmem_max: 2G
+        port: 5080
+        karaf_jmx_port: 2099
+        dname: Harmony
+        # server_share_path: "/root/share1/"
+        server_custom_macro: "%wmdatas%=/root/share1/"
+        <<: *vexref
+        <<: *lic
+    vltrader:        
+        checkout_dir: "/root/workspace/LoadTesting/"
+        install_location: "/root/VLTrader/"
+        port: 5080
+        karaf_jmx_port: 2099
+        # server_share_path: "/root/share1/"
+        server_custom_macro: "%wmdatas%=/root/share1/"
+        <<: *vexref
+        <<: *lic
+    lexicom:        
+        vex_product: Lexicom
+        checkout_dir: "/root/workspace/LoadTesting/"
+        install_location: "/root/Harmony/"
+        <<: *vexref
+        <<: *lic        
+    vlproxy:
+        node_ip: proxy1 
+        type: "http"      
+        port: "8080"
+        revfwdproxy: "true"
+        dname: VLProxy
+        <<: *vexref
+    as2:
+        host_range: 1-20
+        mailbox_range: 1-1
+        action_range: 1-1
+        create_certs: true       
+        host_custom_props: {}
+        mailbox_custom_props: {}
+        action_custom_props: {}
+    ftp:
+        host_range: 1-20
+        mailbox_range: 1-1
+        action_range: 1-1
+        create_certs: true       
+        host_custom_props: {}
+        mailbox_custom_props: {}
+        action_custom_props: {}        
+    mysql:
+        type: "db"
+        maven_artifactid: mysql-connector-java
+        maven_groupid: mysql
+        maven_version: 5.1.24
+        maven_destfilename: "mysqltest24.jar"
+        app_type: mysql
+        node_ip: dbsrv1
+        # jdbc_url: "jdbc:mysql://2.2.2.2:3306/test1"
+        port: 3306
+        dbname: mysql
+        driver_str: "com.mysql.jdbc.Driver"
+        username: root
+        password: testdocker
+        docker: "true"
+        use_docker_image: "true"
+        app_srcdir: "/home/SystemTest/DockerFiles/"
+        app_destdir: "/root/DockerFile/"
+        image_name: testdockerfile
+        app_port: 3306
+        image_tag: latest
+        app_args: "MYSQL_ROOT_PASSWORD=testdocker"        
+    oracle:
+        type: "db"
+        maven_artifactid: oracle-connector-java
+        maven_groupid: oracle
+        maven_version: 5.1.24
+        maven_destfilename: "oracle.jar"
+        app_type: oracle
+        node_ip: dbsrv1
+        # jdbc_url: "jdbc:mysql://2.2.2.2:3306/test1"
+        port: 3306
+        dbname: oracle
+        driver_str: "com.oracle.jdbc.Driver"
+        username: root
+        password: testdocker      
+    ad:
+        type: "ldap"
+        host: "10.80.80.888"
+        port: 2222
+        secuirtymode: SSL    
+        basedn: "Overnight,DC=Engineering,DC=localzz"
+        username: testldap
+        fullnameattrib: displayNamezz
+        homedirattrib: homeDirectoryzz
+        emailattrib: xyz@gmal.com
+        searchfilter: "department=QAzz"
+        usernameattrib: "MuthuTest"

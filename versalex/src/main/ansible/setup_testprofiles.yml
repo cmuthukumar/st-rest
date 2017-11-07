@@ -1,0 +1,10 @@
+---
+- hosts: "servers:tpnodes"
+  roles:
+     - { role: setup.testprofiles/pre_setup, when: "'servers-versalex' in inventory_hostname" }
+     - { role: setup.testprofiles/setup_server, when: "'servers-versalex' in inventory_hostname" }
+- hosts: "servers:tpnodes"
+  roles:
+     - { role: setup.testprofiles/tp_dataset, when: "'servers-versalex' in inventory_hostname"  }
+     - { role: setup.testprofiles/setup_tp  }
+     

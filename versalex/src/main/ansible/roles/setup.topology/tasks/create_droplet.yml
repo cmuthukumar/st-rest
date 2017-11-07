@@ -1,0 +1,71 @@
+---
+    - name: Create  Droplet and Ensure it exists,Retries 3 times with delay of 5 seconds, if failure
+      digital_ocean: 
+         state: present
+         command: droplet
+         name: "{{mac_type}}-{{swtype}}-{{item}}"
+         unique_name: yes
+         size_id: "{{outer_item.ram_size}}"
+         region_id: "{{outer_item.region}}"
+         image_id: "{{outer_item.image_name}}"
+         ssh_key_ids: "{{uploadstatus.ssh_key.id}}"
+         api_token: "{{do_token}}"
+      with_sequence: start=1 end="{{outer_item.qty}}" stride=1       
+      register: droplet_details
+      retries: 3
+      delay: 5  
+      until: droplet_details|success
+
+    # - name: Accept ssh fingerprints                                         
+      # shell: ssh-keyscan -H {{ item.droplet.ip_address }} >> ~/.ssh/known_hosts          
+      # with_items: '{{ droplet_details.results }}'
+
+    # - name: List Known Hosts file
+      # shell: cat ~/.ssh/known_hosts 
+      # register: kn_hst
+  
+    # - name: Print known hosts
+      # debug: msg="Knwn Hosts {{kn_hst}}"
+      
+    - name: "Add IP's of Machines Created in Digital Ocean to Groups"
+      add_host: 
+        name: "{{item.droplet.name}} ansible_ssh_host={{item.droplet.ip_address}}  appl={{outer_item.name}} subtype={{swtype}}"
+        hostname: "{{item.droplet.name}}"
+        type: "{{mac_type}}"       
+        ansible_host: "{{item.droplet.ip_address}}"
+        groups: "{{mac_type}}-{{swtype}}"
+        # ansible_ssh_private_key_file: '/root/.ssh/id_rsa'
+        # ansible_ssh_common_args: '-o PubkeyAuthentication=yes'
+        ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+        # ansible_ssh_common_args: '-o UserKnownHostsFile=/dev/null'
+      with_items: "{{droplet_details.results}}"
+      
+    - name: "Add IPs of Machines Created in Digital Ocean to Groups at Type Level"
+      add_host:
+        name: "{{item.droplet.name}} ansible_ssh_host={{item.droplet.ip_address}} appl={{outer_item.name}} subtype={{swtype}}"
+        hostname: "{{item.droplet.name}}"
+        type: "{{mac_type}}"        
+        ansible_host: "{{item.droplet.ip_address}}"
+        groups: "{{mac_type}}"
+        # ansible_ssh_private_key_file: '/root/.ssh/id_rsa'
+        # ansible_ssh_common_args: '-o PubkeyAuthentication=yes'
+        ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+        # ansible_ssh_common_args: '-o UserKnownHostsFile=/dev/null'
+      with_items: "{{droplet_details.results}}"
+
+    - name: "Add IP's of Machines Created in Digital Ocean to Groups Srvers"
+      add_host: 
+        name: "{{item.droplet.name}} ansible_ssh_host={{item.droplet.ip_address}}  appl={{outer_item.name}} subtype={{swtype}}"
+        hostname: "{{item.droplet.name}}"
+        type: "{{mac_type}}"       
+        ansible_host: "{{item.droplet.ip_address}}"
+        groups: "{{swtype}}"
+        # ansible_ssh_private_key_file: '/root/.ssh/id_rsa'
+        # ansible_ssh_common_args: '-o PubkeyAuthentication=yes'
+        ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+        # ansible_ssh_common_a      rgs: '-o UserKnownHostsFile=/dev/null'
+      with_items: "{{droplet_details.results}}"
+    
+    - name: Wait for SSH to come up
+      wait_for: host="{{item.droplet.ip_address}}" port=22 delay=5 timeout=320 state=started
+      with_items: "{{droplet_details.results}}"

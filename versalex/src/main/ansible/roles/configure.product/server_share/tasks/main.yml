@@ -1,0 +1,11 @@
+---
+# tasks file for configure.product
+- block:
+      - name: Setting Dictionary Name for Server Share
+        set_fact:
+           vex: "{{srvr_share.value}}"
+      
+      - name: Configure Shares in Server Nodes
+        include: configure_server_share.yml
+  rescue:
+      - fail: msg="Configure Server Share failed"

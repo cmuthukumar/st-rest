@@ -1,0 +1,34 @@
+---
+# tasks file for jmeter
+- name: Install 1.8 Open JDK
+  yum:
+    name: "java-1.8.0-openjdk.x86_64"
+    state: present
+    
+- name: Create Jmeter Download Directory
+  file:
+    path: "{{ jmeter_dir_location }}"
+    state: directory
+
+- name: Install Unzip for Extracting
+  yum:
+    name: unzip
+    state: present
+    
+- name: Jmeter Download Latest Version
+  get_url:
+    url: "{{ jmeter_get_utl }}"
+    dest: "{{ jmeter_dir_location }}"
+    
+- name: Extract JMeter to Dest Dir
+  unarchive:
+    src: "{{ jmeter_get_utl }}"
+    dest: "{{ jmeter_dir_location }}"
+    remote_src: yes    
+    
+- name: Extract JMeter Standard Plugins to Dest Dir
+  unarchive:
+    src: "{{ jmeter_plugins_tst_url }}"
+    dest: "{{ jmeter_dir_location }}/apache-jmeter-{{jmeter_version}}/"
+    remote_src: yes
+    

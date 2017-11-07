@@ -1,0 +1,26 @@
+---
+# tasks for carrying out configs flow
+  - name: Setting Dictionary Name for Proxy Inside
+    set_fact:
+       valid: "{{group_item.value}}"
+       
+  - name: Validating JMX Ports for Versalex
+    wait_for:
+       host: "{{ansible_ssh_host}}"
+       port: "{{item}}"
+       state: started
+    with_items:
+        - "{{valid.karaf_jmx_port}}"
+        - "{{valid.vex_jmx_port}}"
+    register: vex_jmx_status 
+
+  - name: Validate Client Share Mount Point`
+    assert:
+        that:
+            -  item.mount in "{{valid.client_local_path}}"
+             # - "item.mount == valid.client_local_path"
+    with_items: "{{ansible_mounts}}"
+    register: mount_status
+    
+  - name: Print Mount Status
+    debug: msg="Mounting Status {{mount_status}}"

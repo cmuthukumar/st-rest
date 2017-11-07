@@ -1,0 +1,22 @@
+---
+   - name: Setting Dictionary Name for Versalex Inside
+     set_fact:
+        dload: "{{dload_group.value}}"
+        
+   - name: Creates Download Location Directory
+     file: path="{{dload.download_location}}" state=directory
+     delegate_to: 127.0.0.1
+     
+   - name: Download Versalex Bin Package from Nexus Central with Run Once enabled
+     maven_artifact:
+        group_id: "{{dload.nexus_groupid}}"
+        artifact_id: "{{dload.dname}}"
+        version: "{{dload.version}}"
+        classifier: "{{dload.nexus_classifier}}"
+        extension: "{{dload.nexus_packaging}}"
+        repository_url: "{{dload.nexus_maven_repourl}}"
+        dest: "{{dload.download_location}}"
+        state: present
+     delegate_to: 127.0.0.1
+     run_once: true     
+     

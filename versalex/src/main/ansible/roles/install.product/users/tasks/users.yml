@@ -1,0 +1,45 @@
+---
+  - name: Setting Dictionary Name for Versalex Inside
+    set_fact:
+        usr: "{{group_item.value}}"
+        
+  - name: Download Password Hasher for Users from Nexus Central with Run Once enabled
+    maven_artifact:
+        group_id: "com.cleo.ep"
+        artifact_id: "password-hasher"
+        version: latest
+        classifier: ""
+        extension: "jar"
+        repository_url: "{{usr.nexus_prod_repourl}}"
+        dest: "{{playbook_dir}}/library/password-hasher.jar"
+        state: present
+    delegate_to: 127.0.0.1         
+  
+  - name: Copy VLNavigator Admin password jar to Remote
+    copy: src="{{playbook_dir}}/library/password-hasher.jar" dest="{{usr.install_location}}lib/password-hasher.jar"
+
+  - name: Generate Hashed Password  for VLNavigator
+    shell: jre/bin/java -cp $CLASSPATH com.cleo.ep.PasswordHasher 'Admin'
+    environment:
+       CLASSPATH: ":{{usr.install_location}}*.jar:{{usr.install_location}}lib/*:"    
+    args:
+       chdir: "{{ usr.install_location }}"
+    register: password_hasher
+    
+  - set_fact: hashed_admin_pwd="{{ password_hasher.stdout }}"    
+    
+  - name: Generate Users xml for Admin Setup
+    template:
+        src: "{{ item }}.j2"
+        dest: "{{ usr.install_location }}/conf/{{ item }}"
+    with_items:
+        - Users.xml
+        
+  - name: Start VersalEx Process After Users Setup
+    shell: "./{{usr.dname}}d start"
+    args:
+      chdir: "{{usr.install_location}}"     
+    register: vex_start_status
+     
+  - name: Wait for Versalex Port to Come up
+    wait_for: host="{{ansible_ssh_host}}" port="{{usr.port}}" delay=10 timeout=320 state=started

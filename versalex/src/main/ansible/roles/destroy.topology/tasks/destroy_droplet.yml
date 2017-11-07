@@ -1,0 +1,19 @@
+---
+    - name: Remove Droplet from Stack
+      digital_ocean: 
+         unique_name: yes
+         state: deleted
+         name: "{{mac_type}}-{{swtype}}-{{item}}"
+         api_token: "{{do_token}}"
+         size_id: "{{outer_item.ram_size}}"
+         region_id: "{{outer_item.region}}"
+         image_id: "{{outer_item.image_name}}"
+      with_sequence: start=1 end="{{outer_item.qty}}" stride=1       
+      register: droplet_details
+      retries: 3
+      delay: 5  
+      until: droplet_details|success
+
+    - name: Printing of Create Results
+      debug: msg="Dropltet Deleted is {{droplet_details.results}}"
+    

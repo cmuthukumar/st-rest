@@ -1,0 +1,68 @@
+---
+   - name: Print Hostvars
+     debug: msg="Versalex name{{conf_server.name}}"     
+
+   - name: Copy SetupOptions Jar File to remote location
+     copy: src="{{playbook_dir}}/library/versalex_setup-latest.jar" dest="{{conf_server.install_location}}lib/"
+
+   - name: Set Dataset key
+     set_fact:
+          ds_key: "{{conf_dataset.key}}"
+          
+   - name: Set macro name to Empty if shares not defined
+     set_fact: 
+        macro_name: ""
+     when: shares is not defined
+   
+   - name: Set macro name if defined
+     set_fact: 
+        macro_name: "%datashare%"
+     when: shares is defined
+          
+   - name: Configure Test Profiles in Remote Machines on Server - AS2
+     shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupTestProfile "{{conf_server.name}}" "{{conf_server.install_location}}" "{{item.name}}" "{{item.hr}}" "{{item.mailbox_range}}" "{{item.action_range}}" "{{ item.ip }}" "5080"  "{{macro_name}}" "{{item.host_custom_props}}" "{{item.mailbox_custom_props}}" "{{item.action_custom_props}}" "{{item.create_certs}}"
+     environment:
+       CLASSPATH: ":{{conf_server.install_location}}/*:{{conf_server.install_location}}lib/*:{{conf_server.install_location}}lib/help/*:{{conf_server.install_location}}lib/hibernate/*:{{conf_server.install_location}}lib/secureshare/*:{{conf_server.install_location}}webserver/AjaxSwing/lib/*:{{conf_server.install_location}}lib/json/*"
+     args:
+       executable: /bin/sh
+       chdir: "{{conf_server.install_location}}"     
+     with_items: "{{srvdataset[ds_key]}}"
+     when: item.name | lower == 'as2'
+     register: profile_config
+     
+   - name: Configure Test Profiles in Remote Machines on Server - FTP Server
+     shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupTestProfile "{{conf_server.name}}" "{{conf_server.install_location}}" "{{item.name}}" "1-1" "{{item.hr}}" "{{item.action_range}}" "{{ item.ip }}" "5080"  "{{macro_name}}" "{{item.host_custom_props}}" "{{item.mailbox_custom_props}}" "{{item.action_custom_props}}" "true"
+     environment:
+       CLASSPATH: ":{{conf_server.install_location}}/*:{{conf_server.install_location}}lib/*:{{conf_server.install_location}}lib/help/*:{{conf_server.install_location}}lib/hibernate/*:{{conf_server.install_location}}lib/secureshare/*:{{conf_server.install_location}}webserver/AjaxSwing/lib/*:{{conf_server.install_location}}lib/json/*"
+     args:
+       executable: /bin/sh
+       chdir: "{{conf_server.install_location}}"
+     with_items: "{{srvdataset[ds_key]}}"
+     when: item.name | lower == 'ftp'
+     register: profile_config
+
+   - name: Configure Schedule Actions on Server Node
+     shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupTestProfile "{{conf_server.name}}" "{{conf_server.install_location}}" "true"
+     environment:
+       CLASSPATH: ":{{conf_server.install_location}}SetupTestProfile.jar:{{conf_server.install_location}}lib/*:{{conf_server.install_location}}lib/help/*:{{conf_server.install_location}}lib/hibernate/*:{{conf_server.install_location}}lib/secureshare/*:{{conf_server.install_location}}webserver/AjaxSwing/lib/*:{{conf_server.install_location}}lib/json/*"
+     args:
+       executable: /bin/sh
+       chdir: "{{conf_server.install_location}}"
+     register: schedule_actions
+       
+     # when: vex_product  is defined and vex_product != 'VLProxy' and node_type == 'Sender'
+#   - name: Print Profile Config Details
+#     debug: msg="Profile Details:{{profile_config}}"
+#     when: vex_product  is defined and vex_product != 'VLProxy' and node_type == 'Sender'
+   - name: Creates files dir
+     file: 
+        path: "{{playbook_dir}}/files/" 
+        state: directory
+        
+   - name: Copy Certs from Remote Locaton to Local
+     synchronize: src="{{conf_server.install_location}}systestcerts"  dest="{{playbook_dir}}/files/" mode=pull
+     register: copy_status
+     until: copy_status|success
+     retries: 3
+     delay: 10
+     

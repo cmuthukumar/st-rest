@@ -1,0 +1,18 @@
+---
+   # - name: Get Serial Number from Rest Call
+     # uri:
+      # url: "http://{{ansible_ssh_host}}:5080/{{configure_versalex.vex_product}}"
+      # method: GET
+      # HEADER_Accept: "application/json"
+      # return_content: no
+     # delegate_to: 127.0.0.1 
+     # when: configure_versalex.vex_product != "VLProxy"
+     # register: latestversion
+   # - name: Extract Serial No from Rest Results
+     # set_fact:
+        # serial_num: "{{latestversion.url.split('-') |replace('/','') }}"
+     # delegate_to: 127.0.0.1
+   #  when: configure_versalex.vex_product != "VLProxy"
+   # - name: Print Details 
+     # debug: msg="Version Details:{{serial_num[1]}}-{{serial_num[2]}}"
+     # delegate_to: 127.0.0.1 

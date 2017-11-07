@@ -1,0 +1,20 @@
+---
+# with_dict: "{{configure_apps['dbservers'] | default({}) }}"
+- name: Kill Java Processes running on Remote System
+  shell: "kill $(ps aux | grep -i java | grep -v 'grep' | awk '{print $2}')"
+  register: javakill_status
+  ignore_errors: True  
+  
+- name: Stop Results
+  debug: msg="Stop Resultls {{javakill_status}} versalex_artifactid {{confvlp.dname}}"
+  
+- name: Wait for port 8080 to get Stopped
+  wait_for: port=8080 delay=10 state=stopped
+  
+- name: Start VersalEx Product Daemon   
+  shell: "{{item}}"
+  args:
+    chdir: "{{confvlp.install_location}}"
+  with_items:
+    - ./{{confvlp.dname}}d start
+  register: startvexstatus

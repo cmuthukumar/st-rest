@@ -1,0 +1,7 @@
+---
+- import_playbook: setup_vars.yml
+- import_playbook: install_product.yml
+- import_playbook: install_integrations.yml
+- import_playbook: configure_product.yml
+- import_playbook: setup_sync.yml
+#- include: setup_testprofiles.yml

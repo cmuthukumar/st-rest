@@ -1,0 +1,40 @@
+---
+# tasks file for docker.install.debian.ubuntu linux
+    - name: Change Mode of Docker Entry file to 0777
+      file: path="{{app_destdir}}"  state=directory mode=0777
+    - name: Copy Mysql Dockerfile  to Remote Location
+      copy: src="{{app_sourcedir}}" dest="{{app_destdir}}"
+    - name: Change Mode of  Dockerfile file to 0777
+      file: path="{{app_destdir}}Dockerfile" mode=0777
+    - name: Build Docker Image from Docker Hub and Run it
+      docker_image:
+        name: "{{app_image_name}}"
+        path: "{{app_destdir}}"
+        state: present
+        tag: "{{app_image_tag}}"
+        docker_api_version: "1.21"
+      register: docker_image_details                 
+      until: "'failed' not in docker_image_details"
+      retries: 3
+      delay: 10
+    - name: Print Docker Details
+      debug: msg="Docker Image Details::{{docker_image_details}}"
+    - name: Pull Docker Image from Docker Hub and Run it
+      docker:
+        image: "{{app_image_name}}:{{app_image_tag}}"
+        state: running
+        env: "{{image_args}}"
+        net: bridge
+        docker_api_version: "1.21"        
+      register: docker_details
+      until: "'failed' not in docker_details"
+      retries: 3
+      delay: 10
+    - name: Print Docker Containers Details
+      debug: msg="Docker Containers Details::{{docker_details}}"
+    - name: Docker Container IP address
+      debug: msg="IP Address is:::{{item['NetworkSettings']['IPAddress']}}"
+      with_items: "{{docker_containers}}"  
+    - name: Docker Container IP address
+      debug: msg="IP Address is:::{{item['NetworkSettings']['IPAddress']}}"
+      with_items: "{{docker_containers}}"      

@@ -1,0 +1,8 @@
+---
+# tasks file for versalex.apps
+    - name: Include Install Product Role with Versalex
+      include: "validate.yml"
+      with_dict: "{{ versalex | default({}) }}"
+      when: "'versalex' in subtype" 
+      loop_control:
+         loop_var: test_install

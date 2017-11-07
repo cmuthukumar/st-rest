@@ -1,0 +1,60 @@
+---
+ # - name: Setting Dictionary Name for Proxy Inside
+   # set_fact:
+      # versalex: "{{conf_tp.value}}"
+ 
+ - name: Set Dataset Key 
+   set_fact:
+        dset_key: "{{conf_dataset.key}}"
+        
+ - name: Copy SetupOptions Jar File to remote location
+   copy: src="{{playbook_dir}}/library/" dest="{{tp_profile.install_location}}lib/"
+
+ - name: Create Import Location Directory, if not Exists
+   file: path="{{tp_profile.install_location}}systestcerts" state=directory
+   # when: node_type == 'Receiver'
+ - name: Copy All Certs from Local to Remote Import Location
+   synchronize: src="{{playbook_dir}}/files/systestcerts/" dest="{{tp_profile.install_location}}systestcerts/"   
+   # when: setup_profiles.vex_product is defined and setup_profiles.vex_product != 'VLProxy' and setup_profiles.node_type == 'Receiver'   
+ - name: Set macro name to Empty if  not defined
+   set_fact: 
+        macro_name: ""
+   when: shares is not defined
+   
+ - name: Set macro name if defined
+   set_fact: 
+        macro_name: "%datashare%"
+   when: shares is defined
+      
+ - name: "Configure Test Profiles in Remote Machines for TP Side-AS2"
+   shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupTestProfile "{{tp_profile.name}}" "{{tp_profile.install_location}}" "{{item.name}}" "{{item.hr}}" "{{item.mailbox_range}}" "{{item.action_range}}" "{{item.ip}}" "80"  "{{macro_name}}" "{{item.host_custom_props}}" "{{item.mailbox_custom_props}}" "{{item.action_custom_props}}" "false"
+   environment:
+     CLASSPATH: ":{{tp_profile.install_location}}SetupTestProfile.jar:{{tp_profile.install_location}}lib/*:{{tp_profile.install_location}}lib/help/*:{{tp_profile.install_location}}lib/hibernate/*:{{tp_profile.install_location}}lib/secureshare/*:{{tp_profile.install_location}}webserver/AjaxSwing/lib/*:{{tp_profile.install_location}}lib/json/*"
+   args:
+     executable: /bin/sh
+     chdir: "{{tp_profile.install_location}}"
+   with_items: "{{ tpdataset[dset_key]  }}"
+   when: (item.name | lower == 'as2' and item.tpnode in inventory_hostname)
+   register: profile_config
+
+ - name: "Configure Test Profiles in Remote Machines for TP Nodes - FTP Client"
+   shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupTestProfile "{{tp_profile.name}}" "{{tp_profile.install_location}}" "{{item.name}}" "{{item.hr}}" "{{item.mailbox_range}}" "{{item.action_range}}" "{{item.ip}}" "9021"  "{{macro_name}}" "{{item.host_custom_props}}" "{{item.mailbox_custom_props}}" "{{item.action_custom_props}}" "false"
+   environment:
+     CLASSPATH: ":{{tp_profile.install_location}}SetupTestProfile.jar:{{tp_profile.install_location}}lib/*:{{tp_profile.install_location}}lib/help/*:{{tp_profile.install_location}}lib/hibernate/*:{{tp_profile.install_location}}lib/secureshare/*:{{tp_profile.install_location}}webserver/AjaxSwing/lib/*:{{tp_profile.install_location}}lib/json/*"
+   args:
+     executable: /bin/sh
+     chdir: "{{tp_profile.install_location}}"
+   with_items: "{{ tpdataset[dset_key]  }}"
+   when: (item.name | lower == 'ftp' and  item.tpnode in inventory_hostname)
+   register: profile_config
+
+ - name: Configure Schedule Actions on TP Node
+   shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupTestProfile "{{tp_profile.name}}" "{{tp_profile.install_location}}" "true"
+   environment:
+     CLASSPATH: ":{{tp_profile.install_location}}SetupTestProfile.jar:{{tp_profile.install_location}}lib/*:{{tp_profile.install_location}}lib/help/*:{{tp_profile.install_location}}lib/hibernate/*:{{tp_profile.install_location}}lib/secureshare/*:{{tp_profile.install_location}}webserver/AjaxSwing/lib/*:{{tp_profile.install_location}}lib/json/*"
+   args:
+     executable: /bin/sh
+     chdir: "{{tp_profile.install_location}}"
+   register: schedule_actions
+     
+   # when: setup_profiles.vex_product is defined and setup_profiles.vex_product != 'VLProxy' and setup_profiles.node_type == 'Receiver'

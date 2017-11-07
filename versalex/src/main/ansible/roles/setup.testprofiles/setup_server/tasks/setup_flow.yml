@@ -1,0 +1,17 @@
+---
+# tasks file for setup.testprofiles
+- block:
+   - name: Setting Dictionary Name for Proxy Inside
+     set_fact:
+        conf_server: "{{group_item.value}}"
+
+   - name: Configure DataSet in Server Side Nodes
+     include: "configure_server.yml"
+     with_dict: "{{ srvdataset | default({}) }}"
+     loop_control:
+        loop_var: conf_dataset  
+     
+   - name: Print Debug Msgs Setup Flow
+     debug: msg="Done with Setup Flow"   
+- rescue:
+   - fail: msg="Setup Test Profile Module Failed" 

@@ -1,0 +1,24 @@
+   - name: Creates Shares Destination Path Directory
+     file: path="{{vex.server_share_path}}" state=directory
+
+   - name: "Add Dir Entry to /etc/exports file"
+     lineinfile:
+        create: yes
+        dest: "/etc/exports"
+        line: "{{vex.server_share_path}}  *(rw,sync,no_root_squash,no_subtree_check)"
+        state: present
+        insertafter: EOF
+     # when: versalex.server_share_path is defined     
+        
+   - name: Configure Exportfs in Remote Machines
+     shell: "exportfs -a"     
+     register: export_results
+     # when: versalex.server_share_path is defined     
+     
+   - name: Ensure NFS and RPCBind service restarted
+     service: name="{{ item }}" state=restarted enabled=yes
+     with_items:
+        - rpcbind
+        - nfslock
+        - nfs
+     # when: versalex.server_share_path is defined             

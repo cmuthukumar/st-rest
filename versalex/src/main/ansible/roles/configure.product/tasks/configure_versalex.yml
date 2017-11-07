@@ -1,0 +1,87 @@
+---
+- name: "Edit versalexc.lax  File"
+  lineinfile:
+     create: no
+     dest: "{{confvex.install_location}}{{confvex.dname}}c.lax"
+     regexp: '^(lax.nl.java.option.additional=).*$'
+     line: '\1-Xms{{confvex.vex_heapmem_min}} -Xmx{{confvex.vex_heapmem_max}} -XX:+HeapDumpOnOutOfMemoryError -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port={{confvex.vex_jmx_port}} -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname={{ansible_ssh_host}}'
+     state: present       
+     backrefs: yes
+  register: harmonyc_lax  
+  
+- name: "Edit setenv for karaf  File"
+  lineinfile:
+   create: no
+   dest: "{{confvex.install_location}}core/bin/setenv"
+   line: "{{item.line}}"
+   state: present
+  with_items:
+     - {  line: 'export JAVA_MIN_MEM={{confvex.karaf_heapmem_min}}', insertafter: EOF}
+     - {  line: 'export JAVA_MAX_MEM={{confvex.karaf_heapmem_max}}', insertafter: EOF}
+     - {  line: 'export EXTRA_JAVA_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port={{confvex.karaf_jmx_port}} -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false" ', insertafter: EOF}
+  register: karafc
+  
+- name: Copy SetupOptions Jar File to remote location
+  copy: src="{{playbook_dir}}/library/" dest="{{confvex.install_location}}lib/"
+
+- name: Download DB artifact from Maven Central
+  maven_artifact: 
+    group_id: "{{item.value.maven_groupid}}"
+    artifact_id: "{{item.value.maven_artifactid}}"
+    version: "{{item.value.maven_version}}"
+    dest: "{{confvex.install_location}}lib/ext/{{item.value.maven_destfilename}}"  
+  when: "'db' in item.value.type"  
+  with_dict: "{{ integrations | default({}) }}"
+  register: mysql_download
+  ignore_errors: yes
+
+- name: Extract DB IP 
+  set_fact:
+    db_ip: "{{hostvars[item]['ansible_eth0']['ipv4']['address'] }}"
+  with_items: "{{groups['integrations'] |default({})}}"  
+
+
+- name: Configure DB in Remote Machines
+  shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupOptions "{{confvex.dname}}" "{{confvex.install_location}}" "DB" "jdbc:{{item.value.app_type}}://{{db_ip}}:{{item.value.port}}/{{item.value.dbname}}" "{{item.value.driver_str}}" "{{item.value.username}}" "{{item.value.password}}" 1 "jdbc:{{item.value.app_type}}://{{db_ip}}:{{item.value.port}}/{{item.value.dbname}}"
+  environment:
+     CLASSPATH: ":{{confvex.install_location}}*.jar:{{confvex.install_location}}lib/*:{{confvex.install_location}}lib/help/*:{{confvex.install_location}}lib/hibernate/*:{{confvex.install_location}}lib/secureshare/*:{{confvex.install_location}}webserver/AjaxSwing/lib/*:{{confvex.install_location}}lib/json/*"
+  args:
+     chdir: "{{confvex.install_location}}"
+  when: "'db' in item.value.type"
+  with_dict: "{{ integrations | default({}) }}"  
+  register: db_config
+  retries: 3
+  delay: 5  
+  until: db_config|success
+
+- name: Extract Proxy IP 
+  set_fact:
+    proxy_ip: "{{hostvars[item]['ansible_eth0']['ipv4']['address'] }}"
+  with_items: "{{groups['proxy']  |default({})}}"  
+
+  
+- name: Configure PROXY in Remote Machines on VersalEx Products
+  shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupOptions "{{confvex.dname}}" "{{confvex.install_location}}" "PROXY" "{{item.value.type}}" "{{proxy_ip }}" "{{item.value.port}}" "{{item.value.revfwdproxy}}"
+  environment:
+     CLASSPATH: ":{{confvex.install_location}}SetupOptions.jar:{{confvex.install_location}}lib/*:{{confvex.install_location}}lib/help/*:{{confvex.install_location}}lib/hibernate/*:{{confvex.install_location}}lib/secureshare/*:{{confvex.install_location}}webserver/AjaxSwing/lib/*:{{confvex.install_location}}lib/json/*"
+  args:
+     chdir: "{{confvex.install_location}}"
+  with_dict: "{{ proxy | default({}) }}"         
+  register: proxy_config
+  retries: 3
+  delay: 5  
+  until: proxy_config|success
+
+- name: Configure LDAP in Remote Machines
+  shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupOptions "{{confvex.vex_product}}" "{{confvex.install_location}}" "LDAP" "{{item.value.type}}" "{{item.value.host}}" "{{item.value.port}}" "{{item.value.secuirtymode}}" "{{item.value.value.basedn}}" "{{item.value.username}}" "{{item.value.fullnameattrib}}" "{{item.value.homedirattrib}}" "{{item.value.emailattrib}}" "{{item.value.searchfilter}}" "{{item.value.usernameattrib}}" "zzzzers"
+  environment:
+     CLASSPATH: ":{{confvex.install_location}}SetupOptions.jar:{{confvex.install_location}}lib/*:{{confvex.install_location}}lib/help/*:{{confvex.install_location}}lib/hibernate/*:{{confvex.install_location}}lib/secureshare/*:{{confvex.install_location}}webserver/AjaxSwing/lib/*:{{confvex.install_location}}lib/json/*"
+  args:
+     chdir: "{{confvex.install_location}}"
+  when: "'ldap' in item.value.type"     
+  with_dict: "{{ integrations | default({}) }}"
+  register: ldap_config
+  retries: 3
+  delay: 5  
+  until: ldap_config|success
+ 

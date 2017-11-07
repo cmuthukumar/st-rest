@@ -1,0 +1,38 @@
+---
+# tasks file for setup.testprofiles
+- block:
+   - name: Include Node Specific Variables for TPNode Proxy
+     include_vars:
+         dir: "{{playbook_dir}}/dataset/"
+         files_matching: "tpnodes-versalex.yml"
+     when: "'servers-versalex' in inventory_hostname"
+     delegate_to: 127.0.0.1
+     ignore_errors: yes
+
+   - name: Setup Testprofiles in Server Side Nodes
+     include: setup_flow.yml inc_file="configure_server"
+     with_dict: "{{ versalex | default({}) }}"
+     when: "'servers-versalex' in inventory_hostname and  play_hosts.index(inventory_hostname) == 0"
+     loop_control:
+        loop_var: group_item     
+
+   - name: Include Node Specific Variables for TPNode Proxy
+     include_vars:
+         dir: "{{playbook_dir}}/dataset/"
+         files_matching: "proxy"
+     when: "'tpnodes-versalex' in inventory_hostname"
+     delegate_to: 127.0.0.1
+     ignore_errors: yes
+        
+   - name: Setup Testprofiles in TP Side Nodes
+     include: setup_flow.yml inc_file="configure_tp"
+     with_dict: "{{ versalex | default({}) }}"
+     when: "'tpnodes-versalex' in inventory_hostname"
+     loop_control:
+        loop_var: group_item
+        
+   - name: Printing for Debug
+     debug: msg="Done with MEthod Call"
+  
+- rescue:
+   - fail: msg="Setup Test Profile Module Failed"     

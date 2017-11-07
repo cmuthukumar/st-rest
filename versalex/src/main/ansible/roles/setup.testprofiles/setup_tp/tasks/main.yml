@@ -1,0 +1,23 @@
+---
+# tasks file for setup.testprofiles
+- block:
+   - name: Include Node Specific Variables for TPNode Proxy
+     include_vars:
+         dir: "{{playbook_dir}}/dataset/"
+         files_matching: "proxy"
+     when: "'tpnodes-versalex' in inventory_hostname"
+     delegate_to: 127.0.0.1
+     ignore_errors: yes
+        
+   - name: Setup Testprofiles in TP Side Nodes
+     include: setup_flow.yml
+     with_dict: "{{ versalex | default({}) }}"
+     when: "'tpnodes-versalex' in inventory_hostname"
+     loop_control:
+        loop_var: group_item
+        
+   - name: Printing for Debug
+     debug: msg="Done with TP DataSet Configs"
+  
+- rescue:
+   - fail: msg="Setup Test Profile Module Failed"     

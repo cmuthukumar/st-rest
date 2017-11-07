@@ -1,0 +1,35 @@
+---
+# tasks file for configure.product
+- block:
+    - name: Checking Proxy Status..
+      wait_for:
+        host: "{{ansible_ssh_host}}"
+        port: "8080"
+        state: started
+        timeout: 60
+      when: "'proxy' in inventory_hostname"
+      register: proxy_status      
+
+    - name: Validating JMX Ports for Versalex
+      wait_for:
+        host: "{{ansible_ssh_host}}"
+        port: "{{item}}"
+        state: started
+        timeout: 20
+      with_items:
+         - 2098
+         - 2099
+      register: vex_jmx_status
+      ignore_errors: yes
+      when: "'versalex' in inventory_hostname"
+      
+    - name: Validate Client Share Mount Point`
+      assert:
+         that:
+             -  item.mount in '/root/share'
+             # - "item.mount == valid.client_local_path"
+      with_items: "{{ansible_mounts}}"
+      register: mount_status
+      when: "'versalex' in inventory_hostname"
+  rescue:
+    - fail: msg="Configure Product - Tests failed"

@@ -1,0 +1,49 @@
+---
+   - name: Setting Dictionary Name for Versalex Inside
+     set_fact:
+        install: "{{group_item.value}}"
+        
+   - name: Creates Install Location Directory
+     file: path="{{install.install_location}}" state=directory force=yes
+ 
+   - name: Kill Java Processes running on Remote System
+     shell: "kill $(ps aux | grep -i java | grep -v 'grep' | awk '{print $2}')"
+     register: javakill_status
+     ignore_errors: True  
+   
+   - name: Print Java Process Kill Status
+     debug: msg="Kill Application Status {{javakill_status}}"
+     
+   - name: Copy Installer to Remote Install Location
+     copy: src="{{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}}" dest="{{install.install_location}}" mode=0777
+   
+   - name: Install VersalEx Installer in Silent Mode   
+     shell: "./{{install.dname}}-{{install.version}}.{{install.nexus_packaging}} -DUSER_INSTALL_DIR={{install.install_location}} -i  silent"
+     args:
+       chdir: "{{install.install_location}}"
+     register: installres
+     
+     
+   - name: Capture SerialNumber and Write Node File  
+     shell: "./{{install.dname}}c -s license |grep 'Serial Number' | awk -F '=' '{print $2}' "
+     args:
+      chdir: "{{install.install_location}}"
+     register: serifile
+
+   - name: Set the serial number fact
+     set_fact:
+        serialno: "{{serifile.stdout}}"
+         
+   - name: Append to Host variable file
+     lineinfile:
+       create: yes
+       dest: "{{playbook_dir}}/inventory/host_vars/{{inventory_hostname}}.yml"
+       regexp: '^serialno'       
+       line: "serialno: {{item.line}}"
+       state: present     
+       insertafter: "{{item.insertafter}}"
+     with_items:
+        - {  line: "{{serifile.stdout}}", insertafter: EOF}
+     delegate_to: 127.0.0.1
+    
+     

@@ -1,0 +1,29 @@
+---
+    - name: "Pull Docker Image from Docker Hub"
+      docker_image:
+        name: "{{integrations.version}}"
+        
+    - name: "Run Docker Container for the image"     
+      docker_container:
+        name: "{{integrations.name}}"
+        image: "{{integrations.version}}"
+        state: started
+        pull: true
+        env: "{{integrations.app_args}}"
+           # MYSQL_ROOT_PASSWORD: "testdocker"        
+        exposed_ports: "{{integrations.app_port}}"        
+        network_mode: bridge
+        published_ports: "{{integrations.app_port}}:{{integrations.app_port}}"        
+        recreate: true
+        restart_policy: always
+       # recreate: yes
+      register: docker_details      
+      # until: "'failed' not in docker_details"
+      # retries: 3
+      # delay: 10
+      
+    - name: Docker Container IP address
+      debug: msg="IP Address is:{{docker_details.ansible_facts.docker_container['NetworkSettings']['IPAddress']}}"
+      # with_items: "{{docker_details}}"
+    # tasks file for docker.install.debian.ubuntu linux
+#    - debug: msg="Docker Image image_args-{{image_args}} Version-{{version}} appl_port-{{appl_port}}"
