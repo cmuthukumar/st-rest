@@ -15,7 +15,7 @@
         artifact_id: "{{item.artifact}}"
         version: latest
         extension: "jar"
-        repository_url: "{{versalex.nexus_prod_repourl}}"
+        repository_url: "{{confvlp.nexus_prod_repourl}}"
         dest: "{{playbook_dir}}/library/properties-cipher.jar"
         state: present
   run_once: true
@@ -27,7 +27,7 @@
 - name: Copy properties-cipher jar
   copy:
     src: "{{ playbook_dir }}/library/properties-cipher.jar"
-    dest: "{{ versalex.install_location }}lib/properties-cipher.jar"
+    dest: "{{ confvlp.install_location }}lib/properties-cipher.jar"
   
 # Create a default.properties file from a template & copy to the installation
 - name: Copy updated properties from template
@@ -39,15 +39,15 @@
 - name: Copy default properties to remote versalex instance
   copy:
     src: "{{ playbook_dir }}/library/default.properties"
-    dest: "{{ versalex.install_location }}default.properties"
-  
+    dest: "{{ confvlp.install_location }}default.properties"
+
 # Update encrypted properties in the installation
 - name: Update encrypted properties
   shell: jre/bin/java -cp $CLASSPATH com.cleo.VLProxy.PropertiesCipher
   environment:
-     CLASSPATH: ":{{versalex.install_location}}lib/*"  
+     CLASSPATH: ":{{confvlp.install_location}}lib/*"  
   args:
-    chdir: "{{ versalex.install_location }}"
+    chdir: "{{ confvlp.install_location }}"
   register: properties_cipher_output
 
 # Verify the versalex group serial numbers have been added to the VLProxy configuration

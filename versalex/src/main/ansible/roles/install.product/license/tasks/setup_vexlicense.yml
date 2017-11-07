@@ -1,7 +1,7 @@
 ---
    - name: Setting Dictionary Name for Versalex Inside
      set_fact:
-        lic: "{{group_item.value}}"
+        lic: "{{lic_group.value}}"
 
    - name: Creates files dir
      file: 
@@ -24,7 +24,7 @@
            CompanyName = {{lic.license_CompanyName }}
            SerialNumber = {{ lic.license_SerialNumber }}{{ 10000 | random}}
            KeyExpiration = {{ lic.license_KeyExpiration }}
-           Product = {{ lic.name }}
+           Product = {{ lic.license_Product }}
            Limit.HSP = {{ lic.license_Limit_HSP }}
            Limit.Any.other = {{ lic.license_Limit_Anyother }}
            Trust = {{ lic.license_Trust }}

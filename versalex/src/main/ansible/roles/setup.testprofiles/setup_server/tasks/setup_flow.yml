@@ -3,11 +3,11 @@
 - block:
    - name: Setting Dictionary Name for Proxy Inside
      set_fact:
-        versalex: "{{group_item.value}}"
+        conf_server: "{{group_item.value}}"
 
    - name: Configure DataSet in Server Side Nodes
      include: "configure_server.yml"
-     with_dict: "{{ dataset | default({}) }}"
+     with_dict: "{{ srvdataset | default({}) }}"
      loop_control:
         loop_var: conf_dataset  
      

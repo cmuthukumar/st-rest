@@ -1,5 +1,5 @@
 ---
-- hosts: "{{machine_type}}"
+- hosts: "versalex:proxy:shares"
   roles:
     - { role: configure.product/common}
 
@@ -11,11 +11,28 @@
       with_dict: "{{ shares | default({}) }}"
       loop_control:
           loop_var: srvr_share
+
+- hosts: versalex
+  tasks:
+    - name: Configure Client Side Shares
+      include_role:
+        name: configure.product/client_share
+      with_dict: "{{ versalex | default({}) }}"
+      loop_control:
+          loop_var: clishare
           
 - hosts: "{{machine_type}}"
   roles:
-    - { role: configure.product/client_share, when: shares is defined}
+    - { role: configure.product }    
 
-- hosts: "{{machine_type}}"
+  # roles:
+    # - { role: configure.product/client_share, when: groups.shares is defined}
+    
+- hosts: "proxy"
+  # connection: local
   roles:
-    - { role: configure.product }
+    - { role: configure.product/vlproxy,external_address: "{{ansible_ssh_host}}" ,email_on_fail_addr: 'muthukumarc@cleo.com' }
+    
+- hosts: "versalex:proxy"
+  roles:
+    - { role: configure.product/tests }

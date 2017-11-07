@@ -5,4 +5,4 @@
       with_dict: "{{ versalex | default({}) }}"
       when: "'versalex' in subtype" 
       loop_control:
-         loop_var: group_item
+         loop_var: test_install

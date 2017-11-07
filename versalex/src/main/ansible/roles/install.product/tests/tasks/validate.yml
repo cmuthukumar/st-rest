@@ -3,18 +3,18 @@
  - block:
    - name: Setting Dictionary Name for Versalex Inside
      set_fact:
-        versalex: "{{group_item.value}}"
+        test: "{{test_install.value}}"
         
    - name: Validate Install Product with REST API for Versalex Products
      uri:
-        url: "http://{{ansible_ssh_host}}:{{versalex.port}}/api/actions"
+        url: "http://{{ansible_ssh_host}}:{{test.port}}/api/actions"
         method: GET
         user: administrator
         password: Admin
         force_basic_auth: yes
         status_code: 200
      register: restpapi_status
-     when: versalex.name | lower != 'vlproxy'
+     when: test.name | lower != 'vlproxy'
      retries: 3
      delay: 5  
      until: restpapi_status|success

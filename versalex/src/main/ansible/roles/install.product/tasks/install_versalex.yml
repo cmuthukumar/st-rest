@@ -32,17 +32,18 @@
 
    - name: Set the serial number fact
      set_fact:
-        serial_no: "{{ serifile.stdout }}"
-        
+        serialno: "{{serifile.stdout}}"
+         
    - name: Append to Host variable file
      lineinfile:
        create: yes
-       dest: "{{playbook_dir}}/host_vars/{{inventory_hostname}}.yml"
+       dest: "{{playbook_dir}}/inventory/host_vars/{{inventory_hostname}}.yml"
        regexp: '^serialno'       
        line: "serialno: {{item.line}}"
        state: present     
        insertafter: "{{item.insertafter}}"
      with_items:
         - {  line: "{{serifile.stdout}}", insertafter: EOF}
-     delegate_to: 127.0.0.1     
+     delegate_to: 127.0.0.1
+    
      

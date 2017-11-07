@@ -1,6 +1,6 @@
 ---
 # tasks file for setup.testprofiles
-- block:
+- block:  
    - name: Setting group name if Proxy defined
      set_fact:        
        grp_name: 'proxy'
@@ -9,7 +9,7 @@
 
    - name: Setting group name if Proxy not defined
      set_fact:        
-       grp_name: 'tpnodes-versalex'
+       grp_name: 'servers-versalex'
      when: groups['proxy'] is not defined
      delegate_to: 127.0.0.1
      
@@ -17,6 +17,11 @@
      set_fact:        
        vex_count: "{{ groups['tpnodes-versalex'] | length | int}}"
      delegate_to: 127.0.0.1
+     
+   # - name: Print DataSet
+     # debug: msg="DataSet key {{item.key}} Valu {{item.value}}"
+     # with_dict: "{{dataset}}"   
+     # delegate_to: 127.0.0.1 
      
    - name: TPSide Dataset setup
      template: src=setup_tp_testprofile.j2 dest="{{playbook_dir}}/dataset/{{inventory_hostname}}-{{grp_name}}.yml"

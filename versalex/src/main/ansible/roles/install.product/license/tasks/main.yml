@@ -5,6 +5,6 @@
       include: "setup_vexlicense.yml"
       with_dict: "{{ versalex | default({}) }}"
       loop_control:
-         loop_var: group_item 
+         loop_var: lic_group 
   rescue:
       - fail: msg="Setting License Failed"

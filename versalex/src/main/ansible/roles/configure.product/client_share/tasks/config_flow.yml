@@ -1,8 +1,49 @@
 ---
 # tasks for carrying out configs flow
-  - name: Setting Dictionary Name for Client Share
-    set_fact:
-       vexcli: "{{cli_share.value}}"
+   - name: Setting Dictionary Name for Client Share
+     set_fact:
+        vexcli: "{{clishare.value}}"
 
-  - name: Configure Shares in Client Nodes
-    include: configure_client_share.yml
+   - name: Download SysTest Jar from Nexus Repo
+     maven_artifact: 
+            group_id: "{{vexcli.nexus_systest_groupid}}"
+            artifact_id: "{{vexcli.nexus_systest_artifactid}}"
+            version: latest
+            extension: "jar"
+            repository_url: "{{vexcli.nexus_systest_repourl}}"
+            dest: "{{playbook_dir}}/library/"
+            state: present
+     run_once: true
+     delegate_to: 127.0.0.1 
+     
+   - name: Copy SetupOptions Jar File to remote location
+     copy: src="{{playbook_dir}}/library/versalex_setup-latest.jar" dest="{{vexcli.install_location}}lib/"
+   
+   - name: Configure Shares in Remote Machines
+     shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupOptions "{{vexcli.dname}}" "{{vexcli.install_location}}" "SHARE" "{{vexcli.custom_macro}}"
+     environment:
+       CLASSPATH: ":{{vexcli.install_location}}*.jar:{{vexcli.install_location}}lib/*:{{vexcli.install_location}}lib/help/*:{{vexcli.install_location}}lib/hibernate/*:{{vexcli.install_location}}lib/secureshare/*:{{vexcli.install_location}}webserver/AjaxSwing/lib/*:{{vexcli.install_location}}lib/json/*"
+     args:
+       chdir: "{{vexcli.install_location}}"
+     register: shares_config
+     retries: 3
+     delay: 5  
+     until: shares_config|success
+
+   - name: Creates Shares  Directory
+     file: path="{{vexcli.client_local_path}}" state=directory
+
+   - name: Print IP of Shares
+     debug: msg="IPADd {{hostvars[groups['shares'][0]]['ansible_eth0']['ipv4']['address']}}"
+     
+   - name: Setup Shares in Client boxes
+     mount:
+       name: "{{vexcli.client_local_path}}"
+       src: "{{hostvars[groups['shares'][0]]['ansible_eth0']['ipv4']['address']}}:{{item.value.server_share_path}}"
+       state: mounted
+       fstype: "nfs"     
+     with_dict: "{{ shares }}"
+     register: shares_client
+     retries: 3
+     delay: 5
+     until: shares_client|success  

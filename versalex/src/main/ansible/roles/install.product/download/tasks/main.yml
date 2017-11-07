@@ -11,7 +11,7 @@
      with_dict: "{{ prod_key | default({}) }}"
      when: prod_key is defined        
      loop_control:
-        loop_var: group_item
+        loop_var: dload_group
      run_once: true       
   rescue:
       - fail: msg="Install Product Download Tasks failed"

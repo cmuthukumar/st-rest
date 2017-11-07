@@ -1,7 +1,28 @@
 ---
 # tasks file for configure.product
-- block:
-    - name: Configure Client Side Shares
+- block:      
+    - name: Initialize empty list
+      set_fact:
+        serial_list: []
+      delegate_to: 127.0.0.1
+      
+    - name: Add serial numbers to list
+      set_fact:
+        serial_list: "{{ serial_list }} + [ '{{ hostvars[item]['serialno'] }}' ]"
+      with_items: "{{ groups[ 'versalex' ] | default([]) }}"
+      when: hostvars[item]['serialno'] is defined
+      delegate_to: 127.0.0.1
+   
+    - name: Join the serial numbers into a comma separated list
+      set_fact:
+        serial_numbers_csv: "{{ serial_list | join(',') }}"
+      delegate_to: 127.0.0.1
+      
+    - name: SerialNos Final
+      debug: msg="Versalex Serials {{serial_numbers_csv}}"
+      delegate_to: 127.0.0.1
+
+    - name: Configure Proxy with Serial Nos
       include: "config_flow.yml"
       with_dict: "{{ proxy | default({}) }}"
       loop_control:

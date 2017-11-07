@@ -6,7 +6,7 @@
   ignore_errors: True  
   
 - name: Stop Results
-  debug: msg="Stop Resultls {{javakill_status}} versalex_artifactid {{versalex.dname}}"
+  debug: msg="Stop Resultls {{javakill_status}} versalex_artifactid {{confvlp.dname}}"
   
 - name: Wait for port 8080 to get Stopped
   wait_for: port=8080 delay=10 state=stopped
@@ -14,7 +14,7 @@
 - name: Start VersalEx Product Daemon   
   shell: "{{item}}"
   args:
-    chdir: "{{versalex.install_location}}"
+    chdir: "{{confvlp.install_location}}"
   with_items:
-    - ./{{versalex.dname}}d start
+    - ./{{confvlp.dname}}d start
   register: startvexstatus

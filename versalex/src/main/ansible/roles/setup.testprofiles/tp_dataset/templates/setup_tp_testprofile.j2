@@ -1,16 +1,20 @@
-dataset:
+tpdataset:
 {% set loop_start = [1] %}
+{% set tpcnt = {'tpcount': 0} %}
+{% set tpnnum = [0] %}
+{% for tp in groups['tpnodes-versalex'] %}
+{% if tpnnum.append(play_hosts.index(tp) |int) %}{% endif %} 
 {% for usrkey,usrval in dataset.items() recursive %}
+    {{usrkey}}-{{play_hosts.index(tp)}}:
 {% set total_hst = (usrval.total | int / vex_count | int) %}
-    {{usrkey}}:
-{% for h in groups[grp_name] %}  
-        - hname: {{h}}
-          ip: {{hostvars[h]['ansible_eth0']['ipv4']['address']}}
-          hr: {{loop_start[0] | int}}-{{(loop_start[0]|int +total_hst |int)}}
+{% if tpcnt.update({'tpcount': total_hst |int}) %} {% endif %} 
+        - hname: {{hostvars[groups[grp_name][tpnnum[0]]].ansible_ssh_host}}
+          ip: {{hostvars[groups[grp_name][tpnnum[0]]]['ansible_eth0']['ipv4']['address']}}
+          hr: {{loop_start[0] | int}}-{{(loop_start[0]|int +(total_hst-1) |int)}}
+          tpnode: {{tp}}
 {% for innerkey,innerval in dataset[usrkey|lower].items() %}
           {{innerkey}}: "{{innerval}}"
 {% endfor %}          
-{% if loop_start.append(loop_start.pop()+total_hst |int) %}{% endif %}
 {% endfor %}
-{% if loop_start.append((1/loop_start.pop() |int|abs + 1)) %}{% endif %}
+{% if loop_start.append(loop_start.pop()+tpcnt.tpcount |int) %}{% endif %} 
 {% endfor %}

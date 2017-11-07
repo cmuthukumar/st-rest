@@ -2,7 +2,7 @@
 # tasks file for setup.sync
    - name: Setting Dictionary Name for Proxy Inside
      set_fact:
-        versalex: "{{group_item.value}}"
+        syncgrp: "{{group_item.value}}"
 
    - name: Create Node JSON file for Each Host
      template:
@@ -40,22 +40,22 @@
    
    - name: Remove schedule Lock File if exists
      file:
-         path: "{{versalex.install_location}}schedule.lck"
+         path: "{{syncgrp.install_location}}schedule.lck"
          state: absent
      ignore_errors: yes
    # - name: Wait for port 5080 to get Stopped
-     # wait_for: host="{{inventory_hostname}}" port="{{versalex.port}}" delay=20 state=stopped
+     # wait_for: host="{{inventory_hostname}}" port="{{syncgrp.port}}" delay=20 state=stopped
 
    - name: Start VersalEx Product Daemon   
      shell: "{{item}}"
      args:
-       chdir: "{{versalex.install_location}}"
+       chdir: "{{syncgrp.install_location}}"
      with_items:
-       - ./{{versalex.dname}}d start
+       - ./{{syncgrp.dname}}d start
      register: startvexstatus
 
    - name: Wait for port 5080 to get Started
-     wait_for: host="{{inventory_hostname}}" port="{{versalex.port}}" delay=20 state=started
+     wait_for: host="{{inventory_hostname}}" port="{{syncgrp.port}}" delay=20 state=started
                
      
      
