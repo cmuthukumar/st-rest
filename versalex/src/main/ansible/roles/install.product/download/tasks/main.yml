@@ -7,11 +7,9 @@
      delegate_to: 127.0.0.1
      
    - name: Download Product Role with Versalex
-     include: "download_versalex.yml"
-     with_dict: "{{ prod_key | default({}) }}"
-     when: prod_key is defined        
+     include_tasks: "download_versalex.yml"
+     with_dict: "{{ versalex | default({}) }}"
      loop_control:
         loop_var: dload_group
-     run_once: true       
   rescue:
       - fail: msg="Install Product Download Tasks failed"

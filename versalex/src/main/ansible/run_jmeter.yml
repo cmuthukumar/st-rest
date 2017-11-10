@@ -1,0 +1,4 @@
+---
+- hosts: "shares"
+  roles:
+    - {role: jmeter,files_per_hr: "{{files_per_hr}}" }

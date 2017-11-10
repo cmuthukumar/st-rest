@@ -1,34 +1,64 @@
 ---
 # tasks file for jmeter
-- name: Install 1.8 Open JDK
-  yum:
-    name: "java-1.8.0-openjdk.x86_64"
-    state: present
-    
-- name: Create Jmeter Download Directory
-  file:
-    path: "{{ jmeter_dir_location }}"
-    state: directory
+- block:
+    - name: Install 1.8 Open JDK
+      yum:
+        name: "java-1.8.0-openjdk.x86_64"
+        state: present
+        
+    - name: Create Jmeter Download Directory
+      file:
+        path: "{{jmeter_dir}}"
+        state: directory
 
-- name: Install Unzip for Extracting
-  yum:
-    name: unzip
-    state: present
-    
-- name: Jmeter Download Latest Version
-  get_url:
-    url: "{{ jmeter_get_utl }}"
-    dest: "{{ jmeter_dir_location }}"
-    
-- name: Extract JMeter to Dest Dir
-  unarchive:
-    src: "{{ jmeter_get_utl }}"
-    dest: "{{ jmeter_dir_location }}"
-    remote_src: yes    
-    
-- name: Extract JMeter Standard Plugins to Dest Dir
-  unarchive:
-    src: "{{ jmeter_plugins_tst_url }}"
-    dest: "{{ jmeter_dir_location }}/apache-jmeter-{{jmeter_version}}/"
-    remote_src: yes
-    
+    - name: Install Unzip for Extracting
+      yum:
+        name: unzip
+        state: present
+        
+    - name: Jmeter Download Latest Version
+      get_url:
+        url: "{{ jmeter_get_utl }}"
+        dest: "{{ jmeter_dir }}"
+        
+    - name: Extract JMeter to Dest Dir
+      unarchive:
+        src: "{{ jmeter_get_utl }}"
+        dest: "{{jmeter_dir}}"
+        remote_src: yes    
+        
+    - name: Extract JMeter Standard Plugins to Dest Dir
+      unarchive:
+        src: "{{ jmeter_plugins_tst_url }}"
+        dest: "{{jmeter_dir}}/apache-jmeter-{{jmeter_version}}/"
+        remote_src: yes
+
+    - name: Copy TestPlan(JMX) file to Shares
+      copy: src="{{playbook_dir}}/files/SysTest_Linux.jmx" dest="{{jmeter_dir}}apache-jmeter-{{jmeter_version}}/bin/"
+
+    - name: Set LoopCount for Jmeter
+      set_fact: 
+        loop_count: "{{files_per_hr|int/threadCount|int }}"
+
+    - name: Set FilesPer Min
+      set_fact: 
+        files_per_min: "{{files_per_hr|int/60 }}"
+
+    - name: Print jmeter facts
+      debug: msg="lcount-{{loop_count|int}} fpmin-{{files_per_min|int}}"
+        
+    - name: Run Jmeter with Configs
+      shell: jmeter -n -t "SysTest_Linux.jmx" -Jthreads="{{threadCount}}" -JloopCnt="{{loop_count|int}}" -JfileSize="{{fileSizes}}" -JdestPath="{{share_dir}}" -JfilesPerMin="{{files_per_min|int}}"
+      environment:
+         PATH: "{{ ansible_env.PATH }}:{{jmeter_dir}}apache-jmeter-{{jmeter_version}}/bin/" 
+      args:
+         executable: /bin/sh
+         chdir: "{{jmeter_dir}}apache-jmeter-{{jmeter_version}}/bin/"
+      register: jmeter_res
+      # async: 300
+      # poll: 10
+      
+    - name: Print Jmeter Results
+      debug: msg="{{jmeter_res.stdout_lines}}"
+- rescue:
+    - fail: msg="Jmeter Role Failed"

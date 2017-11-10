@@ -32,7 +32,7 @@
 
    - name: Set the serial number fact
      set_fact:
-        serialno: "{{serifile.stdout}}"
+        serialno: "{{serifile.stdout|replace(' ','')}}"
          
    - name: Append to Host variable file
      lineinfile:
@@ -43,7 +43,7 @@
        state: present     
        insertafter: "{{item.insertafter}}"
      with_items:
-        - {  line: "{{serifile.stdout}}", insertafter: EOF}
+        - {  line: "{{serifile.stdout|replace(' ','')}}", insertafter: EOF}
      delegate_to: 127.0.0.1
     
      

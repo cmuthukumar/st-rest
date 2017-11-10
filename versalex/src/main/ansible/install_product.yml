@@ -1,6 +1,7 @@
 ---
 - hosts: "versalex:proxy"
-  # strategy: free
+  pre_tasks:
+    - meta: refresh_inventory
   roles:
     - { role: install.product/common}
 
@@ -11,7 +12,7 @@
 - hosts: "versalex"
   # strategy: free
   roles:
-    - { role: install.product/download, prod_key: "{{ versalex }}" }
+    - { role: install.product/download }
     - { role: install.product, prod_dict: "{{ versalex }}" } 
     
 - hosts: "proxy"

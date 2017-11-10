@@ -1,22 +1,19 @@
 ---
 - hosts: "{{machine_type}}"
   connection: local
-  tasks:
-    - meta: refresh_inventory
+  tasks:   
     - name: Create Inventory Dir
       file: 
         path: "{{playbook_dir}}/inventory/host_vars/"
         state: directory
+      delegate_to: 127.0.0.1
         
     - name: Create Host Vars
       setup_host_vars:
         usr_src: "{{playbook_dir}}/files/{{machine_type}}.yml"
         hostvars_dest: "{{playbook_dir}}/inventory/host_vars/{{inventory_hostname}}.yml"
       register: host_vars
-     
-    - name: Print Host Vars Message
-      debug: var=host_vars
-          
+      
 - hosts: localhost
   connection: local
   tasks:
