@@ -4,14 +4,15 @@
   tasks:   
     - name: Create Inventory Dir
       file: 
-        path: "{{playbook_dir}}/inventory/host_vars/"
+        path: "{{playbook_dir}}/inventories/{{machine_type}}/host_vars/"
         state: directory
+        recurse: yes
       delegate_to: 127.0.0.1
         
     - name: Create Host Vars
       setup_host_vars:
         usr_src: "{{playbook_dir}}/files/{{machine_type}}.yml"
-        hostvars_dest: "{{playbook_dir}}/inventory/host_vars/{{inventory_hostname}}.yml"
+        hostvars_dest: "{{playbook_dir}}/inventories/{{machine_type}}/host_vars/{{inventory_hostname}}.yml"
       register: host_vars
       
 - hosts: localhost
@@ -19,12 +20,12 @@
   tasks:
     - name: Create group_vars Dir
       file: 
-        path: "{{playbook_dir}}/inventory/group_vars/"
+        path: "{{playbook_dir}}/inventories/{{machine_type}}/group_vars/"
         state: directory
 
     - name: "Create {{machine_type}} Dir"
       file: 
-        path: "{{playbook_dir}}/inventory/group_vars/{{machine_type}}/"
+        path: "{{playbook_dir}}/inventories/{{machine_type}}/group_vars/"
         state: directory
         
     - name: Create Group Vars 

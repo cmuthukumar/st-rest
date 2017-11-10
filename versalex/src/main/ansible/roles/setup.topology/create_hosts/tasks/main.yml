@@ -8,4 +8,4 @@
 - name: Create Hosts Inventory File
   template:
      src: create_hosts.j2
-     dest: "{{playbook_dir}}/inventory/{{machine_type}}"
+     dest: "{{playbook_dir}}/inventories/{{machine_type}}/hosts"

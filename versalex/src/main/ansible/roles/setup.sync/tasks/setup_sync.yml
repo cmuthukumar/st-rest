@@ -4,10 +4,17 @@
      set_fact:
         syncgrp: "{{group_item.value}}"
 
+   - name: Create Node JSON Dir
+     file:
+        path: "{{playbook_dir}}/files/sync_json/"
+        state: directory
+     delegate_to: 127.0.0.1   
+     when: play_hosts.index(inventory_hostname) > 0        
+        
    - name: Create Node JSON file for Each Host
      template:
         src: "node.json.j2"
-        dest: "{{playbook_dir}}/files/{{inventory_hostname}}.json"
+        dest: "{{playbook_dir}}/files/sync_json/{{inventory_hostname}}.json"
      delegate_to: 127.0.0.1   
      when: play_hosts.index(inventory_hostname) > 0   
                 
@@ -23,7 +30,7 @@
         return_content: yes
         status_code: 200
      register: conn_certs_rest_status
-     with_fileglob: "{{playbook_dir}}/files/*.json" 
+     with_fileglob: "{{playbook_dir}}/files/sync_json/*.json" 
      when:  play_hosts.index(inventory_hostname) == 0
      retries: 3
      delay: 5  

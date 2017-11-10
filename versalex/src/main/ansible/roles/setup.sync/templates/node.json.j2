@@ -1,5 +1,5 @@
 {
-  "serial":"{{hostvars[inventory_hostname]['serialno']}}",
+  "serial":"{{hostvars[inventory_hostname]['serialno']|replace(' ','')}}",
   "alias":"{{inventory_hostname}}",
   "url": "http://{{hostvars[inventory_hostname]['ansible_eth0']['ipv4']['address']}}:5080",
   "backup":true, 
