@@ -1,0 +1,8 @@
+---
+- hosts: "servers-shares"
+  roles:
+    - {role: jmeter,files_per_hr: "{{files_per_hr}}" }
+    
+- hosts: "tpnodes-shares"
+  roles:
+    - {role: jmeter,files_per_hr: "{{files_per_hr}}" }
