@@ -59,15 +59,16 @@ sh 'java -version'
                 configProduct()
             } 
 
-	stage('Setup Sync')
-		{
-			setupSync()
-		}  		
-			
+		
     stage('Setup TestProfiles')
             {
                 setupTestProfiles()
             } 
+
+	stage('Setup Sync')
+		{
+			setupSync()
+		}  
 			
     stage('Run Tests')
             {
@@ -105,7 +106,7 @@ sh 'java -version'
        for(int i=0; i<params.size(); i++ )
         {
         println "Installing Product for ${params[i]}"
-           sh "cd ${workdir} && ansible-playbook install_product.yml -i inventories/${params[i]/ -e machine_type=${params[i]}"
+           sh "cd ${workdir} && ansible-playbook -i inventories/${params[i]}/ -e machine_type=${params[i]} install_product.yml "
         }
     }
 
@@ -115,7 +116,7 @@ sh 'java -version'
        for(int i=0; i<params.size(); i++ )
         {
         println "Installing Product for ${params[i]}"
-           sh "cd ${workdir} && ansible-playbook install_integrations.yml -i inventories/${params[i]/ -e machine_type=${params[i]}"
+           sh "cd ${workdir} && ansible-playbook -i inventories/${params[i]}/ -e machine_type=${params[i]} install_integrations.yml "
         }
     }
     
@@ -125,7 +126,7 @@ sh 'java -version'
        for(int i=0; i<params.size(); i++ )
         {
         println "Installing Product for ${params[i]}"
-           sh "cd ${workdir} && ansible-playbook configure_product.yml -i inventories/${params[i]/ -e machine_type=${params[i]}"
+           sh "cd ${workdir} && ansible-playbook -i inventories/${params[i]}/ -e machine_type=${params[i]} configure_product.yml "
         }
     }  
 
@@ -133,7 +134,7 @@ sh 'java -version'
     {
     println "Setup Sync for Server Side"
 
-           sh "cd ${workdir} && ansible-playbook setup_sync.yml -i inventories/${params[0]/} "
+           sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/} setup_sync.yml  "
      
     } 
 	
@@ -141,7 +142,7 @@ sh 'java -version'
     {
     println "Setup Test Profiles for Server and TP Side"
    
-           sh "cd ${workdir} && ansible-playbook setup_testprofiles.yml -i inventories/${params[0]/ -i inventories/${params[1]/"
+           sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml"
      
     } 
 
@@ -150,7 +151,7 @@ sh 'java -version'
     {
     println "Running Tests"
 
-           sh "cd ${workdir} && ansible-playbook run_tests.yml -i inventories/${params[0]/ -i inventories/${params[1]/} "
+           sh "cd ${workdir} && ansible-playbook run_tests.yml -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e files_per_hr=${filesPerHour} "
      
     } 
     

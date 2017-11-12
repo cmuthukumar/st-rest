@@ -59,11 +59,11 @@
     # proxy_ip: "{{hostvars[item]['ansible_eth0']['ipv4']['address'] }}"
   # with_items: "{{groups['proxy']  |default({})}}"  
 
-- name: Print With_NESTED
-  debug: msg="Print Item 0 {{item.0}} Item1-{{item.1}} Item2-{{item.2.type}} IPAdd-"{{hostvars[item.0]['ansible_eth0']['ipv4']['address']}}""
-  with_nested:       
-       - "{{groups['proxy']  |default({})}}"
-       - "{{ proxy | dictsort }}"
+# - name: Print With_NESTED
+  # debug: msg="Print Item 0 {{item.0}} Item1-{{item.1}} Item2-{{item.2.type}} IPAdd-"{{hostvars[item.0]['ansible_eth0']['ipv4']['address']}}""
+  # with_nested:       
+       # - "{{groups['proxy']  |default({})}}"
+       # - "{{ proxy | dictsort }}"
        
 - name: Configure PROXY in Remote Machines on VersalEx Products
   shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupOptions "{{confvex.dname}}" "{{confvex.install_location}}" "PROXY" "{{item.2.type}}" "{{hostvars[item.0]['ansible_eth0']['ipv4']['address']}}" "{{item.2.port}}" "{{item.2.revfwdproxy}}"
@@ -76,6 +76,7 @@
        - "{{groups['proxy']  |default({})}}"
        - "{{ proxy | dictsort }}"
   register: proxy_config
+  when: proxy is defined
   retries: 3
   delay: 5  
   until: proxy_config|success

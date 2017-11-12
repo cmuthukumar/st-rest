@@ -17,8 +17,29 @@
         dest: "{{playbook_dir}}/files/sync_json/{{inventory_hostname}}.json"
      delegate_to: 127.0.0.1   
      when: play_hosts.index(inventory_hostname) > 0   
-                
-   - name: Setup Sync Using REST
+
+   - set_fact:
+        sync_serials: []
+     delegate_to: 127.0.0.1
+     
+   - set_fact:
+        node_serials: "{{ lookup('file','{{playbook_dir}}/files/sync_json/{{inventory_hostname}}.json')|from_json }}"     
+     # with_fileglob: "{{playbook_dir}}/files/sync_json/*.json" 
+     when: play_hosts.index(inventory_hostname) > 0
+     delegate_to: 127.0.0.1   
+
+   - set_fact:
+        sync_serials: "{{ sync_serials }} + [ '{{ hostvars[item]['node_serials']['serial'] }}' ]"
+     with_items: "{{ groups[ 'servers-versalex' ] | default([]) }}"
+     when: (play_hosts.index(inventory_hostname) == 0 and play_hosts.index(item) > 0)
+     delegate_to: 127.0.0.1   
+     
+
+   - debug: msg="Serial Lists-{{sync_serials}}"
+     when: play_hosts.index(inventory_hostname) == 0
+     delegate_to: 127.0.0.1  
+     
+   - name: Setup Sync Using REST-Add Node
      uri:
         url: "http://{{ansible_ssh_host}}:5080/api/nodes?username=administrator&password=Admin"
         method: POST
@@ -29,14 +50,36 @@
         force_basic_auth: yes
         return_content: yes
         status_code: 201
-     register: conn_certs_rest_status
+     register: rest_addnode
      with_fileglob: "{{playbook_dir}}/files/sync_json/*.json" 
      when:  play_hosts.index(inventory_hostname) == 0
+     retries: 1
+     delay: 5  
+     until: rest_addnode|success
+     delegate_to: 127.0.0.1
+     ignore_errors: yes
+
+
+   - name: Setup Sync Using REST-Initialize
+     uri:
+        url: "http://{{ansible_ssh_host}}:5080/api/nodes/{{item}}/initialize"
+        method: POST
+        user: administrator
+        password: Admin
+        force_basic_auth: yes
+        return_content: yes
+        status_code: 200
+        headers:
+            Content-Type: "application/json"
+     register: init_status
+     when: play_hosts.index(inventory_hostname) == 0
+     with_items: "{{sync_serials}}" 
      retries: 3
      delay: 5  
-     until: conn_certs_rest_status|success
-     delegate_to: 127.0.0.1
-
+     until: init_status|success
+     delegate_to: 127.0.0.1     
+     
+     
    - name: Kill Harmony Processes Karaf and OSGI
      shell: "kill -9 $(ps -aef |grep 'karaf.main' |grep -v grep |awk '{print $2 \"\t\" $3}')"
      register: kill_status        

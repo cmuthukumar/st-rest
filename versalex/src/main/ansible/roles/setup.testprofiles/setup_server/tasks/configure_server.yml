@@ -31,7 +31,7 @@
      register: profile_config
      
    - name: Configure Test Profiles in Remote Machines on Server - FTP Server
-     shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupTestProfile "{{conf_server.name}}" "{{conf_server.install_location}}" "{{item.name}}" "1-1" "{{item.hr}}" "{{item.action_range}}" "{{ item.ip }}" "5080"  "{{macro_name}}" "{{item.host_custom_props}}" "{{item.mailbox_custom_props}}" "{{item.action_custom_props}}" "true"
+     shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupTestProfile "{{conf_server.name}}" "{{conf_server.install_location}}" "{{item.name}}" "{{item.hr}}" "{{item.mailbox_range}}" "{{item.action_range}}" "{{ item.ip }}" "5080"  "{{macro_name}}" "{{item.host_custom_props}}" "{{item.mailbox_custom_props}}" "{{item.action_custom_props}}" "true"
      environment:
        CLASSPATH: ":{{conf_server.install_location}}/*:{{conf_server.install_location}}lib/*:{{conf_server.install_location}}lib/help/*:{{conf_server.install_location}}lib/hibernate/*:{{conf_server.install_location}}lib/secureshare/*:{{conf_server.install_location}}webserver/AjaxSwing/lib/*:{{conf_server.install_location}}lib/json/*"
      args:
