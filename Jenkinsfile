@@ -39,10 +39,10 @@ sh 'java -version'
     st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
     {    
     try{
-   // stage('Create Nodes')
-           // {
-             //   createNodes(params)
-           // }
+    stage('Create Nodes')
+            {
+                createNodes(params)
+            }
     stage('Install Product')
             {
                 installProduct()
