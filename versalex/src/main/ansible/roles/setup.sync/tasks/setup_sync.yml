@@ -28,7 +28,7 @@
         body: "{{ lookup('file','{{item}}') }}"
         force_basic_auth: yes
         return_content: yes
-        status_code: 200
+        status_code: 201
      register: conn_certs_rest_status
      with_fileglob: "{{playbook_dir}}/files/sync_json/*.json" 
      when:  play_hosts.index(inventory_hostname) == 0
