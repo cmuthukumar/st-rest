@@ -12,7 +12,6 @@
 - hosts: "versalex"
   # strategy: free
   roles:
-    - { role: install.product/download }
     - { role: install.product, prod_dict: "{{ versalex }}" } 
     
 - hosts: "proxy"

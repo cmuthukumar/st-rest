@@ -32,12 +32,12 @@
 
    - name: Set the serial number fact
      set_fact:
-        serialno: "{{serifile.stdout|replace(' ','')}}"
+        serialno: "{{serifile.stdout}}"
          
    - name: Append to Host variable file
      lineinfile:
        create: yes
-       dest: "{{playbook_dir}}/inventory/host_vars/{{inventory_hostname}}.yml"
+       dest: "{{playbook_dir}}/inventories/{{machine_type}}/host_vars/{{inventory_hostname}}.yml"
        regexp: '^serialno'       
        line: "serialno: {{item.line}}"
        state: present     

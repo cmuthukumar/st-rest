@@ -20,6 +20,10 @@
       get_url:
         url: "{{ jmeter_get_utl }}"
         dest: "{{ jmeter_dir }}"
+      register: jmeter_dload_status
+      retries: 3
+      delay: 1
+      until: jmeter_dload_status | success
         
     - name: Extract JMeter to Dest Dir
       unarchive:
@@ -55,8 +59,8 @@
          executable: /bin/sh
          chdir: "{{jmeter_dir}}apache-jmeter-{{jmeter_version}}/bin/"
       register: jmeter_res
-      # async: 300
-      # poll: 10
+      async: 36000
+      poll: 600
       
     - name: Print Jmeter Results
       debug: msg="{{jmeter_res.stdout_lines}}"

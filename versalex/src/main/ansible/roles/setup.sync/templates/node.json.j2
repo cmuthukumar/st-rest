@@ -2,7 +2,7 @@
   "serial":"{{hostvars[inventory_hostname]['serialno']|replace(' ','')}}",
   "alias":"{{inventory_hostname}}",
   "url": "http://{{hostvars[inventory_hostname]['ansible_eth0']['ipv4']['address']}}:5080",
-  "backup":true, 
+  "backup":false, 
   "syncpath":"certs/*;data/*;conf/Options.xml;conf/Proxies.xml;conf/AS400.xml;conf/WinUnixFolders.xml;conf/Schedule.xml;hosts/Local Listener.xml;hosts/*.xml;conf/TradingPartners.xml;conf/ipbl.xml;importedIDPs/*.xml",
   "enabled":true
 }

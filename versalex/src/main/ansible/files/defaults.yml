@@ -28,7 +28,7 @@ defaults:
         #nexus_artifactid: Harmony 
         nexus_classifier: "linux64-jre18"
         nexus_packaging: bin    
-        download_location: "/home/SystemTestNew/vexdownload/"                 
+        download_location: "{{playbook_dir}}/download/"                 
     license: &lic
         license_nexus_repourl: "http://contd.cleo.com/nexus/service/local/artifact/maven/content"
         license_nexus_repoid: cleo
@@ -100,7 +100,7 @@ defaults:
         type: "db"
         maven_artifactid: mysql-connector-java
         maven_groupid: mysql
-        maven_version: 5.1.24
+        maven_version: 5.1.6
         maven_destfilename: "mysqltest24.jar"
         app_type: mysql
         node_ip: dbsrv1
@@ -122,7 +122,7 @@ defaults:
         type: "db"
         maven_artifactid: oracle-connector-java
         maven_groupid: oracle
-        maven_version: 5.1.24
+        maven_version: 5.1.6
         maven_destfilename: "oracle.jar"
         app_type: oracle
         node_ip: dbsrv1

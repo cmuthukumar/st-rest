@@ -1,15 +1,15 @@
 tpdataset:
 {% set loop_start = [1] %}
 {% set tpcnt = {'tpcount': 0} %}
-{% set tpnnum = [0] %}
+{% set tpindx = {'tpindex': 0} %}
 {% for tp in groups['tpnodes-versalex'] %}
-{% if tpnnum.append(play_hosts.index(tp) |int) %}{% endif %} 
+{% if tpindx.update({'tpindex': loop.index0 |int}) %} {% endif %} 
 {% for usrkey,usrval in dataset.items() recursive %}
     {{usrkey}}-{{play_hosts.index(tp)}}:
 {% set total_hst = (usrval.total | int / vex_count | int) %}
 {% if tpcnt.update({'tpcount': total_hst |int}) %} {% endif %} 
-        - hname: {{hostvars[groups[grp_name][tpnnum[0]]].ansible_ssh_host}}
-          ip: {{hostvars[groups[grp_name][tpnnum[0]]]['ansible_eth0']['ipv4']['address']}}
+        - hname: {{hostvars[groups[grp_name][tpindx.tpindex |int]].ansible_ssh_host}}
+          ip: {{hostvars[groups[grp_name][tpindx.tpindex |int]]['ansible_eth0']['ipv4']['address']}}
           hr: {{loop_start[0] | int}}-{{(loop_start[0]|int +(total_hst-1) |int)}}
           tpnode: {{tp}}
 {% for innerkey,innerval in dataset[usrkey|lower].items() %}

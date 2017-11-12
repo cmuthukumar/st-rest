@@ -59,16 +59,20 @@ sh 'java -version'
                 configProduct()
             } 
 
+	stage('Setup Sync')
+		{
+			setupSync()
+		}  		
+			
     stage('Setup TestProfiles')
             {
                 setupTestProfiles()
             } 
-
-    stage('Setup Sync')
+			
+    stage('Run Tests')
             {
-                setupSync()
-            }             
-            
+                runTests()
+            } 
         }
         finally{
         
@@ -89,7 +93,7 @@ sh 'java -version'
         {
         println "Creating Nodes for ${params[i]}"
            sh "cd ${workdir} && ansible-playbook setup_topology.yml -c local -e machine_type=${params[i]} -e do_api_token=${env.do_ap_token}"
-           sh "cd ${workdir} && ansible-playbook setup_vars.yml -c local -i inventory/ -e machine_type=${params[i]}"
+           sh "cd ${workdir} && ansible-playbook setup_vars.yml -c local -i inventories/${params[i]/ -e machine_type=${params[i]}"
         }
         
         }
@@ -101,7 +105,7 @@ sh 'java -version'
        for(int i=0; i<params.size(); i++ )
         {
         println "Installing Product for ${params[i]}"
-           sh "cd ${workdir} && ansible-playbook install_product.yml -i inventory/ -e machine_type=${params[i]}"
+           sh "cd ${workdir} && ansible-playbook install_product.yml -i inventories/${params[i]/ -e machine_type=${params[i]}"
         }
     }
 
@@ -111,7 +115,7 @@ sh 'java -version'
        for(int i=0; i<params.size(); i++ )
         {
         println "Installing Product for ${params[i]}"
-           sh "cd ${workdir} && ansible-playbook install_integrations.yml -i inventory/ -e machine_type=${params[i]}"
+           sh "cd ${workdir} && ansible-playbook install_integrations.yml -i inventories/${params[i]/ -e machine_type=${params[i]}"
         }
     }
     
@@ -121,23 +125,32 @@ sh 'java -version'
        for(int i=0; i<params.size(); i++ )
         {
         println "Installing Product for ${params[i]}"
-           sh "cd ${workdir} && ansible-playbook configure_product.yml -i inventory/ -e machine_type=${params[i]}"
+           sh "cd ${workdir} && ansible-playbook configure_product.yml -i inventories/${params[i]/ -e machine_type=${params[i]}"
         }
     }  
-
-    def setupTestProfiles()
-    {
-    println "Setup Test Profiles for Server and TP Side"
-   
-           sh "cd ${workdir} && ansible-playbook setup_testprofiles.yml -i inventory/ -e server_conf=${params[0]} -e tp_conf=${params[1]}"
-     
-    } 
 
     def setupSync()
     {
     println "Setup Sync for Server Side"
 
-           sh "cd ${workdir} && ansible-playbook setup_sync.yml -i inventory/${params[0]} "
+           sh "cd ${workdir} && ansible-playbook setup_sync.yml -i inventories/${params[0]/} "
+     
+    } 
+	
+    def setupTestProfiles()
+    {
+    println "Setup Test Profiles for Server and TP Side"
+   
+           sh "cd ${workdir} && ansible-playbook setup_testprofiles.yml -i inventories/${params[0]/ -i inventories/${params[1]/"
+     
+    } 
+
+	
+    def runTests()
+    {
+    println "Running Tests"
+
+           sh "cd ${workdir} && ansible-playbook run_tests.yml -i inventories/${params[0]/ -i inventories/${params[1]/} "
      
     } 
     

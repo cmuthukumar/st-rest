@@ -2,8 +2,9 @@
 # tasks file for create.topology
 - name: Create Inventory Dir
   file: 
-    path: "{{playbook_dir}}/inventory/"
+    path: "{{playbook_dir}}/inventories/{{machine_type}}/"
     state: directory
+    recurse: yes
     
 - name: Create Hosts Inventory File
   template:

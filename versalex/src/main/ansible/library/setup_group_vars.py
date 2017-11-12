@@ -61,7 +61,7 @@ def build_grp_vars(machine_type,usr_src,default_src):
                                 # prod_path.update({lk: prod_fpath })
                             except yaml.YAMLError as err:
                                 print err
-    f= open(os.path.join(grpvar_path,'/'+os.path.basename(usr_src)), 'w+')  
+    f= open(os.path.join(grpvar_path+'/',os.path.basename(usr_src)), 'w+')  
     try:
         yaml.dump(parent, f, default_flow_style=False)
         result= {"status": "success", "groupVar_path": f.name}
