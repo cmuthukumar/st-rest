@@ -84,8 +84,7 @@ sh 'java -version'
     }
   
 }
-  
-}
+
     def createNodes(params)
     {
     withCredentials([[$class: 'StringBinding', credentialsId: 'doCredentials', variable: 'do_ap_token']]) {
