@@ -84,8 +84,8 @@ sh 'java -version'
     }
   
 }
-
   
+}
     def createNodes(params)
     {
     withCredentials([[$class: 'StringBinding', credentialsId: 'doCredentials', variable: 'do_ap_token']]) {
@@ -93,10 +93,10 @@ sh 'java -version'
         for(int i=0; i<params.size(); i++ )
         {
         println "Creating Nodes for ${params[i]}"
-           sh "cd ${workdir} && ansible-playbook setup_topology.yml -c local -e machine_type=${params[i]} -e do_api_token=${env.do_ap_token}"
-           sh "cd ${workdir} && ansible-playbook setup_vars.yml -c local -i inventories/${params[i]/ -e machine_type=${params[i]}"
-        }
-        
+           sh "cd ${workdir} && ansible-playbook setup_topology.yml -c local -e machine_type=${params[i]} -e do_api_token=${env.do_ap_token} "
+		   
+           sh "cd ${workdir} && ansible-playbook setup_vars.yml -c local -i inventories/${params[i]}/ -e machine_type=${params[i]} "
+		   }        
         }
     }
     
@@ -134,7 +134,7 @@ sh 'java -version'
     {
     println "Setup Sync for Server Side"
 
-           sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/} setup_sync.yml  "
+           sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ setup_sync.yml  "
      
     } 
 	
