@@ -93,14 +93,14 @@ defaults:
         mailbox_range: 1-1
         action_range: 1-1
         create_certs: true       
-        host_custom_props: {}
+        host_custom_props: {"Defaulthomedir":"%datashare%/root/%username%"}
         mailbox_custom_props: {}
         action_custom_props: {}        
     mysql:
         type: "db"
         maven_artifactid: mysql-connector-java
         maven_groupid: mysql
-        maven_version: 5.1.6
+        maven_version: 5.1.24
         maven_destfilename: "mysqltest24.jar"
         app_type: mysql
         node_ip: dbsrv1
@@ -122,7 +122,7 @@ defaults:
         type: "db"
         maven_artifactid: oracle-connector-java
         maven_groupid: oracle
-        maven_version: 5.1.6
+        maven_version: 5.1.24
         maven_destfilename: "oracle.jar"
         app_type: oracle
         node_ip: dbsrv1
