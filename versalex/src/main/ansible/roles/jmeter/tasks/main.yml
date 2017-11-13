@@ -57,10 +57,11 @@
          PATH: "{{ ansible_env.PATH }}:{{jmeter_dir}}apache-jmeter-{{jmeter_version}}/bin/" 
       args:
          executable: /bin/sh
-         chdir: "{{jmeter_dir}}apache-jmeter-{{jmeter_version}}/bin/"
-      register: jmeter_res      
+         chdir: "{{jmeter_dir}}apache-jmeter-{{jmeter_version}}/bin/"         
+      register: jmeter_res
       async: 3800
       poll: 600
+      ignore_errors: yes
       
     - name: Print Jmeter Results
       debug: msg="{{jmeter_res.stdout_lines}}"
