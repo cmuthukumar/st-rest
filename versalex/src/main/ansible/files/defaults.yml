@@ -101,7 +101,6 @@ defaults:
         maven_artifactid: mysql-connector-java
         maven_groupid: mysql
         maven_version: 5.1.24
-        maven_destfilename: "mysqltest24.jar"
         app_type: mysql
         node_ip: dbsrv1
         # jdbc_url: "jdbc:mysql://2.2.2.2:3306/test1"

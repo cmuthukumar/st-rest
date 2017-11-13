@@ -35,13 +35,13 @@
      # retries: 3
      # delay: 10
      
-   - name: Install Docker-Python package
-     pip: name=docker-py     
-     until: "'failed' not in pythontool"
-     retries: 3
-     delay: 10
-     register: dockerpy
-     ignore_errors: yes
+   # - name: Install Docker-Python package
+     # pip: name=docker-py     
+     # until: "'failed' not in pythontool"
+     # retries: 1
+     # delay: 3
+     # register: dockerpy
+     # ignore_errors: yes
      
    # - name: Disable YUM Repository
      # yum_repository:
@@ -86,8 +86,8 @@
      register: docker_details
      ignore_errors: true
      until: "'failed' not in pythontool"
-     retries: 3
-     delay: 10
+     retries: 1
+     delay: 3
 #   - name: Printing Docker Details 
 #     debug: msg="Docker Details:{{docker_details}}"
    - name: Check Docker is Running

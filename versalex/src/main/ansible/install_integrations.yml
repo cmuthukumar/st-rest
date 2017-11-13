@@ -1,4 +1,5 @@
 ---
 - hosts: "{{machine_type}}"
+  strategy: free
   roles:
     - { role: install.integrations,mach_type: "{{machine_type}}" }
