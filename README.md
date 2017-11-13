@@ -1,110 +1,11 @@
 #System Testing:-
+
+Click Wiki for Details (https://github.com/CleoDev/st/wiki) 
+
 ##Purpose:-
   * Automating performance aspects of Versalex Products with respect to various load patterns and scenarios.
 
-##Pre Requisites:-
-  * JDK 8 or later
-  * Ansible 2.0 or later
-  * Docker 1.9.1 or later(Optional)
-  * Maven 3.3.3 or later
 
-##Pipeline Stages:-
-  * Checkout
-  * Create Nodes
-  * Install Product
-  * Configurre Product
-  * Setup TestProfiles
-  * Execution(Yet to Start)
-  * Monitoring(Yet to Start)
-  * Reporting(Yet to Start)
-  
-###Checkout:
--------------
-  * Checks out java and ansible code from github branch with required resource files (pom..etc..) to user machine(ex: jenkins slave machine)
-
-
-####Maven Commands:
-	  *  checkout([$class: 'GitSCM', branches: [[name: "${gitSysTestBranch}"]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '683540f0-61a9-48c1-acef-dc5520fb6466', url: 'https://github.com/CleoDev/EFSS.git']]])    
-
-#####Results:
-	Checks out code from branch 
-```
-	<branch checkout dir>
-
-Below will be checked out from EFSS/non-shipped/test/automation/systemtesting/
-
-	controller - Ansible code used to control different stages of System Testing
-	
-	    * src/main/ansible - ansible roles and playbooks
-	    
-		configure.product
-		create.machines - role
-		install.apps
-		setup.testprofiles
-		
-		configure_product.yml - playbook calls configure.product role
-		create_machines.yml - playbook calls create.machines role
-		install_apps.yml - playbook calls install.apps role
-		setup_testprofiles.yml - playbook calls setup.testprofiles role
-		
-	    * pom.xml -	profiles defined here for each stage mapped to above stages
-			
-	setup_versalex - Java  used for Setting up Versalex Configuration
-			
-	    * src/main/java/com/cleo/systest - java classes used in generating system testing jars
-	    		
-		SetupOptions.java
-		SetupSchedule.java
-		SetupVersalex.java		
-		UtilTestdata.java
-		
-	    * pom.xml - profiles used to generate jars
-	    
-      * pom.xml	- Parent pom for System testing
-	
-```
-
-###Create Machines
--------------------
-  * Create Machines on DigitalOcean based on yaml config file
-
-```
-Sample yaml config file
-- machine_type: digitalocean(plan to extend for physical machines and aws cloud machines in near future)
-- do_token: <digitalocean account api token..can be generated from digital ocean website for user account>
-systestnodes:
-   - type: servers (Groups hosts based on this type.This can not be changed by users as they wish)
-     configs:
-       - name: srv1 (Hostname for the box created)
-         ram_size: 8gb
-         region: blr1
-         image_name: "centos-6-5-x64"
-   - type: tpnodes 
-     configs:
-       - name: tpn1
-         ram_size: 8gb
-         region: blr1
-         image_name: "centos-6-5-x64"
-   - type: proxies
-     configs:
-       - name: proxy1
-         ram_size: 4gb
-         region: blr1
-         image_name: "centos-6-5-x64"
-   - type: shares
-     configs:
-       - name: share1
-         ram_size: 4gb
-         region: blr1
-         image_name: "centos-6-5-x64"
-   - type: dbservers
-     configs:
-       - name: dbsrv1
-         ram_size: 4gb
-         region: blr1
-         image_name: "centos-6-5-x64"
-     
- ```
 
 ####Maven Commands:
 	sh "${mvnHome}/bin/mvn install -Pcreate-nodes -f '${env.WORKSPACE}/non-shipped/test/automation/systemtesting/controller/pom.xml'  -Dplaybook.path='${env.WORKSPACE}/non-shipped/test/automation/systemtesting/controller/src/main/ansible/create_machines.yml' -Dhost.filepath='${env.WORKSPACE}/non-shipped/test/automation/systemtesting/controller/src/main/ansible/hosts' "
