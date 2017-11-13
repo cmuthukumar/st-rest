@@ -58,8 +58,8 @@
       args:
          executable: /bin/sh
          chdir: "{{jmeter_dir}}apache-jmeter-{{jmeter_version}}/bin/"
-      register: jmeter_res
-      async: 36000
+      register: jmeter_res      
+      async: 3800
       poll: 600
       
     - name: Print Jmeter Results
