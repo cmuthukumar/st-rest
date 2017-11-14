@@ -15,17 +15,61 @@ A description of the settable variables for this role should go here, including 
 
 Dependencies
 ------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+N/A
 
 Example Playbook
 ----------------
+###Install Integrations (Ansible Role)
+----------------------------------------
+  * Installs versalex products(generates license and configure them) and external applications required for setting up versalex products.
+  
+  	* Dockerized install
+  		* DockerFile
+			* Installs docker on remote hosts and run docker based application using docker file
+  		* Docker Image
+			* Installs docker on remote hosts and run docker based application using docker image. Pulls docker image from Docker Hub and run it.-For external applications like mysql,ldap servers..etc..
+		
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+		
+* Dockerized Install:
+            
+```
+Sample yaml for dockerized install using Docker image-Mysql
+<Ansible Playbook DirPath>/install.apps/vars/dbsrv1.yml
+---
+install_apps:  
+  mysql:
+    docker: "true"
+    image: "mysql:latest"
+    use_dockerfile: "false"
+    expose_port: 3306
+    image_args: "MYSQL_ROOT_PASSWORD=testdocker"
+	
+```
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+* Dockerized Install:
+		
+```
+Sample yaml for dockerized install using Docker File
+<Ansible Playbook DirPath>/install.apps/vars/dbsrv1.yml
+---
+install_apps:  
+  mysql:
+    docker: "true"
+    use_dockerfile: "true"
+    src_dir: "/home/SystemTest/DockerFiles/"
+    dest_dir: "/root/DockerFile/"
+    image_name: testdockerfile
+    image_tag: latest
+    image_args: "MYSQL_ROOT_PASSWORD=testdocker"
+	
+```
+		
+```
+Location:
+	<<Ansible Playbook DirPath>/results/install.apps(ansible role name)>
+```	
+
 
 License
 -------
