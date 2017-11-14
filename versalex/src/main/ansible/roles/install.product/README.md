@@ -24,85 +24,29 @@ Example Playbook
 
 ###Install Product (Ansible Role)
 ----------------------------------------
-  * Installs versalex products(generates license and configure them) and external applications required for setting up versalex products.
-  
-  	* Dockerized install
-  		* DockerFile
-			* Installs docker on remote hosts and run docker based application using docker file
-  		* Docker Image
-			* Installs docker on remote hosts and run docker based application using docker image. Pulls docker image from Docker Hub and run it.-For external applications like mysql,ldap servers..etc..
-			
-  	* Non-Dockerized install
-		* Installs versalex products(Harmony, VLTrader, Lexicom, VLProxy) on ips inputted
-		
-* Dockerized Install:
-            
-```
-Sample yaml for dockerized install using Docker image-Mysql
-<Ansible Playbook DirPath>/install.apps/vars/dbsrv1.yml
----
-install_apps:  
-  mysql:
-    docker: "true"
-    image: "mysql:latest"
-    use_dockerfile: "false"
-    expose_port: 3306
-    image_args: "MYSQL_ROOT_PASSWORD=testdocker"
-	
-```
+  * Installs versalex products(generates license and configure them) required for setting up versalex products.
+	* Installs versalex products(Harmony, VLTrader, Lexicom, VLProxy) on ips inputted
 
-* Dockerized Install:
-		
-```
-Sample yaml for dockerized install using Docker File
-<Ansible Playbook DirPath>/install.apps/vars/dbsrv1.yml
----
-install_apps:  
-  mysql:
-    docker: "true"
-    use_dockerfile: "true"
-    src_dir: "/home/SystemTest/DockerFiles/"
-    dest_dir: "/root/DockerFile/"
-    image_name: testdockerfile
-    image_tag: latest
-    image_args: "MYSQL_ROOT_PASSWORD=testdocker"
-	
-```
-
-* Non-Dockerized Install:
+* Versalex Install:
 
 ```
 Sample yaml config file for non-dockerized install for versalex product harmony
-<Ansible Playbook DirPath>/install.apps/vars/srv1.yml
+<Ansible Playbook DirPath>/install_product.yml
 ---
-install_apps:
-  versalex:
-    docker: "false" (controls dockerization for the this host)
-    find_version_url:  http://contd.cleo.com/nexus/service/local/artifact/maven/resolve
-    download_version_url: http://contd.cleo.com/nexus/service/local/artifact/maven/content
-    nexus_repoid: InstallerSnapshots
-    nexus_groupid: com.cleo.installers
-    nexus_artifactid: Harmony
-    nexus_classifier: linux64-jre18
-    nexus_packaging: bin
-    nexus_version: 5.3.0-SNAPSHOT
-    port: 5080
-    download_location: "/home/SystemTestNew/vexdownload/"
-    install_location: "/root/Harmony/"                 
-    license:
-        nexus_repourl: http://contd.cleo.com/nexus/service/local/artifact/maven/content
-        nexus_repoid: cleo
-        nexus_groupid: com.cleo.util
-        nexus_artifactid: LexiComLicenser_2
-        nexus_version: LATEST
-        CompanyName: Cleo
-        SerialNumber: MY0002
-        KeyExpiration: 30
-        Product: Harmony
-        Limit_HSP: 0
-        Limit_Anyother: 0
-        Trust: 1
-        Unify: 1
+---
+hardware:
+   versalex:           
+      - name: harmony
+        ram_size: 4gb
+        region: nyc1
+        image_name: "centos-7-x64"
+        qty: 2
+software:
+   versalex:
+      - name: harmony
+        version: "5.4.1-SNAPSHOT"
+        install_location: "/root/Harmony/"   
+      
  ```
 
 License
