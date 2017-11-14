@@ -40,13 +40,13 @@
     - name: Copy TestPlan(JMX) file to Shares
       copy: src="{{playbook_dir}}/files/SysTest_Linux.jmx" dest="{{jmeter_dir}}apache-jmeter-{{jmeter_version}}/bin/"
 
+    - name: Find Total files
+      set_fact: 
+        total_files: "{{ (files_per_min|int*total_mins|int) }}"      
+      
     - name: Set LoopCount for Jmeter
       set_fact: 
-        loop_count: "{{files_per_hr|int/threadCount|int }}"
-
-    - name: Set FilesPer Min
-      set_fact: 
-        files_per_min: "{{files_per_hr|int/60 }}"
+        loop_count: "{{(total_files|int/threadCount|int) }}"
 
     - name: Print jmeter facts
       debug: msg="lcount-{{loop_count|int}} fpmin-{{files_per_min|int}}"

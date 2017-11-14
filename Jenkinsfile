@@ -150,7 +150,7 @@ sh 'java -version'
     {
     println "Running Tests"
 
-           sh "cd ${workdir} && ansible-playbook run_tests.yml -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e files_per_hr=${filesPerHour} "
+           sh "cd ${workdir} && ansible-playbook run_tests.yml -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e files_per_min=${filesPerMin} -e total_mins=${TotalMins} "
      
     } 
     

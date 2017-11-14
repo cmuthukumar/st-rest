@@ -1,4 +1,4 @@
 ---
 - hosts: "servers-shares:tpnodes-shares"
   roles:
-    - {role: jmeter,files_per_hr: "{{files_per_hr}}" }
+    - {role: jmeter,total_mins: "{{total_mins}}" ,files_per_min: "{{files_per_min}}" }
