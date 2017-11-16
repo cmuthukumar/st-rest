@@ -7,7 +7,6 @@
     # - ./{{confvex.dname}}d stop
   # register: stopvexstatus
 
-
 - name: Kill Java Processes running on Remote System
   shell: "kill $(ps aux | grep -i java | grep -v 'grep' | awk '{print $2}')"
   register: javakill_status
@@ -19,6 +18,12 @@
 - name: Wait for port 5080 to get Stopped
   wait_for: port=5080 delay=10 state=stopped
   
+- name: Delete Schedule Lck file
+  file:
+    path: "{{confvex.install_location}}schedule.lck"
+  state: absent
+  ignore_errors: yes
+  
 - name: Start VersalEx Product Daemon   
   shell: "{{item}}"
   args:
@@ -27,6 +32,6 @@
     - ./{{confvex.dname}}d start
   register: startvexstatus
 
-# - name: Wait for Versalex Port to Come up
-  # wait_for: host="{{ansible_ssh_host}}" port="{{confvex.port}}" delay=10 timeout=320 state=started  
+- name: Wait for Versalex Port to Come up
+  wait_for: host="{{ansible_ssh_host}}" port="{{confvex.port}}" delay=10 timeout=320 state=started  
   

@@ -1,0 +1,41 @@
+---
+- name: Setting Dictionary Name Config Versalex
+  set_fact:
+        jmxmem: "{{jmx_mem_grp.value}}"
+
+- name: Download SysTest Jar from Nexus Repo
+  maven_artifact: 
+            group_id: "{{jmxmem.nexus_systest_groupid}}"
+            artifact_id: "{{jmxmem.nexus_systest_artifactid}}"
+            version: latest
+            extension: "jar"
+            repository_url: "{{jmxmem.nexus_systest_repourl}}"
+            dest: "{{playbook_dir}}/library/"
+            state: present
+  run_once: true
+  delegate_to: 127.0.0.1 
+        
+- name: Copy SetupOptions Jar File to remote location
+  copy: src="{{playbook_dir}}/library/" dest="{{jmxmem.install_location}}lib/"
+
+- name: "Edit versalexc.lax  File"
+  lineinfile:
+     create: no
+     dest: "{{jmxmem.install_location}}{{jmxmem.dname}}c.lax"
+     regexp: '^(lax.nl.java.option.additional=.*)'
+     line: '\1 -Xms{{jmxmem.vex_heapmem_min}} -Xmx{{jmxmem.vex_heapmem_max}} -XX:+HeapDumpOnOutOfMemoryError -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port={{jmxmem.vex_jmx_port}} -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname={{ansible_ssh_host}}'
+     state: present       
+     backrefs: yes
+  register: harmonyc_lax  
+  
+- name: "Edit setenv for karaf  File"
+  lineinfile:
+   create: no
+   dest: "{{jmxmem.install_location}}core/bin/setenv"
+   line: "{{item.line}}"
+   state: present
+  with_items:
+     - {  line: 'export JAVA_MIN_MEM={{jmxmem.karaf_heapmem_min}}', insertafter: EOF}
+     - {  line: 'export JAVA_MAX_MEM={{jmxmem.karaf_heapmem_max}}', insertafter: EOF}
+     - {  line: 'export EXTRA_JAVA_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port={{jmxmem.karaf_jmx_port}} -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false" ', insertafter: EOF}
+  register: karafc

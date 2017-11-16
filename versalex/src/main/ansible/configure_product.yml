@@ -7,7 +7,7 @@
   tasks:
     - name: Configure Server Side Shares
       include_role:
-        name: configure.product/server_share
+          name: configure.product/server_share
       with_dict: "{{ shares | default({}) }}"
       loop_control:
           loop_var: srvr_share
@@ -21,9 +21,13 @@
       loop_control:
           loop_var: clishare
           
-- hosts: "{{machine_type}}"
+- hosts: "versalex"
   roles:
-    - { role: configure.product }    
+    - { role: configure.product/jmx_mem }    
+
+- hosts: "versalex:integrations:proxy"
+  roles:
+    - { role: configure.product } 
 
   # roles:
     # - { role: configure.product/client_share, when: groups.shares is defined}

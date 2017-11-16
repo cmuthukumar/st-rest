@@ -98,17 +98,17 @@ defaults:
         action_custom_props: {}        
     mysql:
         type: "db"
-        maven_artifactid: mysql-connector-java
-        maven_groupid: mysql
-        maven_version: 5.1.24
-        app_type: mysql
-        node_ip: dbsrv1
+        maven_artifactid: "mysql-connector-java"
+        maven_groupid: "mysql"
+        maven_version: "5.1.24"
+        app_type: "mysql"
+        node_ip: "dbsrv1"
         # jdbc_url: "jdbc:mysql://2.2.2.2:3306/test1"
         port: 3306
         dbname: mysql
         driver_str: "com.mysql.jdbc.Driver"
-        username: root
-        password: testdocker
+        username: "root"
+        password: "testdocker"
         docker: "true"
         use_docker_image: "true"
         app_srcdir: "/home/SystemTest/DockerFiles/"
