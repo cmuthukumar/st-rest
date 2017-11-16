@@ -1,4 +1,5 @@
 #System Testing:-
+<<<<<<< HEAD
 
 Click Wiki for Details (https://github.com/CleoDev/st/wiki) 
 
@@ -26,6 +27,28 @@ Click Wiki for Details (https://github.com/CleoDev/st/wiki)
 	[dbservers]
 	 dbsrv1 ansible_ssh_host=139.59.47.160
 	 
+=======
+##Purpose:-
+  * Automating performance aspects of Versalex Products with respect to various load patterns and scenarios.
+
+##Pre Requisites:-
+  * JDK 8 or later
+  * Ansible 2.0 or later
+  * Docker 1.9.1 or later(Optional)
+  * Maven 3.3.3 or later
+
+##Pipeline Stages:-
+  * Checkout
+  * Create Nodes
+  * Install Product
+  * Configurre Product
+  * Setup TestProfiles
+  * Execution(Yet to Start)
+  * Monitoring(Yet to Start)
+  * Reporting(Yet to Start)
+  
+
+>>>>>>> 0ceb37e9c100794cd1d53571c47825bb58a70b7d
 Note:- 
 	For each host there is corresponding config file with name <hostname>.yml for each stage below.For above hosts below are the config files placed under each stage(ansible role)
 	<Ansible Playbook DirPath>/<rolename>/vars/srv1.yml
@@ -35,6 +58,78 @@ Note:-
 	<Ansible Playbook DirPath>/<rolename>/vars/dbsrv1.yml	
 ```		
 
+<<<<<<< HEAD
+=======
+
+
+```
+Sample yaml config file for non-dockerized install for versalex product Harmony TP Node
+<Ansible Playbook DirPath>/install.apps/vars/tpn1.yml
+---
+install_apps:
+  versalex:
+    docker: "false"
+    find_version_url:  http://contd.cleo.com/nexus/service/local/artifact/maven/resolve
+    download_version_url: http://contd.cleo.com/nexus/service/local/artifact/maven/content
+    nexus_repoid: InstallerSnapshots
+    nexus_groupid: com.cleo.installers
+    nexus_artifactid: Harmony
+    nexus_classifier: linux64-jre18
+    nexus_packaging: bin
+    nexus_version: 5.3.0-SNAPSHOT
+    port: 5080
+    download_location: "/home/SystemTestNew/vexdownload/"
+    install_location: "/root/Harmony/"
+    license:
+        nexus_repourl: http://contd.cleo.com/nexus/service/local/artifact/maven/content
+        nexus_repoid: cleo
+        nexus_groupid: com.cleo.util
+        nexus_artifactid: LexiComLicenser_2
+        nexus_version: LATEST    
+        CompanyName: Cleo
+        SerialNumber: ZY0002
+        KeyExpiration: 30
+        Product: Harmony
+        Limit_HSP: 0
+        Limit_Anyother: 0
+        Trust: 1
+        Unify: 1
+	
+```	
+
+```
+
+Sample yaml config file for non-dockerized install for versalex product VLProxy
+<Ansible Playbook DirPath>/install.apps/vars/proxy1.yml
+---
+install_apps:
+  versalex:
+    docker: "false"
+    find_version_url:  http://contd.cleo.com/nexus/service/local/artifact/maven/resolve
+    download_version_url: http://contd.cleo.com/nexus/service/local/artifact/maven/content
+    nexus_repoid: InstallerSnapshots
+    nexus_groupid: com.cleo.installers
+    nexus_artifactid: VLProxy
+    nexus_classifier: linux64-jre18
+    nexus_packaging: bin
+    nexus_version: 5.3.0-SNAPSHOT
+    port: 5080
+    download_location: "/home/SystemTestNew/vexdownload/"
+    install_location: "/root/VLProxy/"
+```   
+    
+####Maven Commands:
+    	sh "${mvnHome}/bin/mvn install -Pinstall-apps -f '${env.WORKSPACE}/non-shipped/test/automation/systemtesting/controller/pom.xml'  -Dplaybook.path='${env.WORKSPACE}/non-shipped/test/automation/systemtesting/controller/src/main/ansible/install_apps.yml' -Dhost.filepath='${env.WORKSPACE}/non-shipped/test/automation/systemtesting/controller/src/main/ansible/hosts' "
+
+	
+#####Results:
+	Generates license artifacts like license_keys , license properties file ...etc.. and kept in below location
+		
+```
+Location:
+	<<Ansible Playbook DirPath>/results/install.apps(ansible role name)>
+```	
+>>>>>>> 0ceb37e9c100794cd1d53571c47825bb58a70b7d
 
 
 ###Configurre Versalex (Ansible Role)
