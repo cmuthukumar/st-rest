@@ -3,6 +3,7 @@
 
 Click Wiki for Details (https://github.com/CleoDev/st/wiki) 
 
+<<<<<<< HEAD
 ##Purpose:-
   * Automating performance aspects of Versalex Products with respect to various load patterns and scenarios.
 
@@ -412,3 +413,5 @@ Location:
 	proxy1=139.59.32.91
 
 ```
+=======
+>>>>>>> 83bd98595c745c1710e023603ff473ba9350bbf1
