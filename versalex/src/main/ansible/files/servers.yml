@@ -2,7 +2,7 @@
 hardware:
    versalex:           
       - name: harmony
-        ram_size: 2gb
+        ram_size: 4gb
         region: nyc1
         image_name: "centos-7-x64"
         qty: 2
