@@ -15,7 +15,12 @@
    # when: node_type == 'Receiver'
  - name: Copy All Certs from Local to Remote Import Location
    synchronize: src="{{playbook_dir}}/files/systestcerts/" dest="{{tp_profile.install_location}}systestcerts/"   
-   # when: setup_profiles.vex_product is defined and setup_profiles.vex_product != 'VLProxy' and setup_profiles.node_type == 'Receiver'   
+   # when: setup_profiles.vex_product is defined and setup_profiles.vex_product != 'VLProxy' and setup_profiles.node_type == 'Receiver' 
+   register: copy_loc_status
+   until: copy_loc_status|success
+   retries: 3
+   delay: 5
+
  - name: Set macro name to Empty if  not defined
    set_fact: 
         macro_name: ""
