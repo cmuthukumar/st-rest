@@ -1,5 +1,6 @@
 ---
-    - uri:
+    - name: Create Droplet using DO Rest Call
+      uri:
         url: https://api.digitalocean.com/v2/droplets
         method: POST
         body: '{"name":"{{mac_type}}-{{swtype}}-{{item}}","size":"{{outer_item.ram_size}}","region":"{{outer_item.region}}","image":"{{outer_item.image_name}}","ssh_keys":["{{uploadstatus.ssh_key.id}}"]}'
