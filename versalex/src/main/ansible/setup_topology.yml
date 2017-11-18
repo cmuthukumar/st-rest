@@ -6,5 +6,5 @@
   
   roles:
     - {role: setup.topology/upload_sshkey }
-    - {role: setup.topology, machine_type: "{{machine_type}}"}
+    - {role: setup.topology/rest, machine_type: "{{machine_type}}"}
     - {role: setup.topology/create_hosts }  
