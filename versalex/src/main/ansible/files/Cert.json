@@ -1,0 +1,12 @@
+{
+  "requestType":"generateCert",
+  "alias":"{{alias|upper}}",
+  "dn":"cn={{alias|upper}},c=us,st=in",
+  "validity":"24 months",
+  "alg":"sha1",
+  "keyAlg":"rsa",
+  "keySize":1024,
+  "extendedKeyUsage":["clientAuth"],
+  "keyUsage":["digitalSignature","keyEncipherment"],
+  "password": "cleo"
+}

@@ -18,7 +18,7 @@
        path: "{{playbook_dir}}/dataset/"
        state: directory
        mode: 0777
-     delegate_to: 127.0.0.1   
-
+     delegate_to: 127.0.0.1
+     
 - rescue:
    - fail: msg="Setup Test Profile Module Failed" 

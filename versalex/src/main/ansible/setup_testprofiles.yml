@@ -1,11 +1,27 @@
 ---
 - hosts: "versalex:proxy"
   roles:
-    - { role: setup.testprofiles/pre_setup, when: "'servers-versalex' in inventory_hostname" }
-    - { role: setup.testprofiles/setup_server, when: "'servers-versalex' in inventory_hostname" }
+    - { role: setup.testprofiles/pre_setup, when: "'servers-versalex' in inventory_hostname",tags: ['rest','java'] }
+    - { role: setup.testprofiles/resource/, when: "'versalex' in inventory_hostname",tags: ['rest'] }
+    - { role: setup.testprofiles/rest/as2/, hostname: "AS2H",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest'] }
 
 - hosts: "versalex:proxy"
   roles:
-     - { role: setup.testprofiles/tp_dataset, when: "'servers-versalex' in inventory_hostname"  }
-     - { role: setup.testprofiles/setup_tp  }
+    - { role: setup.testprofiles/rest/ftp/server/, when: "'servers-versalex' in inventory_hostname",tags: ['rest'] }
+    - { role: setup.testprofiles/rest/ftp/client/, hostname: "FTPHost",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest'] }
+
+- hosts: "versalex"
+  roles:
+    - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,stop' ,tags: ['rest'] }
+    - { role: setup.testprofiles/rest/schedule_actions/,schedule_option: "on file polling continuously",action_type: "send", tags: ['rest'] }
+    - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,start' ,tags: ['rest'] }
+    
+- hosts: "versalex:proxy"
+  roles:    
+    - { role: setup.testprofiles/setup_server, when: "'servers-versalex' in inventory_hostname",tags: ['java'] }
+
+- hosts: "versalex:proxy"
+  roles:
+     - { role: setup.testprofiles/tp_dataset, when: "'servers-versalex' in inventory_hostname",tags: ['java']  }
+     - { role: setup.testprofiles/setup_tp,tags: ['java']  }
      

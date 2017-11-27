@@ -1,0 +1,17 @@
+---
+# tasks file for setup.testprofiles
+- block:
+   - name: Setting Dictionary Name for Versalex Instances
+     set_fact:
+        str_vex: "{{str_update.value}}"
+
+   - name: "Issue {{cmdline_str}} for Versalex Instances"
+     shell: "./{{str_vex.dname}} -s {{cmdline_str}} "
+     args:
+       chdir: "{{ str_vex.install_location }}"   
+     register: scheduler_status
+     retries: 3
+     delay: 2
+     until: scheduler_status|success
+- rescue:
+   - fail: msg="Setup Test Profile Module Failed" 

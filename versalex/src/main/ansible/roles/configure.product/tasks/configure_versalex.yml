@@ -10,12 +10,15 @@
   register: mysql_download
   ignore_errors: yes
 
-  
+- name: "Restart VersalEx Process (Inside Versalex)" 
+  include: restart_versalex.yml
+
+        
 - name: Extract DB IP 
   set_fact:
     db_ip: "{{hostvars[item]['ansible_eth0']['ipv4']['address'] }}"
   with_items: "{{groups['integrations'] |default({})}}"  
-
+  delegate_to: 127.0.0.1
 
 - name: Configure DB in Remote Machines
   shell: jre/bin/java -cp "$CLASSPATH" com.cleo.systest.SetupOptions "{{confvex.dname}}" "{{confvex.install_location}}" "DB" "jdbc:{{item.value.app_type}}://{{db_ip}}:{{item.value.port}}/{{item.value.dbname}}" "{{item.value.driver_str}}" "{{item.value.username}}" "{{item.value.password}}" 1 "jdbc:{{item.value.app_type}}://{{db_ip}}:{{item.value.port}}/{{item.value.dbname}}"

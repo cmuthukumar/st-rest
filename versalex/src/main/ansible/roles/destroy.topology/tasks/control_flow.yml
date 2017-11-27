@@ -6,3 +6,6 @@
      with_items: "{{group_item.value | default([])}}"
      loop_control:
         loop_var: outer_item
+        
+   - name: Delete is done
+     debug: msg="Deleted Sucessfully"

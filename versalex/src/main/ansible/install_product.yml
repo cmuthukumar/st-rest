@@ -1,8 +1,7 @@
 ---
 - hosts: "versalex:proxy"
-  strategy: free
-  pre_tasks:
-    - meta: refresh_inventory
+  # pre_tasks:
+    # - meta: refresh_inventory
   roles:
     - { role: install.product/common}
 

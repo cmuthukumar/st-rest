@@ -42,7 +42,7 @@
 
     - name: Find Total files
       set_fact: 
-        total_files: "{{ (files_per_min|int*total_mins|int) }}"      
+        total_files: "{{ (files_per_min|int*total_mins|int*destCounter|int) }}"      
       
     - name: Set LoopCount for Jmeter
       set_fact: 
@@ -52,7 +52,7 @@
       debug: msg="lcount-{{loop_count|int}} fpmin-{{files_per_min|int}}"
         
     - name: Run Jmeter with Configs
-      shell: jmeter -n -t "SysTest_Linux.jmx" -Jthreads="{{threadCount}}" -JloopCnt="{{loop_count|int}}" -JfileSize="{{fileSizes}}" -JdestPath="{{share_dir}}" -JfilesPerMin="{{files_per_min|int}}"
+      shell: jmeter -n -t "SysTest_Linux.jmx" -Jthreads="{{threadCount}}" -JloopCnt="{{loop_count|int}}" -JfileSize="{{fileSizes}}" -JdestPath="{{destPath}}" -JfilesPerMin="{{files_per_min|int}}" -JdestCounter="{{destCounter}}"
       environment:
          PATH: "{{ ansible_env.PATH }}:{{jmeter_dir}}apache-jmeter-{{jmeter_version}}/bin/" 
       args:
@@ -60,6 +60,8 @@
          chdir: "{{jmeter_dir}}apache-jmeter-{{jmeter_version}}/bin/"         
       register: jmeter_res
       ignore_errors: yes
+      async: 600
+      poll: 20
       
     - name: Print Jmeter Results
       debug: msg="{{jmeter_res.stdout_lines}}"

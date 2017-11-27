@@ -15,7 +15,5 @@
      when: "'tpnodes-versalex' in inventory_hostname"
      loop_control:
         loop_var: group_item
-        
- 
 - rescue:
    - fail: msg="Setup Test Profile Module Failed"     

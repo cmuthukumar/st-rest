@@ -1,4 +1,9 @@
 ---
-- hosts: "servers-shares:tpnodes-shares"
+- hosts: "servers-shares"
   roles:
-    - {role: jmeter,total_mins: "{{total_mins}}" ,files_per_min: "{{files_per_min}}" }
+    - {role: jmeter,total_mins: "{{total_mins}}" ,files_per_min: "{{files_per_min}}",destPath: "/root/share/as2/outboxes/", destCounter: "2" }
+    
+- hosts: "tpnodes-shares"
+  roles:
+    - {role: jmeter,total_mins: "{{total_mins}}" ,files_per_min: "{{files_per_min}}",destPath: "/root/share/as2/outboxes/", destCounter: "{{destCounter}}" }
+    - {role: jmeter,total_mins: "{{total_mins}}" ,files_per_min: "{{files_per_min}}",destPath: "/root/share/ftp/outboxes/", destCounter: "{{destCounter}}" }    

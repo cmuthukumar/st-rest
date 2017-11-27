@@ -1,0 +1,16 @@
+---
+# tasks file for setup.testprofiles
+- block:
+    - name: Schedule Actions for Versalex Hosts
+      schedule_actions:
+        hosts: "{{ansible_ssh_host.split(',')}}"
+        schedule_option: "{{schedule_option}}"
+        action_type: "{{action_type}}"
+      register: sched_action      
+      delegate_to: 127.0.0.1
+          
+    - name: Schedule Actions Debug
+      debug: msg="Schedule Actions{{sched_action}}"
+      delegate_to: 127.0.0.1
+- rescue:
+   - fail: msg="Schedule Actions for Versalex Failed"     

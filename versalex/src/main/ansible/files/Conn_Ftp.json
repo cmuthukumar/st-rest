@@ -1,0 +1,29 @@
+{
+  "alias": "{{host_name}}",
+  "type": "ftp",
+  "enabled": "true",
+  "connect": {
+    "host": "{{partner_ip}}",
+    "port": {{partner_port}},
+    "username": "{{host_name}}",
+	"password": "cleo",
+    "dataChannel": {
+      "mode": "passive",
+      "lowPort": 0,
+      "highPort": 0,
+      "useCommandAddress": false
+    }
+  },
+  "outgoing": {
+    "storage": {
+      "outbox": "file:%25datashare%25/ftp/outboxes/{{host_name}}",
+      "sentbox": "file:%25datashare%25/ftp/sentbox/{{host_name}}"
+    }
+  },
+  "incoming": {
+    "storage": {
+      "inbox": "file:%25datashare%25/ftp/inboxes/{{host_name}}",
+      "receivedbox": "file:%25datashare%25/ftp/receivedbox/{{host_name}}"
+    }
+  }
+}

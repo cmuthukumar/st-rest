@@ -5,8 +5,10 @@
     path: "{{playbook_dir}}/inventories/{{machine_type}}/"
     state: directory
     recurse: yes
-    
+  delegate_to: 127.0.0.1
+  
 - name: Create Hosts Inventory File
   template:
      src: create_hosts.j2
      dest: "{{playbook_dir}}/inventories/{{machine_type}}/hosts"
+  delegate_to: 127.0.0.1

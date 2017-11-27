@@ -56,7 +56,7 @@
   yum: name=rng-tools state=present
   
 - name: Run RNGD Service
-  service: name=rngd state=restarted
+  service: name=rngd state=started
   register: rngd_status
   retries: 3
   delay: 10

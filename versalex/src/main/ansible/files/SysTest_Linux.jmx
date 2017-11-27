@@ -71,8 +71,11 @@ for (File fold : dirs) {
     
 
 }
+if(props.get(&quot;destCounter&quot;).equals("null"))
+{
 props.put(&quot;destCounter&quot;,Integer.toString(count));
 log.info(&quot;DestCount----&quot;+props.get(&quot;destCounter&quot;));
+}
 destwriter.close();	
 
 

@@ -1,6 +1,10 @@
    - name: Creates Shares Destination Path Directory
      file: path="{{vex.server_share_path}}" state=directory
 
+   - name: Creates Shares Destination Path Directory
+     file: path="{{vex.server_share_path}}{{item.key}}/" state=directory     
+     with_dict: "{{dataset |default({})}}"
+     
    - name: "Add Dir Entry to /etc/exports file"
      lineinfile:
         create: yes

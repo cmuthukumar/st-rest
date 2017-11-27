@@ -25,18 +25,19 @@
   roles:
     - { role: configure.product/jmx_mem }    
 
+- hosts: "proxy"
+  # connection: local
+  roles:
+    - { role: configure.product/vlproxy,external_address: "{{ansible_ssh_host}}" ,email_on_fail_addr: 'muthukumarc@cleo.com' }
+   
+    
 - hosts: "versalex:integrations:proxy"
   roles:
     - { role: configure.product } 
 
   # roles:
     # - { role: configure.product/client_share, when: groups.shares is defined}
-    
-- hosts: "proxy"
-  # connection: local
-  roles:
-    - { role: configure.product/vlproxy,external_address: "{{ansible_ssh_host}}" ,email_on_fail_addr: 'muthukumarc@cleo.com' }
-    
+        
 - hosts: "versalex:proxy"
   roles:
     - { role: configure.product/tests }

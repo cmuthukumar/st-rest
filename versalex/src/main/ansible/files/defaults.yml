@@ -1,8 +1,6 @@
 ---
 # defaults file for setup.group.vars
 defaults:
-    share:
-        server_share_path: "/root/share/"
     versalex: &vexref
         vex_heapmem_min: 256M
         vex_heapmem_max: 2048M
@@ -15,12 +13,12 @@ defaults:
         custom_macro: "%datashare%=/root/share"
         client_local_path: "/root/share/"
         docker: "false"
-        nexus_maven_repourl: "http://10.80.80.156/nexus/service/local/repositories/InstallerSnapshots/content/"
+        nexus_maven_repourl: "http://10.80.80.156/nexus/service/local/repositories/releases/content/"
         nexus_systest_repourl: "http://10.80.80.156/nexus/service/local/repositories/snapshots/content/"
         nexus_prod_repourl: "http://10.10.1.57/nexus/service/local/repo_groups/cleo/content/"
         find_version_url: "http://contd.cleo.com/nexus/service/local/artifact/maven/resolve"
         download_version_url: "http://contd.cleo.com/nexus/service/local/artifact/maven/content"
-        nexus_repoid: "InstallerSnapshots"
+        nexus_repoid: "Releases"
         nexus_groupid: "com.cleo.installers"
         nexus_systest_groupid: "com.cleo.systest"
         nexus_systest_artifactid: "versalex_setup"
@@ -93,9 +91,12 @@ defaults:
         mailbox_range: 1-1
         action_range: 1-1
         create_certs: true       
-        host_custom_props: {"Defaulthomedir":"%datashare%/root/%username%"}
+        host_custom_props: {"Defaulthomedir":"%datashare%/ftp/root/%username%"}
         mailbox_custom_props: {}
-        action_custom_props: {}        
+        action_custom_props: {}
+    share:
+        server_share_path: "/root/share/"
+        
     mysql:
         type: "db"
         maven_artifactid: "mysql-connector-java"

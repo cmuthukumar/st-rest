@@ -1,6 +1,10 @@
 ---
+    - name: Printing Droplet to Delete
+      debug: msg="Droplet Name to Delete {{mac_type}}-{{swtype}}-{{item}}"
+      with_sequence: start=1 end="{{outer_item.qty}}" stride=1
+      
     - name: Remove Droplet from Stack
-      digital_ocean: 
+      digital_ocean:
          unique_name: yes
          state: deleted
          name: "{{mac_type}}-{{swtype}}-{{item}}"

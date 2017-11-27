@@ -1,9 +1,10 @@
 ---
 # tasks file for create.topology
     - name: Include Create Machines Role
-      include: "control_flow.yml"
+      include_tasks: "control_flow.yml"
       vars:
         mach_type: "{{machine_type}}"      
       with_dict: "{{ hardware |default({}) }}"
       loop_control:
          loop_var: group_item
+      delegate_to: 127.0.0.1   
