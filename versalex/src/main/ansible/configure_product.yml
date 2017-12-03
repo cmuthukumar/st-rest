@@ -23,7 +23,8 @@
           
 - hosts: "versalex"
   roles:
-    - { role: configure.product/jmx_mem }    
+    - { role: configure.product/mem }    
+
 
 - hosts: "proxy"
   # connection: local

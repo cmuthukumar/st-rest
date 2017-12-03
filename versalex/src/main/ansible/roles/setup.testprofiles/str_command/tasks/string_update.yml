@@ -8,9 +8,9 @@
    - name: "Issue {{cmdline_str}} for Versalex Instances"
      shell: "./{{str_vex.dname}} -s {{cmdline_str}} "
      args:
-       chdir: "{{ str_vex.install_location }}"   
-     register: scheduler_status
-     retries: 3
+       chdir: "{{ str_vex.install_location }}"       
+     register: scheduler_status     
+     retries: 3     
      delay: 2
      until: scheduler_status|success
 - rescue:

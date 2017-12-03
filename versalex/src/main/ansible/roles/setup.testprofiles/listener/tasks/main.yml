@@ -1,6 +1,6 @@
 ---
 # tasks file for setup.testprofiles
-- block:
+- block:     
    - name: "Resource Update Properties using Command line"
      include_tasks: "update_resource.yml"
      with_dict: "{{ versalex | default({}) }}"

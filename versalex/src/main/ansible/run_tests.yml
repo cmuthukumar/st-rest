@@ -1,9 +1,44 @@
 ---
-- hosts: "servers-shares"
+- hosts: "servers-versalex-1"
   roles:
-    - {role: jmeter,total_mins: "{{total_mins}}" ,files_per_min: "{{files_per_min}}",destPath: "/root/share/as2/outboxes/", destCounter: "2" }
+    - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,stop' ,tags: ['rest'] }
+    - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,start' ,tags: ['rest'] }
+
+- hosts: "tpnodes-versalex"
+  roles:
+    - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,stop' ,tags: ['rest'] }
+    - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,start' ,tags: ['rest'] }
+
+- hosts: "versalex"
+  roles:
+    - { role: configure.product/jmx } 
+
+- hosts: "versalex"
+  strategy: free
+  roles:
+    - { role: common/versalex/restart/,tags: ['versalex-restart'] } 
     
-- hosts: "tpnodes-shares"
-  roles:
-    - {role: jmeter,total_mins: "{{total_mins}}" ,files_per_min: "{{files_per_min}}",destPath: "/root/share/as2/outboxes/", destCounter: "{{destCounter}}" }
-    - {role: jmeter,total_mins: "{{total_mins}}" ,files_per_min: "{{files_per_min}}",destPath: "/root/share/ftp/outboxes/", destCounter: "{{destCounter}}" }    
+# - hosts: "servers-shares"
+  # vars:
+    # load_datasets:
+            # as2:
+                # filespermin: "{{as2_filespermin}}"
+                # totalmins: "{{as2_totalmins}}"
+                # totalhosts: "{{as2_totalhosts}}"        
+
+  # roles:
+    # - { role: run.tests/,protocols: "{{load_datasets}}" }
+    
+# - hosts: "tpnodes-shares"
+  # vars:
+    # load_datasets:
+            # as2:
+                # filespermin: "{{as2_filespermin}}"
+                # totalmins: "{{as2_totalmins}}"
+                # totalhosts: "{{as2_totalhosts}}"
+            # ftp:
+                # filespermin: "{{ftp_filespermin}}"
+                # totalmins: "{{ftp_totalmins}}"
+                # totalhosts: "{{ftp_totalhosts}}"
+  # roles:
+    # - { role: run.tests/,protocols: "{{load_datasets}}" } 

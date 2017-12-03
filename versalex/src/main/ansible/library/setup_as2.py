@@ -174,7 +174,7 @@ def setup_as2_with_proxy(host_name,server_hosts,tphosts,dataset,proxy_hosts):
 			print "TP Host Index",tphosts.index(tp_ip)
 			print "Server Hosts",server_hosts[tphosts.index(tp_ip)]
 			print "TP Hosts",tphosts[tphosts.index(tp_ip)]		
-			for i in range(start,end):
+			for i in range(start,end+1):
 				setup_sender_cert((host_name+str(i)),proxy_hosts[tphosts.index(tp_ip)],tp_ip,master_ip)
 				setup_receiver_cert((host_name+str(i)),tp_ip,proxy_hosts[tphosts.index(tp_ip)],master_ip)
 				setup_connection((host_name+str(i)),master_ip,sender_json_req)
@@ -198,7 +198,7 @@ def setup_as2_without_proxy(host_name,server_hosts,tphosts,dataset):
 			print "TP Host Index",tphosts.index(tp_ip)
 			print "Server Hosts",server_hosts[tphosts.index(tp_ip)]
 			print "TP Hosts",tphosts[tphosts.index(tp_ip)]		
-			for i in range(start,end):
+			for i in range(start,end+1):
 				setup_sender_cert((host_name+str(i)),server_hosts[tphosts.index(tp_ip)],tp_ip,master_ip)
 				setup_receiver_cert((host_name+str(i)),tp_ip,server_hosts[tphosts.index(tp_ip)],master_ip)
 				setup_connection((host_name+str(i)),master_ip,sender_json_req)

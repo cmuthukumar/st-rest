@@ -9,10 +9,6 @@
   with_dict: "{{ integrations | default({}) }}"
   register: mysql_download
   ignore_errors: yes
-
-- name: "Restart VersalEx Process (Inside Versalex)" 
-  include: restart_versalex.yml
-
         
 - name: Extract DB IP 
   set_fact:

@@ -1,8 +1,6 @@
 ---
 - hosts: localhost
   connection: local
-  vars_files:
-    - "{{playbook_dir}}/files/{{machine_type}}.yml"
   roles:
-    - {role: destroy.topology, machine_type: "{{machine_type}}"}
+    - {role: destroy.topology, tag_name: "{{machine_type}}-{{username}}"}
    

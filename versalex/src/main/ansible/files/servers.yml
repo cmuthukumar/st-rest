@@ -27,14 +27,14 @@ hardware:
 software:
    versalex:
       - name: harmony
-        version: "5.4.1.12"
+        version: "5.4.2-SNAPSHOT"
         install_location: "/root/Harmony/"
    integrations:
       - name: mysql
         version: "mysql:latest"
    proxy:
       - name: vlproxy
-        version: "5.4.1.12"
+        version: "5.4.2-SNAPSHOT"
         install_location: "/root/VLProxy/"
    shares:           
       - name: share
@@ -43,7 +43,9 @@ dataset:
    versalex:
       - name: as2
         total: 20
-        schedule_actions: true  
+        schedule_actions: true         
       - name: ftp
         total: 20
-        schedule_actions: true         
+        schedule_actions: true
+        host_custom_props: {"Defaulthomedir": "%datashare%/local/root/%username%"}
+        

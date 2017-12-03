@@ -1,0 +1,39 @@
+---
+- name: Setting Dictionary Name JMX Configs Versalex
+  set_fact:
+        jmx: "{{jmx_grp.value}}"
+
+- name: Download SysTest Jar from Nexus Repo
+  maven_artifact: 
+            group_id: "{{jmx.nexus_systest_groupid}}"
+            artifact_id: "{{jmx.nexus_systest_artifactid}}"
+            version: latest
+            extension: "jar"
+            repository_url: "{{jmx.nexus_systest_repourl}}"
+            dest: "{{playbook_dir}}/library/"
+            state: present
+  run_once: true
+  delegate_to: 127.0.0.1 
+        
+- name: Copy SetupOptions Jar File to remote location
+  copy: src="{{playbook_dir}}/library/" dest="{{jmx.install_location}}lib/"
+
+- name: "Edit versalexc.lax for JMX Configs File"
+  lineinfile:
+     create: no
+     dest: "{{jmx.install_location}}{{jmx.dname}}c.lax"
+     regexp: '^(lax.nl.java.option.additional=.*)'
+     line: '\1 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port={{jmx.vex_jmx_port}} -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname={{ansible_ssh_host}}'
+     state: present       
+     backrefs: yes
+  register: harmonyc_lax  
+  
+- name: "Edit setenv for JMX Configs karaf  File"
+  lineinfile:
+   create: no
+   dest: "{{jmx.install_location}}core/bin/setenv"
+   line: "{{item.line}}"
+   state: present
+  with_items:
+     - {  line: 'export EXTRA_JAVA_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port={{jmx.karaf_jmx_port}} -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false" ', insertafter: EOF}
+  register: karafc

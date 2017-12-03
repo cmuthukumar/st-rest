@@ -21,7 +21,7 @@ hardware:
 software:
    versalex:
       - name: harmony
-        version: "5.4.1.12"
+        version: "5.4.2-SNAPSHOT"
         install_location: "/root/Harmony/"
    integrations:
       - name: mysql

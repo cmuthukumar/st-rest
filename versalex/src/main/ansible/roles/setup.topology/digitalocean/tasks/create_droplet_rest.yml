@@ -3,7 +3,7 @@
       uri:
         url: "https://api.digitalocean.com/v2/droplets"
         method: POST
-        body: '{"name":"{{mac_type}}-{{swtype}}-{{item}}","size":"{{outer_item.ram_size}}","region":"{{outer_item.region}}","image":"{{outer_item.image_name}}","ssh_keys":["{{uploadstatus.ssh_key.id}}"],"tags":["{{mac_type}}"]}'
+        body: '{"name":"{{mac_type}}-{{swtype}}-{{item}}","size":"{{outer_item.ram_size}}","region":"{{outer_item.region}}","image":"{{outer_item.image_name}}","ssh_keys":["{{uploadstatus.ssh_key.id}}"],"tags":["{{mac_type}}-{{username}}"]}'
         body_format: json
         status_code: 202
         return_content: no
