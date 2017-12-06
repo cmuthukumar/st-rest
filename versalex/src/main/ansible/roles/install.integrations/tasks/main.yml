@@ -2,7 +2,7 @@
 # tasks file for install.integrations
 - block:
     - name: Include Install Product Role with Versalex
-      include: "install_flow.yml"
+      include_tasks: "install_flow.yml"
       with_dict: "{{ integrations | default({}) }}"
       when: "'integrations' in subtype"
       loop_control:

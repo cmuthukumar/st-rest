@@ -3,7 +3,7 @@
  - block:
    - name: Setting Dictionary Name for Versalex Inside
      set_fact:
-        testprofile: "{{group_item.value}}"
+        testprofile: "{{testprofile_item.value}}"
         
    - name: Validate Connections and Certs with REST API for Versalex Products
      uri:
@@ -16,23 +16,35 @@
         status_code: 200
      register: conn_certs_status
      with_items:
-            - certs?filter=signatureAlgorithm eq  "MD5/RSA"
-     when:  testprofile.name | lower != 'vlproxy' and play_hosts.index(inventory_hostname) == 0
+            - certs?filter=signatureAlgorithm eq  "SHA1/RSA"
+     # when:  testprofile.dname | lower != 'vlproxy' and play_hosts.index(inventory_hostname) == 0
      retries: 3
      delay: 5  
      until: conn_certs_status|success
      delegate_to: 127.0.0.1
      
-   - name: Print REST Api status_code
-     debug: msg="Rest API Status {{item}}" 
-     with_items: "{{conn_certs_status.results}}"
-     when: testprofile.name | lower != 'vlproxy' and play_hosts.index(inventory_hostname) == 0
+   # - name: Print REST Api status_code
+     # debug: msg="Rest API Status {{item}}" 
+     # with_items: "{{conn_certs_status.results}}"
+     # when: testprofile.dname | lower != 'vlproxy' and play_hosts.index(inventory_hostname) == 0
 
    - name: Asser test profiles are created or not
      assert:
         that:
             - "{{item.json.totalResults}} != 0"
      with_items: "{{conn_certs_status.results}}"
-     when: testprofile.name | lower != 'vlproxy' and play_hosts.index(inventory_hostname) == 0     
+     # when: testprofile.dnames | lower != 'vlproxy' and play_hosts.index(inventory_hostname) == 0
+
+   - name: Validating JMX Ports for Versalex
+     wait_for:
+       host: "{{ansible_ssh_host}}"
+       port: "{{item}}"
+       state: started
+       timeout: 20
+     with_items:
+        - "{{testprofile.vex_jmx_port}}"
+        - "{{testprofile.karaf_jmx_port}}"
+     register: vex_jmx_status
+     ignore_errors: yes
    rescue:
    - fail: msg="Setup Test Profile Validation Failed"

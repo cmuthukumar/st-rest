@@ -23,7 +23,7 @@
       delegate_to: 127.0.0.1
 
     - name: Configure Proxy with Serial Nos
-      include: "config_flow.yml"
+      include_tasks: "config_flow.yml"
       with_dict: "{{ proxy | default({}) }}"
       loop_control:
           loop_var: group_item

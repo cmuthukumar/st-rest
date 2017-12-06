@@ -6,6 +6,6 @@
            vex: "{{srvr_share.value}}"
       
       - name: Configure Shares in Server Nodes
-        include: configure_server_share.yml
+        include_tasks: configure_server_share.yml
   rescue:
       - fail: msg="Configure Server Share failed"

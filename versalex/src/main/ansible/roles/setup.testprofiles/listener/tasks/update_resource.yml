@@ -11,7 +11,7 @@
        chdir: "{{ update_resouce.install_location }}"
      with_items:
         - { property: 'Local Listener/AS2' , tag: '<Service><Hostname>', value: "{{ansible_ssh_host}}" }
-        - { property: 'Local Listener' , tag: '<Host><localsigncertalias>', value: 'AS2H1' }
+        - { property: 'Local Listener' , tag: '<Host><localsigncertalias>', value: "{{certname}}" }
         - { property: 'Local Listener' , tag: '<Host><localsigncertpassword>', value: 'cleo' }               
      register: update_ip
      retries: 3
@@ -19,4 +19,4 @@
      until: update_ip|success
      ignore_errors: yes
 - rescue:
-   - fail: msg="Setup Test Profile Module Failed" 
+   - fail: msg="Setup Local Listener Properties Failed" 

@@ -6,7 +6,7 @@
         conf_server: "{{group_item.value}}"
 
    - name: Configure DataSet in Server Side Nodes
-     include: "configure_server.yml"
+     include_tasks: "configure_server.yml"
      with_dict: "{{ srvdataset | default({}) }}"
      loop_control:
         loop_var: conf_dataset  

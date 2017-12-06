@@ -2,7 +2,7 @@
 # tasks file for download.product
 - block:
    - name: Install Product  with Versalex
-     include: "install_versalex.yml"
+     include_tasks: "install_versalex.yml"
      with_dict: "{{ prod_dict | default({}) }}"
      when: prod_dict is defined        
      loop_control:

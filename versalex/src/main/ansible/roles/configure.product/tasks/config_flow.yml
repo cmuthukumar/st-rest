@@ -18,11 +18,11 @@
         delegate_to: 127.0.0.1        
         
       - name: Configure VersalEx Product
-        include: configure_versalex.yml
+        include_tasks: configure_versalex.yml
         # when: "'versalex' in subtype"
  
-      - name: Restart VersalEx Process 
-        include: restart_versalex.yml
+      # - name: Restart VersalEx Process 
+        # include_tasks: restart_versalex.yml
    rescue:
       - fail: msg="Configure Applications failed"
    

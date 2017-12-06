@@ -6,7 +6,7 @@
         versalex: "{{group_item.value}}"
 
    - name: Configure {{inc_file}} Side Nodes
-     include: "{{inc_file}}.yml"
+     include_tasks: "{{inc_file}}.yml"
      with_dict: "{{ dataset | default({}) }}"
      loop_control:
         loop_var: conf_dataset  

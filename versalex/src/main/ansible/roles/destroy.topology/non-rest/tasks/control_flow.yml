@@ -2,7 +2,7 @@
 # tasks file for destroy.topology
  
    - name: Destroy Droplets with user passed strings
-     include: destroy_droplet.yml mac_type="{{mach_type}}" swtype="{{group_item.key}}"
+     include_tasks: destroy_droplet.yml mac_type="{{mach_type}}" swtype="{{group_item.key}}"
      with_items: "{{group_item.value | default([])}}"
      loop_control:
         loop_var: outer_item

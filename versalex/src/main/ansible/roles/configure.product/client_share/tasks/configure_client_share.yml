@@ -29,7 +29,7 @@
      file: path="{{vexcli.client_local_path}}" state=directory
 
    - name: Print IP of Shares
-     debug: msg="IPADd {{hostvars[groups['shares'][0]]['ansible_eth0']['ipv4']['address']}}"
+     debug: msg="IPAddress- {{hostvars[groups['shares'][0]]['ansible_eth0']['ipv4']['address']}}"
      
    - name: Setup Shares in Client boxes
      mount:

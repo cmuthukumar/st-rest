@@ -1,0 +1,44 @@
+---
+ # - name: Print TP dataset
+   # debug: msg="TP DataSet -{{tp_ftp.value}}"
+   
+ # - name: Set facts
+   # set_fact:
+        # tp_set: "{{tp_ftp.value}}"
+        
+ # - name: Print TP dataset Detals Inside
+   # debug: msg="TP DataSet mailbox_range-{{tp_ftp.value.mailbox_range}}"
+        
+ - name: Copy SetupOptions Jar File to remote location
+   copy: src="{{playbook_dir}}/library/" dest="{{tp_profile.install_location}}lib/"
+  
+ - name: Set macro name if defined
+   set_fact: 
+        macro_name: "%datashare%"
+   when: shares is defined
+
+ - name: Setup facts for FTP Client Args
+   set_fact:
+        host_range: "{{ftp_client_args.meta[ansible_ssh_host]['hst_rnge']}}"
+        partner_ip: "{{ftp_client_args.meta[ansible_ssh_host]['partner_ip']}}"
+        
+ - name: Print Client Args Details Inside
+   debug: msg="Client Args Meta Result -host_range-{{host_range}} partner_ip-{{partner_ip}} - Dataset {{tp_dataset}}"
+   
+ - name: Print With ITems Dataset
+   debug: msg="Client Dataset -{{item.key}} VALUE-- {{item.value.mailbox_range}}"
+   with_dict: "{{tp_dataset}}"
+   
+ - name: "Configure Test Profiles in Remote Machines for TP Nodes - FTP Client"
+   shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupTestProfile "{{tp_profile.name}}" "{{tp_profile.install_location}}" "ftp" "{{host_range}}" "{{item.value.mailbox_range}}" "{{item.value.action_range}}" "{{partner_ip}}" "9021" "{{macro_name}}" "{{item.value.host_custom_props}}" "{{item.value.mailbox_custom_props}}" "{{item.value.action_custom_props}}" "false"
+   environment:
+     CLASSPATH: ":{{tp_profile.install_location}}SetupTestProfile.jar:{{tp_profile.install_location}}lib/*:{{tp_profile.install_location}}lib/help/*:{{tp_profile.install_location}}lib/hibernate/*:{{tp_profile.install_location}}lib/secureshare/*:{{tp_profile.install_location}}webserver/AjaxSwing/lib/*:{{tp_profile.install_location}}lib/json/*"
+   args:
+     executable: /bin/sh
+     chdir: "{{tp_profile.install_location}}"
+   with_dict: "{{ tp_dataset |default({}) }}"
+   when: (item.key | lower == 'ftp')
+   register: profile_config
+   
+ - name: Print TPNode Result 
+   debug: msg="Profiles Config-{{profile_config}}"

@@ -10,7 +10,7 @@
      ignore_errors: yes
         
    - name: Setup Testprofiles in TP Side Nodes
-     include: setup_flow.yml
+     include_tasks: setup_flow.yml
      with_dict: "{{ versalex | default({}) }}"
      when: "'tpnodes-versalex' in inventory_hostname"
      loop_control:

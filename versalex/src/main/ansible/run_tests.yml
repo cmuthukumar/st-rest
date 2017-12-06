@@ -1,14 +1,4 @@
 ---
-- hosts: "servers-versalex-1"
-  roles:
-    - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,stop' ,tags: ['rest'] }
-    - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,start' ,tags: ['rest'] }
-
-- hosts: "tpnodes-versalex"
-  roles:
-    - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,stop' ,tags: ['rest'] }
-    - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,start' ,tags: ['rest'] }
-
 - hosts: "versalex"
   roles:
     - { role: configure.product/jmx } 
@@ -17,6 +7,25 @@
   strategy: free
   roles:
     - { role: common/versalex/restart/,tags: ['versalex-restart'] } 
+    
+- hosts: "versalex"
+  roles:
+    - { role: setup.testprofiles/tests, tags: ['rest','java'] }
+    
+- hosts: "servers-versalex"
+  roles:
+    - {role: setup.sync }  
+    
+- hosts: "versalex"
+  roles:
+    - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,stop' ,tags: ['rest'] }
+    - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,start' ,tags: ['rest'] }
+
+# - hosts: "tpnodes-versalex"
+  # roles:
+    # - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,start' ,tags: ['rest'] }
+
+
     
 # - hosts: "servers-shares"
   # vars:

@@ -6,19 +6,19 @@
         integrations: "{{group_item.value}}"
   
    - name: Install CentOS Related Dependencies 
-     include: centos.yml
+     include_tasks: centos.yml
      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'     
 
    - name: Install Docker CentOS 
-     include: "docker.install.centos.yml"
+     include_tasks: "docker.install.centos.yml"
      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'     
   
    - name: Install Debian Related Dependencies
-     include: debian.yml
+     include_tasks: debian.yml
      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'     
       
    - name: "Install Dockerized Install"    
-     include: "docker.image.install.yml"
+     include_tasks: "docker.image.install.yml"
      register: install_status
      retries: 3
      delay: 5  

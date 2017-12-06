@@ -12,7 +12,12 @@
       "lowPort": 0,
       "highPort": 0,
       "useCommandAddress": false
-    }
+    },	
+	"defaultContentType": "ASCII",
+        "security": {
+            "mode": "none",
+            "postAuthCommand": ""
+        }
   },
   "outgoing": {
     "storage": {

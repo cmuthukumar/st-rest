@@ -1,15 +1,18 @@
 ---
-# tasks file for setup.AS2
-- block:
-    - name: Setup AS2 Profiles using Rest with Proxy
-      setup_as2:
-        host_name: "{{hostname}}"
+- hosts: "servers:tpnodes"
+  connection: local
+  tasks:
+    - name: Setup FTP Client Profiles using Rest
+      setup_ftp_client:
+        host_name: "FTPF"
         server_hosts: "{{ groups['servers-versalex'] | map('extract', hostvars, ['ansible_ssh_host']) | join(',') }}"
         proxy_hosts: "{{ groups['servers-proxy'] | map('extract', hostvars, ['ansible_ssh_host']) | join(',') }}"
         tp_hosts: "{{ groups['tpnodes-versalex'] | map('extract', hostvars, ['ansible_ssh_host']) | join(',') }}"
         dataset: "{{dataset}}"
-      register: rest_status
-      when: (play_hosts.index(inventory_hostname) == 0)
+      when: "'servers-versalex-1' in inventory_hostname"
+      register: rest_status      
       delegate_to: 127.0.0.1
-- rescue:
-   - fail: msg="Setup Test Profile Module Failed"     
+          
+    - name: Debug Rest Details
+      debug: msg="Rest Details{{rest_status}}"
+      delegate_to: 127.0.0.1

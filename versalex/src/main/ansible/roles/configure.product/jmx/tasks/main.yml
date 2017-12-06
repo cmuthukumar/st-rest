@@ -2,7 +2,7 @@
 # tasks file for configure.product
 - block:      
     - name: Include Configure JMX Configs Versalex
-      include: "config_jmx.yml"
+      include_tasks: "config_jmx.yml"
       with_dict: "{{ versalex | default({}) }}"        
       loop_control:
          loop_var: jmx_grp

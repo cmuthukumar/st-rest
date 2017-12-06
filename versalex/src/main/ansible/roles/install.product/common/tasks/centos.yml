@@ -40,7 +40,7 @@
 # - debug: msg="Pre Tasks Completed::{{py_version}}"  
 
 # - name: "Install python2.7 With Deps"
-  # include: "install_centos_py27.yml"
+  # include_tasks: "install_centos_py27.yml"
   # when: ansible_distribution_version | int >= 9
 
 # - name: Install Pip using YUM

@@ -47,5 +47,5 @@ dataset:
       - name: ftp
         total: 20
         schedule_actions: true
-        host_custom_props: {"Defaulthomedir": "%datashare%/local/root/%username%"}
+        # host_custom_props: '{"Defaulthomedir": "%datashare%/local/root/%username%"}'
         

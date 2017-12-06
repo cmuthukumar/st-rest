@@ -14,7 +14,7 @@
   apt: name=rng-tools state=present
   
 # - name: "Install python2.7 in deian OS if python 3 is default"
-  # include: "install_debian_py27.yml"
+  # include_tasks: "install_debian_py27.yml"
   # when: ansible_distribution_version | int >= 15
     
 - name: Run RNGD Service using Debian

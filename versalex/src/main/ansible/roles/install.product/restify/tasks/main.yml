@@ -2,7 +2,7 @@
 # tasks file for download.product
 - block:     
     - name: Setup VLNavigator Admin Creds for Versalex
-      include: "users.yml"
+      include_tasks: "users.yml"
       with_dict: "{{ versalex | default({}) }}"
       loop_control:
          loop_var: group_item 

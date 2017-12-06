@@ -2,7 +2,7 @@
 # tasks file for configure.product
 - block:      
     - name: Include Configure Product Role with Versalex
-      include: "config_flow.yml"
+      include_tasks: "config_flow.yml"
       with_dict: "{{ versalex | default({}) }}"        
       when: "'versalex' in subtype"
       loop_control:

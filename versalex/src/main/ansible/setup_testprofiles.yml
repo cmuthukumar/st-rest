@@ -1,9 +1,12 @@
 ---
+- hosts: "versalex"
+  roles:
+    - { role: setup.testprofiles/listener/,certname: "VEXLOCAL",tags: ['rest'] }
+      
 - hosts: "versalex:proxy"
   roles:
     - { role: setup.testprofiles/common, when: "'servers-versalex' in inventory_hostname",tags: ['rest','java'] }
     - { role: setup.testprofiles/rest/as2/, hostname: "AS2H",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest'] }
-    - { role: setup.testprofiles/listener/, when: "'versalex' in inventory_hostname",tags: ['rest'] }
     
 - hosts: "versalex:proxy"
   roles:
@@ -18,11 +21,6 @@
   roles:
     - { role: setup.testprofiles/rest/schedule_actions/,schedule_option: "on file polling continuously",action_type: "send", tags: ['rest'] }    
 
-# - hosts: "versalex"
-  # roles:
-    # - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,stop' ,tags: ['rest'] }
-    # - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,start' ,tags: ['rest'] }
-    
 - hosts: "versalex:proxy"
   roles:    
     - { role: setup.testprofiles/setup_server, when: "'servers-versalex' in inventory_hostname",tags: ['java'] }
@@ -31,4 +29,5 @@
   roles:
      - { role: setup.testprofiles/tp_dataset, when: "'servers-versalex' in inventory_hostname",tags: ['java']  }
      - { role: setup.testprofiles/setup_tp,tags: ['java']  }
-    
+
+     

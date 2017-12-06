@@ -2,7 +2,7 @@
 # tasks file for download.product
 - block:     
     - name: User Passed Status {{status}}
-      include: "restart.yml"
+      include_tasks: "restart.yml"
       with_dict: "{{ versalex | default({}) }}"
       loop_control:
          loop_var: restart_item 
