@@ -65,10 +65,10 @@ sh 'java -version'
                 setupTestProfiles()
             } 
 
-	stage('Setup Sync')
-		{
-			setupSync()
-		}  
+	//stage('Setup Sync')
+		//{
+		//	setupSync()
+		//}  
 			
     stage('Run Tests')
             {
@@ -148,8 +148,10 @@ sh 'java -version'
     def runTests()
     {
     println "Running Tests"
+		
+          // sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e files_per_min=${filesPerMin} -e total_mins=${TotalMins} -e destCounter=2 run_tests.yml "
+		  sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=40 -e as2_totalmins=10 -e as2_totalhosts=2  -e ftp_filespermin=40 -e ftp_totalmins=10 -e ftp_totalhosts=2 run_tests.yml "
 
-           sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e files_per_min=${filesPerMin} -e total_mins=${TotalMins} -e destCounter=2 run_tests.yml "
      
     } 
     
