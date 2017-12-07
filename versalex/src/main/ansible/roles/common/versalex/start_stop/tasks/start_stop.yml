@@ -1,0 +1,18 @@
+---
+  - name: Setting Dictionary Name for Versalex Inside
+    set_fact:
+        vex_start: "{{vex_item.value}}"        
+        
+  - name: Start VersalEx Process After Users Setup
+    shell: "./{{vex_start.dname}}d {{status}}"
+    args:
+      chdir: "{{vex_start.install_location}}"     
+    register: vex_start_status
+     
+  - name: Wait for Versalex Port to come up
+    wait_for: host="{{ansible_ssh_host}}" port="{{vex_start.port}}" delay=10 timeout=320 state=started
+    when: "'start' in status"
+
+  - name: Wait for Versalex Port to go down
+    wait_for: host="{{ansible_ssh_host}}" port="{{vex_start.port}}" delay=10 timeout=320 state=stopped
+    when: "'stop' in status"    

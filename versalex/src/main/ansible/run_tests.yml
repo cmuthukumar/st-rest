@@ -12,15 +12,16 @@
   roles:
     - { role: setup.testprofiles/tests, tags: ['rest','java'] }
     
-- hosts: "servers-versalex"
-  roles:
-    - {role: setup.sync }  
     
 - hosts: "versalex"
   roles:
     - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,stop' ,tags: ['rest'] }
     - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,start' ,tags: ['rest'] }
 
+- hosts: "servers-versalex"
+  roles:
+    - {role: setup.sync }   
+    
 # - hosts: "tpnodes-versalex"
   # roles:
     # - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,start' ,tags: ['rest'] }

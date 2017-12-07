@@ -45,8 +45,18 @@ sh 'java -version'
             }
     stage('Install Product')
             {
-                installProduct()
+			 steps {
+		parallel(
+			a: {
+				installProduct(params[0])
+				},
+			b: {
+				installProduct(params[1])
+				}	  
+             )   
             }
+			
+			}
 
     stage('Install Integrations')
             {
@@ -99,14 +109,17 @@ sh 'java -version'
         }
     }
     
-    def installProduct()
+    def installProduct(param)
     {
     println "Install Product on both "
-       for(int i=0; i<params.size(); i++ )
-        {
-        println "Installing Product for ${params[i]}"
-           sh "cd ${workdir} && ansible-playbook -i inventories/${params[i]}/ -e machine_type=${params[i]} install_product.yml "
-        }
+
+			sh "cd ${workdir} && ansible-playbook -i inventories/${param}/ -e machine_type=${param} install_product.yml "
+					
+      // for(int i=0; i<params.size(); i++ )
+        //{
+        //println "Installing Product for ${params[i]}"
+          // sh "cd ${workdir} && ansible-playbook -i inventories/${params[i]}/ -e machine_type=${params[i]} install_product.yml "
+        //}
     }
 
     def installIntegrations()

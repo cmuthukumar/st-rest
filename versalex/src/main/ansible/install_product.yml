@@ -26,11 +26,14 @@
     - { role: install.product/restify } 
 
 - hosts: "versalex"
-  strategy: free
+  connection: local
   roles:
-    - { role: common/versalex/start/,tags: ['versalex-start'] } 
-    
+    - { role: common/versalex/start_stop/,status: start,tags: ['versalex-start_stop'] } 
+    - { role: install.product/listener/,certname: "LOC_LIST",tags: ['create_listener_cert'] } 
+    - { role: install.product/listener/update_props,certname: "LOC_LIST",tags: ['listener-props'] }
+    - { role: common/versalex/restart/,tags: ['versalex-restart'] }
+
 - hosts: "versalex"
   strategy: free
   roles:
-    - { role: install.product/tests } 
+    - { role: install.product/tests }    

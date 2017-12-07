@@ -3,7 +3,7 @@
  - block:
       - name: Setting Dictionary Name Config Versalex
         set_fact:
-           confvex: "{{group_item.value}}"
+           confvex: "{{config_vex.value}}"
 
       - name: Download SysTest Jar from Nexus Repo
         maven_artifact: 

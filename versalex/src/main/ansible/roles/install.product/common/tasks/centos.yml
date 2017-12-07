@@ -43,12 +43,23 @@
   # include_tasks: "install_centos_py27.yml"
   # when: ansible_distribution_version | int >= 9
 
-# - name: Install Pip using YUM
-  # yum: name=python-pip state=present 
+# - name: Install Pip Deps using YUM
+  # yum: name="{{item}}" state=present 
+  # with_items:
+    # - libxml2 
+    # - libxml2-devel
+    # - libxslt
+    # - libxslt-devel
+    # - python-devel
+    # - gcc
+    # - gcc-c++
+    # - kernel-devel
+    # - python-pip
       
 # - name: Install lxml using pip
   # pip: 
     # name: lxml
+    # version: 3.2.1
   # environment:
     # PATH: "/usr/bin/python2.7:{{ ansible_env.PATH }}"
     

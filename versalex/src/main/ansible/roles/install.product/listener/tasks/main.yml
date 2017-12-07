@@ -2,16 +2,14 @@
 # tasks file for setup.testprofiles
 - block:
    - name: "Setup Listener Certificate {{certname}} on all versalex instances"
-     setup_listener_cert:
+     setup_listener_cert:     
            host_ip: "{{ansible_ssh_host}}"
            cert_name: "{{certname}}"      
      register: listener_cert
-     delegate_to: 127.0.0.1     
-      
-   - name: "Resource Update Properties using Command line"
-     include_tasks: "update_resource.yml"
-     with_dict: "{{ versalex | default({}) }}"
-     loop_control:
-        loop_var: update_item
+     tags: listener_cert
+
+   - name: Print cert details
+     debug: msg="Cert Details {{listener_cert}}"
+     tags: listener_cert
 - rescue:
    - fail: msg="Resource Update on Versalex Failed"

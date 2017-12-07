@@ -2,7 +2,7 @@
 # tasks file for download.product
 - block:     
     - name: User Passed Status {{status}}
-      include_tasks: "start.yml"
+      include_tasks: "start_stop.yml"
       with_dict: "{{ versalex | default({}) }}"
       loop_control:
          loop_var: vex_item

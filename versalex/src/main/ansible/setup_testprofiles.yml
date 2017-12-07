@@ -1,8 +1,4 @@
----
-- hosts: "versalex"
-  roles:
-    - { role: setup.testprofiles/listener/,certname: "VEXLOCAL",tags: ['rest'] }
-      
+---    
 - hosts: "versalex:proxy"
   roles:
     - { role: setup.testprofiles/common, when: "'servers-versalex' in inventory_hostname",tags: ['rest','java'] }

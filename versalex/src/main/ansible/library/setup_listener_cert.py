@@ -8,7 +8,7 @@ requirements:
   - Jinja2
   - requests (for rest requests)
 options:
-  setup_as2:
+  setup_listener_cert.py:
     description:
 		"host_ip": {"required": True, "type": "str"},
 		"cert_name": {"required": True, "type": "str"},
@@ -73,12 +73,26 @@ def create_cert(sender_ip,json_file):
 	except Exception, e:
 		print "Exception on create_cert method",e
 
+def import_cert(partner_ip,cert_code):
+	try:
+		partner_url ="http://"+partner_ip+":5080/api/certs"
+		print "Importing Cert to Receiver", partner_url
+		partner_data= { "requestType":"importCert","import":cert_code}
+		partner_res = get_postresults(partner_url,partner_data)
+		print "Partner-Cert-Id", partner_res['id']
+		# print "Partner Results ",partner_res		
+		return partner_res
+		# print "Final Dump",json_req
+	except Exception, e:
+		print "Exception on import_cert method",e		
+		
 	
 def setup_local_listener_cert(hostip,cert_name):
 	try:
 		print "Local Listener Cert to Create",cert_name
 		cert_json_path=create_cert_json(cert_name)
 		cert_res=create_cert(hostip,cert_json_path)
+		# cert_import_res=import_cert(hostip,cert_res['certificate'])
 		print "Cert Results",cert_res
 		return True,cert_res
 	except Exception,e:

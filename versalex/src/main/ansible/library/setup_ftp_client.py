@@ -83,7 +83,8 @@ def get_totalhost(dataset):
 		for k,val in dataset.iteritems():
 			print "Key",k,"Val",val['total']
 			if k == 'ftp':
-				total=val['total']				
+				total=val['total']
+				conn_json_req['partner_port']=val['port']
 				return int(total)
 	except Exception,e:
 		print "Exception on get_totalhost method",e
@@ -93,7 +94,7 @@ def setup_connection(hostname,master_ip,partner_ip):
 		print "*****************************setup_connection*****************************"
 		conn_json_req['host_name']=hostname
 		conn_json_req['partner_ip']=partner_ip
-		conn_json_req['partner_port']=9021
+		# conn_json_req['partner_port']=9021
 		conn_json_path=create_conn_json(hostname,conn_json_req)
 		conn_json_results=create_connection(master_ip,conn_json_path)
 		print "Connnection Results",conn_json_results

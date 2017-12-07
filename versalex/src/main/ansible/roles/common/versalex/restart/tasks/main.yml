@@ -1,7 +1,7 @@
 ---
 # tasks file for download.product
 - block:     
-    - name: User Passed Status {{status}}
+    - name: Kill and Start Versalex Process 
       include_tasks: "restart.yml"
       with_dict: "{{ versalex | default({}) }}"
       loop_control:

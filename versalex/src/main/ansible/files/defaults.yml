@@ -82,7 +82,8 @@ defaults:
         host_range: 1-20
         mailbox_range: 1-1
         action_range: 1-1
-        create_certs: true       
+        create_certs: true
+        port: 5080
         host_custom_props: "{}"
         mailbox_custom_props: "{}"
         action_custom_props: "{}"
@@ -90,6 +91,7 @@ defaults:
         host_range: 1-20
         mailbox_range: 1-1
         action_range: 1-1
+        port: 9021
         create_certs: true       
         host_custom_props: "{Defaulthomedir: %datashare%/local/root/%username%}"
         mailbox_custom_props: "{}"
