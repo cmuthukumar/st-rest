@@ -133,7 +133,7 @@ sh 'java -version'
     {
     println "Setup Test Profiles for Server and TP Side"
    
-           sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags "rest""
+           sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'rest' "
      
     } 
 	
