@@ -1,27 +1,27 @@
 ---
 - hosts: "versalex:proxy"
-  # pre_tasks:
-    # - meta: refresh_inventory
+  # # pre_tasks:
+    # # - meta: refresh_inventory
   roles:
     - { role: install.product/common}
 
 - hosts: "versalex"
-  strategy: free
+  # strategy: free
   roles:
     - { role: install.product/license }
 
 - hosts: "versalex"
-  # strategy: free
+  # # strategy: free
   roles:
     - { role: install.product, prod_dict: "{{ versalex }}" } 
     
 - hosts: "proxy"
-  # strategy: free
+  # # strategy: free
   roles:    
     - { role: install.product, prod_dict: "{{ proxy }}" } 
 
 - hosts: "versalex"
-  strategy: free
+  # strategy: free
   roles:
     - { role: install.product/restify } 
 
@@ -29,7 +29,10 @@
   connection: local
   roles:
     - { role: common/versalex/start_stop/,status: start,tags: ['versalex-start_stop'] } 
-    - { role: install.product/listener/,certname: "LOC_LIST",tags: ['create_listener_cert'] } 
+    - { role: install.product/listener/,certname: "LOC_LIST",tags: ['create_listener_cert'] }
+    
+- hosts: "versalex"
+  roles:
     - { role: install.product/listener/update_props,certname: "LOC_LIST",tags: ['listener-props'] }
     - { role: common/versalex/restart/,tags: ['versalex-restart'] }
 

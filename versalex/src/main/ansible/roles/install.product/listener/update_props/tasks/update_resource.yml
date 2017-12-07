@@ -4,26 +4,18 @@
    - name: Setting Dictionary Name for Versalex Instances
      set_fact:
         update_resouce: "{{update_item.value}}"
-        
-   # - name: Local Listener IP Address Update
+
+   # - name: Local Listener Update IP Address
      # xml:
         # path: "{{ update_resouce.install_location }}/hosts/Local Listener.xml"
-        # xpath: /Host/Service alias="AS2"/
-        # attribute: "{{ item.property }}"
-        # value: "{{ item.value }}"
-     # with_items:
-         # - { property: 'class',                 value: '.LexLocalHostBean' }
-         # - { property: 'localsigncertalias',    value: "{{ certname }}" }
-         # - { property: 'localsigncertpassword', value: 'cleo' }
-         # # - { property: 'localencrcertalias',    value: "{{ certname }}" }
-          # # - { property: 'localencrcertpassword', value: 'cleo' }         
-     # register: update_cert
+        # xpath: /Host/Service/Hostname
+        # value: "{{ansible_ssh_host}}"
+     # register: update_ip
      # retries: 3
      # delay: 2
-     # until: update_cert|success
+     # until: update_ip|success
      # ignore_errors: yes
      
-        
    # - name: Local Listener Update Attributes
      # xml:
         # path: "{{ update_resouce.install_location }}/hosts/Local Listener.xml"
@@ -32,15 +24,19 @@
         # value: "{{ item.value }}"
      # with_items:
          # - { property: 'class',                 value: '.LexLocalHostBean' }
-         # - { property: 'localsigncertalias',    value: "{{ certname }}" }
+         # - { property: 'localsigncertalias',    value: "{{certname}}" }
          # - { property: 'localsigncertpassword', value: 'cleo' }
          # # - { property: 'localencrcertalias',    value: "{{ certname }}" }
-          # # - { property: 'localencrcertpassword', value: 'cleo' }         
-     # register: update_cert
+         # # - { property: 'localencrcertpassword', value: 'cleo' }
+     # register: update_attrbs
      # retries: 3
      # delay: 2
-     # until: update_cert|success
+     # until: update_attrbs|success
      # ignore_errors: yes
+     
+   # - debug:
+       # var: update_attrbs
+     # verbosity: 2
 
    - name: "Update Local Listener Props for Versalex Instances"
      shell: './"{{update_resouce.dname}}"c -m -p "{{item.property}}" -t "{{item.tag}}{{item.value}}"'
