@@ -78,6 +78,15 @@
   retries: 3
   delay: 2
   until: lxml_status|success
+
+- name: Install Jinja2 using pip
+  pip: 
+    name: jinja2
+    version: latest
+  register: jinja_status
+  retries: 3
+  delay: 2
+  until: jinja_status|success
   
 - name: Install RNG-tools required for Random Number Generation using YUM
   yum: name=rng-tools state=present
