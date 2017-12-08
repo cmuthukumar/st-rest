@@ -15,7 +15,11 @@
   yum:
     name: epel-release
     state: present
-    
+  register: epel_status
+  retries: 3
+  delay: 2
+  until: epel_status|success 
+  
 - name: Install Unzip package for running bin file in CentOS
   yum: name=unzip state=present
   register: unzip_status
@@ -94,6 +98,16 @@
   # retries: 3
   # delay: 2
   # until: rsync_status|success    
+
+- name: Install Python Jinja2 update
+  yum:
+    name: python-jinja2
+    state: present
+  register: jinja_status
+  retries: 3
+  delay: 2
+  until: jinja_status|success 
+
   
 - name: Install RNG-tools required for Random Number Generation using YUM
   yum: name=rng-tools state=present
