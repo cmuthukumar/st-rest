@@ -7,7 +7,7 @@ import hudson.model.Node
 
 //Define Global Vars
 
-params = ['servers']
+params = ['servers','tpnodes']
 workdir = "versalex/src/main/ansible/"
 
 node('SysTest') {

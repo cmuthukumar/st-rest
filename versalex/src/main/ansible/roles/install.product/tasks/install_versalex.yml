@@ -14,20 +14,20 @@
    - name: Print Java Process Kill Status
      debug: msg="Kill Application Status {{javakill_status}}"
      
-   - name: Copy Installer to Remote Install Location using Rsync
-     synchronize:
-        src: "{{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}}"
-        dest: "{{install.install_location}}"
-        mode: push
-        rsync_opts:
-            - "--chmod=a+rwx"
-     environment:
-            PATH: "/usr/bin/rsync:{{ ansible_env.PATH }}:/usr/bin"
-     ignore_errors: yes
-     register: rsync_status
-     retries: 2
-     delay: 3
-     until: rsync_status |success
+   # - name: Copy Installer to Remote Install Location using Rsync
+     # synchronize:
+        # src: "{{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}}"
+        # dest: "{{install.install_location}}"
+        # mode: push
+        # rsync_opts:
+            # - "--chmod=a+rwx"
+     # environment:
+            # PATH: "/usr/bin/rsync:{{ ansible_env.PATH }}:/usr/bin"
+     # ignore_errors: yes
+     # register: rsync_status
+     # retries: 2
+     # delay: 3
+     # until: rsync_status |success
      
 
    - name: Copy Installer to Remote Install Location
