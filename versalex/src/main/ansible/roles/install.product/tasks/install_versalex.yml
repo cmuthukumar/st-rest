@@ -14,8 +14,8 @@
    - name: Print Java Process Kill Status
      debug: msg="Kill Application Status {{javakill_status}}"
      
-   - name: Copy Installer to Remote Install Location
-     copy:
+   - name: Copy Installer to Remote Install Location using Rsync
+     synchronize:
         src: "{{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}}"
         dest: "{{install.install_location}}"
         mode: 0777
