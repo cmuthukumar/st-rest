@@ -12,7 +12,7 @@ options:
     description:
 		"host_ip": {"required": True, "type": "str"},
 		"cert_name": {"required": True, "type": "str"},
-example:  setup_as2: host_name="Host Name to be passed"  server_hosts="Server Hosts IP's" proxy_hosts="Proxy Hosts IP's" tp_hosts="TP Hosts IP's" dataset="DataSet Passed by User for AS2 Setup"
+example:  setup_listener_cert: host_name="Host Name to be passed"  server_hosts="Server Hosts IP's" proxy_hosts="Proxy Hosts IP's" tp_hosts="TP Hosts IP's" dataset="DataSet Passed by User for AS2 Setup"
 '''
 
 from ansible.module_utils.basic import *
@@ -118,9 +118,9 @@ def main():
 		module = AnsibleModule(argument_spec=fields)		
 		stat,result=setup_local_listener_cert(module.params['host_ip'],module.params['cert_name'])
 		if stat:
-			module.exit_json(meta=result)
+			module.exit_json(**result)
 		else:
-			module.fail_json(meta=result)
+			module.fail_json(**result)
 	except Exception,e:
 		print "Exception on Main",e
 		
