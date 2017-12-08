@@ -22,7 +22,7 @@
         rsync_opts:
             - "--chmod=a+rwx"
      environment:
-            PATH: ":{{ ansible_env.PATH }}"
+            PATH: "$PATH:{{ ansible_env.PATH }}"
      ignore_errors: yes
 
    - name: Copy Installer to Remote Install Location

@@ -35,11 +35,11 @@
     with_items:
         - Users.xml
         
-  - name: Start VersalEx Process After Users Setup
-    shell: "./{{usr.dname}}d start"
-    args:
-      chdir: "{{usr.install_location}}"     
-    register: vex_start_status
+  # - name: Start VersalEx Process After Users Setup
+    # shell: "./{{usr.dname}}d start"
+    # args:
+      # chdir: "{{usr.install_location}}"     
+    # register: vex_start_status
      
-  - name: Wait for Versalex Port to Come up
-    wait_for: host="{{ansible_ssh_host}}" port="{{usr.port}}" delay=10 timeout=320 state=started
+  # - name: Wait for Versalex Port to Come up
+    # wait_for: host="{{ansible_ssh_host}}" port="{{usr.port}}" delay=10 timeout=320 state=started

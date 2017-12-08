@@ -7,8 +7,12 @@
     shell: "./{{vex_start.dname}}d {{status}}"
     args:
       chdir: "{{vex_start.install_location}}"     
-    register: vex_start_status
-     
+    register: vex_start_status    
+    retries: 3
+    delay: 2
+    until: vex_start_status|success
+
+    
   - name: Wait for Versalex Port to come up
     wait_for: host="{{ansible_ssh_host}}" port="{{vex_start.port}}" delay=10 timeout=320 state=started
     when: "'start' in status"

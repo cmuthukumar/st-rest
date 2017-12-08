@@ -25,10 +25,14 @@
   roles:
     - { role: install.product/restify } 
 
+    
+- hosts: "versalex"
+  roles:
+    - { role: common/versalex/start_stop/,status: start,tags: ['versalex-start_stop'] } 
+    
 - hosts: "versalex"
   connection: local
   roles:
-    - { role: common/versalex/start_stop/,status: start,tags: ['versalex-start_stop'] } 
     - { role: install.product/listener/,certname: "LOC_LIST",tags: ['create_listener_cert'] }
     
 - hosts: "versalex"
