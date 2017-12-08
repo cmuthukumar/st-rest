@@ -54,9 +54,11 @@ def get_postresults(url,json_file):
 def create_cert_json(cert_name):
 	try:
 		alias= {"alias": cert_name}
-		os.makedirs("./files/as2jsons/")
+		json_dir="./files/as2jsons/"
+		if not os.path.exists(json_dir):
+			os.makedirs(json_dir)
 		json_out=get_jsonoutput("./files/Cert.json",alias)
-		json_path="./files/as2jsons/"+cert_name+".json"
+		json_path=json_dir+cert_name+".json"
 		with open(json_path, 'w+') as jsonfile:
 			jsonfile.write(json_out)
 		return json_path

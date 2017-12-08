@@ -98,7 +98,13 @@
   # retries: 3
   # delay: 2
   # until: rsync_status|success    
-
+- name: Install Rsync using YUM
+  yum: name=rsync state=present 
+  register: rsync_status
+  retries: 3
+  delay: 3
+  until: rsync_status|success
+  
 - name: Install Python Jinja2 update
   yum:
     name: python-jinja2
