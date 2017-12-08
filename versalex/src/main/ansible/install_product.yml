@@ -31,7 +31,7 @@
     - { role: common/versalex/start_stop/,status: start,tags: ['versalex-start_stop'] } 
     
 - hosts: "versalex"
-  connection: local  
+  # connection: local  
   roles:
     - { role: install.product/listener/,certname: "LOC_LIST",tags: ['create_listener_cert'] }
     
