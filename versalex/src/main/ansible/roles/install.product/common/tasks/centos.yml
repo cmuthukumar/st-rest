@@ -82,7 +82,6 @@
 - name: Install Jinja2 using pip
   pip: 
     name: jinja2
-    version: latest
   register: jinja_status
   retries: 3
   delay: 2
