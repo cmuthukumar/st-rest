@@ -87,6 +87,14 @@
   delay: 2
   until: jinja_status|success
   
+- name: install the latest version of rsync
+  yum:
+    name: rsync
+  register: rsync_status  
+  retries: 3
+  delay: 2
+  until: rsync_status|success    
+  
 - name: Install RNG-tools required for Random Number Generation using YUM
   yum: name=rng-tools state=present
   register: rng
