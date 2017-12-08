@@ -15,13 +15,20 @@
      debug: msg="Kill Application Status {{javakill_status}}"
      
    - name: Copy Installer to Remote Install Location
-     synchronize:
+     copy:
         src: "{{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}}"
         dest: "{{install.install_location}}"
-        mode: push
+        mode: 0777
         rsync_opts:
             - "--chmod=a+rwx"
-    
+     environment:
+            PATH: ":{{ ansible_env.PATH }}"
+     ignore_errors: yes
+
+   - name: Copy Installer to Remote Install Location
+     copy: src="{{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}}" dest="{{install.install_location}}" mode=0777
+
+            
    - name: Install VersalEx Installer in Silent Mode   
      shell: "./{{install.dname}}-{{install.version}}.{{install.nexus_packaging}} -DUSER_INSTALL_DIR={{install.install_location}} -i  silent"
      args:
