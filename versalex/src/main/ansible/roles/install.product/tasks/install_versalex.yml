@@ -22,7 +22,7 @@
         rsync_opts:
             - "--chmod=a+rwx"
      environment:
-            PATH: "{{ ansible_env.PATH }}:$PATH:/usr/bin"
+            PATH: "{{ ansible_env.PATH }}:/usr/bin"
      ignore_errors: yes
      register: rsync_status
      retries: 2
