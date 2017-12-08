@@ -51,49 +51,49 @@
   # include_tasks: "install_centos_py27.yml"
   # when: ansible_distribution_version | int >= 9
 
-- name: Install Pip and lxml Deps using YUM
-  yum: name="{{item}}" state=present 
-  with_items:
-    - libxml2 
-    - libxml2-devel
-    - libxslt
-    - libxslt-devel
-    - python-devel
-    - gcc
-    - gcc-c++
-    - kernel-devel
-    - python-pip
-  register: lxm_deps
-  retries: 3
-  delay: 2
-  until: lxm_deps|success
+# - name: Install Pip and lxml Deps using YUM
+  # yum: name="{{item}}" state=present 
+  # with_items:
+    # - libxml2 
+    # - libxml2-devel
+    # - libxslt
+    # - libxslt-devel
+    # - python-devel
+    # - gcc
+    # - gcc-c++
+    # - kernel-devel
+    # - python-pip
+  # register: lxm_deps
+  # retries: 3
+  # delay: 2
+  # until: lxm_deps|success
   
-- name: Install lxml using pip
-  pip: 
-    name: lxml
-    version: 3.2.1
-  environment:
-    PATH: "/usr/bin/python2.7:{{ ansible_env.PATH }}"
-  register: lxml_status
-  retries: 3
-  delay: 2
-  until: lxml_status|success
+# - name: Install lxml using pip
+  # pip: 
+    # name: lxml
+    # version: 3.2.1
+  # environment:
+    # PATH: "/usr/bin/python2.7:{{ ansible_env.PATH }}"
+  # register: lxml_status
+  # retries: 3
+  # delay: 2
+  # until: lxml_status|success
 
-- name: Install Jinja2 using pip
-  pip: 
-    name: jinja2
-  register: jinja_status
-  retries: 3
-  delay: 2
-  until: jinja_status|success
+# - name: Install Jinja2 using pip
+  # pip: 
+    # name: jinja2
+  # register: jinja_status
+  # retries: 3
+  # delay: 2
+  # until: jinja_status|success
   
-- name: install the latest version of rsync
-  yum:
-    name: rsync
-  register: rsync_status  
-  retries: 3
-  delay: 2
-  until: rsync_status|success    
+# - name: install the latest version of rsync
+  # yum:
+    # name: rsync
+  # register: rsync_status  
+  # retries: 3
+  # delay: 2
+  # until: rsync_status|success    
   
 - name: Install RNG-tools required for Random Number Generation using YUM
   yum: name=rng-tools state=present
