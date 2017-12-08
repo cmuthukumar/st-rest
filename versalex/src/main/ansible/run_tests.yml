@@ -22,33 +22,31 @@
   roles:
     - {role: setup.sync }   
     
-# - hosts: "tpnodes-versalex"
-  # roles:
-    # - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,start' ,tags: ['rest'] }
-
-
+- hosts: "tpnodes-versalex"
+  roles:
+    - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,start' ,tags: ['rest'] }
     
-# - hosts: "servers-shares"
-  # vars:
-    # load_datasets:
-            # as2:
-                # filespermin: "{{as2_filespermin}}"
-                # totalmins: "{{as2_totalmins}}"
-                # totalhosts: "{{as2_totalhosts}}"        
+- hosts: "servers-shares"
+  vars:
+    load_datasets:
+            as2:
+                filespermin: "{{as2_filespermin}}"
+                totalmins: "{{as2_totalmins}}"
+                totalhosts: "{{as2_totalhosts}}"        
 
-  # roles:
-    # - { role: run.tests/,protocols: "{{load_datasets}}" }
+  roles:
+    - { role: run.tests/,protocols: "{{load_datasets}}" }
     
-# - hosts: "tpnodes-shares"
-  # vars:
-    # load_datasets:
-            # as2:
-                # filespermin: "{{as2_filespermin}}"
-                # totalmins: "{{as2_totalmins}}"
-                # totalhosts: "{{as2_totalhosts}}"
-            # ftp:
-                # filespermin: "{{ftp_filespermin}}"
-                # totalmins: "{{ftp_totalmins}}"
-                # totalhosts: "{{ftp_totalhosts}}"
-  # roles:
-    # - { role: run.tests/,protocols: "{{load_datasets}}" } 
+- hosts: "tpnodes-shares"
+  vars:
+    load_datasets:
+            as2:
+                filespermin: "{{as2_filespermin}}"
+                totalmins: "{{as2_totalmins}}"
+                totalhosts: "{{as2_totalhosts}}"
+            ftp:
+                filespermin: "{{ftp_filespermin}}"
+                totalmins: "{{ftp_totalmins}}"
+                totalhosts: "{{ftp_totalhosts}}"
+  roles:
+    - { role: run.tests/,protocols: "{{load_datasets}}" } 
