@@ -18,7 +18,7 @@
      synchronize:
         src: "{{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}}"
         dest: "{{install.install_location}}"
-        mode: 0777
+        mode: push
         rsync_opts:
             - "--chmod=a+rwx"
      environment:
