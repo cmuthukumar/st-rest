@@ -27,4 +27,4 @@
 
 - hosts: "shares"
   roles: 
-      - { role: run.tests/,as2_filespermin: "{{as2_filespermin}}",as2_totalmins: "{{as2_totalmins}}",as2_totalhosts: "{{as2_totalhosts}}",ftp_filespermin: "{{ftp_filespermin}}",ftp_totalmins: "{{ftp_totalmins}}",ftp_totalhosts: "{{ftp_totalhosts}}" }
+      - { role: run.tests/,as2_filespermin: "{{as2_filespermin|default(0)}}",as2_totalmins: "{{as2_totalmins|default(0)}}",as2_totalhosts: "{{as2_totalhosts|default(0)}}",ftp_filespermin: "{{ftp_filespermin|default(0)}}",ftp_totalmins: "{{ftp_totalmins|default(0)}}",ftp_totalhosts: "{{ftp_totalhosts|default(0)}}" }
