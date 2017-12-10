@@ -12,21 +12,21 @@ server_datasets:
         threads: 10
         destPath: "/root/share/as2/outboxes/"
         fileSize: "5000 10000"
-        filespermin: 0
-        totalmins: 0
-        totalhosts: 0
+        filespermin: "{{as2_filespermin}}"
+        totalmins: "{{as2_totalmins}}"
+        totalhosts: "{{as2_totalhosts}}"
 tp_datasets:
     as2:
         threads: 10
         destPath: "/root/share/as2/outboxes/"
         fileSize: "5000 10000"
-        filespermin: 0
-        totalmins: 0
-        totalhosts: 0
+        filespermin: "{{as2_filespermin}}"
+        totalmins: "{{as2_totalmins}}"
+        totalhosts: "{{as2_totalhosts}}" 
     ftp:
         threads: 10
         destPath: "/root/share/ftp/outboxes/"        
         fileSize: "5000 10000 20000 40000 80000 100000 200000 400000 500000 1000000"
-        filespermin: 0
-        totalmins: 0
-        totalhosts: 0
+        filespermin: "{{ftp_filespermin}}"
+        totalmins: "{{ftp_totalmins}}"
+        totalhosts: "{{ftp_totalhosts}}"

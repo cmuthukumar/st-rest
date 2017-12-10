@@ -1,9 +1,9 @@
 ---
-- hosts: "versalex:proxy"
+- hosts: "versalex:proxy:integrations:shares"
   # # pre_tasks:
     # # - meta: refresh_inventory
   roles:
-    - { role: install.product/common}
+    - { role: common/versalex/deps }
 
 - hosts: "versalex"
   # strategy: free
@@ -43,4 +43,4 @@
 - hosts: "versalex"
   strategy: free
   roles:
-    - { role: install.product/tests }    
+    - { role: install.product/tests }  

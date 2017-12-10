@@ -3,21 +3,6 @@
   set_fact:
         jmx: "{{jmx_grp.value}}"
 
-- name: Download SysTest Jar from Nexus Repo
-  maven_artifact: 
-            group_id: "{{jmx.nexus_systest_groupid}}"
-            artifact_id: "{{jmx.nexus_systest_artifactid}}"
-            version: latest
-            extension: "jar"
-            repository_url: "{{jmx.nexus_systest_repourl}}"
-            dest: "{{playbook_dir}}/library/"
-            state: present
-  run_once: true
-  delegate_to: 127.0.0.1 
-        
-- name: Copy SetupOptions Jar File to remote location
-  copy: src="{{playbook_dir}}/library/" dest="{{jmx.install_location}}lib/"
-
 - name: "Edit versalexc.lax for JMX Configs File"
   lineinfile:
      create: no

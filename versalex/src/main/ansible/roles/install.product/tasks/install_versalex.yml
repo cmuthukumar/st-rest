@@ -28,7 +28,7 @@
      # retries: 2
      # delay: 3
      # until: rsync_status |success
-     
+     # become: false     
 
    - name: Copy Installer to Remote Install Location
      copy: src="{{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}}" dest="{{install.install_location}}" mode=0777

@@ -8,7 +8,7 @@ requirements:
   - Jinja2
   - requests (for rest requests)
 options:
-  setup_ftp_client:
+  jmeter_args:
     description:		
 		"hosts": {"required": True, "type": "list"},
 		example:  schedule_actions:

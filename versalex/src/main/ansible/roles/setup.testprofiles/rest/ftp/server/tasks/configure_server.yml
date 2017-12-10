@@ -2,8 +2,8 @@
    - name: Print Hostvars
      debug: msg="Versalex name{{conf_server.name}}"     
 
-   - name: Copy SetupOptions Jar File to remote location
-     copy: src="{{playbook_dir}}/library/versalex_setup-latest.jar" dest="{{conf_server.install_location}}lib/"
+   # - name: Copy SetupOptions Jar File to remote location
+     # copy: src="{{playbook_dir}}/library/versalex_setup-latest.jar" dest="{{conf_server.install_location}}lib/"
 
    - name: Set Dataset key
      set_fact:

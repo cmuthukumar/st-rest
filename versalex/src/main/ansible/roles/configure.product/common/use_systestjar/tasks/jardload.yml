@@ -1,0 +1,19 @@
+---
+  - name: Setting Dictionary Name Config Versalex
+    set_fact:
+       systest_jar: "{{systest_java.value}}"
+
+  - name: Download SysTest Jar from Nexus Repo
+    maven_artifact: 
+            group_id: "{{systest_jar.nexus_systest_groupid}}"
+            artifact_id: "{{systest_jar.nexus_systest_artifactid}}"
+            version: latest
+            extension: "jar"
+            repository_url: "{{systest_jar.nexus_systest_repourl}}"
+            dest: "{{playbook_dir}}/library/"
+            state: present
+    run_once: true
+    delegate_to: 127.0.0.1 
+    
+  - name: Copy SetupOptions Jar File to remote location
+    copy: src="{{playbook_dir}}/library/" dest="{{systest_jar.install_location}}lib/"

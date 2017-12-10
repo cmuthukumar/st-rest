@@ -3,19 +3,7 @@
  - block:
       - name: Setting Dictionary Name Config Versalex
         set_fact:
-           confvex: "{{config_vex.value}}"
-
-      - name: Download SysTest Jar from Nexus Repo
-        maven_artifact: 
-                group_id: "{{confvex.nexus_systest_groupid}}"
-                artifact_id: "{{confvex.nexus_systest_artifactid}}"
-                version: latest
-                extension: "jar"
-                repository_url: "{{confvex.nexus_systest_repourl}}"
-                dest: "{{playbook_dir}}/library/"
-                state: present
-        run_once: true
-        delegate_to: 127.0.0.1        
+           confvex: "{{config_vex.value}}"     
         
       - name: Configure VersalEx Product
         include_tasks: configure_versalex.yml

@@ -1,10 +1,12 @@
 ---
 # tasks file for jmeter
 - block:
-      
+
     - name: Print Protocol Values
-      debug: msg="Protocol Values Issued {{protocols}}"
-      
+      debug: msg="server_datasets Protocol Values Issued {{server_datasets}}"      
+
+    - name: Print Protocol Values
+      debug: msg="TP_datasets Protocol Values Issued {{tp_datasets}}"      
       
     - name: Install 1.8 Open JDK
       yum:
@@ -48,30 +50,45 @@
     - name: Copy TestPlan(JMX) file to Shares
       copy: src="{{playbook_dir}}/files/SysTest_Linux_New.jmx" dest="{{jmeter_dir}}apache-jmeter-{{jmeter_version}}/bin/"
 
-    # - name: Initialize Protocols
-      # set_fact:
-        # protocols: []
+    - name: Set Fact Total Secs to Run Jmeter Scripts
+      set_fact:
+        srvr_totalseconds: "{{(as2_totalmins|int+3)*60}}"
+      when: "'servers-shares' in inventory_hostname"
+      
+    - name: Debug Server Total Mins
+      debug: msg="Print Total Minutes {{(srvr_totalseconds|int)}}"
+      when: "'servers-shares' in inventory_hostname"
+
+    - name: Running Servers Side Jmeter Tests 
+      include_tasks: "jmeter_tests.yml"
+      vars:
+        load_data: "{{server_datasets}}"
+      register: srvr_tests
+      async: "{{srvr_totalseconds|int}}"
+      poll: 0
+      when: "'servers-shares' in inventory_hostname"
+
+    - name: Set Fact Total Secs to Run Jmeter Scripts
+      set_fact:
+        tp_totalseconds: "{{(as2_totalmins|int+ftp_totalmins|int+3)*60}}"
+      when: "'tpnodes-shares' in inventory_hostname"
   
-    # - name: Set Protocols
-      # set_fact:
-        # protocols: "{{protocols}}+['{{item.key}}'] "
-      # with_dict: "{{dataset}}"
+    - name: Debug TP Total Secs
+      debug: msg="Print Total Minutes {{(tp_totalseconds|int)}}"
+      when: "'tpnodes-shares' in inventory_hostname"
+  
+    - name: Running TP Node Side Jmeter Tests 
+      include_tasks: "jmeter_tests.yml"
+      vars:
+        load_data: "{{tp_datasets}}"
+      register: tp_tests
+      async: "{{(tp_totalseconds)}}"
+      poll: 0
+      when: "'tpnodes-shares' in inventory_hostname"
+     
+    - name: Debug Jmeter Sserver and TP Side Args
+      debug: msg="Jmeter res {{jmeter_arg.meta}}"
 
-    # - name: Print Hosts Per Protocol
-      # debug: msg="Total Hosts AS2 {{dataset[item.0].filespermin}} TOtal Hosts FTP {{dataset[item.1].totalhosts}}"
-      # with_together: "{{protocols}}"
-
-    - name: Convert Dataset Dictionary to Jmeter Arguments
-      jmeter_args:
-        jmx: "/root/jmeter/apache-jmeter-3.3/bin/SysTest_Linux_New.jmx"
-        protocols: "{{protocols}}"
-      delegate_to: 127.0.0.1
-      register: jmeter_arg
-      
-    - name: Print jmeter arguments
-      debug: msg="Jmeter arguments to Pass-{{jmeter_arg.meta}}"
-      delegate_to: 127.0.0.1
-      
     - name: Run Jmeter with Configs
       # shell: jmeter -n -t "SysTest_Linux_New.jmx" -Jas2.threads="{{dataset[item.0].threadCount}}" -Jas2.loopcount="{{(dataset[item.0].filespermin|int*dataset[item.0].totalmins|int/dataset[item.0].threadcount)}}" -Jas2.fileSize="{{dataset[item.0].fileSizes}}" -Jas2.destPath="{{dataset[item.0].share_dir}}" -Jas2.filesPerMin="{{dataset[item.0].filesPerMin}}" -Jas2.totalHosts="{{dataset[item.0].totalHosts}}"
       shell: "{{jmeter_arg.meta}}"
@@ -82,10 +99,9 @@
          chdir: "{{jmeter_dir}}apache-jmeter-{{jmeter_version}}/bin/"         
       register: jmeter_res
       ignore_errors: yes
-      async: 3600
-      poll: 60
       
     - name: Print Jmeter Results
       debug: msg="{{jmeter_res.stdout_lines}}"
+      
 - rescue:
     - fail: msg="Jmeter Role Failed"
