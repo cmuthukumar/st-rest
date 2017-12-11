@@ -2,7 +2,7 @@
 # tasks file for configure.product
 - block:      
     - name: Download and Copy Systest Jar from Nexus to Remote Machine
-      include_tasks: "{{role_path}}/tasks/jardload.yml"
+      include_tasks: "{{role_path}}/tasks/apply_jar.yml"
       with_dict: "{{ versalex | default({}) }}"        
       loop_control:
          loop_var: systest_java

@@ -41,20 +41,28 @@ sh 'java -version'
     try{
     stage('Create Nodes')
             {
-                createNodes(params)
+		parallel(
+		a: {
+			createNodes(params[0])
+				},
+		b: {
+				createNodes(params[1])
+			}	  
+          )
+              //  createNodes(params)
             }
     stage('Install Product')
             {
 			 
-	//	parallel(
-		//	a: {
-			//	installProduct(params[0])
-				//},
-			//b: {
-				//installProduct(params[1])
-				//}	  
-             //)   
-				installProduct(params)
+	parallel(
+		c: {
+			installProduct(params[0])
+				},
+			d: {
+			installProduct(params[1])
+				}	  
+             )   
+				//installProduct(params)
 			}
 
     stage('Install Integrations')
@@ -94,31 +102,31 @@ sh 'java -version'
   
 }
 
-    def createNodes(params)
+    def createNodes(param)
     {
     withCredentials([[$class: 'StringBinding', credentialsId: 'doCredentials', variable: 'do_ap_token']]) {
-        println "Inside Create Node"
-        for(int i=0; i<params.size(); i++ )
-        {
-        println "Creating Nodes for ${params[i]}"
-           sh "cd ${workdir} && ansible-playbook setup_topology.yml -c local -e machine_type=${params[i]} -e do_api_token=${env.do_ap_token} -e username=${username} "
+      //  println "Inside Create Node"
+       // for(int i=0; i<params.size(); i++ )
+       // {
+        println "Creating Nodes for ${param}"
+           sh "cd ${workdir} && ansible-playbook setup_topology.yml -c local -e machine_type=${param} -e do_api_token=${env.do_ap_token} -e username=${username} "
 		   
-           sh "cd ${workdir} && ansible-playbook setup_vars.yml -c local -i inventories/${params[i]}/ -e machine_type=${params[i]} "
-		   }        
+           sh "cd ${workdir} && ansible-playbook setup_vars.yml -c local -i inventories/${param}/ -e machine_type=${param} "
+		  // }        
         }
     }
     
-    def installProduct(params)
+    def installProduct(param)
     {
-    println "Install Product on both "
+    println "Install Product for ${param} "
 
-			//sh "cd ${workdir} && ansible-playbook -i inventories/${param}/ -e machine_type=${param} install_product.yml "
+			sh "cd ${workdir} && ansible-playbook -i inventories/${param}/ -e machine_type=${param} install_product.yml "
 					
-       for(int i=0; i<params.size(); i++ )
-       {
-			println "Installing Product for ${params[i]}"
-          sh "cd ${workdir} && ansible-playbook -i inventories/${params[i]}/ -e machine_type=${params[i]} install_product.yml "
-       }
+     //  for(int i=0; i<params.size(); i++ )
+     //  {
+			//println "Installing Product for ${params[i]}"
+          //sh "cd ${workdir} && ansible-playbook -i inventories/${params[i]}/ -e machine_type=${params[i]} install_product.yml "
+       //}
     }
 
     def installIntegrations()

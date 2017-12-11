@@ -1,0 +1,19 @@
+---
+- name: Setting Dictionary Name Proxy for Configs
+  set_fact:
+        vex_proxy: "{{config_proxy.value}}"
+
+- name: Configure PROXY in Remote Machines on VersalEx Products
+  shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupOptions "{{vex_proxy.dname}}" "{{vex_proxy.install_location}}" "PROXY" "{{item.2.type}}" "{{hostvars[item.0]['ansible_eth0']['ipv4']['address']}}" "{{item.2.port}}" "{{item.2.revfwdproxy}}"
+  environment:
+     CLASSPATH: ":{{vex_proxy.install_location}}versalex_setup-latest.jar:{{vex_proxy.install_location}}lib/*:{{vex_proxy.install_location}}lib/help/*:{{vex_proxy.install_location}}lib/hibernate/*:{{vex_proxy.install_location}}lib/secureshare/*:{{vex_proxy.install_location}}webserver/AjaxSwing/lib/*:{{vex_proxy.install_location}}lib/json/*"
+  args:
+     chdir: "{{vex_proxy.install_location}}"
+  # with_dict: "{{ proxy | default({}) }}"
+  with_nested:       
+       - "{{groups['proxy']  |default({})}}"
+       - "{{ proxy | dictsort }}"
+  register: proxy_config
+  retries: 3
+  delay: 5  
+  until: proxy_config|success

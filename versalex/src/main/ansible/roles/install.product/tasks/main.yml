@@ -6,6 +6,7 @@
      with_dict: "{{ prod_dict | default({}) }}"
      when: prod_dict is defined        
      loop_control:
-        loop_var: group_item  
+        loop_var: group_item
+     become: true
   rescue:
       - fail: msg="Installing Product Tasks failed"

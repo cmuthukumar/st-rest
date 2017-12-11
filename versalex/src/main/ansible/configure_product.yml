@@ -2,6 +2,10 @@
 - hosts: "versalex:proxy:shares"
   roles:
     - { role: configure.product/common}
+    
+- hosts: "versalex"
+  roles:
+    - { role: 'configure.product/common/use_systestjar' }
 
 - hosts: shares
   tasks:
@@ -25,19 +29,25 @@
   roles:
     - { role: configure.product/mem }    
 
-
 - hosts: "proxy"
   # connection: local
   roles:
     - { role: configure.product/vlproxy,external_address: "{{ansible_ssh_host}}" ,email_on_fail_addr: 'muthukumarc@cleo.com' }
-   
     
-- hosts: "versalex:integrations:proxy"
+- hosts: "versalex:integrations"
   roles:
-    - { role: configure.product } 
+    - { role: configure.product/db,when: integrations is defined } 
 
+- hosts: "versalex:proxy"
+  roles:
+    - { role: configure.product/proxy,when: proxy is defined } 
+
+- hosts: "versalex:integrations"
+  roles:
+    - { role: configure.product/ldap,when: ldap is defined } 
+        
 - hosts: "versalex"
-  strategy: free
+  # strategy: free
   roles:
     - { role: common/versalex/restart/,tags: ['versalex-restart'] }     
         

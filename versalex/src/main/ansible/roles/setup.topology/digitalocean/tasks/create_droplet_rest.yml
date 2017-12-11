@@ -45,7 +45,7 @@
     - name: "Add IP's of Machines Created in Digital Ocean to Groups"
       add_host: 
         name: "{{item.0.json.droplet.name}} ansible_ssh_host={{item.1.ip_address}}  appl={{outer_item.name}} subtype={{swtype}}"
-        hostname: "{{item.0.json.droplet.name}}"
+        # hostname: "{{item.0.json.droplet.name}}"
         type: "{{mac_type}}"       
         ansible_host: "{{item.1.ip_address}}"
         groups: "{{mac_type}}-{{swtype}},{{mac_type}},{{swtype}}"
@@ -57,8 +57,9 @@
             - "{{droplet_status.results}}"
             - json.droplet.networks.v4
       register: droplet_groups      
-      delegate_to: 127.0.0.1
-      
+
+    - name: Print Droplet Groups 
+      debug: msg="Droplet Groups added to in memory-{{droplet_groups}}"    
     # - name: "Add IPs of Machines Created in Digital Ocean to Groups at Type Level"
       # add_host:
         # name: "{{item.0.json.droplet.name}} ansible_ssh_host={{item.1.ip_address}} appl={{outer_item.name}} subtype={{swtype}}"

@@ -50,40 +50,32 @@
     - name: Copy TestPlan(JMX) file to Shares
       copy: src="{{playbook_dir}}/files/SysTest_Linux_New.jmx" dest="{{jmeter_dir}}apache-jmeter-{{jmeter_version}}/bin/"
 
-    - name: Set Fact Total Secs to Run Jmeter Scripts
+    - name: Set  Total Secs to Run Jmeter Scripts for Server
       set_fact:
-        srvr_totalseconds: "{{(as2_totalmins|int+3)*60}}"
+        totalseconds: "{{(as2_totalmins|int+3)*60}}"
       when: "'servers-shares' in inventory_hostname"
       
-    - name: Debug Server Total Mins
-      debug: msg="Print Total Minutes {{(srvr_totalseconds|int)}}"
-      when: "'servers-shares' in inventory_hostname"
 
     - name: Running Servers Side Jmeter Tests 
       include_tasks: "jmeter_tests.yml"
       vars:
         load_data: "{{server_datasets}}"
       register: srvr_tests
-      async: "{{srvr_totalseconds|int}}"
-      poll: 0
       when: "'servers-shares' in inventory_hostname"
 
-    - name: Set Fact Total Secs to Run Jmeter Scripts
+    - name: Set Total Secs to Run Jmeter Scripts for Client
       set_fact:
-        tp_totalseconds: "{{(as2_totalmins|int+ftp_totalmins|int+3)*60}}"
+        totalseconds: "{{(as2_totalmins|int+ftp_totalmins|int+3)*60}}"
       when: "'tpnodes-shares' in inventory_hostname"
   
     - name: Debug TP Total Secs
-      debug: msg="Print Total Minutes {{(tp_totalseconds|int)}}"
+      debug: msg="Print Total Minutes {{(totalseconds|int)}}"
       when: "'tpnodes-shares' in inventory_hostname"
   
     - name: Running TP Node Side Jmeter Tests 
       include_tasks: "jmeter_tests.yml"
       vars:
         load_data: "{{tp_datasets}}"
-      register: tp_tests
-      async: "{{(tp_totalseconds)}}"
-      poll: 0
       when: "'tpnodes-shares' in inventory_hostname"
      
     - name: Debug Jmeter Sserver and TP Side Args
@@ -98,6 +90,8 @@
          executable: /bin/sh
          chdir: "{{jmeter_dir}}apache-jmeter-{{jmeter_version}}/bin/"         
       register: jmeter_res
+      async: "{{totalseconds|int}}"
+      poll: 60
       ignore_errors: yes
       
     - name: Print Jmeter Results

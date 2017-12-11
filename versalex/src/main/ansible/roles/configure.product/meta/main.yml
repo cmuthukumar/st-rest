@@ -1,2 +1,0 @@
-dependencies:
-        - { role: 'configure.product/common/use_systestjar' }

@@ -21,6 +21,7 @@
         repository_url: "{{dload.nexus_maven_repourl}}"
         dest: "{{dload.download_location}}"
         state: present
+        mode: 0777
      delegate_to: 127.0.0.1
      run_once: true     
      
