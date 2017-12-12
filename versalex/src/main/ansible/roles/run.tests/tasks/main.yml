@@ -68,9 +68,8 @@
         totalseconds: "{{(as2_totalmins|int+ftp_totalmins|int+3)*60}}"
       when: "'tpnodes-shares' in inventory_hostname"
   
-    - name: Debug TP Total Secs
-      debug: msg="Print Total Minutes {{(totalseconds|int)}}"
-      when: "'tpnodes-shares' in inventory_hostname"
+    - name: Debug Server & TP Total Secs
+      debug: msg="Print Total Seconds {{(totalseconds|int)}}"
   
     - name: Running TP Node Side Jmeter Tests 
       include_tasks: "jmeter_tests.yml"

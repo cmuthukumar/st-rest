@@ -34,7 +34,7 @@ sh 'java -version'
         sh 'printenv'
             }
 //def systestvexImage=docker.build('st-versalex:1.0','.')
-    def st_ansibleImage =  docker.image('cleo/ansible:st_2.0');
+    def st_ansibleImage =  docker.image('cleo/ansible:st_3.0');
     withDockerRegistry([credentialsId: 'DockerCleoSysTest', url: 'https://hub.docker.com/r/cleo/ansible/']) {
     st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
     {    
@@ -170,7 +170,7 @@ sh 'java -version'
     println "Running Tests"
 		
           // sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e files_per_min=${filesPerMin} -e total_mins=${TotalMins} -e destCounter=2 run_tests.yml "
-		  sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=40 -e as2_totalmins=10 -e as2_totalhosts=2  -e ftp_filespermin=40 -e ftp_totalmins=10 -e ftp_totalhosts=2 run_tests.yml "
+		  sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=${AS2filesPerMin} -e as2_totalmins=${AS2TotalMins} -e as2_totalhosts=${AS2TotalHosts}  -e ftp_filespermin=${FTPfilesPerMin} -e ftp_totalmins=${FTPTotalMins} -e ftp_totalhosts=${FTPTotalHosts} run_tests.yml "
 
      
     } 

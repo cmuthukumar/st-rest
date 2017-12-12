@@ -9,11 +9,12 @@ RUN \
 RUN yum -y install epel-release
 RUN yum -y install PyYAML python-jinja2 python-httplib2 python-keyczar python-paramiko python-setuptools  python-pip python-lxml
 RUN mkdir /etc/ansible/
-ARG ansible_ver=2.4.1.0
+ARG ansible_ver=2.4.2.0
 
 # Install ansible specific version
 RUN pip install --upgrade pip
 RUN pip install ansible==$ansible_ver
+RUN pip install requests
 RUN yum -y install wget
 RUN wget https://raw.githubusercontent.com/ansible/ansible/devel/examples/ansible.cfg -O /etc/ansible/ansible.cfg
 RUN echo -e '[local]\nlocalhost' > /etc/ansible/hosts
@@ -23,7 +24,8 @@ RUN sed -i 's/#host_key_checking = False/host_key_checking = False/g' /etc/ansib
 #Install required dependencies
 RUN yum install -y \
     wget \
-    tar.x86_64
+    tar.x86_64 \
+	rsync
     
 #install oracle jdk8
 RUN cd /opt/
