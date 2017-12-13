@@ -29,7 +29,7 @@
         dest: "{{ jmeter_dir }}"
       register: jmeter_dload_status
       retries: 3
-      delay: 1
+      delay: 3
       until: jmeter_dload_status | success
         
     - name: Extract JMeter to Dest Dir

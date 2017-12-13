@@ -38,7 +38,7 @@
      delegate_to: 127.0.0.1
      register: lic_download_status
      retries: 3
-     delay: 10
+     delay: 5
      until: lic_download_status|success
      
    - name: Generate License_Key file for each node using Licenser.Jar file

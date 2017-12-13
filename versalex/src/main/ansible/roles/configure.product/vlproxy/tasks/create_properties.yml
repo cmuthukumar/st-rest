@@ -27,7 +27,11 @@
   with_items:
     - { group: 'com.cleo.ep', artifact: 'properties-cipher', version: "latest", type: 'jar', classifier: '' }  
   delegate_to: 127.0.0.1 
-  
+  register: props_cipher
+  retries: 3
+  delay: 5
+  until: props_cipher|success
+    
 # Copy the properties-cipher jar into the installation
 - name: Copy properties-cipher jar
   copy:

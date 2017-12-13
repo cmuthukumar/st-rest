@@ -13,7 +13,11 @@
         repository_url: "{{usr.nexus_prod_repourl}}"
         dest: "{{playbook_dir}}/library/password-hasher.jar"
         state: present
-    delegate_to: 127.0.0.1         
+    delegate_to: 127.0.0.1
+    register: pwd_hasher
+    retries: 5
+    delay: 2
+    until: pwd_hasher|success    
   
   - name: Copy VLNavigator Admin password jar to Remote
     copy: src="{{playbook_dir}}/library/password-hasher.jar" dest="{{usr.install_location}}lib/password-hasher.jar"
@@ -25,6 +29,9 @@
     args:
        chdir: "{{ usr.install_location }}"
     register: password_hasher
+    retries: 5
+    delay: 2
+    until: password_hasher|success 
     
   - set_fact: hashed_admin_pwd="{{ password_hasher.stdout }}"    
     

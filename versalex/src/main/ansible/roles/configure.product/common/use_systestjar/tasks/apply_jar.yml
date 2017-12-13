@@ -14,6 +14,10 @@
             state: present
     run_once: true
     delegate_to: 127.0.0.1 
-    
+    register: systest_dload
+    retries: 3
+    delay: 5
+    until: systest_dload|success
+     
   - name: Copy SetupOptions Jar File to remote location
     copy: src="{{playbook_dir}}/library/" dest="{{systest_jar.install_location}}lib/"
