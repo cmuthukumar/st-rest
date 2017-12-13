@@ -23,5 +23,9 @@
         state: present
         mode: 0777
      delegate_to: 127.0.0.1
+     register: dload_status
+     retries: 5
+     delay: 2
+     until: dload_status|success 
      run_once: true     
      
