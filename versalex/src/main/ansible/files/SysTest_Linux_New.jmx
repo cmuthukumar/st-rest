@@ -140,7 +140,7 @@ finally {
                   </elementProp>
                   <elementProp name="" elementType="Argument">
                     <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">${dest_path}-${__time(,)}-${__Random(111111111,999999999,)}.txt</stringProp>
+                    <stringProp name="Argument.value">${dest_path}-${__time(,)}-${__UUID}.txt</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>

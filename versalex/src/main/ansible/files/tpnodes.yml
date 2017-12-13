@@ -14,7 +14,7 @@ hardware:
         qty: 1
    shares:           
       - name: share
-        ram_size: 1gb
+        ram_size: 4gb
         region: nyc1
         image_name: "centos-6-x64"
         qty: 1       
