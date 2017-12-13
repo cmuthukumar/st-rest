@@ -189,7 +189,7 @@ finally {
               <hashTree/>
             </hashTree>
             <ConstantThroughputTimer guiclass="TestBeanGUI" testclass="ConstantThroughputTimer" testname="FilesPerMin" enabled="true">
-              <intProp name="calcMode">3</intProp>
+              <intProp name="calcMode">2</intProp>
               <stringProp name="throughput">${filesPerMin}</stringProp>
             </ConstantThroughputTimer>
             <hashTree/>
