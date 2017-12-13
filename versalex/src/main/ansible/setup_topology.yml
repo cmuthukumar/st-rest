@@ -1,4 +1,11 @@
 ---
+# setup_topology.yml
+# Author: muthukumarc
+# Description: 
+#    1. Setup SSH Key from Local to DigitalOcean
+#    2. Create Digital Ocean Droplets based on servers.yml and tpnodes.yml passed by user using REST API
+#    3. Create Hosts file for Servers and TP Nodes from In Memory Add Host 
+
 - hosts: localhost
   connection: local
   become: true

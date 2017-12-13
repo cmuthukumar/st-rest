@@ -24,25 +24,31 @@
      delegate_to: 127.0.0.1
      ignore_errors: yes     
      
-   - name: Copy Installer to Remote Install Location using Rsync
-     synchronize:
-        src: "{{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}}"
-        dest: "{{install.install_location}}"
-        mode: push
-        rsync_opts:
-            - "--chmod=a+rwx"
-     environment:
-            PATH: "/usr/bin/rsync:{{ ansible_env.PATH }}:/usr/bin"
-     ignore_errors: yes
-     register: rsync_status
-     retries: 2
-     delay: 3
-     until: rsync_status |success
-     delegate_to: 127.0.0.1
+   # - name: Copy Installer to Remote Install Location using Rsync
+     # synchronize:
+        # src: "{{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}}"
+        # dest: "{{install.install_location}}"
+        # mode: push
+        # rsync_opts:
+            # - "--chmod=a+rwx"
+     # environment:
+            # PATH: "/usr/bin/rsync:{{ ansible_env.PATH }}:/usr/bin"
+     # ignore_errors: yes
+     # register: rsync_status
+     # retries: 2
+     # delay: 3
+     # until: rsync_status |success
+     # delegate_to: 127.0.0.1
 
    - name: Copy Installer to Remote Install Location
      copy: src="{{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}}" dest="{{install.install_location}}" mode=0777
-          
+     register: copy_mod_status
+     retries: 2
+     delay: 3
+     until: copy_mod_status |success
+     delegate_to: 127.0.0.1
+     ignore_errors: yes  
+     
    - name: Install VersalEx Installer in Silent Mode   
      shell: "./{{install.dname}}-{{install.version}}.{{install.nexus_packaging}} -DUSER_INSTALL_DIR={{install.install_location}} -i  silent"
      args:

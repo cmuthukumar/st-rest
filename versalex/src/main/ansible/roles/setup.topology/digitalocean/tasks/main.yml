@@ -1,5 +1,12 @@
 ---
-# tasks file for create.topology
+# roles/setup.topology/digitalocean/tasks/main.yml
+# Author: muthukumarc
+# Description:
+#    1. setup.topology/digitalocean/upload_sshkey
+#       Upload SSH key to DigitalOcean from Local Host machine            
+#    2. setup.topology/digitalocean/
+#        Create Droplets using Rest Api
+#    3. setup.topology/digitalocean/create_hosts
     - name: Include Create Machines Role
       include_tasks: "control_flow.yml"
       vars:
