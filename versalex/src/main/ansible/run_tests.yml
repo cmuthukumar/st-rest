@@ -4,7 +4,7 @@
     - { role: configure.product/jmx,tags: ['setup-jmx'] } 
 
 - hosts: "versalex"
-  #strategy: free
+  # #strategy: free
   roles:
     - { role: common/versalex/restart/,tags: ['versalex-restart'] } 
     
@@ -21,9 +21,9 @@
   roles:
     - {role: setup.sync,tags: ['setup-sync']}   
     
-# - hosts: "tpnodes-versalex"
-  # roles:
-    # - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,start' ,tags: ['rest'] }
+- hosts: "tpnodes-versalex"
+  roles:
+    - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,start' ,tags: ['rest'] }
 
 - hosts: "shares"
   roles: 
