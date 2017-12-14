@@ -7,6 +7,6 @@
      when: prod_dict is defined        
      loop_control:
         loop_var: group_item
-     become: true
+     become: yes
   rescue:
       - fail: msg="Installing Product Tasks failed"

@@ -18,6 +18,7 @@
    - name: SCP Copy Installer to Remote Install Location
      shell: "/usr/bin/scp {{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}} root@{{ansible_ssh_host}}:{{install.install_location}}"
      register: scp_status
+     become: yes
      retries: 2
      delay: 3
      until: scp_status |success
@@ -43,6 +44,7 @@
    - name: Copy Installer to Remote Install Location
      copy: src="{{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}}" dest="{{install.install_location}}" mode=0777
      register: copy_mod_status
+     become: yes
      retries: 2
      delay: 3
      until: copy_mod_status |success

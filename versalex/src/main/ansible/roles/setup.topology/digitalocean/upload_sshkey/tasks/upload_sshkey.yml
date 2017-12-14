@@ -23,7 +23,7 @@
       # delay: 20
       # until: deletestatus|success
 
-    - name: Clean SSHKey files if Exists Locally
+    - name: Clean known_hosts file if Exists Locally
       file:
         state: absent
         path: "/root/.ssh/known_hosts"
