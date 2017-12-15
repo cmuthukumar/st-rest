@@ -93,7 +93,7 @@ defaults:
         action_range: 1-1
         port: 9021
         create_certs: true       
-        host_custom_props: "{Defaulthomedir:%datashare%/%username%}"
+        host_custom_props: "{'Defaulthomedir':'%datashare%/%username%'}"
         mailbox_custom_props: "{}"
         action_custom_props: "{}"
     share:
