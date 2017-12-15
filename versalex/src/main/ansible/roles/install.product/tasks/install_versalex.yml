@@ -30,7 +30,7 @@
      delay: 3
      until: rsync_status |success
      delegate_to: 127.0.0.1
-     async: 140
+     async: 180
      poll: 30     
 
    # - name: SCP Copy Installer to Remote Install Location
