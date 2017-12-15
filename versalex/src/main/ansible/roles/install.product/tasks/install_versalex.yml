@@ -16,11 +16,11 @@
 
    - name: Copy Installer to Remote Install Location and Restart network service if failed
      block:
-       - name: Copy Installer to Remote Install Location using ansible copy
-         copy: src="{{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}}" dest="{{install.install_location}}" mode=0777
-         register: copy_mod_status
+       - name: SCP Copy Installer to Remote Install Location
+         shell: "/usr/bin/scp {{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}} root@{{ansible_ssh_host}}:{{install.install_location}}"
+         register: scp_status
          async: 180
-         poll: 30
+         poll: 30         
          delegate_to: 127.0.0.1
      rescue:
        - name: Restart Service as copying to remote machine is failed
