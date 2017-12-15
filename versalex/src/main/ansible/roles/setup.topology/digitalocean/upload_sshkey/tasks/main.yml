@@ -11,9 +11,9 @@
       uri:
         url: "https://api.digitalocean.com/v2/account/keys"
         method: POST
-        body: '{"name": "st-versalex","public_key": "{{ lookup('file','~/.ssh/id_rsa.pub')}}"}'
+        body: { "name": "st-versalex","public_key": "{{lookup('file','/root/.ssh/id_rsa.pub')}}" }
         body_format: json
-        status_code: 201
+        status_code: 422,201
         return_content: no
         headers:
           Content-Type: "application/json"
