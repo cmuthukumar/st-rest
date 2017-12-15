@@ -17,66 +17,48 @@
     state: present
   register: epel_status
   retries: 3
-  delay: 2
-  until: epel_status|success 
-  
-- name: Install Unzip package for running bin file in CentOS
-  yum: name=unzip state=present
-  register: unzip_status
-  retries: 3
-  delay: 2
-  until: unzip_status|success         
-  
-- name: Install Development tools package
-  yum: name="@Development tools" state=present
-
-     
-- name: "Install python-lxml packages(required for maven_artifact) on CentOS or Redhat machines"
-  yum: name=python-lxml state=installed
-  retries: 3
-  delay: 5  
-  until: install_lxml|success
-  register: install_lxml
-  
-- name: Install Rsync using YUM
-  yum: name=rsync state=present 
-  register: rsync_status
-  retries: 3
-  delay: 3
-  until: rsync_status|success
-  
-- name: Install Python Jinja2 update
+  delay: 5
+  until: epel_status|success      
+ 
+- name: "Install Development tools,unzip,python-lxml,rng-tools,python-jinja2 service on {{inventory_hostname}} host"
   yum:
-    name: python-jinja2
+    name: "{{item}}"
     state: present
-  register: jinja_status
+  with_items:
+        - "@Development tools"
+        - unzip
+        - "python-lxml"
+        - "rng-tools"
+        - "python-jinja2"
+        - rsync 
+  register: pkg_install
   retries: 3
-  delay: 2
-  until: jinja_status|success 
-
+  delay: 5
+  until: pkg_install|success
   
-- name: Install RNG-tools required for Random Number Generation using YUM
-  yum: name=rng-tools state=present
-  register: rng
+- name: "Restart rngd,sshd,network service on {{inventory_hostname}} host"
+  service:
+    name: "{{item}}"
+    state: restarted
+  with_items:
+        - rngd
+        - sshd
+        - network
+  register: service_status
   retries: 3
-  delay: 2
-  until: rng|success
+  delay: 5
+  until: service_status|success
   
-- name: Run RNGD Service
-  service: name=rngd state=started
-  register: rngd_status
-  retries: 3
-  delay: 3
-  until: rngd_status|success  
-  
+- name: Wait for SSH to come up
+  wait_for: host="{{ansible_ssh_host}}" port=22 delay=20 timeout=100 state=started
+  delegate_to: localhost  
+          
 - name: Update /etc/hosts from inventory
   lineinfile: dest=/etc/hosts regexp='.*{{inventory_hostname}}$' line="{{ansible_default_ipv4.address}} {{inventory_hostname}}" state=present
   register: etc_status
   retries: 3
   delay: 2
-  until: etc_status|success  
-
-  
+  until: etc_status|success
   
   # - name: Install libxslt-devel package for running bin file in CentOS
   # yum: name="{{item}}" state=present

@@ -1,27 +1,21 @@
 ---
 - hosts: "versalex:proxy:integrations:shares"
-  # # pre_tasks:
-    # # - meta: refresh_inventory
   roles:
     - { role: common/versalex/deps }
 
 - hosts: "versalex"
-  # strategy: free
   roles:
     - { role: install.product/license }
 
 - hosts: "versalex"
-  # # strategy: free
   roles:
     - { role: install.product, prod_dict: "{{ versalex }}" } 
     
 - hosts: "proxy"
-  # # strategy: free
   roles:    
     - { role: install.product, prod_dict: "{{ proxy }}" } 
 
 - hosts: "versalex"
-  # strategy: free
   roles:
     - { role: install.product/restify } 
 
