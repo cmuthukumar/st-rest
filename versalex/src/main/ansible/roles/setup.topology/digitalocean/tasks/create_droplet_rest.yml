@@ -3,7 +3,7 @@
       uri:
         url: "https://api.digitalocean.com/v2/droplets"
         method: POST
-        body: '{"name":"{{mac_type}}-{{swtype}}-{{item}}","size":"{{outer_item.ram_size}}","region":"{{outer_item.region}}","image":"{{outer_item.image_name}}","ssh_keys":["{{uploadstatus.ssh_key.id}}"],"tags":["{{mac_type}}-{{username}}"]}'
+        body: '{"name":"{{mac_type}}-{{swtype}}-{{item}}","size":"{{outer_item.ram_size}}","region":"{{outer_item.region}}","image":"{{outer_item.image_name}}","ssh_keys":["{{systest_ssh_id}}"],"tags":["{{mac_type}}-{{username}}"]}'
         body_format: json
         status_code: 202
         return_content: no
@@ -16,7 +16,8 @@
       delay: 5  
       until: do_status|success
       delegate_to: 127.0.0.1
-       
+      no_log: true
+      
     - name: Retrieve Droplet by an Id
       uri:
         url: "https://api.digitalocean.com/v2/droplets/{{item.json.droplet.id}}"
@@ -32,7 +33,7 @@
       delay: 5  
       until: droplet_status|success
       delegate_to: 127.0.0.1
-
+      no_log: true
     # - name : "Create Inventory Groups For {{mac_type}}"
       # group_by:
             # key: "{{item}}"
@@ -56,11 +57,12 @@
       with_subelements:
             - "{{droplet_status.results}}"
             - json.droplet.networks.v4
-      register: droplet_groups      
+      register: droplet_groups
+      no_log: true      
 
     - name: Dont Print Droplet Details 
       debug: var=droplet_groups verbosity=2
-    
+      
     - name: Wait for SSH to come up
       wait_for: host="{{item.1.ip_address}}" port=22 delay=2 timeout=160 state=started
       with_subelements:
