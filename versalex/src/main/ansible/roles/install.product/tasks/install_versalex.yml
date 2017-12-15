@@ -23,7 +23,7 @@
          poll: 30         
          delegate_to: 127.0.0.1
      rescue:
-       - name: Restart Service as copying to remote machine is failed
+       - name: Restart Network Service as copying to remote machine is failed
          service:
             name: network
             state: restarted            
@@ -75,7 +75,6 @@
      args:
        chdir: "{{install.install_location}}"
      register: installres
-     
      
    - name: Capture SerialNumber and Write Node File  
      shell: "./{{install.dname}}c -s license |grep 'Serial Number' | awk -F '=' '{print $2}' "
