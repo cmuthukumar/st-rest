@@ -22,7 +22,6 @@
       retries: 3
       delay: 5  
       until: sshkey_upload|success
-      delegate_to: 127.0.0.1
       
     - name: Set authorized key took from file
       authorized_key:
