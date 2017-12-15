@@ -26,6 +26,9 @@ RUN yum install -y \
     wget \
     tar.x86_64 \
 	rsync
+	
+#yum update
+RUN yum -y update
     
 #install oracle jdk8
 RUN cd /opt/

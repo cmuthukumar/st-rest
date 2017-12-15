@@ -1,9 +1,9 @@
 ---
 # tasks file for create.topology
-  - name: upgrade all packages
-    yum:
-      name: '*'
-      state: latest
+  # - name: upgrade all packages
+    # yum:
+      # name: '*'
+      # state: latest
     
   - name: Replace Ansible Cfg Files
     replace:
