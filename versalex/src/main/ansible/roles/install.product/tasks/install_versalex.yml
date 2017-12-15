@@ -21,7 +21,6 @@
          register: copy_mod_status
          async: 180
          poll: 30
-         until: copy_mod_status |success
          delegate_to: 127.0.0.1
      rescue:
        - name: Restart Service as copying to remote machine is failed
