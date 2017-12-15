@@ -14,27 +14,39 @@
    - name: Print Java Process Kill Status
      debug: msg="Kill Application Status {{javakill_status}}"
 
-   - name: Copy and Restart network service if failed
-     block:   
-       - name: Copy Installer to Remote Install Location using Rsync
-         synchronize:
-            src: "{{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}}"
-            dest: "{{install.install_location}}"
-            mode: push
-            rsync_opts:
-                - "--chmod=a+rwx"
-         environment:
-                PATH: "/usr/bin/rsync:{{ ansible_env.PATH }}:/usr/bin"
-         become: yes
-         async: 180         
-         poll: 30 
-         delegate_to: 127.0.0.1   
+   - name: Copy Installer to Remote Install Location and Restart network service if failed
+     block:
+       - name: Copy Installer to Remote Install Location using ansible copy
+         copy: src="{{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}}" dest="{{install.install_location}}" mode=0777
+         register: copy_mod_status
+         async: 180
+         poll: 30
+         until: copy_mod_status |success
+         delegate_to: 127.0.0.1
      rescue:
        - name: Restart Service as copying to remote machine is failed
          service:
             name: network
-            start: restarted            
+            state: restarted            
          register: network_status
+         retries: 2
+         delay: 4
+         until: network_status |success
+         
+    # - name: Copy Installer to Remote Install Location using Rsync
+     # synchronize:
+        # src: "{{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}}"
+        # dest: "{{install.install_location}}"
+        # mode: push
+        # rsync_opts:
+            # - "--chmod=a+rwx"
+     # environment:
+            # PATH: "/usr/bin/rsync:{{ ansible_env.PATH }}:/usr/bin"
+     # become: yes
+     # async: 180         
+     # poll: 30 
+     # delegate_to: 127.0.0.1
+         
    # - name: SCP Copy Installer to Remote Install Location
      # shell: "/usr/bin/scp {{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}} root@{{ansible_ssh_host}}:{{install.install_location}}"
      # register: scp_status
@@ -46,15 +58,15 @@
      # ignore_errors: yes     
     
 
-   - name: Copy Installer to Remote Install Location
-     copy: src="{{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}}" dest="{{install.install_location}}" mode=0777
-     register: copy_mod_status
-     become: yes
-     retries: 2
-     delay: 3
-     until: copy_mod_status |success
-     delegate_to: 127.0.0.1
-     ignore_errors: yes  
+   # - name: Copy Installer to Remote Install Location
+     # copy: src="{{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}}" dest="{{install.install_location}}" mode=0777
+     # register: copy_mod_status
+     # become: yes
+     # retries: 2
+     # delay: 3
+     # until: copy_mod_status |success
+     # delegate_to: 127.0.0.1
+     # ignore_errors: yes  
      
    - name: Install VersalEx Installer in Silent Mode   
      shell: "./{{install.dname}}-{{install.version}}.{{install.nexus_packaging}} -DUSER_INSTALL_DIR={{install.install_location}} -i  silent"
