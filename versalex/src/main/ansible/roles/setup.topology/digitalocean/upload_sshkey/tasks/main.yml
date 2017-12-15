@@ -1,20 +1,31 @@
 ---
-# tasks file for create.topology
-  # - name: upgrade all packages
-    # yum:
-      # name: '*'
-      # state: latest
-    
-  - name: Replace Ansible Cfg Files
-    replace:
-        path: '/etc/ansible/ansible.cfg'
-        regexp: "{{item.replace_from}}"
-        replace: "{{item.replace_to}}"
-        backup: yes
-    with_items:
-        - {replace_from: '#host_key_checking = False', replace_to: 'host_key_checking = False'}
-        - {replace_from: '#hash_behaviour = replace',replace_to: 'hash_behaviour = merge'}
-    register: replace_status
-    
-  - name: Generate and upload sshkeys to digitalocean
-    include_tasks: "upload_sshkey.yml"
+# tasks file for upload.sshkey
+
+    - name: Clean known_hosts file if Exists Locally
+      file:
+        state: absent
+        path: "/root/.ssh/known_hosts"
+      ignore_errors: yes
+      
+    - name: Upload and Ensure SSH Key Exists in Digital Ocean account, Retries 3 times with delay of 5 seconds, if failure
+      uri:
+        url: "https://api.digitalocean.com/v2/account/keys"
+        method: POST
+        body: '{"name": "st-versalex","public_key": "{{ lookup('file','~/.ssh/id_rsa.pub')}}"}'
+        body_format: json
+        status_code: 201
+        return_content: no
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Bearer {{do_token}}"
+      register: sshkey_upload
+      retries: 3
+      delay: 5  
+      until: sshkey_upload|success
+      delegate_to: 127.0.0.1
+      
+    - name: Set authorized key took from file
+      authorized_key:
+        user: root
+        state: present
+        key: "{{ lookup('file','~/.ssh/id_rsa.pub') }}"   
