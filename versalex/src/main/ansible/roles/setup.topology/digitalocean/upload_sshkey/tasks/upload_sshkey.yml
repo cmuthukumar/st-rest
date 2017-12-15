@@ -11,7 +11,11 @@
     - name: Install Pip Dopy
       pip: >
        name=dopy
-
+      ignore_errors: yes 
+      register: dopy_status
+      retries: 3
+      delay: 20
+      until: dopy_status|success
     # - name: Delete SSH Key Exists in Digital Ocean account, Retries 3 times with delay of 5 seconds, if failure
       # digital_ocean: >
        # state=absent
@@ -27,7 +31,7 @@
       file:
         state: absent
         path: "/root/.ssh/known_hosts"
-      
+      ignore_errors: yes
     # - name: Ensure Public/Private Key Pair Generated in Local System and Copied to SSH dir
       # user: >
        # name=root
