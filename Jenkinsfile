@@ -42,10 +42,10 @@ sh 'java -version'
     stage('Create Nodes')
             {
 		parallel(
-		params[0]: {
+		${params[0]}: {
 			createNodes(params[0])
 				},
-		params[1]: {
+		${params[1]}: {
 				createNodes(params[1])
 			}	  
           )
@@ -55,10 +55,10 @@ sh 'java -version'
             {
 			 
 	parallel(
-		params[0]: {
+		${params[0]}: {
 			installProduct(params[0])
 				},
-			params[1]: {
+			${params[1]}: {
 			installProduct(params[1])
 				}	  
              )   
