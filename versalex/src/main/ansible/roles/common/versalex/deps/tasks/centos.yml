@@ -35,6 +35,13 @@
   retries: 3
   delay: 5
   until: pkg_install|success
+ 
+- name: Update /etc/hosts from inventory
+  lineinfile: dest=/etc/hosts regexp='.*{{inventory_hostname}}$' line="{{ansible_default_ipv4.address}} {{inventory_hostname}}" state=present
+  register: etc_status
+  retries: 3
+  delay: 2
+  until: etc_status|success
   
 - name: "Restart rngd,sshd,network service on {{inventory_hostname}} host"
   service:
@@ -47,18 +54,11 @@
   register: service_status
   retries: 3
   delay: 5
-  until: service_status|success
-  
+  until: service_status|success           
+
 - name: Wait for SSH to come up
   wait_for: host="{{ansible_ssh_host}}" port=22 delay=20 timeout=100 state=started
-  delegate_to: localhost  
-          
-- name: Update /etc/hosts from inventory
-  lineinfile: dest=/etc/hosts regexp='.*{{inventory_hostname}}$' line="{{ansible_default_ipv4.address}} {{inventory_hostname}}" state=present
-  register: etc_status
-  retries: 3
-  delay: 2
-  until: etc_status|success
+  delegate_to: localhost
   
   # - name: Install libxslt-devel package for running bin file in CentOS
   # yum: name="{{item}}" state=present

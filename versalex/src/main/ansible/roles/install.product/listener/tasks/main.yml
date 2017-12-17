@@ -10,8 +10,8 @@
      delay: 5
      until: listener_cert|success     
 
-   - name: Print cert details
-     debug: msg="Cert Details {{listener_cert}}"
-     tags: listener_cert
+   # - name: Print cert details
+     # debug: msg="Cert Details {{listener_cert}}"
+     # tags: listener_cert
 - rescue:
    - fail: msg="Resource Update on Versalex Failed"

@@ -1,5 +1,14 @@
 ---
-- hosts: "{{machine_type}}"
+- name: Validate hosts file for {{machine_type}}
+  hosts: localhost
+  connection: local
+  vars_files:
+    - "{{playbook_dir}}/files/{{machine_type}}.yml"
+  roles:   
+    - {role: setup.topology/digitalocean/tests }  
+      
+- name: "Setup host_vars files"
+  hosts: "{{machine_type}}"
   connection: local
   tasks:   
     - name: Create Inventory Dir
@@ -14,8 +23,9 @@
         usr_src: "{{playbook_dir}}/files/{{machine_type}}.yml"
         hostvars_dest: "{{playbook_dir}}/inventories/{{machine_type}}/host_vars/{{inventory_hostname}}.yml"
       register: host_vars
-      
-- hosts: localhost
+
+- name: "Setup group_vars files"
+  hosts: localhost
   connection: local
   tasks:
     - name: Create group_vars Dir

@@ -1,23 +1,23 @@
 ---
 - hosts: "versalex:proxy:integrations:shares"
   roles:
-    - { role: common/versalex/deps }
+    - { role: common/versalex/deps,tags: 'package-deps' }
 
 - hosts: "versalex"
   roles:
-    - { role: install.product/license }
+    - { role: install.product/license,tags: 'setup-license' }
 
 - hosts: "versalex"
   roles:
-    - { role: install.product, prod_dict: "{{ versalex }}" } 
+    - { role: install.product, prod_dict: "{{ versalex }}",tags: 'install-versalex' } 
     
 - hosts: "proxy"
   roles:    
-    - { role: install.product, prod_dict: "{{ proxy }}" } 
+    - { role: install.product, prod_dict: "{{ proxy }}",tags: 'install-proxy' } 
 
 - hosts: "versalex"
   roles:
-    - { role: install.product/restify } 
+    - { role: install.product/restify,tags: ['enable-rest'] } 
 
     
 - hosts: "versalex"
@@ -27,14 +27,14 @@
 - hosts: "versalex"
   connection: local  
   roles:
-    - { role: install.product/listener/,certname: "LOC_LIST",tags: ['create_listener_cert'] }
+    - { role: install.product/listener/,certname: "LOC_LIST",tags: ['setup-listener'] }
     
 - hosts: "versalex"
   roles:
-    - { role: install.product/listener/update_props,certname: "LOC_LIST",tags: ['listener-props'] }
-    - { role: common/versalex/restart/,tags: ['versalex-restart'] }
+    - { role: install.product/listener/update_props,certname: "LOC_LIST",tags: ['setup-listener'] }
+    - { role: common/versalex/restart/,tags: ['versalex-restart'],tags: ['setup-listener'] }
 
 - hosts: "versalex"
   strategy: free
   roles:
-    - { role: install.product/tests }  
+    - { role: install.product/tests,tags: 'install-tests' }  

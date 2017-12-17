@@ -26,7 +26,7 @@
     - name: Set SSH Key Id taken from the account
       set_fact:
         systest_ssh_id: "{{item.id}}"
-      when: "'st-versalex' in item.name"
+      when: "sshkey_name == item.name"
       with_items: "{{sshkey_upload.json.ssh_keys}}"
       register: sshkeyid_status
       no_log: true

@@ -42,24 +42,6 @@
      delay: 3
      register: dockerpy
      ignore_errors: yes
-     
-   # - name: Disable YUM Repository
-     # yum_repository:
-        # name: epel
-        # state: absent
-     # register: yum_repostate
-     
-   # - name: Printing yum repo state
-     # debug: msg="Repo State is {{yum_repostate}}"
-   # - name: Remove old epel repo from yum as this can cause conflicts with the mirrors
-     # shell: rm -rf /etc/yum.repos.d/epel.repo
-     # ignore_errors: yes
-   # - name: Add Docker Repo to RHEL and CentOS
-     # yum: name=http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm state=present
-     # register: docker_repo
-     # until: docker_repo | success
-     # retries: 3
-     # delay: 3
 
    - name: "Check if yum_utils installed for Docker"
      package: 
@@ -95,3 +77,21 @@
         name: docker
         state: started
         enabled: yes
+        
+   # - name: Disable YUM Repository
+     # yum_repository:
+        # name: epel
+        # state: absent
+     # register: yum_repostate
+     
+   # - name: Printing yum repo state
+     # debug: msg="Repo State is {{yum_repostate}}"
+   # - name: Remove old epel repo from yum as this can cause conflicts with the mirrors
+     # shell: rm -rf /etc/yum.repos.d/epel.repo
+     # ignore_errors: yes
+   # - name: Add Docker Repo to RHEL and CentOS
+     # yum: name=http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm state=present
+     # register: docker_repo
+     # until: docker_repo | success
+     # retries: 3
+     # delay: 3

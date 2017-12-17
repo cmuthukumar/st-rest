@@ -4,7 +4,7 @@
     - name: Include Install Product Role with Versalex
       include_tasks: "install_flow.yml"
       with_dict: "{{ integrations | default({}) }}"
-      when: "'integrations' in subtype"
+      # when: "'integrations' in subtype"
       loop_control:
          loop_var: group_item
   rescue:

@@ -7,9 +7,9 @@
      file: path="{{dload.download_location}}" state=directory
      delegate_to: 127.0.0.1
      
-   - name: Prind Dload Vars
-     debug: msg="Dload key {{dload_group.key}} values {{dload_group.value}}"
-     delegate_to: 127.0.0.1
+   # - name: Prind Dload Vars
+     # debug: msg="Dload key {{dload_group.key}} values {{dload_group.value}}"
+     # delegate_to: 127.0.0.1
      
    - name: Download Versalex Bin Package from Nexus Central with Run Once enabled
      maven_artifact:
