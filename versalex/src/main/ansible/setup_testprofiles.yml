@@ -15,11 +15,11 @@
 
 - hosts: "servers-versalex[0]"
   roles:
-    - { role: setup.testprofiles/rest/schedule_actions/,host_ips: "[{{ansible_ssh_host.split(',')}}]", schedule_option: "on file polling continuously",action_type: "send", tags: ['schedule-actions-server','rest'] }
+    - { role: setup.testprofiles/rest/schedule_actions/,host_ips: "{{ansible_ssh_host.split(',')}}", schedule_option: "on file polling continuously",action_type: "send", tags: ['schedule-actions-server','rest'] }
 
 - hosts: "tpnodes-versalex"
   roles:
-    - { role: setup.testprofiles/rest/schedule_actions/,host_ips: "[{{ groups['tpnodes-versalex'] | map('extract', hostvars, ['ansible_ssh_host']) | join(',') }}]",schedule_option: "on file polling continuously",action_type: "send", tags: ['schedule-actions-tp','rest'] }    
+    - { role: setup.testprofiles/rest/schedule_actions/,host_ips: "{{ groups['tpnodes-versalex'] | map('extract', hostvars, ['ansible_ssh_host']) | join(',') }}",schedule_option: "on file polling continuously",action_type: "send", tags: ['schedule-actions-tp','rest'] }    
 
 - hosts: "versalex:proxy"
   roles:    

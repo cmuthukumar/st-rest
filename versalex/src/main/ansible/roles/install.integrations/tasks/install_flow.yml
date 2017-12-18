@@ -5,9 +5,9 @@
      set_fact:
         integrations: "{{group_item.value}}"
   
-   - name: Install CentOS Related Dependencies 
-     include_tasks: centos.yml
-     when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'     
+   # - name: Install CentOS Related Dependencies 
+     # include_tasks: centos.yml
+     # when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'     
 
    - name: Install Docker CentOS 
      include_tasks: "docker.install.centos.yml"
