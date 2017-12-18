@@ -1,4 +1,8 @@
----    
+---
+- hosts: "servers-versalex"
+  roles:
+    - {role: setup.sync,tags: ['setup-sync','rest','java']}   
+    
 - hosts: "versalex:proxy"
   roles:
     - { role: setup.testprofiles/common, when: "'servers-versalex' in inventory_hostname",tags: ['rest','java'] }
@@ -9,13 +13,13 @@
     - { role: setup.testprofiles/rest/ftp/server/, when: "'servers-versalex' in inventory_hostname",tags: ['rest'] }
     - { role: setup.testprofiles/rest/ftp/client/, hostname: "FTPHost",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest'] }
 
-- hosts: "servers-versalex-1"
+- hosts: "servers-versalex[0]"
   roles:
-    - { role: setup.testprofiles/rest/schedule_actions/,schedule_option: "on file polling continuously",action_type: "send", tags: ['rest'] }
+    - { role: setup.testprofiles/rest/schedule_actions/,host_ips: "[{{ansible_ssh_host.split(',')}}]", schedule_option: "on file polling continuously",action_type: "send", tags: ['schedule-actions-server','rest'] }
 
 - hosts: "tpnodes-versalex"
   roles:
-    - { role: setup.testprofiles/rest/schedule_actions/,schedule_option: "on file polling continuously",action_type: "send", tags: ['rest'] }    
+    - { role: setup.testprofiles/rest/schedule_actions/,host_ips: "[{{ groups['tpnodes-versalex'] | map('extract', hostvars, ['ansible_ssh_host']) | join(',') }}]",schedule_option: "on file polling continuously",action_type: "send", tags: ['schedule-actions-tp','rest'] }    
 
 - hosts: "versalex:proxy"
   roles:    
@@ -25,5 +29,4 @@
   roles:
      - { role: setup.testprofiles/tp_dataset, when: "'servers-versalex' in inventory_hostname",tags: ['java']  }
      - { role: setup.testprofiles/setup_tp,tags: ['java']  }
-
      

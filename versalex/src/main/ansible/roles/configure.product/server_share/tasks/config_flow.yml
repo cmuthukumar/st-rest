@@ -1,8 +1,0 @@
----
-# tasks for carrying out configs flow
-  - name: Setting Dictionary Name for Server Share
-    set_fact:
-       vex: "{{srvr_share.value}}"
-  
-  - name: Configure Shares in Server Nodes
-    include_tasks: configure_server_share.yml

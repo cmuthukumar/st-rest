@@ -3,9 +3,10 @@
 - block:
     - name: Schedule Actions for Versalex Hosts
       schedule_actions:
-        hosts: "{{ansible_ssh_host.split(',')}}"
+        hosts: "{{ host_ips }}"
         schedule_option: "{{schedule_option}}"
         action_type: "{{action_type}}"
+        total_actions: "{{total_actions}}"
       register: sched_action      
       delegate_to: 127.0.0.1
           

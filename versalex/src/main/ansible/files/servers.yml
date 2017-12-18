@@ -5,7 +5,7 @@ hardware:
         ram_size: 4gb
         region: nyc1
         image_name: "centos-6-x64"
-        qty: 4
+        qty: 2
    integrations:           
       - name: mysql
         ram_size: 1gb
@@ -17,7 +17,7 @@ hardware:
         ram_size: 1gb
         region: nyc1
         image_name: "centos-6-x64"
-        qty: 4
+        qty: 2
    shares:           
       - name: share
         ram_size: 4gb
@@ -42,9 +42,9 @@ software:
 dataset:
    versalex:
       - name: as2
-        total: 1000
+        total: 40
         schedule_actions: true         
       - name: ftp
-        total: 500
+        total: 40
         schedule_actions: true
         # host_custom_props: '{"Defaulthomedir": "%datashare%/local/root/%username%"}'

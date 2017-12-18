@@ -30,11 +30,11 @@
      when: item.name | lower == 'ftp'
      register: profile_config
 
-   - name: Configure Schedule Actions on Server Node
-     shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupTestProfile "{{conf_server.name}}" "{{conf_server.install_location}}" "true"
-     environment:
-       CLASSPATH: ":{{conf_server.install_location}}SetupTestProfile.jar:{{conf_server.install_location}}lib/*:{{conf_server.install_location}}lib/help/*:{{conf_server.install_location}}lib/hibernate/*:{{conf_server.install_location}}lib/secureshare/*:{{conf_server.install_location}}webserver/AjaxSwing/lib/*:{{conf_server.install_location}}lib/json/*"
-     args:
-       executable: /bin/sh
-       chdir: "{{conf_server.install_location}}"
-     register: schedule_actions      
+   # - name: Configure Schedule Actions on Server Node
+     # shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupTestProfile "{{conf_server.name}}" "{{conf_server.install_location}}" "true"
+     # environment:
+       # CLASSPATH: ":{{conf_server.install_location}}SetupTestProfile.jar:{{conf_server.install_location}}lib/*:{{conf_server.install_location}}lib/help/*:{{conf_server.install_location}}lib/hibernate/*:{{conf_server.install_location}}lib/secureshare/*:{{conf_server.install_location}}webserver/AjaxSwing/lib/*:{{conf_server.install_location}}lib/json/*"
+     # args:
+       # executable: /bin/sh
+       # chdir: "{{conf_server.install_location}}"
+     # register: schedule_actions      

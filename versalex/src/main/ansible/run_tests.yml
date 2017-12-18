@@ -16,10 +16,6 @@
   roles:
     - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,stop' ,tags: ['rest'] }
     - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,start' ,tags: ['rest'] }
-
-- hosts: "servers-versalex"
-  roles:
-    - {role: setup.sync,tags: ['setup-sync']}   
     
 - hosts: "tpnodes-versalex"
   roles:
