@@ -1,4 +1,0 @@
----
-- hosts: "proxy"
-  roles:
-    - { role: configure.product/vlproxy,external_address: "{{ansible_ssh_host}}" ,email_on_fail_addr: 'muthukumarc@cleo.com' }
