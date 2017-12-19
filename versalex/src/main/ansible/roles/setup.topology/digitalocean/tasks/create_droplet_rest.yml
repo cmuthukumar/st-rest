@@ -62,7 +62,7 @@
       delegate_to: 127.0.0.1
 
     - name: Print IP in the Memory 
-      debug: msg="IP Address in the Memory {{ item}}"
+      debug: msg="Group in the Memory {{ item}}"
       with_items: "{{groups}}"
       delegate_to: 127.0.0.1
       
