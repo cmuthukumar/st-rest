@@ -57,8 +57,8 @@ def delete_certs(server_hosts):
 		print "Exception on delete_connection method",e
 
 def main():
-	server_hosts=["67.207.89.157","67.207.83.19"]
-	tphosts=["162.243.169.190","67.205.140.227"]
+	server_hosts=["198.199.70.70","192.81.217.179"]
+	tphosts=["192.241.141.183","162.243.167.177"]
 	delete_certs(server_hosts)
 	delete_certs(tphosts)
 	delete_connection(server_hosts)
