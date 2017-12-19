@@ -37,8 +37,8 @@ def schedule_actions(server_hosts,schedule_option,action_type,total_actions):
 	try:
 		action_json_req= {}		
 		for srv_host in server_hosts:
-			action_base_url="http://"+srv_host+":5080/api/actions"
-			print "Host to Post URL",srv_host			
+			print "Host to Post URL",srv_host
+			action_base_url="http://"+srv_host+":5080/api/actions"						
 			total_actions=str(total_actions)
 			#http://165.227.81.57:5080/api/actions?filter=alias eq "send"&count=10000
 			get_url ='http://'+srv_host+':5080/api/actions?filter=alias eq "'+action_type+'"'+'&count='+total_actions
