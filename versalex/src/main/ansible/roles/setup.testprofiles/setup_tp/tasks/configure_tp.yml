@@ -34,7 +34,7 @@
  - name: "Configure Test Profiles in Remote Machines for TP Side-AS2"
    shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupTestProfile "{{tp_profile.name}}" "{{tp_profile.install_location}}" "{{item.name}}" "{{item.hr}}" "{{item.mailbox_range}}" "{{item.action_range}}" "{{item.ip}}" "80"  "{{macro_name}}" "{{item.host_custom_props}}" "{{item.mailbox_custom_props}}" "{{item.action_custom_props}}" "false"
    environment:
-     CLASSPATH: ":{{tp_profile.install_location}}SetupTestProfile.jar:{{tp_profile.install_location}}lib/*:{{tp_profile.install_location}}lib/help/*:{{tp_profile.install_location}}lib/hibernate/*:{{tp_profile.install_location}}lib/secureshare/*:{{tp_profile.install_location}}webserver/AjaxSwing/lib/*:{{tp_profile.install_location}}lib/json/*"
+     CLASSPATH: ":lib/versalex_setup-latest.jar:lib/*:lib/api/connector/*:lib/aws/*:lib/connector/*:lib/docdb/*:lib/hadoop/*:lib/help/*:lib/hibernate/*:lib/jersey/*:lib/json/*:lib/saml/*:lib/scim/*:lib/secureshare/*:lib/uri/*:lib/vaadin/*:lib/validator/*:lib/ws/*:webserver/AjaxSwing/lib/ajaxswing.jar:webserver/AjaxSwing/lib/commons-fileupload-1.0.jar:webserver/AjaxSwing/lib/freemarker.jar:webserver/AjaxSwing/lib/jsonrpc-1.0.jar:webserver/AjaxSwing/lib/boot/asboot.jar:webserver/AjaxSwing/lib/install/asm-all-3.1.jar:lax.jar"
    args:
      executable: /bin/sh
      chdir: "{{tp_profile.install_location}}"
@@ -45,7 +45,7 @@
  - name: "Configure Test Profiles in Remote Machines for TP Nodes - FTP Client"
    shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupTestProfile "{{tp_profile.name}}" "{{tp_profile.install_location}}" "{{item.name}}" "{{item.hr}}" "{{item.mailbox_range}}" "{{item.action_range}}" "{{item.ip}}" "9021" "{{macro_name}}" "{{item.host_custom_props}}" "{{item.mailbox_custom_props}}" "{{item.action_custom_props}}" "false"
    environment:
-     CLASSPATH: ":{{tp_profile.install_location}}SetupTestProfile.jar:{{tp_profile.install_location}}lib/*:{{tp_profile.install_location}}lib/help/*:{{tp_profile.install_location}}lib/hibernate/*:{{tp_profile.install_location}}lib/secureshare/*:{{tp_profile.install_location}}webserver/AjaxSwing/lib/*:{{tp_profile.install_location}}lib/json/*"
+     CLASSPATH: ":lib/versalex_setup-latest.jar:lib/*:lib/api/connector/*:lib/aws/*:lib/connector/*:lib/docdb/*:lib/hadoop/*:lib/help/*:lib/hibernate/*:lib/jersey/*:lib/json/*:lib/saml/*:lib/scim/*:lib/secureshare/*:lib/uri/*:lib/vaadin/*:lib/validator/*:lib/ws/*:webserver/AjaxSwing/lib/ajaxswing.jar:webserver/AjaxSwing/lib/commons-fileupload-1.0.jar:webserver/AjaxSwing/lib/freemarker.jar:webserver/AjaxSwing/lib/jsonrpc-1.0.jar:webserver/AjaxSwing/lib/boot/asboot.jar:webserver/AjaxSwing/lib/install/asm-all-3.1.jar:lax.jar"
    args:
      executable: /bin/sh
      chdir: "{{tp_profile.install_location}}"
@@ -56,7 +56,7 @@
  - name: Configure Schedule Actions on TP Node
    shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupTestProfile "{{tp_profile.name}}" "{{tp_profile.install_location}}" "true"
    environment:
-     CLASSPATH: ":{{tp_profile.install_location}}SetupTestProfile.jar:{{tp_profile.install_location}}lib/*:{{tp_profile.install_location}}lib/help/*:{{tp_profile.install_location}}lib/hibernate/*:{{tp_profile.install_location}}lib/secureshare/*:{{tp_profile.install_location}}webserver/AjaxSwing/lib/*:{{tp_profile.install_location}}lib/json/*"
+     CLASSPATH: ":lib/versalex_setup-latest.jar:lib/*:lib/api/connector/*:lib/aws/*:lib/connector/*:lib/docdb/*:lib/hadoop/*:lib/help/*:lib/hibernate/*:lib/jersey/*:lib/json/*:lib/saml/*:lib/scim/*:lib/secureshare/*:lib/uri/*:lib/vaadin/*:lib/validator/*:lib/ws/*:webserver/AjaxSwing/lib/ajaxswing.jar:webserver/AjaxSwing/lib/commons-fileupload-1.0.jar:webserver/AjaxSwing/lib/freemarker.jar:webserver/AjaxSwing/lib/jsonrpc-1.0.jar:webserver/AjaxSwing/lib/boot/asboot.jar:webserver/AjaxSwing/lib/install/asm-all-3.1.jar:lax.jar"
    args:
      executable: /bin/sh
      chdir: "{{tp_profile.install_location}}"

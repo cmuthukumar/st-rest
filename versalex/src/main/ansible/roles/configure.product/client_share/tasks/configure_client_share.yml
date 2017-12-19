@@ -5,7 +5,7 @@
    - name: Configure Shares in Remote Machines
      shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupOptions "{{vexcli.dname}}" "{{vexcli.install_location}}" "SHARE" "{{vexcli.custom_macro}}"
      environment:
-       CLASSPATH: ":{{vexcli.install_location}}*.jar:{{vexcli.install_location}}lib/*:{{vexcli.install_location}}lib/help/*:{{vexcli.install_location}}lib/hibernate/*:{{vexcli.install_location}}lib/secureshare/*:{{vexcli.install_location}}webserver/AjaxSwing/lib/*:{{vexcli.install_location}}lib/json/*"
+       CLASSPATH: ":lib/versalex_setup-latest.jar:lib/*:lib/api/connector/*:lib/aws/*:lib/connector/*:lib/docdb/*:lib/hadoop/*:lib/help/*:lib/hibernate/*:lib/jersey/*:lib/json/*:lib/saml/*:lib/scim/*:lib/secureshare/*:lib/uri/*:lib/vaadin/*:lib/validator/*:lib/ws/*:webserver/AjaxSwing/lib/ajaxswing.jar:webserver/AjaxSwing/lib/commons-fileupload-1.0.jar:webserver/AjaxSwing/lib/freemarker.jar:webserver/AjaxSwing/lib/jsonrpc-1.0.jar:webserver/AjaxSwing/lib/boot/asboot.jar:webserver/AjaxSwing/lib/install/asm-all-3.1.jar:lax.jar"
      args:
        chdir: "{{vexcli.install_location}}"
      register: shares_config
@@ -13,18 +13,18 @@
      delay: 5  
      until: shares_config|success
 
-   - name: Update Options Custom Macro Variable
-     lineinfile:
-        dest:  "{{ vexcli.install_location }}conf/Options.xml"
-        insertbefore: ^</Options>
-        line: "  <{{ item.category }}>{{ item.property }}={{ item.value}}</{{ item.category }}>"
-        regexp: '^  <{{ item.category }}>{{ item.property }}=.*</{{ item.category }}>'
-     with_items:
-        - { category: 'Customvars', property: '%datashare%', value: '/root/share' }
-     register: custom_macro
-     retries: 3
-     delay: 5  
-     until: custom_macro|success
+   # - name: Update Options Custom Macro Variable
+     # lineinfile:
+        # dest:  "{{ vexcli.install_location }}conf/Options.xml"
+        # insertbefore: ^</Options>
+        # line: "  <{{ item.category }}>{{ item.property }}={{ item.value}}</{{ item.category }}>"
+        # regexp: '^  <{{ item.category }}>{{ item.property }}=.*</{{ item.category }}>'
+     # with_items:
+        # - { category: 'Customvars', property: '%datashare%', value: '/root/share' }
+     # register: custom_macro
+     # retries: 3
+     # delay: 5  
+     # until: custom_macro|success
      
    - name: Creates Shares  Directory
      file: path="{{vexcli.client_local_path}}" state=directory

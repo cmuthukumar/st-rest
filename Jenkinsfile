@@ -46,6 +46,7 @@ sh 'java -version'
 			createNodes(params[0])
 				},
 		(params[1]): {
+				sleep 100
 				createNodes(params[1])
 			}	  
           )
