@@ -46,7 +46,7 @@
   roles:
     - { role: configure.product/ldap,when: ldap is defined } 
         
-- hosts: "versalex"
+- hosts: versalex
   # strategy: free
   roles:
     - { role: common/versalex/restart/,tags: ['versalex-restart'] }     

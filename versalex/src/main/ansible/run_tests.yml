@@ -1,4 +1,4 @@
----
+---    
 - hosts: "versalex"
   roles:
     - { role: configure.product/jmx,tags: ['setup-jmx'] } 
@@ -11,7 +11,11 @@
 - hosts: "versalex"
   roles:
     - { role: setup.testprofiles/tests, tags: ['rest','java'] }
-      
+
+- hosts: "servers-versalex"
+  roles:
+    - {role: setup.sync,tags: ['setup-sync','rest','java']}
+    
 - hosts: "versalex"
   roles:
     - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,stop' ,tags: ['rest'] }
