@@ -5,7 +5,7 @@
     
 - hosts: "versalex"
   roles:
-    - { role: 'configure.product/common/use_systestjar' }
+    - { role: 'configure.product/common/use_systestjar',tags: ['use_systestjar'] }
 
 - hosts: shares
   tasks:
@@ -15,7 +15,9 @@
       with_dict: "{{ shares | default({}) }}"
       loop_control:
           loop_var: srvr_share
-
+      tags:
+        - 'server_share'
+        
 - hosts: versalex
   tasks:
     - name: Configure Client Side Shares
@@ -24,27 +26,30 @@
       with_dict: "{{ versalex | default({}) }}"
       loop_control:
           loop_var: clishare
+      tags:
+        - 'client_share'
+
           
 - hosts: "versalex"
   roles:
-    - { role: configure.product/mem }    
+    - { role: configure.product/mem,tags: ['mem'] }    
 
 - hosts: "proxy"
   # connection: local
   roles:
-    - { role: configure.product/vlproxy,external_address: "{{ansible_ssh_host}}" ,email_on_fail_addr: 'muthukumarc@cleo.com' }
+    - { role: configure.product/vlproxy,external_address: "{{ansible_ssh_host}}" ,email_on_fail_addr: 'muthukumarc@cleo.com',tags: ['setup_vlproxy'] }
     
 - hosts: "versalex:integrations"
   roles:
-    - { role: configure.product/db,when: integrations is defined } 
+    - { role: configure.product/db,when: integrations is defined,tags: ['db'] } 
 
 - hosts: "versalex:proxy"
   roles:
-    - { role: configure.product/proxy,when: proxy is defined } 
+    - { role: configure.product/proxy,when: proxy is defined,tags: ['vex_proxy'] } 
 
 - hosts: "versalex:integrations"
   roles:
-    - { role: configure.product/ldap,when: ldap is defined } 
+    - { role: configure.product/ldap,when: ldap is defined,tags: ['ldap'] } 
         
 - hosts: versalex
   # strategy: free

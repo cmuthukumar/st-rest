@@ -33,6 +33,7 @@
         that:
             - "{{item.json.totalResults}} != 0"
      with_items: "{{conn_certs_status.results}}"
+     no_log: true
      # when: testprofile.dnames | lower != 'vlproxy' and play_hosts.index(inventory_hostname) == 0
 
    - name: Validating JMX Ports for Versalex

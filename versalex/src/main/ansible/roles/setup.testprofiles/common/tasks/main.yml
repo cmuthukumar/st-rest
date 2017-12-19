@@ -1,18 +1,6 @@
 ---
 # tasks file for pre_setup
-- block:    
-   - name: Install RSYNC packages
-     yum: name=rsync state=present
-     when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
-
-   # - name: Install RSYNC packages on Local Host machine
-     # yum: name=rsync state=present     
-     # register: rsync_status
-     # retries: 3
-     # delay: 10
-     # until: rsync_status|success
-     # delegate_to: 127.0.0.1
-     
+- block:
    - name: Creates Map Directory
      file:
        path: "{{playbook_dir}}/dataset/"

@@ -1,4 +1,7 @@
 ---
+   - name: Configure CLient of IPAddress
+     debug: msg="IPAddress- {{ansible_ssh_host}} Macro Var{{vexcli.custom_macro}}"
+
    - name: Configure Shares in Remote Machines
      shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupOptions "{{vexcli.dname}}" "{{vexcli.install_location}}" "SHARE" "{{vexcli.custom_macro}}"
      environment:
@@ -10,6 +13,19 @@
      delay: 5  
      until: shares_config|success
 
+   - name: Update Options Custom Macro Variable
+     lineinfile:
+        dest:  "{{ vexcli.install_location }}conf/Options.xml"
+        insertbefore: ^</Options>
+        line: "  <{{ item.category }}>{{ item.property }}={{ item.value}}</{{ item.category }}>"
+        regexp: '^  <{{ item.category }}>{{ item.property }}=.*</{{ item.category }}>'
+     with_items:
+        - { category: 'Customvars', property: '%datashare%', value: '/root/share' }
+     register: custom_macro
+     retries: 3
+     delay: 5  
+     until: custom_macro|success
+     
    - name: Creates Shares  Directory
      file: path="{{vexcli.client_local_path}}" state=directory
 

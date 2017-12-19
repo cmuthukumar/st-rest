@@ -11,10 +11,6 @@
 - hosts: "versalex"
   roles:
     - { role: setup.testprofiles/tests, tags: ['rest','java'] }
-
-- hosts: "servers-versalex"
-  roles:
-    - {role: setup.sync,tags: ['setup-sync','rest','java']}
     
 - hosts: "versalex"
   roles:
