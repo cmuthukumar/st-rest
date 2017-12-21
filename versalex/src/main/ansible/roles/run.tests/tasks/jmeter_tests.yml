@@ -27,7 +27,5 @@
     - name: Print jmeter arguments
       debug: msg="Jmeter arguments to Pass-{{jmeter_arg.meta}}"
       delegate_to: 127.0.0.1
-
-
 - rescue:
     - fail: msg="Jmeter Role Failed"

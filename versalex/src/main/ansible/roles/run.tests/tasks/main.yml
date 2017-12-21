@@ -1,7 +1,6 @@
 ---
 # tasks file for jmeter
-- block:
-
+- block:      
     - name: Print Protocol Values
       debug: msg="server_datasets Protocol Values Issued {{server_datasets}}"      
 
@@ -56,7 +55,7 @@
       when: "'servers-shares' in inventory_hostname"
       
 
-    - name: Running Servers Side Jmeter Tests 
+    - name: Creating Jmeter Args for Server Side
       include_tasks: "jmeter_tests.yml"
       vars:
         load_data: "{{server_datasets}}"
@@ -71,7 +70,7 @@
     - name: Debug Server & TP Total Secs
       debug: msg="Print Total Seconds {{(totalseconds|int)}}"
   
-    - name: Running TP Node Side Jmeter Tests 
+    - name: Creating Jmeter Args for TPNode Side
       include_tasks: "jmeter_tests.yml"
       vars:
         load_data: "{{tp_datasets}}"

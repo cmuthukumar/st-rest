@@ -1,39 +1,52 @@
 ---
-    - name: Create Droplet using DO Rest Call
-      uri:
-        url: "https://api.digitalocean.com/v2/droplets"
-        method: POST
-        body: '{"name":"{{mac_type}}-{{swtype}}-{{item}}","size":"{{outer_item.ram_size}}","region":"{{outer_item.region}}","image":"{{outer_item.image_name}}","ssh_keys":["{{systest_ssh_id}}"],"tags":["{{mac_type}}-{{username}}"]}'
-        body_format: json
-        status_code: 202
-        return_content: no
-        headers:
-          Content-Type: "application/json"
-          Authorization: "Bearer {{do_token}}"
+    - name: Create Droplet REST and Retrieve Details Using Python Module
+      create_droplet_rest:
+            droplet_name: "{{mac_type}}-{{swtype}}-{{item}}"
+            region: "{{outer_item.region}}"
+            ram_size: "{{outer_item.ram_size}}"
+            os_image: "{{outer_item.image_name}}"
+            sshkey_id: "{{systest_ssh_id}}"
+            droplet_tag: "{{mac_type}}-{{username}}"
+            do_token: "{{do_token}}"
       with_sequence: start=1 end="{{outer_item.qty}}" stride=1       
-      register: do_status
-      retries: 3
-      delay: 5  
-      until: do_status|success
-      delegate_to: 127.0.0.1
-      no_log: true
-      
-    - name: Retrieve Droplet by an Id
-      uri:
-        url: "https://api.digitalocean.com/v2/droplets/{{item.json.droplet.id}}"
-        method: GET
-        status_code: 200
-        return_content: no
-        headers:
-          Content-Type: "application/json"
-          Authorization: "Bearer {{do_token}}"
       register: droplet_status
-      with_items: "{{do_status.results}}"
-      retries: 3
-      delay: 5  
-      until: droplet_status|success
       delegate_to: 127.0.0.1
-      no_log: true
+      
+    # - name: Create Droplet using DO Rest Call
+      # uri:
+        # url: "https://api.digitalocean.com/v2/droplets"
+        # method: POST
+        # body: '{"name":"{{mac_type}}-{{swtype}}-{{item}}","size":"{{outer_item.ram_size}}","region":"{{outer_item.region}}","image":"{{outer_item.image_name}}","ssh_keys":["{{systest_ssh_id}}"],"tags":["{{mac_type}}-{{username}}"]}'
+        # body_format: json
+        # status_code: 202
+        # return_content: no
+        # headers:
+          # Content-Type: "application/json"
+          # Authorization: "Bearer {{do_token}}"
+      # with_sequence: start=1 end="{{outer_item.qty}}" stride=1       
+      # register: do_status
+      # retries: 3
+      # delay: 5  
+      # until: do_status|success
+      # delegate_to: 127.0.0.1
+      # no_log: true
+      
+    # - name: Retrieve Droplet by an Id
+      # uri:
+        # url: "https://api.digitalocean.com/v2/droplets/{{item.json.droplet.id}}"
+        # method: GET
+        # status_code: 200
+        # return_content: no
+        # headers:
+          # Content-Type: "application/json"
+          # Authorization: "Bearer {{do_token}}"
+      # register: droplet_status
+      # with_items: "{{do_status.results}}"
+      # retries: 3
+      # delay: 5  
+      # until: droplet_status|success
+      # delegate_to: 127.0.0.1
+      # no_log: true
     # - name : "Create Inventory Groups For {{mac_type}}"
       # group_by:
             # key: "{{item}}"
@@ -45,8 +58,8 @@
     
     - name: "Add IP's of Machines Created in Digital Ocean to Groups"
       add_host: 
-        name: "{{item.0.json.droplet.name}} ansible_ssh_host={{item.1.ip_address}}  appl={{outer_item.name}} subtype={{swtype}}"
-        hostname: "{{item.0.json.droplet.name}}"
+        name: "{{item.0.droplet.name}} ansible_ssh_host={{item.1.ip_address}}  appl={{outer_item.name}} subtype={{swtype}}"
+        hostname: "{{item.0.droplet.name}}"
         type: "{{mac_type}}"
         ansible_host: "{{item.1.ip_address}}"
         groups: "{{mac_type}}-{{swtype}},{{mac_type}},{{swtype}}"
@@ -56,7 +69,7 @@
         # ansible_ssh_common_args: '-o UserKnownHostsFile=/dev/null'
       with_subelements:
             - "{{droplet_status.results}}"
-            - json.droplet.networks.v4
+            - droplet.networks.v4
       register: droplet_groups
       no_log: true      
       delegate_to: 127.0.0.1
@@ -70,6 +83,6 @@
       wait_for: host="{{item.1.ip_address}}" port=22 delay=2 timeout=160 state=started
       with_subelements:
             - "{{droplet_status.results}}"
-            - json.droplet.networks.v4
+            - droplet.networks.v4
       delegate_to: 127.0.0.1
       no_log: true
