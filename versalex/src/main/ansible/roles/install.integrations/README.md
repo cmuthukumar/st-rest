@@ -1,76 +1,93 @@
-Role Name
-=========
+Install Product
+===================
 
-A brief description of the role goes here.
+  * Installs thirdparty applications(ex: db..etc..) on Digital Ocean instances created based on servers and tpnodes yaml configurations passed by user
 
-Requirements
-------------
+Requirements:-
+--------------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
 
-Role Variables
+Role Variables:-
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+```
+	servers.yml:- <checkout dir>st/versalex/src/main/ansible/files/servers.yml
+	tpnodes.yml:- <checkout dir>st/versalex/src/main/ansible/files/tpnodes.yml
+	defaults.yml:- <checkout dir>st/versalex/src/main/ansible/files/defaults.yml
 
-Dependencies
+	[root@localhost ansible]# cat files/servers.yml
+	
+	hardware:
+	   integrations:           
+	      - name: mysql 
+		ram_size: 1gb
+		region: nyc1
+		image_name: "centos-6-x64"
+		qty: 1
+	software:
+	   integrations:
+	      - name: mysql
+		version: "mysql:latest"
+        
+```       
+ 	
+Dependencies:-
 ------------
-N/A
 
-Example Playbook
-----------------
-###Install Integrations (Ansible Role)
-----------------------------------------
-  * Installs versalex products(generates license and configure them) and external applications required for setting up versalex products.
-  
-  	* Dockerized install
-  		* DockerFile
-			* Installs docker on remote hosts and run docker based application using docker file
-  		* Docker Image
-			* Installs docker on remote hosts and run docker based application using docker image. Pulls docker image from Docker Hub and run it.-For external applications like mysql,ldap servers..etc..
-		
+* Setup Variables Playbook:-
 
+	Sets up Host and Group variables required for further module processing
+	
+	Based on below yamls
+	
+		1. Servers.yml
+		2. TPNodes.yml
+		3. Defaults.ym;
 		
-* Dockerized Install:
-            
+       ansible-playbook setup_vars.yml -i inventories/servers/ -e machine_type=servers
+
+       ansible-playbook setup_vars.yml -i inventories/tpnodes/ -e machine_type=tpnodes
+
+	
+Sub Roles:-
+-------------
+* install integrations	
 ```
-Sample yaml for dockerized install using Docker image-Mysql
-<Ansible Playbook DirPath>/install.apps/vars/dbsrv1.yml
----
-install_apps:  
-  mysql:
-    docker: "true"
-    image: "mysql:latest"
-    use_dockerfile: "false"
-    expose_port: 3306
-    image_args: "MYSQL_ROOT_PASSWORD=testdocker"
+
+	1. Install integrations like db , other applications used for versalex instances using docker image 
+		
+
+```
+
+Run Playbook with tags
+-----------------------
+	Checks out code from branch 
 	
 ```
+	<check out dir>/st/versalex/src/main/ansible
 
-* Dockerized Install:
-		
-```
-Sample yaml for dockerized install using Docker File
-<Ansible Playbook DirPath>/install.apps/vars/dbsrv1.yml
----
-install_apps:  
-  mysql:
-    docker: "true"
-    use_dockerfile: "true"
-    src_dir: "/home/SystemTest/DockerFiles/"
-    dest_dir: "/root/DockerFile/"
-    image_name: testdockerfile
-    image_tag: latest
-    image_args: "MYSQL_ROOT_PASSWORD=testdocker"
-	
-```
-		
-```
-Location:
-	<<Ansible Playbook DirPath>/results/install.apps(ansible role name)>
-```	
+	cd to <check out dir>/st/versalex/src/main/ansible/roles/install.product/
 
-
+    Run with defaults:- Run all sub roles in the playbook
+        ansible-playbook install.product.yml -e machine_type=servers -e machine_type=servers
+    
+    Run with specifying tags:- 
+    	
+    	Servers and TPNodes should run separately, change machine_type=servers to machine_type=tpnodes for TP node setup
+    
+    		Install integrations like db,other applications   for versalex instances
+    		
+		    ansible-playbook install_integrations.yml -e machine_type=servers   		    
+		    
+		[root@localhost ansible]# cat install_integrations.yml
+		---
+		- name: 'Installs db/thirdparty integrations using docker'
+		  hosts: "integrations"
+		  roles:
+		    - { role: install.integrations }[root@localhost ansible]#
+	        
+```
+ 
 License
 -------
 
