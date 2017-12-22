@@ -5,8 +5,9 @@ Install Integrations
 
 Requirements:-
 --------------------
-
-
+	
+	Install Product role needs to be installed
+	
 Role Variables:-
 --------------
 
