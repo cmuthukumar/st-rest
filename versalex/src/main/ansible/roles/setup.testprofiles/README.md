@@ -133,7 +133,9 @@ Example Playbook
 		    ansible-playbook -i inventories/servers/ -i inventories/tpnodes/  setup_testprofiles.yml  --tags: ['rest']
 
 	[root@localhost ansible]# cat setup_testprofiles.yml
+	
 	---
+	
 	- hosts: "servers-versalex"
 	  roles:
 	    - {role: setup.sync,tags: ['setup-sync','rest','java']}

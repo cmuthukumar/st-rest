@@ -123,63 +123,78 @@ Run Playbook with tags
 
 	[root@localhost ansible]# cat configure_product.yml
 	---
-	- hosts: "versalex:proxy:shares"
+	- name: Installs NFS shares and dependencies
+	  hosts: "versalex:proxy:shares"
 	  roles:
-	    - { role: configure.product/common}
+		- { role: configure.product/common}
 
-	- hosts: "versalex"
+	- name: Setups system testing jar for configuring versalex instances
+	  hosts: "versalex"
 	  roles:
-	    - { role: 'configure.product/common/use_systestjar' }
+		- { role: 'configure.product/common/use_systestjar',tags: ['use_systestjar'] }
 
-	- hosts: shares
+	- name: Configures server side shares
+	  hosts: shares
 	  tasks:
-	    - name: Configure Server Side Shares
-	      include_role:
-		  name: configure.product/server_share
-	      with_dict: "{{ shares | default({}) }}"
-	      loop_control:
-		  loop_var: srvr_share
+		- name: Configure Server Side Shares
+		  include_role:
+			  name: configure.product/server_share
+		  with_dict: "{{ shares | default({}) }}"
+		  loop_control:
+			  loop_var: srvr_share
+		  tags:
+			- 'server_share'
 
-	- hosts: versalex
+	- name: Configures client versalex instances side shares
+	  hosts: versalex
 	  tasks:
-	    - name: Configure Client Side Shares
-	      include_role:
-		name: configure.product/client_share
-	      with_dict: "{{ versalex | default({}) }}"
-	      loop_control:
-		  loop_var: clishare
+		- name: Configure Client Side Shares
+		  include_role:
+			name: configure.product/client_share
+		  with_dict: "{{ versalex | default({}) }}"
+		  loop_control:
+			  loop_var: clishare
+		  tags:
+			- 'client_share'
 
-	- hosts: "versalex"
+
+	- name: Configures memory for versalex instances
+	  hosts: "versalex"
 	  roles:
-	    - { role: configure.product/mem }
+		- { role: configure.product/mem,tags: ['mem'] }
 
-	- hosts: "proxy"
+	- name: Configures VLProxy with serial nos and properties file
+	  hosts: "proxy"
 	  # connection: local
 	  roles:
-	    - { role: configure.product/vlproxy,external_address: "{{ansible_ssh_host}}" ,email_on_fail_addr: 'muthukumarc@cleo.com' }
+		- { role: configure.product/vlproxy,external_address: "{{ansible_ssh_host}}" ,email_on_fail_addr: 'muthukumarc@cleo.com',tags: ['setup_vlproxy'] }
 
-	- hosts: "versalex:integrations"
+	- name: Configures db for versalex instances
+	  hosts: "versalex:integrations"
 	  roles:
-	    - { role: configure.product/db,when: integrations is defined }
+		- { role: configure.product/db,when: integrations is defined,tags: ['db'] }
 
-	- hosts: "versalex:proxy"
+	- name: Configures proxy for versalex instances
+	  hosts: "versalex:proxy"
 	  roles:
-	    - { role: configure.product/proxy,when: proxy is defined }
+		- { role: configure.product/proxy,when: proxy is defined,tags: ['vex_proxy'] }
 
-	- hosts: "versalex:integrations"
+	- name: Configures ldap for versalex instances
+	  hosts: "versalex:integrations"
 	  roles:
-	    - { role: configure.product/ldap,when: ldap is defined }
+		- { role: configure.product/ldap,when: ldap is defined,tags: ['ldap'] }
 
-	- hosts: "versalex"
-	  # strategy: free
+	- name: Restart versalex instances
+	  hosts: versalex
 	  roles:
-	    - { role: common/versalex/restart/,tags: ['versalex-restart'] }
+		- { role: common/versalex/restart/,tags: ['versalex-restart'] }
 
-	- hosts: "versalex:proxy"
+	- name: Tests versalex instances for shares
+	  hosts: "versalex:proxy"
 	  roles:
-	    - { role: configure.product/tests }
+		- { role: configure.product/tests }
 
-	        
+	
 ```
  
 License
