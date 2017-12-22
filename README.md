@@ -1,2 +1,2 @@
 # System Testing:-
-	[Click Here](https://github.com/CleoDev/st/wiki)
+	[Click](https://github.com/CleoDev/st/wiki)
