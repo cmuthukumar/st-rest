@@ -1,4 +1,5 @@
 ---
-- hosts: "integrations"
+- name: 'Installs db/thirdparty integrations using docker'
+  hosts: "integrations"
   roles:
     - { role: install.integrations }

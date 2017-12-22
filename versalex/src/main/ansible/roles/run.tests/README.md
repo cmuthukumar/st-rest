@@ -1,32 +1,140 @@
-Role Name
-=========
+Run Tests
+===================
 
-A brief description of the role goes here.
+  * Sets up jmeter in Servers and TPNodes  and Runs the Jmeter tests as per user configs
 
-Requirements
-------------
+Requirements:-
+--------------------
+	
+	1. Install Product and Configure Product & Setup Testprofiles roles should ran successfully
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
 
-Role Variables
+Role Variables:-
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+```
+	servers.yml:- <checkout dir>st/versalex/src/main/ansible/files/servers.yml
+	tpnodes.yml:- <checkout dir>st/versalex/src/main/ansible/files/tpnodes.yml
+	defaults.yml:- <checkout dir>st/versalex/src/main/ansible/files/defaults.yml
 
-Dependencies
+	ex: 
+	Run Only AS2 tests
+	
+	as2_filespermin=40 as2_totalmins=10 as2_totalhosts=2 ftp_filespermin=0 ftp_totalmins=0 ftp_totalhosts=0
+        
+	Run Only FTP tests
+	
+	as2_filespermin=0 as2_totalmins=0 as2_totalhosts=0 ftp_filespermin=40 ftp_totalmins=10 ftp_totalhosts=2
+	
+	Run Both AS2 and FTP tests
+	
+	as2_filespermin=40 as2_totalmins=10 as2_totalhosts=2 ftp_filespermin=40 ftp_totalmins=10 ftp_totalhosts=2
+	
+```
+
+Dependencies:-
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+* Setup Variables Playbook:-
+
+	Sets up Host and Group variables required for further module processing
+	
+	Based on below yamls
+	
+		1. Servers.yml
+		2. TPNodes.yml
+		3. Defaults.ym;
+		
+       ansible-playbook setup_vars.yml -i inventories/servers/ -e machine_type=servers
+
+       ansible-playbook setup_vars.yml -i inventories/tpnodes/ -e machine_type=tpnodes
+
+	
+Sub Roles:-
+-------------
+
+* Setup . JMX(role: configure.product/jmx,tags: ['setup-jmx'])
+
+```
+	1. Sets up JMX ocnfiguration for Versalex and OSGI
+	
+```
+
+* String command (role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,start' ,tags: ['rest'] )
+
+```
+
+	1. Runs any String instruction for versalex products
+	
+	ex: Harmonyc -s scheduler,start
+	
+
+```
+
+
+* Sets up Jmeter and Run tests based on user configs passed
+
+```	
+
+	- hosts: "shares"
+	  roles:
+	      - { role: run.tests/,as2_filespermin: "{{as2_filespermin|default(0)}}",as2_totalmins: "{{as2_totalmins|default(0)}}",as2_totalhosts: "{{as2_totalhosts|default(0)}}",ftp_filespermin: "{{ftp_filespermin|default(0)}}",ftp_totalmins: "{{ftp_totalmins|default(0)}}",ftp_totalhosts: "{{ ftp_totalhosts|default(0)  }}",tags: 'run_tests' }
+
+		
+```
+
 
 Example Playbook
-----------------
+-----------------------
+	Checks out code from branch 
+	
+```
+	<check out dir>/st/versalex/src/main/ansible
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+	cd to <check out dir>/st/versalex/src/main/ansible/roles/run.tests/
+	
+	
+    Run with specifying tags:- 
+    
+    		Run Jmeter tests for passing AS2 and FTP args
+    		
+		    ansible-playbook -i inventories/servers/ -i inventories/tpnodes/ -e as2_filespermin=40 -e as2_totalmins=10 -e as2_totalhosts=2  -e ftp_filespermin=40 -e ftp_totalmins=10 -e ftp_totalhosts=2 run_tests.yml
+		    
+		Only Setup JMX and Restart Versalex
+		
+		    ansible-playbook -i inventories/servers/ -i inventories/tpnodes/ -e as2_filespermin=40 -e as2_totalmins=10 -e as2_totalhosts=2  -e ftp_filespermin=40 -e ftp_totalmins=10 -e ftp_totalhosts=2 run_tests.yml --tags ['setup-jmx','versalex-restart']
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+		
+		
+	[root@localhost ansible]# cat run_tests.yml
+	---
+	- hosts: "versalex"
+	  roles:
+	    - { role: configure.product/jmx,tags: ['setup-jmx'] }
 
+	- hosts: "versalex"
+	  # #strategy: free
+	  roles:
+	    - { role: common/versalex/restart/,tags: ['versalex-restart'] }
+
+	- hosts: "versalex"
+	  roles:
+	    - { role: setup.testprofiles/tests, tags: ['rest','java'] }
+
+	- hosts: "versalex"
+	  roles:
+	    - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,stop' ,tags: ['rest'] }
+	    - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,start' ,tags: ['rest'] }
+
+
+	- hosts: "shares"
+	  roles:
+	      - { role: run.tests/,as2_filespermin: "{{as2_filespermin|default(0)}}",as2_totalmins: "{{as2_totalmins|default(0)}}",as2_totalhosts: "{{as2_totalhosts|default(0)}}",ftp_filespermin: "{{ftp_filespermin|default(0)}}",ftp_totalmins: "{{ftp_totalmins|default(0)}}",ftp_totalhosts: "{{ ftp_totalhosts|default(0)  }}",tags: 'run_tests' }
+
+
+	        
+```
+ 
 License
 -------
 

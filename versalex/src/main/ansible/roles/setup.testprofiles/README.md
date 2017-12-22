@@ -1,32 +1,175 @@
-Role Name
-=========
+Setup TestProfiles
+===================
 
-A brief description of the role goes here.
+  * Sets up tests profiles for AS2, FTP Protocols
+  
+  	- AS2
+  	- FTP
 
-Requirements
-------------
+Requirements:-
+--------------------
+	
+	1. Install Product and Configure Product roles should ran successfully
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
 
-Role Variables
+Role Variables:-
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+```
+	servers.yml:- <checkout dir>st/versalex/src/main/ansible/files/servers.yml
+	tpnodes.yml:- <checkout dir>st/versalex/src/main/ansible/files/tpnodes.yml
+	defaults.yml:- <checkout dir>st/versalex/src/main/ansible/files/defaults.yml
 
-Dependencies
+	dataset:
+	   versalex:
+	      - name: as2
+	        total: 40 -- Total hosts for AS2
+	        schedule_actions: true         
+	      - name: ftp
+	        total: 40 -- Total hosts for FTP
+        schedule_actions: true 
+        
+        
+```
+
+Dependencies:-
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+* Setup Variables Playbook:-
+
+	Sets up Host and Group variables required for further module processing
+	
+	Based on below yamls
+	
+		1. Servers.yml
+		2. TPNodes.yml
+		3. Defaults.ym;
+		
+       ansible-playbook setup_vars.yml -i inventories/servers/ -e machine_type=servers
+
+       ansible-playbook setup_vars.yml -i inventories/tpnodes/ -e machine_type=tpnodes
+	
+Sub Roles:-
+-------------
+
+* setup.sync({role: setup.sync,tags: ['setup-sync','rest','java']})
+
+```
+	1. Sets up sync with server client nodes
+	
+```
+
+* AS2 Profiles(- { role: setup.testprofiles/rest/as2/, hostname: "AS2H",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest'] })
+
+```
+
+	1. Setups Sender and Receiver Certs and Connections for AS2 using REST with user passed dataset
+	2. User can pass HostName
+
+```
+
+* FTP Server & Client(- { role: setup.testprofiles/rest/ftp/server/, when: "'servers-versalex' in inventory_hostname",tags: ['java','rest'] })
+
+```	
+	1. Configures FTP Servers using java api with user passed dataset - Servers
+	2. Configures FTP Cliens for Versalex Instances using java with user passed dataset
+	
+
+```
+   
+* Schedule Actions
+
+```	
+
+- hosts: "servers-versalex[0]"
+  roles:
+    - { role: setup.testprofiles/rest/schedule_actions/, schedule_option: "on file polling continuously",action_type: "send", tags: ['schedule-actions-server','rest'] }
+
+- hosts: "tpnodes-versalex"
+  roles:
+    - { role: setup.testprofiles/rest/schedule_actions/,schedule_option: "on file polling continuously",action_type: "send", tags: ['schedule-actions-tp','rest'] }
+
+
+	1. Schedules all actions created with 'send' alias with on file polling continuously
+		
+
+```
+
+* Sets up Server and TP Nodes testprofiles using java api
+
+```	
+
+	- hosts: "versalex:proxy"
+	  roles:
+	    - { role: setup.testprofiles/setup_server, when: "'servers-versalex' in inventory_hostname",tags: ['java'] }
+	
+	- hosts: "versalex:proxy"
+	  roles:
+	     - { role: setup.testprofiles/tp_dataset, when: "'servers-versalex' in inventory_hostname",tags: ['java']  }
+	     - { role: setup.testprofiles/setup_tp,tags: ['java']  }
+
+		
+```
+
 
 Example Playbook
-----------------
+-----------------------
+	Checks out code from branch 
+	
+```
+	<check out dir>/st/versalex/src/main/ansible
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+	cd to <check out dir>/st/versalex/src/main/ansible/roles/setup.testprofile/
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+    Run with defaults:- Run all sub roles in the playbook
+        ansible-playbook install.product.yml -e machine_type=servers -e machine_type=servers
+    
+    Run with specifying tags:- 
+    
+    		Setups Test Profiles for AS2 , FTP using Java
+		    ansible-playbook -i inventories/servers/ -i inventories/tpnodes/ setup_testprofiles.yml  --tags: ['java',]
+		    
+    		Setups Test Profiles for AS2 , FTP using Rest
+		    ansible-playbook -i inventories/servers/ -i inventories/tpnodes/  setup_testprofiles.yml  --tags: ['rest']
 
+	[root@localhost ansible]# cat setup_testprofiles.yml
+	---
+	- hosts: "servers-versalex"
+	  roles:
+	    - {role: setup.sync,tags: ['setup-sync','rest','java']}
+
+	- hosts: "versalex:proxy"
+	  roles:
+	    - { role: setup.testprofiles/common, when: "'servers-versalex' in inventory_hostname",tags: ['rest','java'] }
+	    - { role: setup.testprofiles/rest/as2/, hostname: "AS2H",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest'] }
+
+	- hosts: "versalex:proxy"
+	  roles:
+	    - { role: setup.testprofiles/rest/ftp/server/, when: "'servers-versalex' in inventory_hostname",tags: ['rest'] }
+	    - { role: setup.testprofiles/rest/ftp/client/, hostname: "FTPHost",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest'] }
+
+	- hosts: "servers-versalex[0]"
+	  roles:
+	    - { role: setup.testprofiles/rest/schedule_actions/, schedule_option: "on file polling continuously",action_type: "send", tags: ['schedule-actions-server','rest'] }
+
+	- hosts: "tpnodes-versalex"
+	  roles:
+	    - { role: setup.testprofiles/rest/schedule_actions/,schedule_option: "on file polling continuously",action_type: "send", tags: ['schedule-actions-tp','rest'] }
+
+	- hosts: "versalex:proxy"
+	  roles:
+	    - { role: setup.testprofiles/setup_server, when: "'servers-versalex' in inventory_hostname",tags: ['java'] }
+
+	- name: Setups Dataset on TP Node for Testprofiles
+	  hosts: "versalex:proxy"
+	  roles:
+	     - { role: setup.testprofiles/tp_dataset, when: "'servers-versalex' in inventory_hostname",tags: ['java']  }
+	     - { role: setup.testprofiles/setup_tp,tags: ['java']  }
+
+
+	        
+```
+ 
 License
 -------
 

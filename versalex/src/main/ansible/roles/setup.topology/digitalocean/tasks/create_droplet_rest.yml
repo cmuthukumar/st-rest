@@ -11,6 +11,9 @@
       with_sequence: start=1 end="{{outer_item.qty}}" stride=1       
       register: droplet_status
       delegate_to: 127.0.0.1
+
+    - name: Print Droplet Status Details
+      debug: msg="Droplet Create Detals {{droplet_status}}"
       
     # - name: Create Droplet using DO Rest Call
       # uri:

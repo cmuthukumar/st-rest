@@ -12,21 +12,21 @@ server_datasets:
         threads: 10
         destPath: "/root/share/as2/outboxes/"
         fileSize: "5000 10000"
-        filespermin: "{{as2_filespermin|default(0)}}"
-        totalmins: "{{as2_totalmins|default(0)}}"
-        totalhosts: "{{as2_totalhosts|default(0)}}"
+        filespermin: "{{0 if as2_filespermin == '' else  as2_filespermin}}"
+        totalmins: "{{0 if as2_totalmins == '' else as2_totalmins }}"
+        totalhosts: "{{0 if as2_totalhosts == '' else as2_totalhosts}}"
 tp_datasets:
     as2:
         threads: 10
         destPath: "/root/share/as2/outboxes/"
         fileSize: "5000 10000"
-        filespermin: "{{as2_filespermin |default(0)}}"
-        totalmins: "{{as2_totalmins|default(0)  }}"
-        totalhosts: "{{as2_totalhosts|default(0)}}" 
+        filespermin: "{{0 if as2_filespermin == '' else as2_filespermin }}"
+        totalmins: "{{0 if as2_totalmins =='' else as2_totalmins }}"
+        totalhosts: "{{0 if as2_totalhosts == '' else as2_totalhosts}}" 
     ftp:
         threads: 10
         destPath: "/root/share/ftp/outboxes/"        
         fileSize: "5000 10000 20000 40000 80000 100000 200000 400000 500000 1000000"
-        filespermin: "{{ftp_filespermin|default(0) }}"
-        totalmins: "{{ftp_totalmins|default(0)}}"
-        totalhosts: "{{ftp_totalhosts|default(0)}}"
+        filespermin: "{{0 if ftp_filespermin == '' else ftp_filespermin }}"
+        totalmins: "{{0 if ftp_totalmins == '' else ftp_totalmins }}"
+        totalhosts: "{{0 if ftp_totalhosts == '' else ftp_totalhosts}}"

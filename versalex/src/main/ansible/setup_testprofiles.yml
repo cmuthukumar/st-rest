@@ -1,31 +1,38 @@
 ---
-- hosts: "servers-versalex"
+- name: Setups sync between master and other versalex  instances of server side
+  hosts: "servers-versalex"
   roles:
     - {role: setup.sync,tags: ['setup-sync','rest','java']}
-    
-- hosts: "versalex:proxy"
+
+- name: Setups as2 profiles for server and tpnodes using rest
+  hosts: "versalex:proxy"
   roles:
     - { role: setup.testprofiles/common, when: "'servers-versalex' in inventory_hostname",tags: ['rest','java'] }
     - { role: setup.testprofiles/rest/as2/, hostname: "AS2H",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest'] }
-    
-- hosts: "versalex:proxy"
+
+- name: "Setups ftp profiles for server(java) and tpnodes(rest)"
+  hosts: "versalex:proxy"
   roles:
     - { role: setup.testprofiles/rest/ftp/server/, when: "'servers-versalex' in inventory_hostname",tags: ['rest'] }
     - { role: setup.testprofiles/rest/ftp/client/, hostname: "FTPHost",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest'] }
 
-- hosts: "servers-versalex[0]"
+- name: Schedule actions for server master node
+  hosts: "servers-versalex[0]"
   roles:
     - { role: setup.testprofiles/rest/schedule_actions/, schedule_option: "on file polling continuously",action_type: "send", tags: ['schedule-actions-server','rest'] }
 
-- hosts: "tpnodes-versalex"
+- name: Schedule actions for tp nodes
+  hosts: "tpnodes-versalex"
   roles:
     - { role: setup.testprofiles/rest/schedule_actions/,schedule_option: "on file polling continuously",action_type: "send", tags: ['schedule-actions-tp','rest'] }    
 
-- hosts: "versalex:proxy"
+- name: Setups server side profiles using java    
+  hosts: "versalex:proxy"
   roles:    
     - { role: setup.testprofiles/setup_server, when: "'servers-versalex' in inventory_hostname",tags: ['java'] }
 
-- hosts: "versalex:proxy"
+- name: Setups tp node side profiles using java    
+  hosts: "versalex:proxy"
   roles:
      - { role: setup.testprofiles/tp_dataset, when: "'servers-versalex' in inventory_hostname",tags: ['java']  }
      - { role: setup.testprofiles/setup_tp,tags: ['java']  }

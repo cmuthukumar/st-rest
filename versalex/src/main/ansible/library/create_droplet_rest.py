@@ -64,7 +64,7 @@ def get_droplet_details_id(url,droplet_res):
 			droplet_id_results = requests.get(droplet_id_url,headers=head,timeout=120)
 			dropet_id_json_res=json.loads(droplet_id_results.text)
 			print "DROPLET ID RESULTS*",dropet_id_json_res
-			if (dropet_id_json_res['droplet']['networks']['v4'] != ""):
+			if (dropet_id_json_res['droplet']['networks']['v4']):
 				return dropet_id_json_res
 			else:
 				raise ValueError('Droplet JSON Networks Not found in Response')
@@ -112,7 +112,7 @@ def create_machines(json_path):
 		return True,droplet_id_results
 	except Exception,e:
 		print "Exception on create_machines method",e
-		return False,e
+		return False,'{msg: e}'
 
 def create_hosts(machine_type):
 	try:
