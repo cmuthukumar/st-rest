@@ -1,4 +1,4 @@
-Install Product
+Install Integrations
 ===================
 
   * Installs thirdparty applications(ex: db..etc..) on Digital Ocean instances created based on servers and tpnodes yaml configurations passed by user
