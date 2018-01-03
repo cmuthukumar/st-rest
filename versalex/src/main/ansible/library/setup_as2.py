@@ -58,7 +58,7 @@ def get_postresults(url,json_file):
 def create_cert_json(cert_name):
 	try:
 		alias= {"alias": cert_name}
-		json_out=get_jsonoutput("./files/Cert.json",alias)
+		json_out=get_jsonoutput("./files/AS2_Cert.json",alias)
 		json_path="./files/as2jsons/"+cert_name+".json"
 		with open(json_path, 'w+') as jsonfile:
 			jsonfile.write(json_out)
@@ -92,7 +92,7 @@ def create_cert(sender_ip,json_file):
 def create_conn_json(host_name,json_req):
 	try:
 		json_req['host_name']=host_name
-		conn_output=get_jsonoutput("./files/Conn.json",json_req)
+		conn_output=get_jsonoutput("./files/AS2_Conn.json",json_req)
 		# print "Connection Output",conn_output
 		conn_json_path="./files/as2jsons/"+host_name+".json"
 		with open(conn_json_path, 'w+') as jsonfile:

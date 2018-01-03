@@ -58,7 +58,7 @@ def get_postresults(url,json_file):
 def create_conn_json(host_name,json_req):
 	try:
 		json_req['host_name']=host_name
-		conn_output=get_jsonoutput("./files/Conn_Ftp.json",json_req)
+		conn_output=get_jsonoutput("./files/FTP_Conn.json",json_req)
 		# print "Connection Output",conn_output
 		conn_json_path="./files/ftpjsons/"+host_name+".json"
 		with open(conn_json_path, 'w+') as jsonfile:
