@@ -1,0 +1,25 @@
+---
+- name: Setting Dictionary Name for Memory Configs
+  set_fact:
+        mem: "{{mem_grp.value}}"
+
+- name: "Edit versalexc.lax for Mem config File"
+  lineinfile:
+     create: no
+     dest: "{{mem.install_location}}{{mem.dname}}c.lax"
+     regexp: '^(lax.nl.java.option.additional=.*)'
+     line: '\1 -Xms{{mem.vex_heapmem_min}} -Xmx{{mem.vex_heapmem_max}} -XX:+HeapDumpOnOutOfMemoryError'
+     state: present       
+     backrefs: yes
+  register: harmonyc_lax  
+  
+- name: "Edit setenv for karaf for Mem config File"
+  lineinfile:
+   create: no
+   dest: "{{mem.install_location}}core/bin/setenv"
+   line: "{{item.line}}"
+   state: present
+  with_items:
+     - {  line: 'export JAVA_MIN_MEM={{mem.karaf_heapmem_min}}', insertafter: EOF}
+     - {  line: 'export JAVA_MAX_MEM={{mem.karaf_heapmem_max}}', insertafter: EOF}
+  register: karafc

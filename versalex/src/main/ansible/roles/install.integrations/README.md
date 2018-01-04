@@ -1,32 +1,94 @@
-Role Name
-=========
+Install Integrations
+===================
 
-A brief description of the role goes here.
+  * Installs thirdparty applications(ex: db..etc..) on Digital Ocean instances created based on servers and tpnodes yaml configurations passed by user
 
-Requirements
-------------
-
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
-
-Role Variables
+Requirements:-
+--------------------
+	
+	Install Product role needs to be installed
+	
+Role Variables:-
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+```
+	servers.yml:- <checkout dir>st/versalex/src/main/ansible/files/servers.yml
+	tpnodes.yml:- <checkout dir>st/versalex/src/main/ansible/files/tpnodes.yml
+	defaults.yml:- <checkout dir>st/versalex/src/main/ansible/files/defaults.yml
 
-Dependencies
+	[root@localhost ansible]# cat files/servers.yml
+	
+	hardware:
+	   integrations:           
+	      - name: mysql 
+		ram_size: 1gb
+		region: nyc1
+		image_name: "centos-6-x64"
+		qty: 1
+	software:
+	   integrations:
+	      - name: mysql
+		version: "mysql:latest"
+        
+```       
+ 	
+Dependencies:-
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+* Setup Variables Playbook:-
 
-Example Playbook
-----------------
+	Sets up Host and Group variables required for further module processing
+	
+	Based on below yamls
+	
+		1. Servers.yml
+		2. TPNodes.yml
+		3. Defaults.ym;
+		
+       ansible-playbook setup_vars.yml -i inventories/servers/ -e machine_type=servers
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+       ansible-playbook setup_vars.yml -i inventories/tpnodes/ -e machine_type=tpnodes
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+	
+Sub Roles:-
+-------------
+* install integrations	
+```
 
+	1. Install integrations like db , other applications used for versalex instances using docker image 
+		
+
+```
+
+Run Playbook with tags
+-----------------------
+	Checks out code from branch 
+	
+```
+	<check out dir>/st/versalex/src/main/ansible
+
+	cd to <check out dir>/st/versalex/src/main/ansible/roles/install.product/
+
+    Run with defaults:- Run all sub roles in the playbook
+        ansible-playbook install.product.yml -e machine_type=servers -e machine_type=servers
+    
+    Run with specifying tags:- 
+    	
+    	Servers and TPNodes should run separately, change machine_type=servers to machine_type=tpnodes for TP node setup
+    
+    		Install integrations like db,other applications   for versalex instances
+    		
+		    ansible-playbook install_integrations.yml -e machine_type=servers   		    
+		    
+		[root@localhost ansible]# cat install_integrations.yml
+		---
+		- name: 'Installs db/thirdparty integrations using docker'
+		  hosts: "integrations"
+		  roles:
+		    - { role: install.integrations }[root@localhost ansible]#
+	        
+```
+ 
 License
 -------
 

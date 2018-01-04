@@ -1,0 +1,19 @@
+---
+- name: Setting Dictionary Name JMX Configs Versalex
+  set_fact:
+        vex_ldap: "{{config_ldap.value}}"
+        
+- name: Configure LDAP in Remote Machines
+  shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupOptions "{{vex_ldap.vex_product}}" "{{vex_ldap.install_location}}" "LDAP" "{{item.value.type}}" "{{item.value.host}}" "{{item.value.port}}" "{{item.value.secuirtymode}}" "{{item.value.value.basedn}}" "{{item.value.username}}" "{{item.value.fullnameattrib}}" "{{item.value.homedirattrib}}" "{{item.value.emailattrib}}" "{{item.value.searchfilter}}" "{{item.value.usernameattrib}}" "zzzzers"
+  environment:
+     CLASSPATH: ":{{vex_ldap.install_location}}SetupOptions.jar:{{vex_ldap.install_location}}lib/*:{{vex_ldap.install_location}}lib/help/*:{{vex_ldap.install_location}}lib/hibernate/*:{{vex_ldap.install_location}}lib/secureshare/*:{{vex_ldap.install_location}}webserver/AjaxSwing/lib/*:{{vex_ldap.install_location}}lib/json/*"
+  args:
+     chdir: "{{vex_ldap.install_location}}"
+  when: "'ldap' in item.value.type"     
+  with_dict: "{{ integrations | default({}) }}"
+  register: ldap_config
+  retries: 3
+  delay: 5  
+  until: ldap_config|success
+  
+  

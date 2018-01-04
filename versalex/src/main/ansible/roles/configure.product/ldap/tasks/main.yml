@@ -1,0 +1,10 @@
+---
+# tasks file for configure.product
+- block:      
+    - name: Include Configure Product Role with Versalex
+      include_tasks: "config_ldap.yml"
+      with_dict: "{{ versalex | default({}) }}"        
+      loop_control:
+         loop_var: config_ldap
+  rescue:
+      - fail: msg="Configure Product Module failed"

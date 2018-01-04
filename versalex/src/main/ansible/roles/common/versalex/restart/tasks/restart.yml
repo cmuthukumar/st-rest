@@ -1,0 +1,33 @@
+---
+- name: Setting Dictionary Name for Versalex Inside
+  set_fact:
+    vex_restart: "{{restart_item.value}}" 
+        
+- name: Kill Java Processes running on Remote System
+  shell: "kill $(ps aux | grep -i java | grep -v 'grep' | awk '{print $2}')"
+  register: javakill_status
+  ignore_errors: True 
+     
+# - name: Stop Results
+  # debug: msg="Stop Resultls {{stopvexstatus}} versalex_artifactid {{vex_restart.dname}}"
+  
+- name: Wait for port 5080 to get Stopped
+  wait_for: port=5080 delay=10 state=stopped
+  
+- name: Delete Schedule Lck file
+  file:
+    path: "{{vex_restart.install_location}}schedule.lck"
+  state: absent
+  ignore_errors: yes
+  
+- name: Start VersalEx Product Daemon   
+  shell: "{{item}}"
+  args:
+    chdir: "{{vex_restart.install_location}}"
+  with_items:
+    - ./{{vex_restart.dname}}d start
+  register: startvexstatus
+
+- name: Wait for Versalex Port to Come up
+  wait_for: host="{{ansible_ssh_host}}" port="{{vex_restart.port}}" delay=10 timeout=320 state=started  
+  

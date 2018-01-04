@@ -3,12 +3,17 @@
   # local_action:
       # module: get_url
       # url: "{{ nexus_url }}&g={{ item.group }}&a={{ item.artifact }}&v={{ item.version }}&e={{ item.type }}&c={{ item.classifier }}"
-      # dest: "{{ playbook_dir }}/library/properties-cipher.jar"
+      # dest: "{{ playbook_dir }}/files/properties-cipher.jar"
   # run_once: true
   # with_items:
     # - { group: 'com.cleo.ep', artifact: 'properties-cipher', version: "{{ properties_cipher_version }}", type: 'jar', classifier: '' }
   # delegate_to: 127.0.0.1
-
+- name: "Create {{ansible_hostname}} Dir"
+  file:
+    path: "{{playbook_dir}}/files/{{ansible_hostname}}/"
+    state: directory
+  delegate_to: 127.0.0.1
+  
 - name: Download Properties Cipher Jar from Nexus Repo
   maven_artifact: 
         group_id: "{{item.group}}"
@@ -16,29 +21,33 @@
         version: latest
         extension: "jar"
         repository_url: "{{confvlp.nexus_prod_repourl}}"
-        dest: "{{playbook_dir}}/library/properties-cipher.jar"
+        dest: "{{playbook_dir}}/files/properties-cipher.jar"
         state: present
   run_once: true
   with_items:
     - { group: 'com.cleo.ep', artifact: 'properties-cipher', version: "latest", type: 'jar', classifier: '' }  
   delegate_to: 127.0.0.1 
-  
+  register: props_cipher
+  retries: 3
+  delay: 5
+  until: props_cipher|success
+    
 # Copy the properties-cipher jar into the installation
 - name: Copy properties-cipher jar
   copy:
-    src: "{{ playbook_dir }}/library/properties-cipher.jar"
+    src: "{{ playbook_dir }}/files/properties-cipher.jar"
     dest: "{{ confvlp.install_location }}lib/properties-cipher.jar"
   
 # Create a default.properties file from a template & copy to the installation
 - name: Copy updated properties from template
   template:
     src: default.properties.j2
-    dest: "{{ playbook_dir }}/library/default.properties"  
+    dest: "{{ playbook_dir }}/files/{{ansible_hostname}}/default.properties"  
   delegate_to: 127.0.0.1
   
 - name: Copy default properties to remote versalex instance
   copy:
-    src: "{{ playbook_dir }}/library/default.properties"
+    src: "{{ playbook_dir }}/files/{{ansible_hostname}}/default.properties"
     dest: "{{ confvlp.install_location }}default.properties"
 
 # Update encrypted properties in the installation

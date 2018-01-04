@@ -1,0 +1,11 @@
+---
+# tasks file for configure.product
+- block:      
+    - name: Include Configure Product Role with Versalex
+      include_tasks: "config_db.yml"
+      with_dict: "{{ versalex | default({}) }}"
+      when: "'versalex' in inventory_hostname"
+      loop_control:
+         loop_var: config_db
+  rescue:
+      - fail: msg="Configure Product Module failed"

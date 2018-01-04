@@ -1,0 +1,10 @@
+---
+# tasks file for configure.product
+- block:      
+    - name: Include Configure JMX Configs Versalex
+      include_tasks: "config_jmx.yml"
+      with_dict: "{{ versalex | default({}) }}"        
+      loop_control:
+         loop_var: jmx_grp
+  rescue:
+      - fail: msg="Configure Product JMX Mem Role failed"    

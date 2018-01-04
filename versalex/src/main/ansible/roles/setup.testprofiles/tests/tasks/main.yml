@@ -1,9 +1,9 @@
 ---
 # tasks file for versalex.apps
     - name: Include Install Product Role with Versalex
-      include: "validate.yml"
+      include_tasks: "validate.yml"
       with_dict: "{{ versalex | default({}) }}"
       when: "'versalex' in subtype" 
       loop_control:
-         loop_var: group_item
+         loop_var: testprofile_item
       delegate_to: 127.0.0.1

@@ -4,15 +4,6 @@
     set_fact:
        valid: "{{group_item.value}}"
        
-  - name: Validating JMX Ports for Versalex
-    wait_for:
-       host: "{{ansible_ssh_host}}"
-       port: "{{item}}"
-       state: started
-    with_items:
-        - "{{valid.karaf_jmx_port}}"
-        - "{{valid.vex_jmx_port}}"
-    register: vex_jmx_status 
 
   - name: Validate Client Share Mount Point`
     assert:

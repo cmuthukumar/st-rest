@@ -1,0 +1,17 @@
+---
+# tasks file for setup.testprofiles
+- block:
+   - name: "Setup Listener Certificate {{certname}} on all versalex instances"
+     setup_listener_cert:     
+           host_ip: "{{ansible_ssh_host}}"
+           cert_name: "{{certname}}"      
+     register: listener_cert     
+     retries: 3
+     delay: 5
+     until: listener_cert|success     
+
+   # - name: Print cert details
+     # debug: msg="Cert Details {{listener_cert}}"
+     # tags: listener_cert
+- rescue:
+   - fail: msg="Resource Update on Versalex Failed"

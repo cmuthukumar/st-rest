@@ -1,0 +1,16 @@
+---
+# tasks file for create.topology
+        
+   - name: Create Droplets with user passed strings
+     include_tasks: create_droplet.yml mac_type="{{mach_type}}" swtype="{{group_item.key}}"
+     with_items: "{{group_item.value | default([])}}"
+     loop_control:
+        loop_var: outer_item
+     when: not use_rest
+      
+   - name: Create Droplets with user passed strings using Rest
+     include_tasks: create_droplet_rest.yml mac_type="{{mach_type}}" swtype="{{group_item.key}}"
+     with_items: "{{group_item.value | default([])}}"
+     loop_control:
+        loop_var: outer_item
+     when: use_rest

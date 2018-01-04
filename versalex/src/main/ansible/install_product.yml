@@ -1,30 +1,48 @@
 ---
-- hosts: "versalex:proxy"
-  # strategy: free
+- name: Installs Versalex Dependencies 
+  hosts: "versalex:proxy:integrations:shares"
   roles:
-    - { role: install.product/common}
+    - { role: common/versalex/deps,tags: 'package-deps' }
 
-- hosts: "versalex"
+- name: Generates and setups license keys for versalex instance
+  hosts: "versalex"
   roles:
-    - { role: install.product/license }
+    - { role: install.product/license,tags: 'setup-license' }
 
-- hosts: "versalex"
-  # strategy: free
+- name: Downloads and Installs versalex product
+  hosts: "versalex"
   roles:
-    - { role: install.product/download, prod_key: "{{ versalex }}" }
-    - { role: install.product, prod_dict: "{{ versalex }}" } 
-    
-- hosts: "proxy"
-  # strategy: free
+    - { role: install.product, prod_dict: "{{ versalex }}",tags: 'install-versalex' } 
+
+- name: Downloads and Installs VLProxy
+  hosts: "proxy"
   roles:    
-    - { role: install.product, prod_dict: "{{ proxy }}" } 
+    - { role: install.product, prod_dict: "{{ proxy }}",tags: 'install-proxy' } 
 
-- hosts: "versalex"
-  # strategy: free
+- name: Enabled VLNavigator Users and Restifies versalex products
+  hosts: "versalex"
   roles:
-    - { role: install.product/users } 
+    - { role: install.product/restify,tags: ['enable-rest'] } 
 
-- hosts: "versalex"
-  # strategy: free
+- name: Start and stop versalex products    
+  hosts: "versalex"
   roles:
-    - { role: install.product/tests } 
+    - { role: common/versalex/start_stop/,status: start,tags: ['versalex-start_stop'] } 
+    
+- name: Generates Signing Certificates using Python module
+  hosts: "versalex"
+  connection: local  
+  roles:
+    - { role: install.product/listener/,certname: "LOC_LIST",tags: ['setup-listener'] }
+
+- name: Apply Listener Properties with Signing Certificates    
+  hosts: "versalex"
+  roles:
+    - { role: install.product/listener/update_props,certname: "LOC_LIST",tags: ['setup-listener'] }
+    - { role: common/versalex/restart/,tags: ['versalex-restart'],tags: ['setup-listener'] }
+
+- name: Validates versalex instances by rest calls        
+  hosts: "versalex"
+  strategy: free
+  roles:
+    - { role: install.product/tests,tags: 'install-tests' }  

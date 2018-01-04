@@ -6,7 +6,7 @@
         tp_profile: "{{group_item.value}}"
 
    - name: Configure DataSet in TP Side Nodes
-     include: "configure_tp.yml"
+     include_tasks: "configure_tp.yml"
      with_dict: "{{ tpdataset | default({}) }}"
      loop_control:
         loop_var: conf_dataset

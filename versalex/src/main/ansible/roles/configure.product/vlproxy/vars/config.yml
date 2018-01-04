@@ -16,7 +16,7 @@ remote_read_timeout : 150
 reverse_proxy_explicit_ftp_ports : 9000 
 reverse_proxy_ftp_data_ports : 9100-9200
 reverse_proxy_ftp_ports : 9021
-reverse_proxy_http_ports : 80
+reverse_proxy_http_ports : 5080
 reverse_proxy_https_ports : 443
 reverse_proxy_implicit_ftps_ports : 9990
 reverse_proxy_load_balancing : Yes

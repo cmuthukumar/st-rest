@@ -1,0 +1,23 @@
+{
+  "id": "{{id}}",
+  "alias": "{{alias}}",
+  "active": true,
+  "editable": true,
+  "runnable": true,
+  "ready": true,
+  "enabled": true,
+  "schedule": "{{schedule_option}}",
+  "type": "Commands",
+  "commands": [
+    "# Send files to remote host",
+    "PUT -DEL *"
+  ],
+  "connection": {
+    "href": "{{conn_href}}"
+  },
+  "_links": {
+    "self": {
+      "href": "/api/actions/{{id}}"
+    }
+  }
+}

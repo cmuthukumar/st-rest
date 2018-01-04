@@ -22,7 +22,7 @@
        state: present
        block: |
            CompanyName = {{lic.license_CompanyName }}
-           SerialNumber = {{ lic.license_SerialNumber }}{{ 10000 | random}}
+           SerialNumber = {{ lic.license_SerialNumber }}{{ play_hosts.index(inventory_hostname) }}{{ 1000 | random(start=100)}}
            KeyExpiration = {{ lic.license_KeyExpiration }}
            Product = {{ lic.license_Product }}
            Limit.HSP = {{ lic.license_Limit_HSP }}
@@ -38,7 +38,7 @@
      delegate_to: 127.0.0.1
      register: lic_download_status
      retries: 3
-     delay: 10
+     delay: 5
      until: lic_download_status|success
      
    - name: Generate License_Key file for each node using Licenser.Jar file

@@ -1,0 +1,14 @@
+---
+# tasks file for setup.testprofiles
+- block:
+   - name: "Call Update Properties uusing Command line"
+     include_tasks: "string_update.yml"
+     with_dict: "{{ versalex | default({}) }}"
+     loop_control:
+        loop_var: str_update
+
+   - name: Printing for Debug
+     debug: msg="Done with Updating Properties "
+     delegate_to: 127.0.0.1
+- rescue:
+   - fail: msg="Setup Test Profile Module Failed"

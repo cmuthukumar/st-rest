@@ -1,0 +1,10 @@
+---
+# tasks file for download.product
+- block:     
+    - name: Setup VLNavigator Admin Creds for Versalex
+      include_tasks: "users.yml"
+      with_dict: "{{ versalex | default({}) }}"
+      loop_control:
+         loop_var: group_item 
+  rescue:
+      - fail: msg="Setting VLNavigator Admin Creds Failed"

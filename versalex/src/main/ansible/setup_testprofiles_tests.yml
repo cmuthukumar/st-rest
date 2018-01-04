@@ -1,4 +1,0 @@
----
-- hosts: "{{server_conf}}:{{tp_conf}}"
-  roles:
-     - { role: setup.testprofiles/tests }    

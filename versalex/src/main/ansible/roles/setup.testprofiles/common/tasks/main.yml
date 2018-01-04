@@ -1,0 +1,12 @@
+---
+# tasks file for pre_setup
+- block:
+   - name: Creates Map Directory
+     file:
+       path: "{{playbook_dir}}/dataset/"
+       state: directory
+       mode: 0777
+     delegate_to: 127.0.0.1
+     
+- rescue:
+   - fail: msg="Setup Test Profile Module Failed" 

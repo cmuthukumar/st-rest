@@ -8,7 +8,7 @@
         file: config.yml
 
   - name: Configure VLProxy File 
-    include: create_properties.yml
+    include_tasks: create_properties.yml
 
   - name: Restart VersalEx Process 
-    include: restart_versalex.yml
+    include_tasks: restart_versalex.yml

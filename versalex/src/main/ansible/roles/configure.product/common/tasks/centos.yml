@@ -1,6 +1,6 @@
 ---
-   - name: Install lxml using YUM
-     yum: name=python-lxml state=present 
+   # - name: Install lxml using YUM
+     # yum: name=python-lxml state=present 
         
    - name: Install NFS on CentOS or Redhat machines
      yum: name="{{ item }}" state=installed

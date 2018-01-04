@@ -1,4 +1,0 @@
----
-- hosts: "versalex:proxy"  
-  roles:
-    - { role: configure.product/tests}

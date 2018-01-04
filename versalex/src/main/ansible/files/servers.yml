@@ -2,7 +2,7 @@
 hardware:
    versalex:           
       - name: harmony
-        ram_size: 1gb
+        ram_size: 4gb
         region: nyc1
         image_name: "centos-6-x64"
         qty: 2
@@ -17,24 +17,24 @@ hardware:
         ram_size: 1gb
         region: nyc1
         image_name: "centos-6-x64"
-        qty: 1
+        qty: 2
    shares:           
       - name: share
-        ram_size: 1gb
+        ram_size: 4gb
         region: nyc1
         image_name: "centos-6-x64"
         qty: 1        
 software:
    versalex:
       - name: harmony
-        version: "5.4.1-SNAPSHOT"
+        version: "5.4.2-SNAPSHOT"
         install_location: "/root/Harmony/"
    integrations:
       - name: mysql
         version: "mysql:latest"
    proxy:
       - name: vlproxy
-        version: "5.4.1-SNAPSHOT"
+        version: "5.4.2-SNAPSHOT"
         install_location: "/root/VLProxy/"
    shares:           
       - name: share
@@ -42,8 +42,9 @@ software:
 dataset:
    versalex:
       - name: as2
-        total: 20
-        schedule_actions: true  
-      - name: ftp
-        total: 20
+        total: 100
         schedule_actions: true         
+      - name: ftp
+        total: 100
+        schedule_actions: true
+        # host_custom_props: '{"Defaulthomedir": "%datashare%/local/root/%username%"}'

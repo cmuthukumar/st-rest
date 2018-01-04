@@ -29,24 +29,41 @@ sh 'java -version'
     stage('CheckOut')
         {
 // Checkout Github Branch to Specific Directory        
-        checkout scm
-       // checkout([$class: 'GitSCM', branches: [[name: ${gitStBranch}]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '683540f0-61a9-48c1-acef-dc5520fb6466', url: 'https://github.com/CleoDev/st.git']]])
+       checkout scm
+       //checkout([$class: 'GitSCM', branches: [[name: ${gitStBranch}]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '683540f0-61a9-48c1-acef-dc5520fb6466', url: 'https://github.com/CleoDev/st.git']]])
         sh 'printenv'
             }
 //def systestvexImage=docker.build('st-versalex:1.0','.')
-    def st_ansibleImage =  docker.image('cleo/ansible:st_2.0');
+    def st_ansibleImage =  docker.image('cleo/ansible:st_3.0');
     withDockerRegistry([credentialsId: 'DockerCleoSysTest', url: 'https://hub.docker.com/r/cleo/ansible/']) {
     st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
     {    
     try{
     stage('Create Nodes')
             {
-                createNodes(params)
+		parallel(
+		(params[0]): {
+			createNodes(params[0])
+				},
+		(params[1]): {
+				createNodes(params[1])
+			}	  
+          )
+              //  createNodes(params)
             }
     stage('Install Product')
             {
-                installProduct()
-            }
+			 
+	parallel(
+		(params[0]): {
+			installProduct(params[0])
+				},
+			(params[1]): {
+			installProduct(params[1])
+				}	  
+             )   
+				//installProduct(params)
+			}
 
     stage('Install Integrations')
             {
@@ -59,16 +76,21 @@ sh 'java -version'
                 configProduct()
             } 
 
+		
     stage('Setup TestProfiles')
             {
                 setupTestProfiles()
             } 
 
-    stage('Setup Sync')
+	//stage('Setup Sync')
+		//{
+		//	setupSync()
+		//}  
+			
+    stage('Run Tests')
             {
-                setupSync()
-            }             
-            
+                runTests()
+            } 
         }
         finally{
         
@@ -80,29 +102,31 @@ sh 'java -version'
   
 }
 
-  
-    def createNodes(params)
+    def createNodes(param)
     {
     withCredentials([[$class: 'StringBinding', credentialsId: 'doCredentials', variable: 'do_ap_token']]) {
-        println "Inside Create Node"
-        for(int i=0; i<params.size(); i++ )
-        {
-        println "Creating Nodes for ${params[i]}"
-           sh "cd ${workdir} && ansible-playbook setup_topology.yml -c local -e machine_type=${params[i]} -e do_api_token=${env.do_ap_token}"
-           sh "cd ${workdir} && ansible-playbook setup_vars.yml -c local -i inventory/ -e machine_type=${params[i]}"
-        }
-        
+      //  println "Inside Create Node"
+       // for(int i=0; i<params.size(); i++ )
+       // {
+        println "Creating Nodes for ${param}"
+           sh "cd ${workdir} && ansible-playbook setup_topology.yml -c local -e machine_type=${param} -e do_api_token=${env.do_ap_token} -e username=${username} -e sshkey_name='st-versalex' "
+		   
+           sh "cd ${workdir} && ansible-playbook setup_vars.yml -c local -i inventories/${param}/ -e machine_type=${param} "
+		  // }        
         }
     }
     
-    def installProduct()
+    def installProduct(param)
     {
-    println "Install Product on both "
-       for(int i=0; i<params.size(); i++ )
-        {
-        println "Installing Product for ${params[i]}"
-           sh "cd ${workdir} && ansible-playbook install_product.yml -i inventory/ -e machine_type=${params[i]}"
-        }
+    println "Install Product for ${param} "
+
+			sh "cd ${workdir} && ansible-playbook -i inventories/${param}/ -e machine_type=${param} install_product.yml "
+					
+     //  for(int i=0; i<params.size(); i++ )
+     //  {
+			//println "Installing Product for ${params[i]}"
+          //sh "cd ${workdir} && ansible-playbook -i inventories/${params[i]}/ -e machine_type=${params[i]} install_product.yml "
+       //}
     }
 
     def installIntegrations()
@@ -111,7 +135,7 @@ sh 'java -version'
        for(int i=0; i<params.size(); i++ )
         {
         println "Installing Product for ${params[i]}"
-           sh "cd ${workdir} && ansible-playbook install_integrations.yml -i inventory/ -e machine_type=${params[i]}"
+           sh "cd ${workdir} && ansible-playbook -i inventories/${params[i]}/ -e machine_type=${params[i]} install_integrations.yml "
         }
     }
     
@@ -121,23 +145,33 @@ sh 'java -version'
        for(int i=0; i<params.size(); i++ )
         {
         println "Installing Product for ${params[i]}"
-           sh "cd ${workdir} && ansible-playbook configure_product.yml -i inventory/ -e machine_type=${params[i]}"
+           sh "cd ${workdir} && ansible-playbook -i inventories/${params[i]}/ -e machine_type=${params[i]} configure_product.yml "
         }
     }  
-
+	
     def setupTestProfiles()
     {
     println "Setup Test Profiles for Server and TP Side"
    
-           sh "cd ${workdir} && ansible-playbook setup_testprofiles.yml -i inventory/ -e server_conf=${params[0]} -e tp_conf=${params[1]}"
+           sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'rest' "
      
     } 
-
+	
     def setupSync()
     {
     println "Setup Sync for Server Side"
 
-           sh "cd ${workdir} && ansible-playbook setup_sync.yml -i inventory/${params[0]} "
+           sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ setup_sync.yml  "
+     
+    } 
+		
+    def runTests()
+    {
+    println "Running Tests"
+		
+          // sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e files_per_min=${filesPerMin} -e total_mins=${TotalMins} -e destCounter=2 run_tests.yml "
+		  sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=${AS2filesPerMin} -e as2_totalmins=${AS2TotalMins} -e as2_totalhosts=${AS2TotalHosts}  -e ftp_filespermin=${FTPfilesPerMin} -e ftp_totalmins=${FTPTotalMins} -e ftp_totalhosts=${FTPTotalHosts} run_tests.yml "
+
      
     } 
     

@@ -1,0 +1,44 @@
+---
+- name: Setting Dictionary Name JMX Configs Versalex
+  set_fact:
+        vex_db: "{{config_db.value}}"
+        
+- name: Download DB artifact from Maven Central
+  maven_artifact: 
+    group_id: "{{item.value.maven_groupid}}"
+    artifact_id: "{{item.value.maven_artifactid}}"
+    version: "{{item.value.maven_version}}"
+    dest: "{{vex_db.install_location}}lib/ext/"  
+  when: "'db' in item.value.type"  
+  with_dict: "{{ integrations | default({}) }}"
+  register: mysql_download
+  ignore_errors: yes
+  register: maven_db
+  retries: 2
+  delay: 5  
+  until: maven_db|success
+        
+- name: Extract DB IP 
+  set_fact:
+    db_ip: "{{ groups['integrations'] | map('extract', hostvars, ['ansible_ssh_host']) | join(',') }}"
+  when: "'db' in item.value.type"
+  with_dict: "{{ integrations | default({}) }}"  
+  delegate_to: 127.0.0.1
+  register: db_ip_status
+  retries: 2
+  delay: 5  
+  until: db_ip_status|success
+  
+- name: Configure DB in Remote Machines
+  shell: jre/bin/java -cp "$CLASSPATH" com.cleo.systest.SetupOptions "{{vex_db.dname}}" "{{vex_db.install_location}}" "DB" "jdbc:{{item.value.app_type}}://{{db_ip}}:{{item.value.port}}/{{item.value.dbname}}" "{{item.value.driver_str}}" "{{item.value.username}}" "{{item.value.password}}" 1 "jdbc:{{item.value.app_type}}://{{db_ip}}:{{item.value.port}}/{{item.value.dbname}}"
+  environment:
+     CLASSPATH: ":{{vex_db.install_location}}lib/versalex_setup-latest.jar:{{vex_db.install_location}}lib/*:{{vex_db.install_location}}lib/help/*:{{vex_db.install_location}}lib/hibernate/*:{{vex_db.install_location}}lib/secureshare/*:{{vex_db.install_location}}webserver/AjaxSwing/lib/*:{{vex_db.install_location}}lib/json/*"
+  args:
+     chdir: "{{vex_db.install_location}}"
+  when: "'db' in item.value.type"
+  with_dict: "{{ integrations | default({}) }}"  
+  register: db_config
+  retries: 2
+  delay: 5  
+  until: db_config|success
+  

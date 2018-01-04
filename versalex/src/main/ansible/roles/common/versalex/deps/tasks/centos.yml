@@ -1,0 +1,62 @@
+---
+# tasks file for install.deps
+
+# - name: Install EPEL Repo.
+  # yum:
+    # name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm
+    # state: present
+
+# - name: Import EPEL GPG key.
+  # rpm_key:
+    # key: /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}
+    # state: present
+    
+- name: Install EPEL Repository
+  yum:
+    name: epel-release
+    state: present
+  register: epel_status
+  retries: 3
+  delay: 5
+  until: epel_status|success      
+ 
+- name: "Install Development tools,unzip,python-lxml,rng-tools,python-jinja2 service on {{inventory_hostname}} host"
+  yum:
+    name: "{{item}}"
+    state: present
+  with_items:
+        - "@Development tools"
+        - unzip
+        - "python-lxml"
+        - "rng-tools"
+        - "python-jinja2"
+        - rsync 
+  register: pkg_install
+  retries: 3
+  delay: 5
+  until: pkg_install|success
+ 
+- name: Update /etc/hosts from inventory
+  lineinfile: dest=/etc/hosts regexp='.*{{inventory_hostname}}$' line="{{ansible_default_ipv4.address}} {{inventory_hostname}}" state=present
+  register: etc_status
+  retries: 3
+  delay: 2
+  until: etc_status|success
+  
+- name: "Restart rngd,sshd,network service on {{inventory_hostname}} host"
+  service:
+    name: "{{item}}"
+    state: restarted
+  with_items:
+        - rngd
+        - sshd
+        - network
+  register: service_status
+  retries: 3
+  delay: 5
+  until: service_status|success           
+
+- name: Wait for SSH to come up
+  wait_for: host="{{ansible_ssh_host}}" port=22 delay=20 timeout=100 state=started
+  delegate_to: localhost
+  

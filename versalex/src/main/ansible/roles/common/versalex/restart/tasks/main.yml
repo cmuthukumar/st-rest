@@ -1,0 +1,10 @@
+---
+# tasks file for download.product
+- block:     
+    - name: Kill and Start Versalex Process 
+      include_tasks: "restart.yml"
+      with_dict: "{{ versalex | default({}) }}"
+      loop_control:
+         loop_var: restart_item 
+  rescue:
+      - fail: msg="Versalex Service Status Change Faileed"

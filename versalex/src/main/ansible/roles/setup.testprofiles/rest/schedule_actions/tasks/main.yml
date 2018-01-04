@@ -1,0 +1,20 @@
+---
+# tasks file for setup.testprofiles
+- block:
+    - name: IP Address to Schedule Action
+      debug: msg="IP Address to Schedule Action- {{ansible_ssh_host.split(',')}}"
+      
+    - name: Schedule Actions for Versalex Hosts
+      schedule_actions:
+        hosts: "{{ ansible_ssh_host.split(',') }}"
+        schedule_option: "{{schedule_option}}"
+        action_type: "{{action_type}}"
+        total_actions: "{{total_actions}}"
+      register: sched_action      
+      delegate_to: 127.0.0.1
+          
+    - name: Schedule Actions Debug
+      debug: msg="Schedule Actions{{sched_action}}"
+      delegate_to: 127.0.0.1
+- rescue:
+   - fail: msg="Schedule Actions for Versalex Failed"     

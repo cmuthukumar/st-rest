@@ -1,9 +1,22 @@
 ---
-# tasks file for create.topology
-    - name: Include Create Machines Role
-      include: "control_flow.yml"
-      vars:
-        mach_type: "{{machine_type}}"      
-      with_dict: "{{ hardware |default({}) }}"
-      loop_control:
-         loop_var: group_item
+# tasks file for destroy.topology
+    - name: Tag Name to Delete
+      debug: msg="Tag name {{tag_name}}"
+      
+    - name: Deleting Droplet by Tag Name {{tag_name}} Passed by user
+      uri:
+        url: "https://api.digitalocean.com/v2/droplets?tag_name={{tag_name}}"
+        method: DELETE
+        status_code: 204        
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Bearer {{do_token}}"
+      register: droplet_status      
+      retries: 3
+      delay: 2  
+      until: droplet_status|success
+      delegate_to: 127.0.0.1
+     
+    - name: Delete Droplets Status
+      debug: msg="Delete Droplets Status {{droplet_status}}"
+

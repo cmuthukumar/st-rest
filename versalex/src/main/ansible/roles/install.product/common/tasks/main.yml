@@ -1,8 +1,0 @@
----
-# tasks file for configure.product
-- block:
-      - name: Include Node Specific Variables
-        include: "{{ansible_distribution | lower}}.yml"
-        ignore_errors: yes
-  rescue:
-      - fail: msg="Install Product Common Tasks failed"

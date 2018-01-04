@@ -1,0 +1,30 @@
+---    
+- name: Configures jmx for versalex instances
+  hosts: "versalex"
+  roles:
+    - { role: configure.product/jmx,tags: ['setup-jmx'] } 
+
+- name: Restart versalex instances    
+  hosts: "versalex"
+  # #strategy: free
+  roles:
+    - { role: common/versalex/restart/,tags: ['versalex-restart'] } 
+
+- name: Validates versalex instances for jmx configs
+  hosts: "versalex"
+  roles:
+    - { role: setup.testprofiles/tests, tags: ['rest','java'] }
+    
+- name: Start and stop scheduler using command line interface
+  hosts: "versalex"
+  roles:
+    - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,stop' ,tags: ['rest'] }
+    - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,start' ,tags: ['rest'] }
+    
+# - hosts: "tpnodes-versalex"
+  # roles:
+    # - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,start' ,tags: ['rest'] }
+- name: Run tests for server and tpnodes
+  hosts: "shares"
+  roles: 
+      - { role: run.tests/,as2_filespermin: "{{as2_filespermin|default(0)}}",as2_totalmins: "{{as2_totalmins|default(0)}}",as2_totalhosts: "{{as2_totalhosts|default(0)}}",ftp_filespermin: "{{ftp_filespermin|default(0)}}",ftp_totalmins: "{{ftp_totalmins|default(0)}}",ftp_totalhosts: "{{ ftp_totalhosts|default(0)  }}",tags: 'run_tests' }

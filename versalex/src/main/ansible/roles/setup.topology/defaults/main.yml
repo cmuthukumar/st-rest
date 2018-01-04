@@ -1,4 +1,0 @@
----
-# defaults file for create.topology
-machine_type: digitalocean
-do_token: "{{do_api_token}}"

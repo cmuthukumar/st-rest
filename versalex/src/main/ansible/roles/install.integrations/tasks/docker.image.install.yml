@@ -16,14 +16,28 @@
         published_ports: "{{integrations.app_port}}:{{integrations.app_port}}"        
         recreate: true
         restart_policy: always
-       # recreate: yes
-      register: docker_details      
+        # command: 'mysql -u root -ptestdocker -D mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;" '
+      register: docker_details
+      # recreate: yes
       # until: "'failed' not in docker_details"
       # retries: 3
       # delay: 10
       
     - name: Docker Container IP address
       debug: msg="IP Address is:{{docker_details.ansible_facts.docker_container['NetworkSettings']['IPAddress']}}"
+      
+    - name: Add Container name
+      add_host: 
+        name: "{{integrations.name}}"
+        ansible_connection: docker
+        ansible_user: root
+        
+    # - mysql_user:
+        # name: root
+        # append_privs: true
+        # priv: '*.*:ALL'
+        # state: present
+
       # with_items: "{{docker_details}}"
     # tasks file for docker.install.debian.ubuntu linux
 #    - debug: msg="Docker Image image_args-{{image_args}} Version-{{version}} appl_port-{{appl_port}}"

@@ -13,16 +13,68 @@
    
    - name: Print Java Process Kill Status
      debug: msg="Kill Application Status {{javakill_status}}"
+
+   - name: Copy Installer to Remote Install Location and Restart network service if failed
+     block:
+       - name: SCP Copy Installer to Remote Install Location
+         shell: "/usr/bin/scp {{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}} root@{{ansible_ssh_host}}:{{install.install_location}}"
+         register: scp_status
+         async: 180
+         poll: 30         
+         delegate_to: 127.0.0.1
+     rescue:
+       - name: Restart Network Service as copying to remote machine is failed
+         service:
+            name: network
+            state: restarted            
+         register: network_status
+         retries: 2
+         delay: 4
+         until: network_status |success
+         
+       - name: Copy Installer to Remote Install Location using Rsync
+         synchronize:
+            src: "{{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}}"
+            dest: "{{install.install_location}}"
+            mode: push
+            rsync_opts:
+                - "--chmod=a+rwx"
+         environment:
+                PATH: "/usr/bin/rsync:{{ ansible_env.PATH }}:/usr/bin"
+         become: yes
+         register: rsync_status     
+         retries: 2
+         delay: 3
+         until: rsync_status |success
+         delegate_to: 127.0.0.1
+     always:
+       - debug: msg="Done for Copying to Remote Location"
+         
+   # - name: SCP Copy Installer to Remote Install Location
+     # shell: "/usr/bin/scp {{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}} root@{{ansible_ssh_host}}:{{install.install_location}}"
+     # register: scp_status
+     # become: yes
+     # retries: 2
+     # delay: 3
+     # until: scp_status |success
+     # delegate_to: 127.0.0.1
+     # ignore_errors: yes     
+    
+
+   # - name: Copy Installer to Remote Install Location
+     # copy: src="{{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}}" dest="{{install.install_location}}" mode=0777
+     # register: copy_mod_status
+     # become: yes
+     # retries: 2
+     # delay: 3
+     # until: copy_mod_status |success
+     # delegate_to: 127.0.0.1
      
-   - name: Copy Installer to Remote Install Location
-     copy: src="{{install.download_location}}{{install.dname}}-{{install.version}}.{{install.nexus_packaging}}" dest="{{install.install_location}}" mode=0777
-   
    - name: Install VersalEx Installer in Silent Mode   
      shell: "./{{install.dname}}-{{install.version}}.{{install.nexus_packaging}} -DUSER_INSTALL_DIR={{install.install_location}} -i  silent"
      args:
        chdir: "{{install.install_location}}"
      register: installres
-     
      
    - name: Capture SerialNumber and Write Node File  
      shell: "./{{install.dname}}c -s license |grep 'Serial Number' | awk -F '=' '{print $2}' "
@@ -37,13 +89,13 @@
    - name: Append to Host variable file
      lineinfile:
        create: yes
-       dest: "{{playbook_dir}}/inventory/host_vars/{{inventory_hostname}}.yml"
+       dest: "{{playbook_dir}}/inventories/{{machine_type}}/host_vars/{{inventory_hostname}}.yml"
        regexp: '^serialno'       
        line: "serialno: {{item.line}}"
        state: present     
        insertafter: "{{item.insertafter}}"
      with_items:
-        - {  line: "{{serifile.stdout}}", insertafter: EOF}
+        - {  line: "{{serifile.stdout|replace(' ','')}}", insertafter: EOF}
      delegate_to: 127.0.0.1
     
      

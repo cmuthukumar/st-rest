@@ -1,8 +1,6 @@
 ---
 # defaults file for setup.group.vars
 defaults:
-    share:
-        server_share_path: "/root/share/"
     versalex: &vexref
         vex_heapmem_min: 256M
         vex_heapmem_max: 2048M
@@ -28,7 +26,7 @@ defaults:
         #nexus_artifactid: Harmony 
         nexus_classifier: "linux64-jre18"
         nexus_packaging: bin    
-        download_location: "/home/SystemTestNew/vexdownload/"                 
+        download_location: "{{playbook_dir}}/download/"                 
     license: &lic
         license_nexus_repourl: "http://contd.cleo.com/nexus/service/local/artifact/maven/content"
         license_nexus_repoid: cleo
@@ -84,32 +82,36 @@ defaults:
         host_range: 1-20
         mailbox_range: 1-1
         action_range: 1-1
-        create_certs: true       
-        host_custom_props: {}
-        mailbox_custom_props: {}
-        action_custom_props: {}
+        create_certs: true
+        port: 5080
+        host_custom_props: "{}"
+        mailbox_custom_props: "{}"
+        action_custom_props: "{}"
     ftp:
         host_range: 1-20
         mailbox_range: 1-1
         action_range: 1-1
+        port: 9021
         create_certs: true       
-        host_custom_props: {}
-        mailbox_custom_props: {}
-        action_custom_props: {}        
+        host_custom_props: "{'Defaulthomedir':'%datashare%/ftp/%username%'}"
+        mailbox_custom_props: "{}"
+        action_custom_props: "{}"
+    share:
+        server_share_path: "/root/share/"
+        
     mysql:
         type: "db"
-        maven_artifactid: mysql-connector-java
-        maven_groupid: mysql
-        maven_version: 5.1.24
-        maven_destfilename: "mysqltest24.jar"
-        app_type: mysql
-        node_ip: dbsrv1
+        maven_artifactid: "mysql-connector-java"
+        maven_groupid: "mysql"
+        maven_version: "5.1.24"
+        app_type: "mysql"
+        node_ip: "dbsrv1"
         # jdbc_url: "jdbc:mysql://2.2.2.2:3306/test1"
         port: 3306
         dbname: mysql
         driver_str: "com.mysql.jdbc.Driver"
-        username: root
-        password: testdocker
+        username: "root"
+        password: "testdocker"
         docker: "true"
         use_docker_image: "true"
         app_srcdir: "/home/SystemTest/DockerFiles/"

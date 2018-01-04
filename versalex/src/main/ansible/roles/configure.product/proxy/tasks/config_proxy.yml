@@ -1,0 +1,19 @@
+---
+- name: Setting Dictionary Name Proxy for Configs
+  set_fact:
+        vex_proxy: "{{config_proxy.value}}"
+
+- name: Configure PROXY in Remote Machines on VersalEx Products
+  shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupOptions "{{vex_proxy.dname}}" "{{vex_proxy.install_location}}" "PROXY" "{{item.2.type}}" "{{hostvars[item.0]['ansible_eth0']['ipv4']['address']}}" "{{item.2.port}}" "{{item.2.revfwdproxy}}"
+  environment:
+     CLASSPATH: ":lib/versalex_setup-latest.jar:lib/*:lib/api/connector/*:lib/aws/*:lib/connector/*:lib/docdb/*:lib/hadoop/*:lib/help/*:lib/hibernate/*:lib/jersey/*:lib/json/*:lib/saml/*:lib/scim/*:lib/secureshare/*:lib/uri/*:lib/vaadin/*:lib/validator/*:lib/ws/*:webserver/AjaxSwing/lib/ajaxswing.jar:webserver/AjaxSwing/lib/commons-fileupload-1.0.jar:webserver/AjaxSwing/lib/freemarker.jar:webserver/AjaxSwing/lib/jsonrpc-1.0.jar:webserver/AjaxSwing/lib/boot/asboot.jar:webserver/AjaxSwing/lib/install/asm-all-3.1.jar:lax.jar"
+  args:
+     chdir: "{{vex_proxy.install_location}}"
+  # with_dict: "{{ proxy | default({}) }}"
+  with_nested:       
+       - "{{groups['proxy']  |default({})}}"
+       - "{{ proxy | dictsort }}"
+  register: proxy_config
+  retries: 3
+  delay: 5  
+  until: proxy_config|success

@@ -1,121 +1,135 @@
-Create Machines
-=========
+Setup Topology
+===================
 
-  * Create Machines on DigitalOcean based on yaml config file
+  * Creates Droplets on Digital Ocean based on servers and tpnodes yaml configurations passed by user
 
-Requirements
-------------
-1. Digital Ocean API TOKEN - Login to DigitalOcean to get your API token
+Requirements:-
+--------------------
 
-Role Variables
+### Digital Ocean API TOKEN and SSH Keys
+
+	* Get DigitalOcean API Token for your account		
+	   See Details in <https://www.digitalocean.com/community/tutorials/how-to-use-the-digitalocean-api-v2>	
+	
+	* Generate SSH Key Pair locally (using sshkeygen like tools). 
+	
+	* Add SSH Public key to your Digital Ocean Account.Note down SSH Key name.
+
+Role Variables:-
 --------------
-
----
-hardware:
-   versalex:           
-      - name: harmony -- (Versalex product names.. ex: harmony, lexicom, vltrader)
-        ram_size: 1gb -- (Machine ramsize... ex: 1gb,gb,4gb,8gb,16gb)
-        region: nyc1  -- (Region Names ...ex: nyc1,nyc2,nyc3,)
-        image_name: "centos-6-x64" -- (CentOS, Ubuntu...
-        qty: 2 -- 
+```
+	servers.yml:- <checkout dir>st/versalex/src/main/ansible/files/servers.yml
+	servers.yml:- <checkout dir>st/versalex/src/main/ansible/files/tpnodes.yml
+	hardware:
+	   versalex:           
+	      - name: harmony -- (Versalex product names.. ex: harmony, lexicom, vltrader)
+		ram_size: 1gb -- (Machine ramsize... ex: 1gb,gb,4gb,8gb,16gb)
+		region: nyc1  -- (Region Names ...ex: nyc1,nyc2,nyc3,)
+		image_name: "centos-6-x64" -- (CentOS, Ubuntu...
+		qty: 2 -- No of Nodes need to be created
         
-        
-
-Dependencies
+```       
+ 	
+Dependencies:-
 ------------
-
+       None
   
-###Checkout:
+Checkout:-
 -------------
-  * Checks out java and ansible code from github branch with required resource files (pom..etc..) to user machine(ex: jenkins slave machine)
+  * Checks out code from github repo https://github.com/CleoDev/st/ branch(ex: master) with required resource files to user machine(ex: jenkins slave machine)/local
+	<check out dir>
+	
+Sub Roles:-
+-------------
+* upload_sshkey
+```
 
+	1. Verify SSH Key exists in DigitalOcean
+	2. Creates DigitalOcean Droplets based on SSH Key
+	
+```
 
-####Maven Commands:
-	  *  checkout([$class: 'GitSCM', branches: [[name: "${gitSysTestBranch}"]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '683540f0-61a9-48c1-acef-dc5520fb6466', url: 'https://github.com/CleoDev/EFSS.git']]])    
+* tasks
+```
 
-#####Results:
+	1. Creates DigitalOCean Droplets based on SSH Key and API Token passed by user	
+
+```
+
+* create_hosts
+```
+
+	1. Creates hosts inventory file for further processing	like below	
+
+		[root@localhost ansible]# cat inventories/servers/hosts
+		[versalex]
+		servers-versalex-1 ansible_ssh_host=67.205.136.55  appl=harmony subtype=versalex
+		servers-versalex-2 ansible_ssh_host=198.199.75.196  appl=harmony subtype=versalex
+		[all]
+		servers-shares-1 ansible_ssh_host=67.207.94.186  appl=share subtype=shares
+		servers-proxy-1 ansible_ssh_host=162.243.163.13  appl=proxy subtype=proxy
+		servers-proxy-2 ansible_ssh_host=67.205.181.129  appl=proxy subtype=proxy
+		servers-versalex-1 ansible_ssh_host=67.205.136.55  appl=harmony subtype=versalex
+		servers-versalex-2 ansible_ssh_host=198.199.75.196  appl=harmony subtype=versalex
+		servers-integrations-1 ansible_ssh_host=208.68.39.251  appl=mysql subtype=integrations
+		[servers-shares]
+		servers-shares-1 ansible_ssh_host=67.207.94.186  appl=share subtype=shares
+		[servers-versalex]
+		servers-versalex-1 ansible_ssh_host=67.205.136.55  appl=harmony subtype=versalex
+		servers-versalex-2 ansible_ssh_host=198.199.75.196  appl=harmony subtype=versalex
+		[integrations]
+		servers-integrations-1 ansible_ssh_host=208.68.39.251  appl=mysql subtype=integrations
+		[shares]
+		servers-shares-1 ansible_ssh_host=67.207.94.186  appl=share subtype=shares
+		[servers]
+		servers-shares-1 ansible_ssh_host=67.207.94.186  appl=share subtype=shares
+		servers-proxy-1 ansible_ssh_host=162.243.163.13  appl=proxy subtype=proxy
+		servers-proxy-2 ansible_ssh_host=67.205.181.129  appl=proxy subtype=proxy
+		servers-versalex-1 ansible_ssh_host=67.205.136.55  appl=harmony subtype=versalex
+		servers-versalex-2 ansible_ssh_host=198.199.75.196  appl=harmony subtype=versalex
+		servers-integrations-1 ansible_ssh_host=208.68.39.251  appl=mysql subtype=integrations
+		[ungrouped]
+		[proxy]
+		servers-proxy-1 ansible_ssh_host=162.243.163.13  appl=proxy subtype=proxy
+		servers-proxy-2 ansible_ssh_host=67.205.181.129  appl=proxy subtype=proxy
+		[servers-integrations]
+		servers-integrations-1 ansible_ssh_host=208.68.39.251  appl=mysql subtype=integrations
+		[servers-proxy]
+		servers-proxy-1 ansible_ssh_host=162.243.163.13  appl=proxy subtype=proxy
+		servers-proxy-2 ansible_ssh_host=67.205.181.129  appl=proxy subtype=proxy
+		
+
+```
+
+Run Playbook with tags
+-----------------------
 	Checks out code from branch 
-```
-	<branch checkout dir>
-
-Below will be checked out from EFSS/non-shipped/test/automation/systemtesting/
-
-	controller - Ansible code used to control different stages of System Testing
-	
-	    * src/main/ansible - ansible roles and playbooks
-	    
-		configure.product
-		create.machines - role
-		install.apps
-		setup.testprofiles
-		
-		configure_product.yml - playbook calls configure.product role
-		create_machines.yml - playbook calls create.machines role
-		install_apps.yml - playbook calls install.apps role
-		setup_testprofiles.yml - playbook calls setup.testprofiles role
-		
-	    * pom.xml -	profiles defined here for each stage mapped to above stages
-			
-	setup_versalex - Java  used for Setting up Versalex Configuration
-			
-	    * src/main/java/com/cleo/systest - java classes used in generating system testing jars
-	    		
-		SetupOptions.java
-		SetupSchedule.java
-		SetupVersalex.java		
-		UtilTestdata.java
-		
-	    * pom.xml - profiles used to generate jars
-	    
-      * pom.xml	- Parent pom for System testing
 	
 ```
+	<check out dir>/st/versalex/src/main/ansible
 
+	cd to <check out dir>/st/versalex/src/main/ansible/roles/setup.topology/
 
-Example Playbook
-----------------
+    Run with defaults:- Run all sub roles in the playbook
+    
+        	ansible-playbook setup_topology.yml -e machine_type=servers -e do_api_token="<API token from digitalocean>" -e username="<any string represents your name>" -e sshkey_name="<ssh key name  from digitalocean>"
+    
+    Run with specifying tags:- 
+    
+		    ansible-playbook setup_topology.yml -e machine_type=servers -e do_api_token="<API token from digitalocean>" -e username="<any string represents your name>" -e sshkey_name="<ssh key name  from digitalocean>" --tags ['ssh-key','create-droplet','hosts-file']
 
-###Create Machines
--------------------
-  * Create Machines on DigitalOcean based on yaml config file
+	- hosts: localhost
+	  connection: local
+	  become: true
+	  vars_files:
+	    - "{{playbook_dir}}/files/{{machine_type}}.yml"
+	  roles:
+	    - {role: setup.topology/digitalocean/upload_sshkey,tags: 'ssh-key' }
+	    - {role: setup.topology/digitalocean/, machine_type: "{{machine_type}}", username: "{{username}}",tags: 'create-droplet'}
+	    - {role: setup.topology/digitalocean/create_hosts,tags: 'hosts-file' }
 
+	        
 ```
-Sample yaml config file
-- machine_type: digitalocean(plan to extend for physical machines and aws cloud machines in near future)
-- do_token: <digitalocean account api token..can be generated from digital ocean website for user account>
-systestnodes:
-   - type: servers (Groups hosts based on this type.This can not be changed by users as they wish)
-     configs:
-       - name: srv1 (Hostname for the box created)
-         ram_size: 8gb
-         region: blr1
-         image_name: "centos-6-5-x64"
-   - type: tpnodes 
-     configs:
-       - name: tpn1
-         ram_size: 8gb
-         region: blr1
-         image_name: "centos-6-5-x64"
-   - type: proxies
-     configs:
-       - name: proxy1
-         ram_size: 4gb
-         region: blr1
-         image_name: "centos-6-5-x64"
-   - type: shares
-     configs:
-       - name: share1
-         ram_size: 4gb
-         region: blr1
-         image_name: "centos-6-5-x64"
-   - type: dbservers
-     configs:
-       - name: dbsrv1
-         ram_size: 4gb
-         region: blr1
-         image_name: "centos-6-5-x64"
-     
- ```
  
 License
 -------

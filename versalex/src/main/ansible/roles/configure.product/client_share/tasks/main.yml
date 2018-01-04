@@ -6,10 +6,10 @@
         vexcli: "{{clishare.value}}"
 
    - name: Configure Client Side Shares
-     include: "configure_client_share.yml"             
+     include_tasks: "configure_client_share.yml"             
           
     # - name: Configure Client Side Shares
-      # include: "configure_client_share.yml"
+      # include_tasks: "configure_client_share.yml"
       # with_dict: "{{ versalex | default({}) }}"
       # loop_control:
           # loop_var: clishare     

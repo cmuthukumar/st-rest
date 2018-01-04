@@ -2,7 +2,7 @@
 # tasks file for configure.product
 - block:
       - name: Include Node Specific Variables
-        include: "{{ansible_distribution | lower}}.yml"
+        include_tasks: "{{ansible_distribution | lower}}.yml"
         ignore_errors: yes
   rescue:
       - fail: msg="Configure Product Module failed"
