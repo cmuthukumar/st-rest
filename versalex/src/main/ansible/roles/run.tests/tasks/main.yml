@@ -47,7 +47,7 @@
         - "{{jmeter_plugins_paramctrller_url}}"
 
     - name: Copy TestPlan(JMX) file to Shares
-      copy: src="{{playbook_dir}}/files/SysTest_Linux_New.jmx" dest="{{jmeter_dir}}apache-jmeter-{{jmeter_version}}/bin/"
+      copy: src="{{playbook_dir}}/files/SysTest_Linux.jmx" dest="{{jmeter_dir}}apache-jmeter-{{jmeter_version}}/bin/"
 
     - name: Set  Total Secs to Run Jmeter Scripts for Server
       set_fact:
@@ -80,7 +80,7 @@
       debug: msg="Jmeter res {{jmeter_arg.meta}}"
 
     - name: Run Jmeter with Configs
-      # shell: jmeter -n -t "SysTest_Linux_New.jmx" -Jas2.threads="{{dataset[item.0].threadCount}}" -Jas2.loopcount="{{(dataset[item.0].filespermin|int*dataset[item.0].totalmins|int/dataset[item.0].threadcount)}}" -Jas2.fileSize="{{dataset[item.0].fileSizes}}" -Jas2.destPath="{{dataset[item.0].share_dir}}" -Jas2.filesPerMin="{{dataset[item.0].filesPerMin}}" -Jas2.totalHosts="{{dataset[item.0].totalHosts}}"
+      # shell: jmeter -n -t "SysTest_Linux.jmx" -Jas2.threads="{{dataset[item.0].threadCount}}" -Jas2.loopcount="{{(dataset[item.0].filespermin|int*dataset[item.0].totalmins|int/dataset[item.0].threadcount)}}" -Jas2.fileSize="{{dataset[item.0].fileSizes}}" -Jas2.destPath="{{dataset[item.0].share_dir}}" -Jas2.filesPerMin="{{dataset[item.0].filesPerMin}}" -Jas2.totalHosts="{{dataset[item.0].totalHosts}}"
       shell: "{{jmeter_arg.meta}}"
       environment:
          PATH: "{{ ansible_env.PATH }}:{{jmeter_dir}}apache-jmeter-{{jmeter_version}}/bin/" 

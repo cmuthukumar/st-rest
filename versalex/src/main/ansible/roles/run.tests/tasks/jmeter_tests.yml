@@ -19,7 +19,7 @@
       
     - name: Convert Dataset Dictionary to Jmeter Arguments
       jmeter_args:
-        jmx: "/root/jmeter/apache-jmeter-3.3/bin/SysTest_Linux_New.jmx"
+        jmx: "/root/jmeter/apache-jmeter-3.3/bin/SysTest_Linux.jmx"
         protocols: "{{load_data}}"
       delegate_to: 127.0.0.1
       register: jmeter_arg
