@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="3.2" jmeter="3.3 r1808647">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="SystemTest" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="CreateFIles" enabled="true"/>
+      <hashTree>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="CreateFIles[IFC]" enabled="true">
+          <stringProp name="IfController.condition">(${__threadNum}==1 &amp;&amp; ${__BeanShell(vars.getIteration();,)} == 1)</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+        </IfController>
+        <hashTree>
+          <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="CreateFiles-[BS]" enabled="true">
+            <stringProp name="BeanShellSampler.query">import java.io.File;
+import java.io.*;
+import java.util.*;
+import java.io.FileFilter;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
+import org.apache.jmeter.services.FileServer;
+
+BufferedWriter writer = null;
+BufferedWriter destwriter = null;
+BufferedWriter srcwriter = null;
+
+try {
+String jmxpath = FileServer.getFileServer().getBaseDir();
+String fsep = File.separator;
+
+log.info(&quot;Dest Path&quot;+vars.get(&quot;destpath&quot;));
+File destdir = new File(vars.get(&quot;destpath&quot;));
+String protocol = vars.get(&quot;protocoltype&quot;);
+log.info(&quot;PROTOCOL NAME&quot;+protocol);
+
+File destfile = new File(protocol+&quot;_Dest.csv&quot;);
+File srcfile = new File(protocol+&quot;_Source.csv&quot;);
+props.put(&quot;jmx_path&quot;,jmxpath+fsep);
+File[] dirs = destdir.listFiles((FileFilter) DirectoryFileFilter.DIRECTORY);
+log.info(&quot;After Dirs Path Dirs&quot;+Arrays.toString(dirs));
+destwriter = new BufferedWriter(new FileWriter(destfile));
+srcwriter = new BufferedWriter(new FileWriter(srcfile)); 
+log.info(&quot;TotalHosts&quot;+vars.get(&quot;totalHosts&quot;));
+int totalHosts=Integer.parseInt(vars.get(&quot;totalHosts&quot;).trim());
+int count=0;
+for (File fold : dirs) {
+    vars.put(&quot;dest_&quot; + counter, fold.getAbsolutePath()+&quot;,&quot;);
+    destwriter.append(fold.getAbsolutePath()+fsep);
+    destwriter.append(&quot;\n&quot;);
+    count=count+1;
+    if(count==totalHosts)
+    {
+    	log.info(&quot;Breaking the loop as Total Hosts is less&quot;+vars.get(&quot;totalHosts&quot;));
+	break;    	
+    }
+}
+
+props.put(&quot;destCounter&quot;,Integer.toString(count));
+log.info(&quot;DestCount----&quot;+props.get(&quot;destCounter&quot;));
+destwriter.close();	
+log.info(&quot;File Sizes&quot;+vars.get(&quot;fsize&quot;));
+String fSize=vars.get(&quot;fsize&quot;);
+log.info(&quot;File Sizes to&quot;+fSize);
+String[] fsizes = fSize.split(&quot; &quot;);
+
+for(int i=0; i &lt; fsizes.length; i++)
+{
+String filepath=jmxpath+fsep+fsizes[i]+&quot;.txt&quot;;
+log.info(&quot;Each File Size::&quot;+filepath);
+File filesze = new File(filepath);
+int filesize=Integer.valueOf(fsizes[i]).intValue();
+StringBuilder sb = new StringBuilder(filesize);
+
+  for (int i=0; i&lt;=filesize; i++) {
+    sb.append(&apos;a&apos;);
+  }
+    writer = new BufferedWriter(new FileWriter(filesze));
+    writer.append(sb.toString());    
+    writer.close();    
+    srcwriter.append(filepath);
+    srcwriter.append(&quot;\n&quot;);
+}
+    srcwriter.close();
+}
+catch(Throwable e)
+{	
+	//System.out.println(&quot;Exception on &quot;+e.getMessage());
+	log.error(&quot;BeanShell Error&quot;+e);
+	throw e;	
+}
+finally {
+    if (writer != null) writer.close();
+    if (destwriter != null) destwriter.close();
+    if (srcwriter != null) srcwriter.close();
+}</stringProp>
+            <stringProp name="BeanShellSampler.filename"></stringProp>
+            <stringProp name="BeanShellSampler.parameters"></stringProp>
+            <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+          </BeanShellSampler>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="RunTests" enabled="true"/>
+      <hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="[SC]" enabled="true"/>
+        <hashTree>
+          <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="SourceCSV" enabled="true">
+            <stringProp name="delimiter">,</stringProp>
+            <stringProp name="fileEncoding"></stringProp>
+            <stringProp name="filename">${__BeanShell(ctx.getThreadGroup().getName())}_Source.csv</stringProp>
+            <boolProp name="ignoreFirstLine">false</boolProp>
+            <boolProp name="quotedData">false</boolProp>
+            <boolProp name="recycle">true</boolProp>
+            <stringProp name="shareMode">shareMode.all</stringProp>
+            <boolProp name="stopThread">false</boolProp>
+            <stringProp name="variableNames">srcfilepath</stringProp>
+          </CSVDataSet>
+          <hashTree/>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Target Hosts[LC]" enabled="true">
+            <boolProp name="LoopController.continue_forever">true</boolProp>
+            <stringProp name="LoopController.loops">1</stringProp>
+          </LoopController>
+          <hashTree>
+            <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="${__BeanShell(ctx.getThreadGroup().getName())}-[OS]" enabled="true">
+              <boolProp name="SystemSampler.checkReturnCode">false</boolProp>
+              <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
+              <stringProp name="SystemSampler.command">cp</stringProp>
+              <elementProp name="SystemSampler.arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="Argument">
+                    <stringProp name="Argument.name"></stringProp>
+                    <stringProp name="Argument.value">${srcfilepath}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                  <elementProp name="" elementType="Argument">
+                    <stringProp name="Argument.name"></stringProp>
+                    <stringProp name="Argument.value">${dest_path}-${__time(,)}-${__Random(111111,999999999,)}.txt</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <elementProp name="SystemSampler.environment" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+                <collectionProp name="Arguments.arguments"/>
+              </elementProp>
+              <stringProp name="SystemSampler.directory">/bin</stringProp>
+            </SystemSampler>
+            <hashTree>
+              <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Aggregate Report" enabled="false">
+                <boolProp name="ResultCollector.error_logging">false</boolProp>
+                <objProp>
+                  <name>saveConfig</name>
+                  <value class="SampleSaveConfiguration">
+                    <time>true</time>
+                    <latency>true</latency>
+                    <timestamp>true</timestamp>
+                    <success>true</success>
+                    <label>true</label>
+                    <code>true</code>
+                    <message>true</message>
+                    <threadName>true</threadName>
+                    <dataType>true</dataType>
+                    <encoding>false</encoding>
+                    <assertions>true</assertions>
+                    <subresults>true</subresults>
+                    <responseData>false</responseData>
+                    <samplerData>false</samplerData>
+                    <xml>false</xml>
+                    <fieldNames>true</fieldNames>
+                    <responseHeaders>false</responseHeaders>
+                    <requestHeaders>false</requestHeaders>
+                    <responseDataOnError>false</responseDataOnError>
+                    <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                    <assertionsResultsToSave>0</assertionsResultsToSave>
+                    <bytes>true</bytes>
+                    <sentBytes>true</sentBytes>
+                    <threadCounts>true</threadCounts>
+                    <idleTime>true</idleTime>
+                    <connectTime>true</connectTime>
+                  </value>
+                </objProp>
+                <stringProp name="filename"></stringProp>
+              </ResultCollector>
+              <hashTree/>
+            </hashTree>
+            <ConstantThroughputTimer guiclass="TestBeanGUI" testclass="ConstantThroughputTimer" testname="FilesPerMin" enabled="true">
+              <intProp name="calcMode">2</intProp>
+              <stringProp name="throughput">${filesPerMin}</stringProp>
+            </ConstantThroughputTimer>
+            <hashTree/>
+            <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="DestCSV" enabled="true">
+              <stringProp name="filename">${__BeanShell(ctx.getThreadGroup().getName())}_Dest.csv</stringProp>
+              <stringProp name="fileEncoding"></stringProp>
+              <stringProp name="variableNames">dest_path</stringProp>
+              <boolProp name="ignoreFirstLine">false</boolProp>
+              <stringProp name="delimiter">,</stringProp>
+              <boolProp name="quotedData">false</boolProp>
+              <boolProp name="recycle">true</boolProp>
+              <boolProp name="stopThread">false</boolProp>
+              <stringProp name="shareMode">shareMode.all</stringProp>
+            </CSVDataSet>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="AS2" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">${__P(as2.loopcount,0)}</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">${__P(as2.threads,0)}</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1511714315000</longProp>
+        <longProp name="ThreadGroup.end_time">1511714315000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <kg.apc.jmeter.control.ParameterizedController guiclass="kg.apc.jmeter.control.ParameterizedControllerGui" testclass="kg.apc.jmeter.control.ParameterizedController" testname="RunTests[PC]" enabled="true">
+          <elementProp name="ParameterizedController" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="AS2-Uvars" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="totalHosts" elementType="Argument">
+                <stringProp name="Argument.name">totalHosts</stringProp>
+                <stringProp name="Argument.value">${__P(as2.totalhosts,1)}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="filesPerMin" elementType="Argument">
+                <stringProp name="Argument.name">filesPerMin</stringProp>
+                <stringProp name="Argument.value">${__P(as2.filespermin,1)}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </kg.apc.jmeter.control.ParameterizedController>
+        <hashTree>
+          <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="RunTests[MC]" enabled="true">
+            <collectionProp name="ModuleController.node_path">
+              <stringProp name="-1227702913">WorkBench</stringProp>
+              <stringProp name="-1658628223">SystemTest</stringProp>
+              <stringProp name="870180470">RunTests</stringProp>
+              <stringProp name="2792914">[SC]</stringProp>
+            </collectionProp>
+          </ModuleController>
+          <hashTree/>
+        </hashTree>
+        <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="AS2-Results" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="FTP" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">${__P(ftp.loopcount,0)}</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">${__P(ftp.threads,0)}</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1511714315000</longProp>
+        <longProp name="ThreadGroup.end_time">1511714315000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <kg.apc.jmeter.control.ParameterizedController guiclass="kg.apc.jmeter.control.ParameterizedControllerGui" testclass="kg.apc.jmeter.control.ParameterizedController" testname="RunTests[PC]" enabled="true">
+          <elementProp name="ParameterizedController" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="FTP_Vars" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="totalHosts" elementType="Argument">
+                <stringProp name="Argument.name">totalHosts</stringProp>
+                <stringProp name="Argument.value">${__P(ftp.totalhosts,1)}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="filesPerMin" elementType="Argument">
+                <stringProp name="Argument.name">filesPerMin</stringProp>
+                <stringProp name="Argument.value">${__P(ftp.filespermin,1)}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </kg.apc.jmeter.control.ParameterizedController>
+        <hashTree>
+          <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="RunTests[MC]" enabled="true">
+            <collectionProp name="ModuleController.node_path">
+              <stringProp name="-1227702913">WorkBench</stringProp>
+              <stringProp name="-1658628223">SystemTest</stringProp>
+              <stringProp name="870180470">RunTests</stringProp>
+              <stringProp name="2792914">[SC]</stringProp>
+            </collectionProp>
+          </ModuleController>
+          <hashTree/>
+        </hashTree>
+        <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="FTP-Results" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+      </hashTree>
+      <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Aggregate Report" enabled="false">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="setUp Thread Group" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1513241111000</longProp>
+        <longProp name="ThreadGroup.end_time">1513241111000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </SetupThreadGroup>
+      <hashTree>
+        <kg.apc.jmeter.control.ParameterizedController guiclass="kg.apc.jmeter.control.ParameterizedControllerGui" testclass="kg.apc.jmeter.control.ParameterizedController" testname="AS2-CreateFiles[PC]" enabled="true">
+          <elementProp name="ParameterizedController" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="AS2-UseVars" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="protocoltype" elementType="Argument">
+                <stringProp name="Argument.name">protocoltype</stringProp>
+                <stringProp name="Argument.value">${__P(as2.protype,AS2)}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="destpath" elementType="Argument">
+                <stringProp name="Argument.name">destpath</stringProp>
+                <stringProp name="Argument.value">${__P(as2.destPath,/root/share/as2/outboxes/)}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="fsize" elementType="Argument">
+                <stringProp name="Argument.name">fsize</stringProp>
+                <stringProp name="Argument.value">${__P(as2.fileSize,7000 8000)} </stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="totalHosts" elementType="Argument">
+                <stringProp name="Argument.name">totalHosts</stringProp>
+                <stringProp name="Argument.value">${__P(as2.totalhosts,1)}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </kg.apc.jmeter.control.ParameterizedController>
+        <hashTree>
+          <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="AS2-CreateFiles[MC]" enabled="true">
+            <collectionProp name="ModuleController.node_path">
+              <stringProp name="-1227702913">WorkBench</stringProp>
+              <stringProp name="-1658628223">SystemTest</stringProp>
+              <stringProp name="1149928155">CreateFIles</stringProp>
+              <stringProp name="1385211703">CreateFIles[IFC]</stringProp>
+            </collectionProp>
+          </ModuleController>
+          <hashTree/>
+        </hashTree>
+        <kg.apc.jmeter.control.ParameterizedController guiclass="kg.apc.jmeter.control.ParameterizedControllerGui" testclass="kg.apc.jmeter.control.ParameterizedController" testname="FTP_CreateFiles[PC]" enabled="true">
+          <elementProp name="ParameterizedController" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="protocoltype" elementType="Argument">
+                <stringProp name="Argument.name">protocoltype</stringProp>
+                <stringProp name="Argument.value">${__P(ftp.protype,FTP)}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="destpath" elementType="Argument">
+                <stringProp name="Argument.name">destpath</stringProp>
+                <stringProp name="Argument.value">${__P(ftp.destPath,/root/share/ftp/outboxes/)}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="fsize" elementType="Argument">
+                <stringProp name="Argument.name">fsize</stringProp>
+                <stringProp name="Argument.value">${__P(ftp.fileSize,1000 2000)} </stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="totalHosts" elementType="Argument">
+                <stringProp name="Argument.name">totalHosts</stringProp>
+                <stringProp name="Argument.value">${__P(ftp.totalhosts,1)}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </kg.apc.jmeter.control.ParameterizedController>
+        <hashTree>
+          <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="FTP-CreateFiles[MC]" enabled="true">
+            <collectionProp name="ModuleController.node_path">
+              <stringProp name="-1227702913">WorkBench</stringProp>
+              <stringProp name="-1658628223">SystemTest</stringProp>
+              <stringProp name="1149928155">CreateFIles</stringProp>
+              <stringProp name="1385211703">CreateFIles[IFC]</stringProp>
+            </collectionProp>
+          </ModuleController>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+    </hashTree>
+    <WorkBench guiclass="WorkBenchGui" testclass="WorkBench" testname="WorkBench" enabled="true">
+      <boolProp name="WorkBench.save">true</boolProp>
+    </WorkBench>
+    <hashTree/>
+  </hashTree>
+</jmeterTestPlan>
