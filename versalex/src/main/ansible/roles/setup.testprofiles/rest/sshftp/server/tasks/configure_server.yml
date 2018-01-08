@@ -1,0 +1,40 @@
+---
+   - name: Print Hostvars
+     debug: msg="Versalex name{{group_item.key}}"     
+
+   # - name: Copy SetupOptions Jar File to remote location
+     # copy: src="{{playbook_dir}}/library/versalex_setup-latest.jar" dest="{{conf_server.install_location}}lib/"
+
+   - name: Set Dataset key
+     set_fact:
+          ds_key: "{{group_item.key}}"
+          
+   - name: Set macro name to Empty if shares not defined
+     set_fact: 
+        macro_name: ""
+     when: shares is not defined
+   
+   - name: Set macro name if defined
+     set_fact: 
+        macro_name: "%datashare%"
+     when: shares is defined
+    
+   - name: Configure Test Profiles in Remote Machines on SSH FTP Server
+     shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupOmniUsers "{{conf_server.name}}" "{{conf_server.install_location}}" "{{item.name}}" "{{macro_name}}" "{}" "{}" "{}" "{{item.total}}" "SSHFTP" "9052" "false"
+     environment:
+       CLASSPATH: ":lib/versalex_setup-latest.jar:lib/*:lib/api/connector/*:lib/aws/*:lib/connector/*:lib/docdb/*:lib/hadoop/*:lib/help/*:lib/hibernate/*:lib/jersey/*:lib/json/*:lib/saml/*:lib/scim/*:lib/secureshare/*:lib/uri/*:lib/vaadin/*:lib/validator/*:lib/ws/*:webserver/AjaxSwing/lib/ajaxswing.jar:webserver/AjaxSwing/lib/commons-fileupload-1.0.jar:webserver/AjaxSwing/lib/freemarker.jar:webserver/AjaxSwing/lib/jsonrpc-1.0.jar:webserver/AjaxSwing/lib/boot/asboot.jar:webserver/AjaxSwing/lib/install/asm-all-3.1.jar:lax.jar"
+     args:
+       executable: /bin/sh
+       chdir: "{{conf_server.install_location}}"
+     with_items: "{{dataset[ds_key]}}"
+     when: item.name | lower == 'sshftp'
+     register: profile_config
+
+   # - name: Configure Schedule Actions on Server Node
+     # shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupTestProfile "{{conf_server.name}}" "{{conf_server.install_location}}" "true"
+     # environment:
+       # CLASSPATH: ":{{conf_server.install_location}}SetupTestProfile.jar:{{conf_server.install_location}}lib/*:{{conf_server.install_location}}lib/help/*:{{conf_server.install_location}}lib/hibernate/*:{{conf_server.install_location}}lib/secureshare/*:{{conf_server.install_location}}webserver/AjaxSwing/lib/*:{{conf_server.install_location}}lib/json/*"
+     # args:
+       # executable: /bin/sh
+       # chdir: "{{conf_server.install_location}}"
+     # register: schedule_actions      

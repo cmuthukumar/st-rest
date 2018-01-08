@@ -1,14 +1,14 @@
 ---
-- name: Setups sync between master and other versalex  instances of server side
-  hosts: "servers-versalex"
-  roles:
-    - {role: setup.sync,tags: ['setup-sync','rest','java']}
+# - name: Setups sync between master and other versalex  instances of server side
+  # hosts: "servers-versalex"
+  # roles:
+    # - {role: setup.sync,tags: ['setup-sync','rest','java']}
 
 - name: Setups as2 profiles for server and tpnodes using rest
   hosts: "versalex:proxy"
   roles:
     - { role: setup.testprofiles/common, when: "'servers-versalex' in inventory_hostname",tags: ['rest','java'] }
-    - { role: setup.testprofiles/rest/as2/, hostname: "AS2H",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest'] }
+    - { role: setup.testprofiles/rest/as2/, hostname: "AS2WW",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest'] }
 
 - name: "Setups ftp profiles for server(java) and tpnodes(rest)"
   hosts: "versalex:proxy"

@@ -1,0 +1,16 @@
+srvdataset:
+{% set loop_start = [1] %}
+{% for usrkey,usrval in dataset.items() recursive %}
+{% set total_hst = (usrval.total | int / vex_count | int) %}
+    {{usrkey}}:
+{% for h in groups[grp_name] %}  
+        - hname: {{h}}
+          ip: {{hostvars[h]['ansible_eth0']['ipv4']['address']}}
+          hr: {{loop_start[0] | int}}-{{(loop_start[0]|int +total_hst |int)}}
+{% for innerkey,innerval in dataset[usrkey|lower].items() %}
+          {{innerkey}}: "{{innerval}}"
+{% endfor %}          
+{% if loop_start.append(loop_start.pop()+total_hst |int) %}{% endif %}
+{% endfor %}
+{% if loop_start.append((1/loop_start.pop() |int|abs + 1)) %}{% endif %}
+{% endfor %}

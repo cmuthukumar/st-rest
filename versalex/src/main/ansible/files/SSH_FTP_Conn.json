@@ -1,0 +1,24 @@
+{
+  "alias": "{{host_name}}",
+  "type": "sftp",
+  "enabled": "true",
+  "connect": {
+    "host": "{{partner_ip}}",
+    "port": {{partner_port}},
+    "username": "{{host_name}}",
+    "password": "cleo"
+  },
+  "outgoing": {
+    "storage": {
+      "outbox": "file:%25datashare%25/ssh_ftp/outboxes/{{host_name}}",
+	  "sentbox": "file:%25datashare%25/ssh_ftp/sentbox/{{host_name}}"
+
+    }
+  },
+  "incoming": {
+    "storage": {
+      "inbox": "file:%25datashare%25/ssh_ftp/inboxes/{{host_name}}",
+      "receivedbox": "file:%25datashare%25/ssh_ftp/receivedbox/{{host_name}}"
+    }
+  }
+}

@@ -5,19 +5,19 @@
    <parent>
         <groupId>com.cleo.test</groupId>
         <artifactId>st</artifactId>
-        <version>0.1-SNAPSHOT</version>
+        <version>0.2-SNAPSHOT</version>
     </parent> 
 
     <groupId>com.cleo.st</groupId>
     <artifactId>versalex_setup</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>SetupVersalEx Product</name>
    
     <distributionManagement>
         <repository>
-            <id>nexusRepo</id>
+            <id>stnexus</id>
             <name>SysTest releases</name>
             <url>http://10.80.80.156/nexus/service/local/repositories/snapshots/content/</url>
         </repository>
@@ -27,12 +27,12 @@
             <name>Internal Releases</name>
             <url>http://contd.cleo.com/nexus/content/repositories/releases/</url>
         </repository> -->
-<!--         <snapshotRepository>
-            <id>deployment</id>
+         <snapshotRepository>
+            <id>stnexus</id>
             <name>Internal Snapshots</name>
-            <url>http://contd.cleo.com/nexus/content/repositories/snapshots/</url>
+            <url>http://10.80.80.156/nexus/service/local/repositories/snapshots/content/</url>
         </snapshotRepository>
-         -->
+         
         
     </distributionManagement>
 
