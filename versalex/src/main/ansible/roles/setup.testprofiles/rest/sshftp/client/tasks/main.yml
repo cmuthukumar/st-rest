@@ -1,6 +1,7 @@
 ---
-    - name: Setup FTP Client Profiles using Rest
-      setup_ftp_client:
+    - name: Setup SSH FTP Client Profiles using Rest
+      setup_client:
+        protocol_type: "sshftp"
         host_name: "{{hostname}}"
         server_hosts: "{{ groups['servers-versalex'] | map('extract', hostvars, ['ansible_ssh_host']) | join(',') }}"
         proxy_hosts: "{{ groups['servers-proxy'] | map('extract', hostvars, ['ansible_ssh_host']) | join(',') }}"

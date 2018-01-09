@@ -20,9 +20,9 @@ defaults:
         download_version_url: "http://contd.cleo.com/nexus/service/local/artifact/maven/content"
         nexus_repoid: "InstallerSnapshots"
         nexus_groupid: "com.cleo.installers"
-        nexus_systest_groupid: "com.cleo.systest"
+        nexus_systest_groupid: "com.cleo.st"
         nexus_systest_artifactid: "versalex_setup"
-        nexus_systest_version: "0.1-SNAPSHOT"
+        nexus_systest_version: "0.2-SNAPSHOT"
         #nexus_artifactid: Harmony 
         nexus_classifier: "linux64-jre18"
         nexus_packaging: bin    
@@ -96,6 +96,15 @@ defaults:
         host_custom_props: "{'Defaulthomedir':'%datashare%/ftp/%username%'}"
         mailbox_custom_props: "{}"
         action_custom_props: "{}"
+    sshftp:
+        host_range: 1-20
+        mailbox_range: 1-1
+        action_range: 1-1
+        port: 9052
+        create_certs: true       
+        host_custom_props: "{'Defaulthomedir':'%datashare%/sshftp/%username%'}"
+        mailbox_custom_props: "{}"
+        action_custom_props: "{}"        
     share:
         server_share_path: "/root/share/"
         

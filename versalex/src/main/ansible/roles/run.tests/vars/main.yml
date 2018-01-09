@@ -30,3 +30,10 @@ tp_datasets:
         filespermin: "{{0 if ftp_filespermin == '' else ftp_filespermin }}"
         totalmins: "{{0 if ftp_totalmins == '' else ftp_totalmins }}"
         totalhosts: "{{0 if ftp_totalhosts == '' else ftp_totalhosts}}"
+    sshftp:
+        threads: 10
+        destPath: "/root/share/sshftp/outboxes/"        
+        fileSize: "5000 10000 20000 40000 80000 100000 200000 400000 500000 1000000"
+        filespermin: "{{0 if sshftp_filespermin == '' else sshftp_filespermin }}"
+        totalmins: "{{0 if sshftp_totalmins == '' else sshftp_totalmins }}"
+        totalhosts: "{{0 if sshftp_totalhosts == '' else sshftp_totalhosts}}"        

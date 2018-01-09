@@ -4,7 +4,8 @@
    - name: "Setup Listener Certificate {{certname}} on all versalex instances"
      setup_listener_cert:     
            host_ip: "{{ansible_ssh_host}}"
-           cert_name: "{{certname}}"      
+           cert_name: "{{certname}}"
+           protocol_name: "{{protocol_name}}"           
      register: listener_cert     
      retries: 3
      delay: 5

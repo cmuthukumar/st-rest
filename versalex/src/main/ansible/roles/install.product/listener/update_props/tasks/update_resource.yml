@@ -36,7 +36,7 @@
      
    # - debug:
        # var: update_attrbs
-     # verbosity: 2
+     # verbosity: 2    
 
    - name: "Update Local Listener Props for Versalex Instances"
      shell: './"{{update_resouce.dname}}"c -m -p "{{item.property}}" -t "{{item.tag}}{{item.value}}"'

@@ -7,7 +7,7 @@
 
    - name: Set Dataset key
      set_fact:
-          ds_key: "{{group_item.key}}"
+          conf_server: "{{group_item.value}}"
           
    - name: Set macro name to Empty if shares not defined
      set_fact: 
@@ -20,14 +20,14 @@
      when: shares is defined
     
    - name: Configure Test Profiles in Remote Machines on SSH FTP Server
-     shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupOmniUsers "{{conf_server.name}}" "{{conf_server.install_location}}" "{{item.name}}" "{{macro_name}}" "{}" "{}" "{}" "{{item.total}}" "SSHFTP" "9052" "false"
+     shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupOmniUsers "{{conf_server.name}}" "{{conf_server.install_location}}" "{{item.value.name}}" "{{macro_name}}" "{}" "{}" "{}" "{{item.value.total}}" "SSHFTP" "9052" "false"
      environment:
        CLASSPATH: ":lib/versalex_setup-latest.jar:lib/*:lib/api/connector/*:lib/aws/*:lib/connector/*:lib/docdb/*:lib/hadoop/*:lib/help/*:lib/hibernate/*:lib/jersey/*:lib/json/*:lib/saml/*:lib/scim/*:lib/secureshare/*:lib/uri/*:lib/vaadin/*:lib/validator/*:lib/ws/*:webserver/AjaxSwing/lib/ajaxswing.jar:webserver/AjaxSwing/lib/commons-fileupload-1.0.jar:webserver/AjaxSwing/lib/freemarker.jar:webserver/AjaxSwing/lib/jsonrpc-1.0.jar:webserver/AjaxSwing/lib/boot/asboot.jar:webserver/AjaxSwing/lib/install/asm-all-3.1.jar:lax.jar"
      args:
        executable: /bin/sh
        chdir: "{{conf_server.install_location}}"
-     with_items: "{{dataset[ds_key]}}"
-     when: item.name | lower == 'sshftp'
+     with_dict: "{{dataset}}"
+     when: (item.key|lower == 'sshftp')
      register: profile_config
 
    # - name: Configure Schedule Actions on Server Node

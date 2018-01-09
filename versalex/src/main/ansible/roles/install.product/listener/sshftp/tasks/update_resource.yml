@@ -1,0 +1,23 @@
+---
+# tasks file for install.product
+- block:
+   - name: Setting Dictionary Name for Versalex Instances
+     set_fact:
+        update_protocol: "{{update_item.value}}"
+
+   - name: "Update Local Listener Props for Versalex Instances SSHFTP"
+     shell: './"{{update_protocol.dname}}"c -m -p "{{item.property}}" -t "{{item.tag}}{{item.value}}"'
+     args:
+       chdir: "{{ update_protocol.install_location }}"
+     with_items:        
+        - { property: 'Local Listener' , tag: '<Host><Sshftpservercertalias>', value: "{{certname}}" }
+        - { property: 'Local Listener' , tag: '<Host><Sshftpservercertpassword>', value: 'cleo' }
+        - { property: 'Local Listener' , tag: '<Host><Sshftpisselected>', value: "true" }
+        - { property: 'Local Listener' , tag: '<Host><Sshftpport>', value: "{{portVal}}" }
+     register: update_sshftp
+     retries: 3
+     delay: 2
+     until: update_sshftp|success
+     ignore_errors: yes     
+- rescue:
+   - fail: msg="Setup Local Listener Properties Failed" 

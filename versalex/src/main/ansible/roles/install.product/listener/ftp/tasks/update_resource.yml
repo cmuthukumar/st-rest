@@ -1,0 +1,21 @@
+---
+# tasks file for install.product
+- block:
+   - name: Setting Dictionary Name for Versalex Instances
+     set_fact:
+        update_protocol: "{{update_ftp.value}}"
+
+   - name: "Update Local Listener Props for Versalex Instances FTP"
+     shell: './"{{update_protocol.dname}}"c -m -p "{{item.property}}" -t "{{item.tag}}{{item.value}}"'
+     args:
+       chdir: "{{ update_protocol.install_location }}"
+     with_items:        
+        - { property: 'Local Listener' , tag: '<Host><Ftpisselected>', value: "true" }
+        - { property: 'Local Listener' , tag: '<Host><Ftpport>', value: "{{portVal}}" }
+     register: update_ftp
+     retries: 3
+     delay: 2
+     until: update_ftp|success
+     ignore_errors: yes     
+- rescue:
+   - fail: msg="Setup Local Listener Properties Failed" 

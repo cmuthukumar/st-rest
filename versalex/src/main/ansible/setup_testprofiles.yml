@@ -10,6 +10,13 @@
     - { role: setup.testprofiles/common, when: "'servers-versalex' in inventory_hostname",tags: ['rest','java'] }
     - { role: setup.testprofiles/rest/as2/, hostname: "AS2WW",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest'] }
 
+- name: "Setups SSH ftp profiles for server(java) and tpnodes(rest)"
+  hosts: "versalex:proxy"
+  roles:
+    - { role: setup.testprofiles/rest/sshftp/server/, when: "'servers-versalex' in inventory_hostname",tags: ['rest','rest-sshftp'] }
+    - { role: setup.testprofiles/rest/sshftp/client/, hostname: "SSHFTP",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest','rest-sshftp-client'] }
+
+    
 - name: "Setups ftp profiles for server(java) and tpnodes(rest)"
   hosts: "versalex:proxy"
   roles:

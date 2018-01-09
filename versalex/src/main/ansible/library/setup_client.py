@@ -1,6 +1,6 @@
 #!/usr/bin/python
 DOCUMENTATION = '''
-module: setup_ftp_sshftp_client
+module: setup_client
 short_description: "Creates FTP Client Profiles and Setups in Both Server and TP Nodes"
 author:
   - muthukumarc
@@ -27,7 +27,7 @@ import os
 import yaml
 
 conn_json_req= {}
-protocol_type=""
+protocoltype={}
 def get_jsonoutput(json_path,render_content):
 	try:
 		path, filename = os.path.split(json_path)
@@ -58,7 +58,8 @@ def get_postresults(url,json_file):
 def create_conn_json(host_name,json_req,jsonspath):
 	try:
 		json_req['host_name']=host_name
-		conn_output=get_jsonoutput("./files/"+protocol_type+"_Conn.json",json_req)
+		protocoltype['pro_type']=protocoltype['pro_type'].upper()
+		conn_output=get_jsonoutput("./files/"+protocoltype['pro_type']+"_Conn.json",json_req)
 		# print "Connection Output",conn_output
 		conn_json_path=jsonspath+host_name+".json"
 		with open(conn_json_path, 'w+') as jsonfile:
@@ -82,7 +83,7 @@ def get_totalhost(dataset):
 	try:	
 		for k,val in dataset.iteritems():
 			print "Key",k,"Val",val['total']
-			if k == 'ftp':
+			if k == 'ftp' or k == 'sshftp' :
 				total=val['total']
 				conn_json_req['partner_port']=val['port']
 				return int(total)
@@ -155,8 +156,8 @@ def main():
 			"dataset": {"required": True, "type": "dict" },
 		}
 		module = AnsibleModule(argument_spec=fields)
-		protocol_type=module.params['protocol_type']
-		jsonspath="./files/"+protocol_type+"jsons/"	
+		protocoltype['pro_type']=module.params['protocol_type']
+		jsonspath="./files/"+protocoltype['pro_type']+"jsons/"	
 		if not os.path.exists(jsonspath):
 			os.makedirs(jsonspath)
 		if (len(module.params['proxy_hosts']) >= 1):

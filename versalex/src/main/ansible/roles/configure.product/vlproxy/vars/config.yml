@@ -23,7 +23,7 @@ reverse_proxy_load_balancing : Yes
 reverse_proxy_oftp_ports : 3305
 reverse_proxy_oftps_ports : 6619
 reverse_proxy_retry :
-reverse_proxy_sshftp_ports : 9022
+reverse_proxy_sshftp_ports : 9052
 serial_numbers : 
 unknown_partner_msg_action : 'Defer'
 vl_read_timeout : 150

@@ -60,11 +60,11 @@ def delete_certs(server_hosts):
 		print "Exception on delete_certs method",e
 
 def main():
-	server_hosts=["67.207.94.139"]
+	server_hosts=["198.199.69.212","192.34.57.165"]
 	# tphosts=["192.241.141.183","162.243.167.177"]
-	delete_certs(server_hosts)
+	#delete_certs(server_hosts)
 	# delete_certs(tphosts)
-	# delete_connection(server_hosts)
+	delete_connection(server_hosts)
 	# delete_connection(tphosts)
 	
 if __name__ == "__main__":
