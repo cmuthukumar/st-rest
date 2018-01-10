@@ -2,7 +2,7 @@
 # tasks file for setup.AS2
 - block:
     - name: Setup AS2 Profiles using Rest with Proxy
-      setup_as2_threads:
+      setup_as2:
         host_name: "{{hostname}}"
         server_hosts: "{{ groups['servers-versalex'] | map('extract', hostvars, ['ansible_ssh_host']) | join(',') }}"
         proxy_hosts: "{{ groups['servers-proxy'] | map('extract', hostvars, ['ansible_ssh_host']) | join(',') }}"

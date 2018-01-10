@@ -8,5 +8,5 @@
   "keySize":1024,
   "extendedKeyUsage":["clientAuth"],
   "keyUsage":["digitalSignature","keyEncipherment"],
-  "password": "cleo"
+  "password":"cleo"
 }
