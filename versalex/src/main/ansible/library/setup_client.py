@@ -83,7 +83,7 @@ def get_totalhost(dataset):
 	try:	
 		for k,val in dataset.iteritems():
 			print "Key",k,"Val",val['total']
-			if k == 'ftp' or k == 'sshftp' :
+			if k == protocoltype['pro_type']:
 				total=val['total']
 				conn_json_req['partner_port']=val['port']
 				return int(total)

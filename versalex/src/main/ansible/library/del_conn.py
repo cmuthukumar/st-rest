@@ -25,14 +25,16 @@ import os
 def delete_connection(server_hosts):
 	try:
 		for srv_host in server_hosts:
+			base_url ="http://"+srv_host+":5080/api/connections"
 			get_url ="http://"+srv_host+":5080/api/connections?count=200"
+			print "Each URL",get_url
 			head ={ 'Content-type':'application/json','Accept':'application/json'}
 			results = requests.get(get_url,headers=head,auth=HTTPBasicAuth('administrator', 'Admin'))
 			json_res=json.loads(results.text)
 			print "COUNT",json_res['count']
 			for each_id in json_res['resources']:
 				print "Each ID",each_id['id']
-				del_url=get_url+"/"+each_id['id']
+				del_url=base_url+"/"+each_id['id']
 				del_res = requests.delete(del_url,headers=head,auth=HTTPBasicAuth('administrator', 'Admin'))
 				print "Del Res",del_res
 	except Exception,e:
@@ -60,7 +62,7 @@ def delete_certs(server_hosts):
 		print "Exception on delete_certs method",e
 
 def main():
-	server_hosts=["198.199.69.212","192.34.57.165"]
+	server_hosts=["165.227.204.94","165.227.201.162"]
 	# tphosts=["192.241.141.183","162.243.167.177"]
 	#delete_certs(server_hosts)
 	# delete_certs(tphosts)

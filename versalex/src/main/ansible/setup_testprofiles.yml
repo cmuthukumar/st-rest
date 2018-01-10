@@ -21,7 +21,7 @@
   hosts: "versalex:proxy"
   roles:
     - { role: setup.testprofiles/rest/ftp/server/, when: "'servers-versalex' in inventory_hostname",tags: ['rest'] }
-    - { role: setup.testprofiles/rest/ftp/client/, hostname: "FTPHost",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest'] }
+    - { role: setup.testprofiles/rest/ftp/client/, hostname: "FTPHost",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest','rest-ftp-client'] }
 
 - name: Schedule actions for server master node
   hosts: "servers-versalex[0]"
