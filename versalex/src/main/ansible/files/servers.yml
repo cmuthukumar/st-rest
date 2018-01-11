@@ -42,12 +42,12 @@ software:
 dataset:
    versalex:
       - name: as2
-        total: 100
+        total: 500
         schedule_actions: true         
       - name: ftp
-        total: 100
+        total: 300
         schedule_actions: true
       - name: sshftp
-        total: 100
+        total: 400
         schedule_actions: true        
         # host_custom_props: '{"Defaulthomedir": "%datashare%/local/root/%username%"}'
