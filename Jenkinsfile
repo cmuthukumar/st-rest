@@ -128,7 +128,7 @@ sh 'java -version'
        // for(int i=0; i<params.size(); i++ )
        // {
         println "Creating Nodes for ${param}"
-           sh "cd ${workdir} && ansible-playbook setup_topology.yml -c local -e machine_type=${param} -e do_api_token=${env.do_ap_token} -e username=${dodoProps[3]['General'][0]['Username']} -e sshkey_name='st-versalex' "
+           sh "cd ${workdir} && ansible-playbook setup_topology.yml -c local -e machine_type=${param} -e do_api_token=${env.do_ap_token} -e username=${doProps[3]['General'][0]['Username']} -e sshkey_name='st-versalex' "
 		   
            sh "cd ${workdir} && ansible-playbook setup_vars.yml -c local -i inventories/${param}/ -e machine_type=${param} "
 		  // }        
