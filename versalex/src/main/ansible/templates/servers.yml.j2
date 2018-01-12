@@ -5,20 +5,20 @@ hardware:
         ram_size: {{digi_ocean_vars[0].versalex[0]['RAM'] | default('', true)}}
         region: nyc1
         image_name: {{digi_ocean_vars[0].versalex[0]['OS'] | default('', true)}}
-        qty: {{digi_ocean_vars[0].versalex[0]['Total Droplets'] | default('', true)}}
+        qty: {{digi_ocean_vars[0].versalex[0]['Total Droplets'] }}
    integrations:           
       - name: {{digi_ocean_vars[0].integrations[0]['Product'] | default('', true) }}
         ram_size: {{digi_ocean_vars[0].integrations[0]['RAM'] | default('', true) }}
         region: nyc1
         image_name: {{digi_ocean_vars[0].integrations[0]['OS'] | default('', true) }}
-        qty: {{digi_ocean_vars[0].integrations[0]['Total Droplets'] | default('', true) }}
+        qty: {{digi_ocean_vars[0].integrations[0]['Total Droplets']  }}
 {% if (digi_ocean_vars[0].proxies[0]['Total Droplets'] > 0)  %}
    proxy:           
       - name: {{digi_ocean_vars[0].proxies[0]['Product'] | lower| default('', true) }}
         ram_size: {{digi_ocean_vars[0].proxies[0]['RAM'] | default('', true) }}
         region: nyc1
         image_name: {{digi_ocean_vars[0].proxies[0]['OS'] | default('', true) }}
-        qty: {{digi_ocean_vars[0].proxies[0]['Total Droplets'] | default('', true) }}
+        qty: {{digi_ocean_vars[0].proxies[0]['Total Droplets']  }}
 {% endif %}		
    shares:           
       - name: share
