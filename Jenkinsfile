@@ -9,11 +9,11 @@ import hudson.model.Node
 
 params = ['servers','tpnodes']
 workdir = "versalex/src/main/ansible/"
-
+doProps = readJSON text: "${DigitalOcean}"
 
 node('SysTest') {
 
-def doProps = readJSON text: "${DigitalOcean}"
+
 env.WORKSPACE = pwd()
 def mvnHome = tool 'Mvn3.3.9'
 sh "cd ${env.WORKSPACE}"
@@ -117,7 +117,17 @@ sh 'java -version'
 
 	def buildVars()
 	{
-			sh "cd ${workdir} && ansible-playbook setup_uservars.yml -e 'do_vars=${DigitalOcean}'   "
+	if(("${doProps[0]['integrations'][0]['Total Droplets']} == 0") || ("${doProps[0]['shares'][0]['Total Droplets']} == 0") || ("${doProps[0]['versalex'][0]['Total Droplets']} == 0"))
+		{
+			echo "Servers Variables Passed by User ${doProps[0]}"
+			error("Failing the Build as Servers Integrations /Shares/Versalex Total Droplets Can not be Zero")
+		}
+	if(("${doProps[1]['integrations'][0]['Total Droplets']} == 0") || ("${doProps[1]['shares'][0]['Total Droplets']} == 0") || ("${doProps[1]['versalex'][0]['Total Droplets']} == 0"))
+		{
+			echo "Servers Variables Passed by User ${doProps[1]}"
+			error("Failing the Build as TPNodes Integrations/Shares/Versalex Total Droplets Can not be Zero")
+		}
+		sh "cd ${workdir} && ansible-playbook setup_uservars.yml -e 'do_vars=${DigitalOcean}'   "
 	
 	}	
 	

@@ -14,7 +14,7 @@
       debug: msg="Servers  Values {{digi_ocean_vars[2].AS2[0]['Total Hosts']}}"
       with_items: "{{digi_ocean_vars[0]|default([])}}"
 
-    - name: "Create {{item}} Yaml File"
+    - name: "Create Servers and TPNodes Files"
       template: src="{{playbook_dir}}/templates/{{item}}.j2" dest="{{playbook_dir}}/files/{{item}}"
       with_items: 
             - "servers.yml"
