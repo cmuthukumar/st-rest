@@ -44,7 +44,7 @@ sh 'java -version'
 	    stage('Build Vars')
             {
 
-              buildVars(doProps)
+              buildVars()
             }
     stage('Create Nodes')
             {
@@ -114,7 +114,7 @@ sh 'java -version'
   
 }
 
-	def buildVars(doProps)
+	def buildVars()
 	{
 			sh "cd ${workdir} && ansible-playbook setup_uservars.yml -e 'do_vars=${DigitalOcean}'   "
 	
