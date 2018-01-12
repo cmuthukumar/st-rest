@@ -9,13 +9,13 @@ hardware:
    integrations:
       - name: {{digi_ocean_vars[1].integrations[0]['Product'] | default('', true) }}
         ram_size: {{digi_ocean_vars[1].integrations[0]['RAM'] | default('', true) }}
-        region: nyc1
+        region: nyc3
         image_name: {{digi_ocean_vars[1].integrations[0]['OS'] | default('', true) }}
         qty: {{digi_ocean_vars[1].integrations[0]['Total Droplets']  }}		
    shares:           
       - name: share
         ram_size: {{digi_ocean_vars[1].shares[0]['RAM'] | default('', true) }}
-        region: nyc1
+        region: nyc3
         image_name: {{digi_ocean_vars[1].shares[0]['OS'] | default('', true) }}
         qty: {{digi_ocean_vars[1].shares[0]['Total Droplets'] }}
 software:
