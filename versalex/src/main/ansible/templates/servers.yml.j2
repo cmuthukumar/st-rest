@@ -37,7 +37,7 @@ software:
         version: "mysql:latest"
 {% if (digi_ocean_vars[0].proxies[0]['Total Droplets'] >0)  %}		
    proxy:
-      - name: {{digi_ocean_vars[0].proxies[0]['Product'] | default('', true) }}
+      - name: {{digi_ocean_vars[0].proxies[0]['Product'] | lower| default('', true) }}
         version: {{digi_ocean_vars[0].proxies[0]['Version'] | default('', true) }}
         install_location: "/root/VLProxy/"
         vex_jmx_port: 3022

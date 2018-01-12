@@ -11,8 +11,8 @@ hardware:
         ram_size: {{digi_ocean_vars[1].integrations[0]['RAM'] | default('', true) }}
         region: nyc3
         image_name: "{{digi_ocean_vars[1].integrations[0]['OS'] | default('', true) }}"
-        qty: {{digi_ocean_vars[1].integrations[0]['Total Droplets']  }}		
-   shares:           
+        qty: {{digi_ocean_vars[1].integrations[0]['Total Droplets']}}		
+   shares:
       - name: share
         ram_size: {{digi_ocean_vars[1].shares[0]['RAM'] | default('', true) }}
         region: nyc3
