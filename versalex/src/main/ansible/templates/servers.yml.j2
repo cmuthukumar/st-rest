@@ -25,7 +25,7 @@ hardware:
         ram_size: {{digi_ocean_vars[0].shares[0]['RAM'] | default('', true) }}
         region: nyc1
         image_name: {{digi_ocean_vars[0].shares[0]['OS'] | default('', true) }}
-        qty: 1
+        qty: {{digi_ocean_vars[0].shares[0]['Total Droplets'] }}
 software:
    versalex:
       - name: {{digi_ocean_vars[0].versalex[0]['Product'] | lower| default('', true) }}
