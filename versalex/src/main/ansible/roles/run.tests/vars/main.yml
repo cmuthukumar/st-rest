@@ -15,6 +15,7 @@ server_datasets:
         filespermin: "{{0 if as2_filespermin == '' else  as2_filespermin}}"
         totalmins: "{{0 if as2_totalmins == '' else as2_totalmins }}"
         totalhosts: "{{0 if as2_totalhosts == '' else as2_totalhosts}}"
+        totalTPNodes: "{{groups['tpnodes-versalex'] | length}}"       
 tp_datasets:
     as2:
         threads: 10
@@ -22,7 +23,8 @@ tp_datasets:
         fileSize: "5000 10000"
         filespermin: "{{0 if as2_filespermin == '' else as2_filespermin }}"
         totalmins: "{{0 if as2_totalmins =='' else as2_totalmins }}"
-        totalhosts: "{{0 if as2_totalhosts == '' else as2_totalhosts}}" 
+        totalhosts: "{{0 if as2_totalhosts == '' else as2_totalhosts}}"
+        totalTPNodes: "{{groups['tpnodes-versalex'] | length}}"       
     ftp:
         threads: 10
         destPath: "/root/share/ftp/outboxes/"        
@@ -30,10 +32,12 @@ tp_datasets:
         filespermin: "{{0 if ftp_filespermin == '' else ftp_filespermin }}"
         totalmins: "{{0 if ftp_totalmins == '' else ftp_totalmins }}"
         totalhosts: "{{0 if ftp_totalhosts == '' else ftp_totalhosts}}"
+        totalTPNodes: "{{groups['tpnodes-versalex'] | length}}"       
     sshftp:
         threads: 10
         destPath: "/root/share/sshftp/outboxes/"        
         fileSize: "5000 10000 20000 40000 80000 100000 200000 400000 500000 1000000"
         filespermin: "{{0 if sshftp_filespermin == '' else sshftp_filespermin }}"
         totalmins: "{{0 if sshftp_totalmins == '' else sshftp_totalmins }}"
-        totalhosts: "{{0 if sshftp_totalhosts == '' else sshftp_totalhosts}}"        
+        totalhosts: "{{0 if sshftp_totalhosts == '' else sshftp_totalhosts}}"
+        totalTPNodes: "{{groups['tpnodes-versalex'] | length}}"

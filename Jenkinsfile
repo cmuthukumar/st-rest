@@ -10,8 +10,10 @@ import hudson.model.Node
 params = ['servers','tpnodes']
 workdir = "versalex/src/main/ansible/"
 
+
 node('SysTest') {
 
+def doProps = readJSON text: "${DigitalOcean}"
 env.WORKSPACE = pwd()
 def mvnHome = tool 'Mvn3.3.9'
 sh "cd ${env.WORKSPACE}"
@@ -30,7 +32,7 @@ sh 'java -version'
         {
 // Checkout Github Branch to Specific Directory        
        checkout scm
-       //checkout([$class: 'GitSCM', branches: [[name: ${gitStBranch}]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '683540f0-61a9-48c1-acef-dc5520fb6466', url: 'https://github.com/CleoDev/st.git']]])
+       //checkout([$class: 'GitSCM', branches: [[name: ${dodoProps[3]['General'][0]['GitHubBranch']}]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '683540f0-61a9-48c1-acef-dc5520fb6466', url: 'https://github.com/CleoDev/st.git']]])
         sh 'printenv'
             }
 //def systestvexImage=docker.build('st-versalex:1.0','.')
@@ -39,6 +41,11 @@ sh 'java -version'
     st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
     {    
     try{
+	    stage('Build Vars')
+            {
+
+              buildVars(doProps)
+            }
     stage('Create Nodes')
             {
 		parallel(
@@ -91,10 +98,15 @@ sh 'java -version'
             {
                 runTests()
             } 
+    stage('Destroy Droplets')
+            {
+                destroyDroplets()
+            } 			
+			
         }
         finally{
         
-            echo "End of Create Node"
+            echo "End of System Testing"
         }
     }
     
@@ -102,6 +114,12 @@ sh 'java -version'
   
 }
 
+	def buildVars(doProps)
+	{
+			sh "cd ${workdir} && ansible-playbook setup_uservars.yml -e 'do_vars=${DigitalOcean}'   "
+	
+	}	
+	
     def createNodes(param)
     {
     withCredentials([[$class: 'StringBinding', credentialsId: 'doCredentials', variable: 'do_ap_token']]) {
@@ -109,7 +127,7 @@ sh 'java -version'
        // for(int i=0; i<params.size(); i++ )
        // {
         println "Creating Nodes for ${param}"
-           sh "cd ${workdir} && ansible-playbook setup_topology.yml -c local -e machine_type=${param} -e do_api_token=${env.do_ap_token} -e username=${username} -e sshkey_name='st-versalex' "
+           sh "cd ${workdir} && ansible-playbook setup_topology.yml -c local -e machine_type=${param} -e do_api_token=${env.do_ap_token} -e username=${dodoProps[3]['General'][0]['Username']} -e sshkey_name='st-versalex' "
 		   
            sh "cd ${workdir} && ansible-playbook setup_vars.yml -c local -i inventories/${param}/ -e machine_type=${param} "
 		  // }        
@@ -170,8 +188,27 @@ sh 'java -version'
     println "Running Tests"
 		
           // sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e files_per_min=${filesPerMin} -e total_mins=${TotalMins} -e destCounter=2 run_tests.yml "
-		  sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=${AS2filesPerMin} -e as2_totalmins=${AS2TotalMins} -e as2_totalhosts=${AS2TotalHosts}  -e ftp_filespermin=${FTPfilesPerMin} -e ftp_totalmins=${FTPTotalMins} -e ftp_totalhosts=${FTPTotalHosts} -e sshftp_filespermin=${FTPfilesPerMin} -e sshftp_totalmins=${FTPTotalMins} -e sshftp_totalhosts=${FTPTotalHosts} run_tests.yml "
+		//  sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=${AS2filesPerMin} -e as2_totalmins=${AS2TotalMins} -e as2_totalhosts=${AS2TotalHosts}  -e ftp_filespermin=${FTPfilesPerMin} -e ftp_totalmins=${FTPTotalMins} -e ftp_totalhosts=${FTPTotalHosts} -e sshftp_filespermin=${FTPfilesPerMin} -e sshftp_totalmins=${FTPTotalMins} -e sshftp_totalhosts=${FTPTotalHosts} run_tests.yml "
+		sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=${doProps[2]['AS2'][0]['FilesPerMin']} -e as2_totalmins=${doProps[2]['AS2'][0]['Total Mins']} -e as2_totalhosts=${doProps[2]['AS2'][0]['HoststoRun']} -e ftp_filespermin=${doProps[2]['FTP'][0]['FilesPerMin']} -e ftp_totalmins=${doProps[2]['FTP'][0]['Total Mins']} -e ftp_totalhosts=${doProps[2]['FTP'][0]['HoststoRun']} -e sshftp_filespermin=${doProps[2]['SSHFTP'][0]['FilesPerMin']} -e sshftp_totalmins=${doProps[2]['SSHFTP'][0]['Total Mins']} -e sshftp_totalhosts=${doProps[2]['SSHFTP'][0]['HoststoRun']} run_tests.yml "
 
      
     } 
     
+	def destroyDroplets()
+	{
+	
+		println "Destroy Droplets"
+		if(${doProps[3]['General'][0]['Delete Droplets Afer Tests']})
+		{
+			sh "cd ${workdir} && ansible-playbook destroy_topology.yml -e machine_type=tpnodes  -e do_api_token=${env.do_ap_token} -e username=${doProps[3]['General'][0]['Username']} "
+		}
+		else
+		{
+		
+			println "Not Running the Stage as destroy droplets flag Set to false"
+		}
+		
+
+	
+	}
+	

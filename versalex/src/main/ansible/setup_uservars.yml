@@ -1,0 +1,24 @@
+---
+- hosts: localhost  
+  tasks:
+    - name: Convert to JSOn
+      set_fact:
+          digi_ocean_vars: "{{do_vars|from_json}}" 
+      
+    - name: Print Server integrations Values
+      debug: msg="Servers integrations Values {{digi_ocean_vars}}"
+
+    - name: Print Servers    
+      debug: msg="Servers  Values {{digi_ocean_vars[2].AS2[0]['Total Hosts']}}"
+      with_items: "{{digi_ocean_vars[0]|default([])}}"
+
+    - name: Create Servers Yaml File
+      template: src="{{playbook_dir}}/{{item}}.j2" dest="{{playbook_dir}}/files/{{item}}"
+      with_items: 
+            - "servers.yml"
+
+    - name: Create TPNodes Yaml
+      template: src="{{playbook_dir}}/{{item}}.j2" dest="{{playbook_dir}}/files/{{item}}"
+      with_items: 
+            - "tpnodes.yml"
+  

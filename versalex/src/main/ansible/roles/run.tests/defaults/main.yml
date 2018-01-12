@@ -23,6 +23,7 @@ tp_datasets:
         filespermin: 0
         totalmins: 0
         totalhosts: 0
+        totalTPNodes: 0
     ftp:
         threads: 10
         destPath: "/root/share/ftp/outboxes/"        
@@ -30,10 +31,12 @@ tp_datasets:
         filespermin: 0
         totalmins: 0
         totalhosts: 0
+        totalTPNodes: 0
     sshftp:
         threads: 10
         destPath: "/root/share/sshftp/outboxes/"        
         fileSize: "5000 10000 20000 40000 80000 100000 200000 400000 500000 1000000"
         filespermin: 0
         totalmins: 0
-        totalhosts: 0        
+        totalhosts: 0
+        totalTPNodes: 0        

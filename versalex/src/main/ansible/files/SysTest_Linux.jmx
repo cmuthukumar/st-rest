@@ -35,6 +35,7 @@ String jmxpath = FileServer.getFileServer().getBaseDir();
 String fsep = File.separator;
 
 log.info(&quot;Dest Path&quot;+vars.get(&quot;destpath&quot;));
+
 File destdir = new File(vars.get(&quot;destpath&quot;));
 String protocol = vars.get(&quot;protocoltype&quot;);
 log.info(&quot;PROTOCOL NAME&quot;+protocol);
@@ -44,15 +45,23 @@ File srcfile = new File(protocol+&quot;_Source.csv&quot;);
 props.put(&quot;jmx_path&quot;,jmxpath+fsep);
 File[] dirs = destdir.listFiles((FileFilter) DirectoryFileFilter.DIRECTORY);
 log.info(&quot;After Dirs Path Dirs&quot;+Arrays.toString(dirs));
-destwriter = new BufferedWriter(new FileWriter(destfile));
-srcwriter = new BufferedWriter(new FileWriter(srcfile)); 
+log.info(&quot;Total Dirs Length&quot;+dirs.length);
+log.info(&quot;Dest Path&quot;+destfile);
+destwriter = new BufferedWriter(new FileWriter(jmxpath+fsep+destfile));
+srcwriter = new BufferedWriter(new FileWriter(jmxpath+fsep+srcfile)); 
 log.info(&quot;TotalHosts&quot;+vars.get(&quot;totalHosts&quot;));
 int totalHosts=Integer.parseInt(vars.get(&quot;totalHosts&quot;).trim());
+int totalTPNodes=Integer.parseInt(vars.get(&quot;totalTPNodes&quot;).trim());
+int hostsPerNode=((dirs.length/totalTPNodes)+1);
+log.info(&quot;HostsPerNode&quot;+hostsPerNode);
 int count=0;
-for (File fold : dirs) {
-    vars.put(&quot;dest_&quot; + counter, fold.getAbsolutePath()+&quot;,&quot;);
-    destwriter.append(fold.getAbsolutePath()+fsep);
-    destwriter.append(&quot;\n&quot;);
+for (int k=0; k&lt; dirs.length;) {
+    vars.put(&quot;dest_&quot; + counter, dirs[k].getAbsolutePath()+&quot;,&quot;);
+    destwriter.write(dirs[k].getAbsolutePath()+fsep);
+    destwriter.write(&quot;\n&quot;);
+    
+    log.info(&quot;Folder Path to DEST&quot;+dirs[k].getAbsolutePath());
+    k=k+hostsPerNode;
     count=count+1;
     if(count==totalHosts)
     {
@@ -60,10 +69,9 @@ for (File fold : dirs) {
 	break;    	
     }
 }
-
 props.put(&quot;destCounter&quot;,Integer.toString(count));
 log.info(&quot;DestCount----&quot;+props.get(&quot;destCounter&quot;));
-destwriter.close();	
+destwriter.close();
 log.info(&quot;File Sizes&quot;+vars.get(&quot;fsize&quot;));
 String fSize=vars.get(&quot;fsize&quot;);
 log.info(&quot;File Sizes to&quot;+fSize);
@@ -516,7 +524,12 @@ finally {
               </elementProp>
               <elementProp name="totalHosts" elementType="Argument">
                 <stringProp name="Argument.name">totalHosts</stringProp>
-                <stringProp name="Argument.value">${__P(as2.totalhosts,1)}</stringProp>
+                <stringProp name="Argument.value">${__P(as2.totalhosts,2)}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="totalTPNodes" elementType="Argument">
+                <stringProp name="Argument.name">totalTPNodes</stringProp>
+                <stringProp name="Argument.value">${__P(as2.totalTPNodes,2)}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
             </collectionProp>
@@ -556,6 +569,11 @@ finally {
                 <stringProp name="Argument.value">${__P(ftp.totalhosts,1)}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
+              <elementProp name="totalTPNodes" elementType="Argument">
+                <stringProp name="Argument.name">totalTPNodes</stringProp>
+                <stringProp name="Argument.value">${__P(ftp.totalTPNodes,1)}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
             </collectionProp>
           </elementProp>
         </kg.apc.jmeter.control.ParameterizedController>
@@ -591,6 +609,11 @@ finally {
               <elementProp name="totalHosts" elementType="Argument">
                 <stringProp name="Argument.name">totalHosts</stringProp>
                 <stringProp name="Argument.value">${__P(sshftp.totalhosts,1)}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="totalTPNodes" elementType="Argument">
+                <stringProp name="Argument.name">totalTPNodes</stringProp>
+                <stringProp name="Argument.value">${__P(sshftp.totalTPNodes,1)}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
             </collectionProp>
