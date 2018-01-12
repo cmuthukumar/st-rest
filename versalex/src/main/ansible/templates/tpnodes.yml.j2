@@ -1,12 +1,12 @@
 ---
 hardware:
-   versalex:           
+	versalex:           
       - name: {{digi_ocean_vars[1].versalex[0]['Product'] | lower|default('', true) }}
         ram_size: {{digi_ocean_vars[1].versalex[0]['RAM'] | default('', true)}}
         region: nyc3
         image_name: "{{digi_ocean_vars[1].versalex[0]['OS'] | default('', true)}}"
         qty: {{digi_ocean_vars[1].versalex[0]['Total Droplets'] }}
-   integrations:
+	integrations:
       - name: {{digi_ocean_vars[1].integrations[0]['Product'] | default('', true) }}
         ram_size: {{digi_ocean_vars[1].integrations[0]['RAM'] | default('', true) }}
         region: nyc3
@@ -19,14 +19,14 @@ hardware:
         image_name: "{{digi_ocean_vars[1].shares[0]['OS'] | default('', true) }}"
         qty: {{digi_ocean_vars[1].shares[0]['Total Droplets'] }}
 software:
-   versalex:
+	versalex:
       - name: {{digi_ocean_vars[1].versalex[0]['Product']| lower| default('', true) }}
         version: {{digi_ocean_vars[1].versalex[0]['Version'] | default('', true) }}
         install_location: "/root/Harmony/"
         vex_jmx_port: 3022
-   integrations:
+	integrations:
       - name: {{digi_ocean_vars[1].integrations[0]['Product'] | default('', true) }}
-        version: "mysql:latest"	
-   shares:           
+        version: "mysql:latest"
+	shares:           
       - name: share
         server_share_path: "/root/share/"
