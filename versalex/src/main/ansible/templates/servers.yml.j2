@@ -13,7 +13,7 @@ hardware:
         image_name: "{{digi_ocean_vars[0].integrations[0]['OS'] | default('', true) }}"
         qty: {{digi_ocean_vars[0].integrations[0]['Total Droplets']}}
 {% if (digi_ocean_vars[0].proxies[0]['Total Droplets'] > 0)  -%}
-   proxy: >-      
+   proxy:    
       - name: {{digi_ocean_vars[0].proxies[0]['Product'] | lower| default('', true) }}
         ram_size: {{digi_ocean_vars[0].proxies[0]['RAM'] | default('', true)}}
         region: nyc3
@@ -35,13 +35,13 @@ software:
    integrations:
       - name: {{digi_ocean_vars[0].integrations[0]['Product'] | default('', true) }}
         version: "mysql:latest"
-{% if (digi_ocean_vars[0].proxies[0]['Total Droplets'] >0)  %}		
+{%- if (digi_ocean_vars[0].proxies[0]['Total Droplets'] >0)  %}		
    proxy:
       - name: {{digi_ocean_vars[0].proxies[0]['Product'] | lower| default('', true) }}
         version: {{digi_ocean_vars[0].proxies[0]['Version'] | default('', true) }}
         install_location: "/root/VLProxy/"
         vex_jmx_port: 3022
-{% endif %}		
+{% endif -%}		
    shares:           
       - name: share
         server_share_path: "/root/share/"   
