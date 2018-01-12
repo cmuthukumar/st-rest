@@ -1,5 +1,7 @@
 ---
-- hosts: localhost  
+- name: Setting up User Variables
+  hosts: localhost
+  connection: local
   tasks:
     - name: Convert to JSOn
       set_fact:

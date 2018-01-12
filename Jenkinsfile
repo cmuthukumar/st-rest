@@ -32,7 +32,7 @@ sh 'java -version'
         {
 // Checkout Github Branch to Specific Directory        
        //checkout scm
-       checkout([$class: 'GitSCM', branches: [[name: ${dodoProps[3]['General'][0]['GitHubBranch']}]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '683540f0-61a9-48c1-acef-dc5520fb6466', url: 'https://github.com/CleoDev/st.git']]])
+		checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: "${doProps[3]['General'][0]['GitHubBranch']}"]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '79815ffd-ea78-431b-ae29-277ccd0807f6', url: 'https://github.com/CleoDev/st.git']]]
         sh 'printenv'
             }
 //def systestvexImage=docker.build('st-versalex:1.0','.')
@@ -113,6 +113,7 @@ sh 'java -version'
     }
   
 }
+
 
 	def buildVars()
 	{
