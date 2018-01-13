@@ -124,7 +124,7 @@ sh 'java -version'
 		}
 	if(("${doProps[1]['integrations'][0]['Total Droplets']} == 0") || ("${doProps[1]['shares'][0]['Total Droplets']} == 0") || ("${doProps[1]['versalex'][0]['Total Droplets']} == 0"))
 		{
-			echo "Servers Variables Passed by User ${doProps[1]}"
+			echo "TPNodes Variables Passed by User ${doProps[1]}"
 			error("Failing the Build as TPNodes Integrations/Shares/Versalex Total Droplets Can not be Zero")
 		}
 		sh "cd ${workdir} && ansible-playbook setup_uservars.yml -e 'do_vars=${DigitalOcean}'   "
@@ -209,7 +209,7 @@ sh 'java -version'
 	{
 	
 		println "Destroy Droplets"
-		if(${doProps[3]['General'][0]['Delete Droplets Afer Tests']})
+		if(("${doProps[3]['General'][0]['Delete Droplets Afer Tests']}"))
 		{
 			sh "cd ${workdir} && ansible-playbook destroy_topology.yml -e machine_type=tpnodes  -e do_api_token=${env.do_ap_token} -e username=${doProps[3]['General'][0]['Username']} "
 		}

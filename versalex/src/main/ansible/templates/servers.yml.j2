@@ -47,17 +47,17 @@ software:
         server_share_path: "/root/share/"   
 dataset:
     versalex:
-{% if (digi_ocean_vars[2].AS2[0]['Total Hosts'] >0)  %}
+{% if (digi_ocean_vars[2].AS2[0]['Total Hosts'] > 0)  %}
       - name: as2
         total: {{digi_ocean_vars[2].AS2[0]['Total Hosts'] | default(0, true) }}
         schedule_actions: true
 {% endif %}
-{% if (digi_ocean_vars[2].FTP[0]['Total Hosts'] >0)  %}    
+{% if (digi_ocean_vars[2].FTP[0]['Total Hosts'] > 0)  %}    
       - name: ftp
         total: {{digi_ocean_vars[2].FTP[0]['Total Hosts'] | default(0, true) }}
         schedule_actions: true
 {% endif %}
-{% if (digi_ocean_vars[2].SSHFTP[0]['Total Hosts'] >0)  %}            
+{% if (digi_ocean_vars[2].SSHFTP[0]['Total Hosts'] > 0)  %}            
       - name: sshftp
         total: {{digi_ocean_vars[2].SSHFTP[0]['Total Hosts'] | default(0, true) }}
         schedule_actions: true
