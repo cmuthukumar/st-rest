@@ -209,7 +209,7 @@ sh 'java -version'
 	{
 	
 		println "Destroy Droplets"
-		if(("${doProps[3]['General'][0]['Delete Droplets Afer Tests']}") == "true")
+		if(("${doProps[3]['General'][0]['Delete Droplets Afer Tests']}" == "true"))
 		{
 			for(int i=0; i<params.size(); i++ )
 				{
