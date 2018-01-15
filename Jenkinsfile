@@ -100,7 +100,7 @@ sh 'java -version'
             } 
     stage('Destroy Droplets')
             {
-                destroyDroplets()
+                destroyDroplets(params)
             } 			
 			
         }
@@ -205,13 +205,16 @@ sh 'java -version'
      
     } 
     
-    def destroyDroplets()
+    def destroyDroplets(params)
 	{
 	
 		println "Destroy Droplets"
-		if(("${doProps[3]['General'][0]['Delete Droplets Afer Tests']}"))
+		if(("${doProps[3]['General'][0]['Delete Droplets Afer Tests']}") == "true")
 		{
-			sh "cd ${workdir} && ansible-playbook destroy_topology.yml -e machine_type=tpnodes  -e do_api_token=${env.do_ap_token} -e username=${doProps[3]['General'][0]['Username']} "
+			for(int i=0; i<params.size(); i++ )
+				{
+			sh "cd ${workdir} && ansible-playbook destroy_topology.yml -e machine_type=${params[i]}  -e do_api_token=${env.do_ap_token} -e username=${doProps[3]['General'][0]['Username']} "
+				}
 		}
 		else
 		{
