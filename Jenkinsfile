@@ -120,7 +120,7 @@ sh 'java -version'
 	if(("${doProps[0]['integrations'][0]['Total Droplets']}" <= 0) || ("${doProps[0]['shares'][0]['Total Droplets']}" <= 0) || ("${doProps[0]['versalex'][0]['Total Droplets']}" <= 0))
 		{
 			echo "Servers Variables Passed by User ${doProps[0]}"
-			error("Failing the Build as Servers Integrations /Shares/Versalex Total Droplets Can not be Zero")
+			error("Failing the Build as Servers Integrations/Shares/Versalex Total Droplets Can not be Zero")
 		}
 	if(("${doProps[1]['integrations'][0]['Total Droplets']}" <= 0) || ("${doProps[1]['shares'][0]['Total Droplets']}" <= 0) || ("${doProps[1]['versalex'][0]['Total Droplets']}" <= 0))
 		{
