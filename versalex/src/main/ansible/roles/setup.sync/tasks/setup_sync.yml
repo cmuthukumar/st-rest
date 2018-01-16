@@ -62,7 +62,7 @@
 
    - name: Setup Sync Using REST-Initialize
      uri:
-        url: "http://{{ansible_ssh_host}}:5080/api/nodes/{{item}}/initialize"
+        url: "http://{{ansible_ssh_host}}:5080/api/nodes/{{serialno}}/initialize/{{item}}"
         method: POST
         user: administrator
         password: Admin
