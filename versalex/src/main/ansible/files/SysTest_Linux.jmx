@@ -53,6 +53,7 @@ log.info(&quot;TotalHosts&quot;+vars.get(&quot;totalHosts&quot;));
 int totalHosts=Integer.parseInt(vars.get(&quot;totalHosts&quot;).trim());
 int totalTPNodes=Integer.parseInt(vars.get(&quot;totalTPNodes&quot;).trim());
 int hostsPerNode=((dirs.length/totalTPNodes)+1);
+int loop_num=((dirs.length/totalHosts));
 log.info(&quot;HostsPerNode&quot;+hostsPerNode);
 int count=0;
 for (int k=0; k&lt; dirs.length;) {
@@ -61,7 +62,7 @@ for (int k=0; k&lt; dirs.length;) {
     destwriter.write(&quot;\n&quot;);
     
     log.info(&quot;Folder Path to DEST&quot;+dirs[k].getAbsolutePath());
-    k=k+hostsPerNode;
+    k=k+loop_num;
     count=count+1;
     if(count==totalHosts)
     {
