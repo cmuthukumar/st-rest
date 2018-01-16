@@ -43,6 +43,7 @@ RUN alternatives --install /usr/bin/java java /opt/jdk1.8.0_151/bin/java 2 \
 && alternatives --install /usr/bin/javac javac /opt/jdk1.8.0_151/bin/javac 2 \
 && alternatives --set javac /opt/jdk1.8.0_151/bin/javac
 
+RUN pip install mysql-connector==2.1.4
 ENV JAVA_HOME /opt/jdk1.8.0_151
 ENV JRE_HOME /opt/jdk1.8.0_151/jre
 ENV PATH $PATH:/opt/jdk1.8.0_151/bin:/opt/jdk1.8.0_151/jre/bin
