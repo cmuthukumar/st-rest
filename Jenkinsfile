@@ -56,7 +56,7 @@ sh 'java -version'
 				createNodes(params[1])
 			}	  
           )
-              //  createNodes(params)
+
             }
     stage('Install Product')
             {
@@ -88,11 +88,6 @@ sh 'java -version'
             {
                 setupTestProfiles()
             } 
-
-	//stage('Setup Sync')
-		//{
-		//	setupSync()
-		//}  
 			
     stage('Run Tests')
             {
@@ -139,14 +134,12 @@ sh 'java -version'
     def createNodes(param)
     {
     withCredentials([[$class: 'StringBinding', credentialsId: 'doCredentials', variable: 'do_ap_token']]) {
-      //  println "Inside Create Node"
-       // for(int i=0; i<params.size(); i++ )
-       // {
+
         println "Creating Nodes for ${param}"
            sh "cd ${workdir} && ansible-playbook setup_topology.yml -c local -e machine_type=${param} -e do_api_token=${env.do_ap_token} -e username=${doProps[3]['General'][0]['Username']} -e sshkey_name='st-versalex' "
 		   
            sh "cd ${workdir} && ansible-playbook setup_vars.yml -c local -i inventories/${param}/ -e machine_type=${param} "
-		  // }        
+
         }
     }
     
@@ -155,12 +148,8 @@ sh 'java -version'
     println "Install Product for ${param} "
 
 			sh "cd ${workdir} && ansible-playbook -i inventories/${param}/ -e machine_type=${param} install_product.yml "
-					
-     //  for(int i=0; i<params.size(); i++ )
-     //  {
-			//println "Installing Product for ${params[i]}"
-          //sh "cd ${workdir} && ansible-playbook -i inventories/${params[i]}/ -e machine_type=${params[i]} install_product.yml "
-       //}
+			
+
     }
 
     def installIntegrations()
@@ -203,8 +192,6 @@ sh 'java -version'
     {
     println "Running Tests"
 		
-          // sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e files_per_min=${filesPerMin} -e total_mins=${TotalMins} -e destCounter=2 run_tests.yml "
-		//  sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=${AS2filesPerMin} -e as2_totalmins=${AS2TotalMins} -e as2_totalhosts=${AS2TotalHosts}  -e ftp_filespermin=${FTPfilesPerMin} -e ftp_totalmins=${FTPTotalMins} -e ftp_totalhosts=${FTPTotalHosts} -e sshftp_filespermin=${FTPfilesPerMin} -e sshftp_totalmins=${FTPTotalMins} -e sshftp_totalhosts=${FTPTotalHosts} run_tests.yml "
 		sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=${doProps[2]['AS2'][0]['FilesPerMin']} -e as2_totalmins=${doProps[2]['AS2'][0]['Total Mins']} -e as2_totalhosts=${doProps[2]['AS2'][0]['HoststoRun']} -e ftp_filespermin=${doProps[2]['FTP'][0]['FilesPerMin']} -e ftp_totalmins=${doProps[2]['FTP'][0]['Total Mins']} -e ftp_totalhosts=${doProps[2]['FTP'][0]['HoststoRun']} -e sshftp_filespermin=${doProps[2]['SSHFTP'][0]['FilesPerMin']} -e sshftp_totalmins=${doProps[2]['SSHFTP'][0]['Total Mins']} -e sshftp_totalhosts=${doProps[2]['SSHFTP'][0]['HoststoRun']} run_tests.yml "
 
      
