@@ -18,7 +18,7 @@
         macro_name: "%datashare%"
      when: shares is defined
     
-   - name: Configure Test Profiles in Remote Machines on SSH FTP Server
+   - name: Configure Test Profiles in Remote Machines on FTP Server
      shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupOmniUsers "{{conf_server.name}}" "{{conf_server.install_location}}" "{{item.value.name}}" "{{macro_name}}" "{}" "{}" "{}" "{{item.value.total}}" "FTPHost" "9021" "false"
      environment:
        CLASSPATH: ":lib/versalex_setup-latest.jar:lib/*:lib/api/connector/*:lib/aws/*:lib/connector/*:lib/docdb/*:lib/hadoop/*:lib/help/*:lib/hibernate/*:lib/jersey/*:lib/json/*:lib/saml/*:lib/scim/*:lib/secureshare/*:lib/uri/*:lib/vaadin/*:lib/validator/*:lib/ws/*:webserver/AjaxSwing/lib/ajaxswing.jar:webserver/AjaxSwing/lib/commons-fileupload-1.0.jar:webserver/AjaxSwing/lib/freemarker.jar:webserver/AjaxSwing/lib/jsonrpc-1.0.jar:webserver/AjaxSwing/lib/boot/asboot.jar:webserver/AjaxSwing/lib/install/asm-all-3.1.jar:lax.jar"
