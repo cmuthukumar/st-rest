@@ -1,8 +1,8 @@
 ---
-# - name: Setups sync between master and other versalex  instances of server side
-  # hosts: "servers-versalex"
-  # roles:
-    # - {role: setup.sync,tags: ['setup-sync','rest','java']}
+- name: Setups sync between master and other versalex  instances of server side
+  hosts: "servers-versalex"
+  roles:
+    - {role: setup.sync,tags: ['setup-sync','rest','java']}
 
 - name: Setups as2 profiles for server and tpnodes using rest
   hosts: "versalex:proxy"
