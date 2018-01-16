@@ -1,0 +1,24 @@
+---
+# tasks file for jmeter
+- block:
+    - name: Validate DB Details for Transactions
+      db_validation:
+            db_ip: "{{ansible_ssh_host}}"
+            db_port: "{{item.value.port}}"
+            db_username: "{{item.value.username}}"
+            db_password: "{{item.value.password}}"
+            dbname: "{{item.value.dbname}}"
+            as2_expected_txns: "{{(as2_filespermin|int*as2_totalmins|int) | default(0)}}"
+            ftp_expected_txns: "{{(ftp_filespermin|int*ftp_totalmins|int)| default(0)}}"
+            sshftp_expected_txns: "{{(sshftp_filespermin|int*sshftp_totalmins|int)| default(0)}}"
+            wait_time: 3
+      when: "'db' in item.value.type"
+      with_dict: "{{ integrations | default({}) }}"
+      async: "{{((as2_filespermin|int * ftp_totalmins |int * sshftp_filespermin|int)* 60)}}"
+      poll: 10
+      register: db_results
+      
+    - name: Print DB Results
+      debug: var=db_results
+- rescue:
+    - fail: msg="Monitor DB Role Failed"
