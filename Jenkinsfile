@@ -175,8 +175,30 @@ sh 'java -version'
     def setupTestProfiles()
     {
     println "Setup Test Profiles for Server and TP Side"
-   
-           sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'rest' "
+	
+		if(("${doProps[2]['AS2'][0]['FilesPerMin']}" > 0) && ("${doProps[2]['SSH FTP'][0]['FilesPerMin']}" > 0) && ("${doProps[2]['FTP'][0]['FilesPerMin']}" > 0) )
+		{
+			echo "Dataset Variables Passed by User ${doProps[2]}"			
+			sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'rest' "
+		}
+	
+		if(("${doProps[2]['AS2'][0]['FilesPerMin']}" > 0) && ("${doProps[2]['SSH FTP'][0]['FilesPerMin']}" > 0) && ("${doProps[2]['FTP'][0]['FilesPerMin']}" <= 0) )
+		{
+			echo "Dataset Variables Passed by User ${doProps[2]}"			
+			sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'common,setup-sync,rest-as2,rest-sshftp,schedule-actions-server,schedule-actions-tp' "
+		}
+		
+		if(("${doProps[2]['AS2'][0]['FilesPerMin']}" > 0) && ("${doProps[2]['SSH FTP'][0]['FilesPerMin']}" <= 0) && ("${doProps[2]['FTP'][0]['FilesPerMin']}" > 0) )
+		{
+			echo "Dataset Variables Passed by User ${doProps[2]}"			
+			sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'common,setup-sync,rest-as2,rest-ftp,schedule-actions-server,schedule-actions-tp' "
+		}
+
+		if(("${doProps[2]['AS2'][0]['FilesPerMin']}" <= 0) && ("${doProps[2]['SSH FTP'][0]['FilesPerMin']}" > 0) && ("${doProps[2]['FTP'][0]['FilesPerMin']}" > 0) )
+		{
+			echo "Dataset Variables Passed by User ${doProps[2]}"			
+			sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'common,setup-sync,rest-sshftp,rest-ftp,schedule-actions-server,schedule-actions-tp' "
+		}
      
     } 
 	
