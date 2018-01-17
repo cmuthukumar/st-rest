@@ -3,25 +3,25 @@ hardware:
    versalex:           
       - name: harmony
         ram_size: 4gb
-        region: nyc1
+        region: nyc3
         image_name: "centos-6-x64"
         qty: 2
    integrations:           
       - name: mysql
         ram_size: 1gb
-        region: nyc1
+        region: nyc3
         image_name: "centos-6-x64"
         qty: 1
    proxy:           
       - name: proxy
         ram_size: 1gb
-        region: nyc1
+        region: nyc3
         image_name: "centos-6-x64"
         qty: 2
    shares:           
       - name: share
         ram_size: 4gb
-        region: nyc1
+        region: nyc3
         image_name: "centos-6-x64"
         qty: 1        
 software:
