@@ -54,7 +54,7 @@ def create_droplet_json(droplet_name,region,ram_size,os_image,sshkey_id,droplet_
 
 def get_droplet_details_id(url,droplet_res):
 	cnt=0
-	max_retry=3
+	max_retry=20
 	while cnt < max_retry:
 		try:
 			print "Droplet ID to Retrieve Details",droplet_res['droplet']['id']
