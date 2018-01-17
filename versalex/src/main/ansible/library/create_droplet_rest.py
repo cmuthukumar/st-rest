@@ -70,7 +70,7 @@ def get_droplet_details_id(url,droplet_res):
 				raise ValueError('Droplet JSON Networks Not found in Response')
 		except Exception,e:
 			print "Exception on get_droplet_details_id method",e
-			time.sleep(5**cnt)			
+			time.sleep(10**cnt)			
 			cnt += 1
 			if cnt >= max_retry:
 				raise e
@@ -98,7 +98,7 @@ def get_postresults(url,json_file):
 				raise ValueError('Droplet is not Created..Please Retry')
 		except Exception,e:
 			print "Exception on get_postresults method",e
-			time.sleep(5**cnt)			
+			time.sleep(10**cnt)			
 			cnt += 1
 			if cnt >= max_retry:
 				raise e
