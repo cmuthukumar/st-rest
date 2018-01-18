@@ -88,4 +88,4 @@
             - "{{droplet_status.results}}"
             - droplet.networks.v4
       delegate_to: 127.0.0.1
-      no_log: true
+      no_log: false
