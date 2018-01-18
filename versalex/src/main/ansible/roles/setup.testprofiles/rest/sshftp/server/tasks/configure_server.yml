@@ -29,7 +29,6 @@
      with_dict: "{{dataset}}"
      when: (item.key|lower == 'sshftp')
      register: profile_config
-
    # - name: Configure Schedule Actions on Server Node
      # shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupTestProfile "{{conf_server.name}}" "{{conf_server.install_location}}" "true"
      # environment:

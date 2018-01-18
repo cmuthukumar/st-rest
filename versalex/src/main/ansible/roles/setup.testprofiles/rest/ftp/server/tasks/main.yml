@@ -6,7 +6,7 @@
      with_dict: "{{ versalex | default({}) }}"
      when: "'servers-versalex-1' in inventory_hostname"
      loop_control:
-        loop_var: group_ftp    
+        loop_var: group_ftp
 
    - name: Printing for Debug
      debug: msg="Done with Server Side DataSet Configs "
