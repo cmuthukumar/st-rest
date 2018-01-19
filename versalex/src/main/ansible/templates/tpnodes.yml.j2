@@ -3,19 +3,19 @@ hardware:
     versalex:           
       - name: {{digi_ocean_vars[1].versalex[0]['Product'] | lower|default('', true) }}
         ram_size: {{digi_ocean_vars[1].versalex[0]['RAM'] | default('', true)}}
-        region: nyc3
+        region: nyc1
         image_name: "{{digi_ocean_vars[1].versalex[0]['OS'] | default('', true)}}"
         qty: {{digi_ocean_vars[1].versalex[0]['Total Droplets'] }}
     integrations:
       - name: {{digi_ocean_vars[1].integrations[0]['Product'] | default('', true) }}
         ram_size: {{digi_ocean_vars[1].integrations[0]['RAM'] | default('', true) }}
-        region: nyc3
+        region: nyc1
         image_name: "{{digi_ocean_vars[1].integrations[0]['OS'] | default('', true) }}"
         qty: {{digi_ocean_vars[1].integrations[0]['Total Droplets']}}
     shares:
       - name: share
         ram_size: {{digi_ocean_vars[1].shares[0]['RAM'] | default('', true) }}
-        region: nyc3
+        region: nyc1
         image_name: "{{digi_ocean_vars[1].shares[0]['OS'] | default('', true) }}"
         qty: {{digi_ocean_vars[1].shares[0]['Total Droplets'] }}
 software:
