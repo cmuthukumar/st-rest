@@ -84,7 +84,24 @@ sh 'java -version'
             } 
 
 		
-
+    stage('Setup TestProfiles')
+            {
+                setupTestProfiles()
+            } 
+			
+    stage('Run Tests')
+            {
+                runTests()
+            }
+    stage('Monitor Tests')
+            {
+                monitorTests()
+            }
+			
+    stage('Destroy Droplets')
+            {
+                destroyDroplets(params)
+            } 			
 			
         }
         finally{
@@ -95,80 +112,8 @@ sh 'java -version'
     
     }
   
-  
- withDockerRegistry([credentialsId: 'DockerCleoSysTest', url: 'https://hub.docker.com/r/cleo/ansible/']) {
-          try{
-          	    stage('Setup TestProfiles')
-		            {
-		                
-			parallel(
-				'AS2': {
-					if(("${doProps[2]['AS2'][0]['FilesPerMin']}" > 0))
-					{
-						st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
-    						{       							
-    					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'common,setup-sync,rest-as2,schedule-actions-server,schedule-actions-tp' "
-				
-    						}
-					}
-				},
-	                
-				'FTP': {
-					if(("${doProps[2]['FTP'][0]['FilesPerMin']}" > 0))
-					{
-						st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
-    						{       							
-    					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'common,setup-sync,rest-ftp,schedule-actions-server,schedule-actions-tp' "
-				
-    						}
-					}
-				},		                
-				'SSH FTP': {
-					if(("${doProps[2]['SSHFTP'][0]['FilesPerMin']}" > 0))
-					{
-						st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
-    						{       							
-    					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'common,setup-sync,rest-sshftp,schedule-actions-server,schedule-actions-tp' "
-				
-    						}
-					}
-				}
-				)
-		            } 
-					
-		    stage('Run Tests')
-		            {
-				st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
-		    		{       							
-					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=${doProps[2]['AS2'][0]['FilesPerMin']} -e as2_totalmins=${doProps[2]['AS2'][0]['Total Mins']} -e as2_totalhosts=${doProps[2]['AS2'][0]['HoststoRun']} -e ftp_filespermin=${doProps[2]['FTP'][0]['FilesPerMin']} -e ftp_totalmins=${doProps[2]['FTP'][0]['Total Mins']} -e ftp_totalhosts=${doProps[2]['FTP'][0]['HoststoRun']} -e sshftp_filespermin=${doProps[2]['SSHFTP'][0]['FilesPerMin']} -e sshftp_totalmins=${doProps[2]['SSHFTP'][0]['Total Mins']} -e sshftp_totalhosts=${doProps[2]['SSHFTP'][0]['HoststoRun']} run_tests.yml "
-						
-    				}		               
-		            }
-		    stage('Monitor Tests')
-		            {
-		               st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
-			       	{       							
-					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=${doProps[2]['AS2'][0]['FilesPerMin']} -e as2_totalmins=${doProps[2]['AS2'][0]['Total Mins']} -e ftp_filespermin=${doProps[2]['FTP'][0]['FilesPerMin']} -e ftp_totalmins=${doProps[2]['FTP'][0]['Total Mins']}  -e sshftp_filespermin=${doProps[2]['SSHFTP'][0]['FilesPerMin']} -e sshftp_totalmins=${doProps[2]['SSHFTP'][0]['Total Mins']}  monitor_tests.yml "
-			       						
-    				}	
-		            }
-					
-		    stage('Destroy Droplets')
-		            {
-		                destroyDroplets(params)
-            			} 
-            			
-          }
-          finally{
-        
-            echo "End of Setup , Run,Monitor Tests"
-        }
-          
-      
-  
 }
 
-}
 
 	def buildVars()
 	{
@@ -226,12 +171,49 @@ sh 'java -version'
            sh "cd ${workdir} && ansible-playbook -i inventories/${params[i]}/ -e machine_type=${params[i]} configure_product.yml "
         }
     }  
+	
+    def setupTestProfiles()
+    {
+    println "Setup Test Profiles for Server and TP Side ${doProps[2]['AS2'][0]['FilesPerMin']}"
+			 
+		if(("${doProps[2]['AS2'][0]['FilesPerMin']}" > 0) && ("${doProps[2]['SSHFTP'][0]['FilesPerMin']}" > 0) && ("${doProps[2]['FTP'][0]['FilesPerMin']}" > 0) )
+		{
+			echo "Dataset Variables Passed by User ${doProps[2]}"			
+			sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'rest' "
+		}
+	
+		if(("${doProps[2]['AS2'][0]['FilesPerMin']}" > 0) && ("${doProps[2]['SSHFTP'][0]['FilesPerMin']}" > 0) && ("${doProps[2]['FTP'][0]['FilesPerMin']}" <= 0) )
+		{
+			echo "Dataset Variables Passed by User ${doProps[2]}"			
+			sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'common,setup-sync,rest-as2,rest-sshftp,schedule-actions-server,schedule-actions-tp' "
+		}
+		
+		if(("${doProps[2]['AS2'][0]['FilesPerMin']}" > 0) && ("${doProps[2]['SSHFTP'][0]['FilesPerMin']}" <= 0) && ("${doProps[2]['FTP'][0]['FilesPerMin']}" > 0) )
+		{
+			echo "Dataset Variables Passed by User ${doProps[2]}"			
+			sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'common,setup-sync,rest-as2,rest-ftp,schedule-actions-server,schedule-actions-tp' "
+		}
 
+		if(("${doProps[2]['AS2'][0]['FilesPerMin']}" <= 0) && ("${doProps[2]['SSHFTP'][0]['FilesPerMin']}" > 0) && ("${doProps[2]['FTP'][0]['FilesPerMin']}" > 0) )
+		{
+			echo "Dataset Variables Passed by User ${doProps[2]}"			
+			sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'common,setup-sync,rest-sshftp,rest-ftp,schedule-actions-server,schedule-actions-tp' "
+		}
+     
+    } 
+	
+    def setupSync()
+    {
+    println "Setup Sync for Server Side"
+
+           sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ setup_sync.yml  "
+     
+    } 
 		
     def runTests()
     {
     println "Running Tests"
-
+		
 		sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=${doProps[2]['AS2'][0]['FilesPerMin']} -e as2_totalmins=${doProps[2]['AS2'][0]['Total Mins']} -e as2_totalhosts=${doProps[2]['AS2'][0]['HoststoRun']} -e ftp_filespermin=${doProps[2]['FTP'][0]['FilesPerMin']} -e ftp_totalmins=${doProps[2]['FTP'][0]['Total Mins']} -e ftp_totalhosts=${doProps[2]['FTP'][0]['HoststoRun']} -e sshftp_filespermin=${doProps[2]['SSHFTP'][0]['FilesPerMin']} -e sshftp_totalmins=${doProps[2]['SSHFTP'][0]['Total Mins']} -e sshftp_totalhosts=${doProps[2]['SSHFTP'][0]['HoststoRun']} run_tests.yml "
 
      
