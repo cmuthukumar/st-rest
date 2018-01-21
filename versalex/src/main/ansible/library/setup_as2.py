@@ -165,6 +165,8 @@ def setup_receiver_cert(certname,sender_ip,tp_ip,master_ip):
 def setup_as2_with_proxy(host_name,server_hosts,tphosts,dataset,proxy_hosts):
 	try:
 		tp_cnt=len(tphosts)
+		proxy_cnt=len(proxy_hosts)
+		proxy_indx=0
 		master_ip=server_hosts[0]
 		total_host=get_totalhost(dataset)
 		host_pernode=(total_host/tp_cnt)
@@ -173,14 +175,17 @@ def setup_as2_with_proxy(host_name,server_hosts,tphosts,dataset,proxy_hosts):
 		for tp_ip in tphosts:
 			print "TP Host Index",tphosts.index(tp_ip)
 			print "Server Hosts",server_hosts[tphosts.index(tp_ip)]
-			print "TP Hosts",tphosts[tphosts.index(tp_ip)]		
+			print "TP Hosts",tphosts[tphosts.index(tp_ip)]
+			if((tphosts.index(tp_ip) > proxy_indx))
+				proxy_indx=(tphosts.index(tp_ip)-proxy_cnt)
 			for i in range(start,end+1):
-				setup_sender_cert((host_name+str(i)),proxy_hosts[tphosts.index(tp_ip)],tp_ip,master_ip)
-				setup_receiver_cert((host_name+str(i)),tp_ip,proxy_hosts[tphosts.index(tp_ip)],master_ip)
+				setup_sender_cert((host_name+str(i)),proxy_hosts[proxy_indx],tp_ip,master_ip)
+				setup_receiver_cert((host_name+str(i)),tp_ip,proxy_hosts[proxy_indx],master_ip)
 				setup_connection((host_name+str(i)),master_ip,sender_json_req)
 				setup_connection((host_name+str(i)),tp_ip,receiver_json_req)
 			start=start+int(host_pernode)
 			end=end+int(host_pernode)
+			proxy_indx=proxy_indx+1
 		return True,"success"
 	except Exception,e:
 		print "Exception on setup_as2",e
