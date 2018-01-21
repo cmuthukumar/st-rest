@@ -176,7 +176,7 @@ def setup_as2_with_proxy(host_name,server_hosts,tphosts,dataset,proxy_hosts):
 			print "TP Host Index",tphosts.index(tp_ip)
 			print "Server Hosts",server_hosts[tphosts.index(tp_ip)]
 			print "TP Hosts",tphosts[tphosts.index(tp_ip)]
-			if((tphosts.index(tp_ip) > proxy_indx))
+			if((tphosts.index(tp_ip) > proxy_indx)):
 				proxy_indx=(tphosts.index(tp_ip)-proxy_cnt)
 			for i in range(start,end+1):
 				setup_sender_cert((host_name+str(i)),proxy_hosts[proxy_indx],tp_ip,master_ip)
