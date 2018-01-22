@@ -107,22 +107,28 @@ def setup_connection(hostname,master_ip,partner_ip,jsonspath):
 def setup_with_proxy(host_name,server_hosts,tphosts,dataset,proxy_hosts,jsonspath):
 	try:
 		tp_cnt=len(tphosts)
+		proxy_cnt=len(proxy_hosts)
+		proxy_indx=0		
 		master_ip=server_hosts[0]
 		total_host=get_totalhost(dataset)
 		host_pernode=(total_host/tp_cnt)
 		start=1
 		end=int(host_pernode)
 		for tp_ip in tphosts:
-			print "TP Host Index",tphosts.index(tp_ip)
-			print "Server Hosts",server_hosts[tphosts.index(tp_ip)]
-			print "TP Hosts",tphosts[tphosts.index(tp_ip)]		
+			print "setup_with_proxy TP Host Index",tphosts.index(tp_ip)
+			print "setup_with_proxy Server Hosts",server_hosts[tphosts.index(tp_ip)]
+			print "setup_with_proxy TP Hosts",tphosts[tphosts.index(tp_ip)]
+			if((tphosts.index(tp_ip) > (proxy_cnt-1))):
+				proxy_indx=(tphosts.index(tp_ip)-proxy_cnt)			
 			for i in range(start,end+1):				
-				setup_connection((host_name+str(i)+"_MBX1"),tp_ip,proxy_hosts[tphosts.index(tp_ip)],jsonspath)
+				setup_connection((host_name+str(i)+"_MBX1"),tp_ip,proxy_hosts[proxy_indx],jsonspath)
 			start=start+int(host_pernode)
 			end=end+int(host_pernode)
+			if((tphosts.index(tp_ip) <= proxy_cnt)):
+				proxy_indx=proxy_indx+1			
 		return True,"success"
 	except Exception,e:
-		print "Exception on setup_as2",e
+		print "Exception on setup_FTP or SSH FTP",e
 		return False,e
 		
 def setup_without_proxy(host_name,server_hosts,tphosts,dataset,jsonspath):
@@ -142,7 +148,7 @@ def setup_without_proxy(host_name,server_hosts,tphosts,dataset,jsonspath):
 			end=end+int(host_pernode)
 		return True,"success"
 	except Exception,e:
-		print "Exception on setup_as2",e
+		print "Exception on setup_FTP or SSH FTP",e
 		return False,e
 		
 def main():
