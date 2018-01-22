@@ -32,7 +32,7 @@
     "sign": true,
     "compress": false,
     "receipt": {
-      "type": "async-http",
+      "type": "none",
       "micAlgorithm": "sha1",
       "sign": true,
       "forwardToEmail": false
