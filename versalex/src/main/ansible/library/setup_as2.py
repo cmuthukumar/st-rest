@@ -174,9 +174,10 @@ def setup_as2_with_proxy(host_name,server_hosts,tphosts,dataset,proxy_hosts):
 		end=int(host_pernode)
 		for tp_ip in tphosts:
 			print "TP Host Index",tphosts.index(tp_ip)
+			print "Proxy Index",proxy_indx
 			print "Server Hosts",server_hosts[tphosts.index(tp_ip)]
 			print "TP Hosts",tphosts[tphosts.index(tp_ip)]
-			if((tphosts.index(tp_ip) > proxy_indx)):
+			if((tphosts.index(tp_ip) > (proxy_cnt-1))):
 				proxy_indx=(tphosts.index(tp_ip)-proxy_cnt)
 			for i in range(start,end+1):
 				setup_sender_cert((host_name+str(i)),proxy_hosts[proxy_indx],tp_ip,master_ip)
@@ -185,7 +186,8 @@ def setup_as2_with_proxy(host_name,server_hosts,tphosts,dataset,proxy_hosts):
 				setup_connection((host_name+str(i)),tp_ip,receiver_json_req)
 			start=start+int(host_pernode)
 			end=end+int(host_pernode)
-			proxy_indx=proxy_indx+1
+			if((tphosts.index(tp_ip) <= (proxy_cnt-1))):
+				proxy_indx=proxy_indx+1
 		return True,"success"
 	except Exception,e:
 		print "Exception on setup_as2",e
