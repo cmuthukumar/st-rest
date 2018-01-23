@@ -13,13 +13,13 @@
 - name: "Setups FTP and SSH FTP Server Profiles"
   hosts: "versalex:proxy"
   roles:
-    - { role: setup.testprofiles/rest/sshftp/server/, when: "'servers-versalex' in inventory_hostname",tags: ['rest','rest-sshftp'] }
+    - { role: setup.testprofiles/rest/sshftp/server/, hostname: "SSHFTP",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest','rest-sshftp'] }
     - { role: setup.testprofiles/rest/sshftp/client/, hostname: "SSHFTP",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest','rest-sshftp'] }    
    
 - name: "Setups FTP and SSH FTP Client Profiles"
   hosts: "versalex:proxy"
   roles:
-    - { role: setup.testprofiles/rest/ftp/server/, when: "'servers-versalex' in inventory_hostname",tags: ['rest','rest-ftp'] }
+    - { role: setup.testprofiles/rest/ftp/server/, hostname: "FTPHost",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest','rest-ftp'] }
     - { role: setup.testprofiles/rest/ftp/client/, hostname: "FTPHost",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest','rest-ftp'] }
 
 - name: Schedule actions for server master node

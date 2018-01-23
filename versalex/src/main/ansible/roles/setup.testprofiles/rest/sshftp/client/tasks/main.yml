@@ -6,7 +6,7 @@
         server_hosts: "{{ groups['servers-versalex'] | map('extract', hostvars, ['ansible_ssh_host']) | join(',') }}"
         proxy_hosts: "{{ groups['servers-proxy'] | map('extract', hostvars, ['ansible_ssh_host']) | join(',') }}"
         tp_hosts: "{{ groups['tpnodes-versalex'] | map('extract', hostvars, ['ansible_ssh_host']) | join(',') }}"
-        dataset: "{{dataset |default({})}}"      
+        dataset: "{{dataset |default({})}}"
       register: rest_status
       when: (play_hosts.index(inventory_hostname) == 0)      
       delegate_to: 127.0.0.1
