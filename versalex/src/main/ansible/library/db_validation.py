@@ -44,7 +44,7 @@ def query_dbrecords(ip,port,username,password,dbname,wait_time):
 		status,res=query_mysql(ip,port,username,password,dbname,wait_time)
 		for each_record in res:
 			print "Each Protocol Record is",res[each_record][4],res[each_record][1]+'_Txns'
-			if((protocols_txns[res[each_record][1]+'_Txns']) == (res[each_record][4])):				
+			if((res[each_record][4]) >= (protocols_txns[res[each_record][1]+'_Txns'])):
 				protocols_txns[res[each_record][1]+'_Status']='Success'
 			else:
 				protocols_txns[res[each_record][1]+'_Status']='Failure'
