@@ -1,0 +1,14 @@
+{
+ "type": "nativeUser",
+ "alias": "{{hostname|upper}}",
+ "enabled": true,
+ "editable": true,
+ "active": true,
+  "ready": true,
+ "notes": "test notes",
+   "home": {
+     "dir": {
+       "default": "{{default_home_dir}}"
+   }
+}
+}
