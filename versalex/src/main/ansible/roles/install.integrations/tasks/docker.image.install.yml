@@ -11,9 +11,9 @@
         pull: true
         env: "{{integrations.app_args}}"
            # MYSQL_ROOT_PASSWORD: "testdocker"        
-        exposed_ports: "{{integrations.app_port}}"        
+        exposed_ports: "{{integrations.port}}"        
         network_mode: bridge
-        published_ports: "{{integrations.app_port}}:{{integrations.app_port}}"        
+        published_ports: "{{integrations.app_port}}"        
         recreate: true
         restart_policy: always
         # command: 'mysql -u root -ptestdocker -D mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;" '

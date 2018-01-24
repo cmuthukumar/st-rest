@@ -4,7 +4,8 @@
         vex_db: "{{config_db.value}}"
         
 - name: Download DB artifact from Maven Central
-  maven_artifact: 
+  maven_artifact:
+    repository_url: "{{item.value.repository_url}}"
     group_id: "{{item.value.maven_groupid}}"
     artifact_id: "{{item.value.maven_artifactid}}"
     version: "{{item.value.maven_version}}"

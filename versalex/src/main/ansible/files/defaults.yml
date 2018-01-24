@@ -106,10 +106,10 @@ defaults:
         mailbox_custom_props: "{}"
         action_custom_props: "{}"        
     share:
-        server_share_path: "/root/share/"
-        
+        server_share_path: "/root/share/"        
     mysql:
         type: "db"
+        repository_url: "http://repo1.maven.org/maven2"
         maven_artifactid: "mysql-connector-java"
         maven_groupid: "mysql"
         maven_version: "5.1.24"
@@ -126,23 +126,29 @@ defaults:
         app_srcdir: "/home/SystemTest/DockerFiles/"
         app_destdir: "/root/DockerFile/"
         image_name: testdockerfile
-        app_port: 3306
+        app_port: "3306:3306"
         image_tag: latest
         app_args: "MYSQL_ROOT_PASSWORD=testdocker"        
-    oracle:
+    oracle_11g:
         type: "db"
-        maven_artifactid: oracle-connector-java
-        maven_groupid: oracle
-        maven_version: 5.1.24
-        maven_destfilename: "oracle.jar"
+        repository_url: "http://10.80.80.156/nexus/service/local/repositories/thirdparty/content/"
+        maven_artifactid: "oracle_jdbc"
+        maven_groupid: "com.oracle"
+        maven_version: "11.2.0.4.0"
+        maven_destfilename: "ojdbc6.jar"
         app_type: oracle
         node_ip: dbsrv1
         # jdbc_url: "jdbc:mysql://2.2.2.2:3306/test1"
-        port: 3306
+        port: 1521
         dbname: oracle
         driver_str: "com.oracle.jdbc.Driver"
-        username: root
-        password: testdocker      
+        username: system
+        password: "cleo"
+        docker: "true"
+        use_docker_image: "true"
+        app_port: "1521:1521,8080:8080"
+        image_tag: latest
+        app_args: "DEFAULT_SYS_PASS=cleo"         
     ad:
         type: "ldap"
         host: "10.80.80.888"
