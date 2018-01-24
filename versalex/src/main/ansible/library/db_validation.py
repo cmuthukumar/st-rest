@@ -43,11 +43,11 @@ def query_dbrecords(ip,port,username,password,dbname,wait_time):
 	try:	
 		status,res=query_mysql(ip,port,username,password,dbname,wait_time)
 		for each_record in res:
-			print "Each Protocol Record is",res[each_record][4],res[each_record][1]+'_Txns'
-			if((res[each_record][4]) >= (protocols_txns[res[each_record][1]+'_Txns'])):
-				protocols_txns[res[each_record][1]+'_Status']='Success'
+			print "Each Protocol Record is",res[each_record][3],res[each_record][0]+'_Txns'
+			if((res[each_record][3]) >= (protocols_txns[res[each_record][0]+'_Txns'])):
+				protocols_txns[res[each_record][0]+'_Status']='Success'
 			else:
-				protocols_txns[res[each_record][1]+'_Status']='Failure'
+				protocols_txns[res[each_record][0]+'_Status']='Failure'
 		for key,value in protocols_txns.iteritems():
 			print "Each protocols_txns Record is",key,value
 			if('Status' in key and value == 'Failure'):
@@ -72,8 +72,8 @@ def query_mysql(ip,port,username,password,dbname,sleep_time):
 			results = cursor.fetchall()
 			print "DB Results",results
 			for row in results:
-				print row[1],row[4]
-				mysql_db_records[row[1]+'_'+row[3]+'_reocrds']=row
+				print row[0],row[3]
+				mysql_db_records[row[0]+'_'+row[2]+'_reocrds']=row
 			if(cnt == max_retry):
 				cursor.close()
 				cnx.close()
