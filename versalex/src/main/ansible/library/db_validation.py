@@ -67,7 +67,7 @@ def query_mysql(ip,port,username,password,dbname,sleep_time):
 			print "Count Value-<",cnt
 			cnx = mysql.connector.connect(host=ip,port=port,user=username, password=password, database=dbname)
 			cursor = cnx.cursor()
-			query = ("select VLSerial,Transport,Status,Direction,count(*) as Total from VLTransfers group by VLSerial,Transport,Status,Direction")
+			query = ("select Transport,Status,Direction,count(*) as Total from VLTransfers group by Transport,Status,Direction")
 			cursor.execute(query)
 			results = cursor.fetchall()
 			print "DB Results",results
