@@ -13,9 +13,9 @@
         register: xmls_total
         until: (xmls_total['matched']|int >= item.total)
         with_items:
-            - {string: "AS2",total: "{{as2_totalhosts}}",protocol: "AS2"}
-            - {string: "FTP",total: "{{ftp_totalhosts}}",protocol: "FTP"}
-            - {string: "SSHFTP",total: "{{sshftp_totalhosts}}",protocol: "SSH FTP"}
+            - {string: "AS2",total: "{{as2_total_create_hosts}}",protocol: "AS2"}
+            - {string: "FTP",total: "{{ftp_total_create_hosts}}",protocol: "FTP"}
+            - {string: "SSHFTP",total: "{{sshftp_total_create_hosts}}",protocol: "SSH FTP"}
         retries: 60
         delay: 60
         ignore_errors: yes
