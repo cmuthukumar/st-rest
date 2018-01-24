@@ -22,16 +22,6 @@
     - { role: setup.testprofiles/rest/ftp/server/, hostname: "FTPHost",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest','rest-ftp'] }
     - { role: setup.testprofiles/rest/ftp/client/, hostname: "FTPHost",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest','rest-ftp'] }
 
-- name: Schedule actions for server master node
-  hosts: "servers-versalex[0]"
-  roles:
-    - { role: setup.testprofiles/rest/schedule_actions/, schedule_option: "on file polling continuously",action_type: "send", tags: ['schedule-actions-server','rest'] }
-
-- name: Schedule actions for tp nodes
-  hosts: "tpnodes-versalex"
-  roles:
-    - { role: setup.testprofiles/rest/schedule_actions/,schedule_option: "on file polling continuously",action_type: "send", tags: ['schedule-actions-tp','rest'] }    
-
 - name: Setups server side profiles using java    
   hosts: "versalex:proxy"
   roles:    

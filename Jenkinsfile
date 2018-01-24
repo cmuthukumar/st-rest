@@ -137,7 +137,7 @@ sh 'java -version'
 					}
 				}
 				)			
-						sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'schedule-actions-server,schedule-actions-tp' "
+						//sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'schedule-actions-server,schedule-actions-tp' "
 
 		            }
 		}

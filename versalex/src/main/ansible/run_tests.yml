@@ -1,4 +1,20 @@
----    
+---
+- name: Cluster Sync Wait for Server Versalex Nodes
+  hosts: "servers-versalex"
+  roles:
+    - { role: setup.testprofiles/cluster_sync/, as2_totalhosts: "{{as2_totalhosts|default(0)}}",ftp_totalhosts: "{{ ftp_totalhosts|default(0)  }}",sshftp_totalhosts: "{{ sshftp_totalhosts|default(0)  }}",tags: 'cluster_sync' }
+    
+- name: Schedule actions for server master node
+  hosts: "servers-versalex[0]"
+  roles:
+    - { role: setup.testprofiles/rest/schedule_actions/, schedule_option: "on file polling continuously",action_type: "send", tags: ['schedule-actions-server','rest'] }
+
+- name: Schedule actions for tp nodes
+  hosts: "tpnodes-versalex"
+  roles:
+    - { role: setup.testprofiles/rest/schedule_actions/,schedule_option: "on file polling continuously",action_type: "send", tags: ['schedule-actions-tp','rest'] }    
+
+    
 - name: Configures jmx for versalex instances
   hosts: "versalex"
   roles:

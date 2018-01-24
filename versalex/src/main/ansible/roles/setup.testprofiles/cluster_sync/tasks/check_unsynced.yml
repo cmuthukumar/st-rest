@@ -1,0 +1,23 @@
+---
+# tasks file for setup.testprofiles
+- block:
+      - name: Setting facts for Unsycned hosts
+        set_fact:
+            str_vex: "{{check_unsync.value}}"
+            
+      - name: Find Total Hosts xmls
+        find:
+            paths: "{{str_vex.install_location}}/"
+            patterns: "{{item.string}}*.xml"
+            recurse: yes                        
+        register: xmls_total
+        until: (xmls_total['matched']|int >= item.total)
+        with_items:
+            - {string: "AS2",total: "{{as2_totalhosts}}",protocol: "AS2"}
+            - {string: "FTP",total: "{{ftp_totalhosts}}",protocol: "FTP"}
+            - {string: "SSHFTP",total: "{{sshftp_totalhosts}}",protocol: "SSH FTP"}
+        retries: 60
+        delay: 60
+        ignore_errors: yes
+- rescue:
+   - fail: msg="Waiting for Unsynced items in servers hosts Failed" 
