@@ -1,4 +1,3 @@
-#!groovy
 import org.boon.Boon;
  
 def jsonEditorOptions = Boon.fromJson(/{
@@ -99,11 +98,21 @@ def jsonEditorOptions = Boon.fromJson(/{
                                   "Product" : {
                                       "type": "string", 
                                         "enum": [
-                                              "mysql"                                              
+                                              "mysql",
+                                              "oracle_11g"
                                             ],
                                             "default": "mysql",
                                             "propertyOrder": 1
                                   },
+                                  
+                                  "Version" : {
+                                      "type": "string", 
+                                        "enum": [
+                                              "mysql:latest",
+                                               "11.2.0.4.0"
+                                            ],
+                                            "propertyOrder": 2
+                                  },                                   
 
                                   "Total Droplets" : {
                                       "type": "integer", 
@@ -112,7 +121,7 @@ def jsonEditorOptions = Boon.fromJson(/{
                                                 1                                                
                                             ],
                                             "default": 0,
-                                            "propertyOrder": 4
+                                            "propertyOrder": 5
                                             
                                   },
 
@@ -123,7 +132,7 @@ def jsonEditorOptions = Boon.fromJson(/{
                                                "4gb",
                                                "8gb"
                                             ],
-                                            "propertyOrder": 3
+                                            "propertyOrder": 4
                                   },
 
                                   "OS" : {
@@ -133,7 +142,7 @@ def jsonEditorOptions = Boon.fromJson(/{
                                                "centos-7-x64"
                                             ],
                                             "default": "centos-7-x64",
-                                            "propertyOrder": 2
+                                            "propertyOrder": 3
                                   }
 
                               }

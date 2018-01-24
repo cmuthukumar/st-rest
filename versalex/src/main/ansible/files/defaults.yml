@@ -112,6 +112,7 @@ defaults:
         repository_url: "http://repo1.maven.org/maven2"
         maven_artifactid: "mysql-connector-java"
         maven_groupid: "mysql"
+        version: "mysql:latest"
         maven_version: "5.1.24"
         app_type: "mysql"
         node_ip: "dbsrv1"
@@ -134,6 +135,7 @@ defaults:
         repository_url: "http://10.80.80.156/nexus/service/local/repositories/thirdparty/content/"
         maven_artifactid: "oracle_jdbc"
         maven_groupid: "com.oracle"
+        version: "11.2.0.4.0"
         maven_version: "11.2.0.4.0"
         maven_destfilename: "ojdbc6.jar"
         app_type: oracle
