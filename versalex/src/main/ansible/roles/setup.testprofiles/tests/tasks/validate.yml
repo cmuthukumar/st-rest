@@ -16,10 +16,10 @@
         status_code: 200
      register: conn_certs_status
      with_items:
-            - certs?filter=signatureAlgorithm eq  "SHA1/RSA"
+            - certs?filter=signatureAlgorithm eq  "SHA1withRSA"
      # when:  testprofile.dname | lower != 'vlproxy' and play_hosts.index(inventory_hostname) == 0
      retries: 3
-     delay: 5  
+     delay: 10  
      until: conn_certs_status|success
      delegate_to: 127.0.0.1
      
