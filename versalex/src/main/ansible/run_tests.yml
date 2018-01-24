@@ -2,7 +2,7 @@
 - name: Cluster Sync Wait for Server Versalex Nodes
   hosts: "servers-versalex"
   roles:
-    - { role: setup.testprofiles/cluster_sync/, as2_total_create_hosts: "{{as2_total_create_hosts|default(0)}}",ftp_total_create_hosts: "{{ ftp_total_create_hosts|default(0)  }}",sshftp_total_create_hosts: "{{ sshftp_total_create_hosts|default(0)  }}",tags: 'cluster_sync' }
+    - { role: setup.testprofiles/cluster_sync/, as2_total_create_hosts: "{{as2_totalcreatehosts|default(0)}}",ftp_total_create_hosts: "{{ftp_totalcreatehosts|default(0)}}",sshftp_total_create_hosts: "{{sshftp_totalcreatehosts|default(0)}}",tags: ['cluster_sync'] }
     
 - name: Schedule actions for server master node
   hosts: "servers-versalex[0]"
