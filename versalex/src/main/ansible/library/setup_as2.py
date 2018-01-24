@@ -40,20 +40,27 @@ def get_jsonoutput(json_path,render_content):
 		print "Exception on get Json Output",e
 		
 def get_postresults(url,json_file):
-	try:
-		if type(json_file) is dict:
-			json_data=json_file
-		else:
-			with open(json_file, 'r') as jsfile:
-				json_data=json.load(jsfile)
-		print "Cert Json DATA-",json_data
-		head ={ 'Content-type':'application/json','Accept':'application/json'}
-		results = requests.post(url,headers=head,auth=HTTPBasicAuth('administrator', 'Admin'),data=json.dumps(json_data))
-		json_res=json.loads(results.text)
-		print "FINAL ****RES**",json_res
-		return json_res
-	except Exception,e:
-		print "Exception on get_postresults method",e
+	cnt=0
+	max_retry=5
+	while cnt < max_retry:
+		try:
+			if type(json_file) is dict:
+				json_data=json_file
+			else:
+				with open(json_file, 'r') as jsfile:
+					json_data=json.load(jsfile)
+			print "Cert Json DATA-",json_data
+			head ={ 'Content-type':'application/json','Accept':'application/json'}
+			results = requests.post(url,headers=head,auth=HTTPBasicAuth('administrator', 'Admin'),data=json.dumps(json_data))
+			json_res=json.loads(results.text)
+			print "FINAL ****RES**",json_res
+			return json_res
+		except Exception,e:
+			print "Exception on setup_as2 get_postresults method",e				
+			time.sleep(10**cnt)			
+			cnt += 1
+			if cnt >= max_retry:
+				raise e
 		
 def create_cert_json(cert_name):
 	try:
