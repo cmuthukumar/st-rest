@@ -22,7 +22,7 @@ defaults:
         nexus_groupid: "com.cleo.installers"
         nexus_systest_groupid: "com.cleo.st"
         nexus_systest_artifactid: "versalex_setup"
-        nexus_systest_version: "0.2-SNAPSHOT"
+        nexus_systest_version: "0.3-SNAPSHOT"
         #nexus_artifactid: Harmony 
         nexus_classifier: "linux64-jre18"
         nexus_packaging: bin    

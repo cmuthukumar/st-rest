@@ -1,72 +1,63 @@
 package com.cleo.systest;
 
-import com.cleo.lexicom.external.ILexiCom;
-import com.cleo.lexicom.external.ISchedule;
-import com.cleo.lexicom.external.LexiComFactory;
-
-import java.util.Arrays;
+//import com.couchbase.client.deps.io.netty.util.internal.StringUtil;
 
 public class SetupSchedule {
 
+    /**
+     * Used to Pass User Passed Configs to another Util Class
+     *
+     * @param args
+     * @throws Exception
+     */
+
+
     public static void main(String[] args) throws Exception {
-        try{
+        try {
+          // System.out.println("Args Passed by User is " + "VersalEx CSV Path::"+args);
 
-             String[] vexHostPath = new String[3];
-            ILexiCom versalex = null;
-
-
-            System.out.println("Into Schedule");
-            versalex = LexiComFactory.getVersaLex(3, "C:\\Harmony", LexiComFactory.CLIENT_OR_SERVER);
-            versalex.startService();
-            ISchedule schedule = versalex.getSchedule();
-            schedule.setAutoStartup(true);
-            ISchedule.Item item;
-            ISchedule.Item.Calendar calendar;
-            ISchedule.Item.Calendar.Time time;
-            for (String hostelem : versalex.list(ILexiCom.HOST, vexHostPath)) {
-
-                // System.out.println("Returning True");
-                System.out.println("Host Elem is" + hostelem);
-                vexHostPath[0] = "AS2H1";
-
-                for (String mbxelem : versalex.list(ILexiCom.MAILBOX, vexHostPath)) {
-                    vexHostPath[1] = "AS2H1_MBX1";
-                    System.out.println("Mailbox Elem is" + mbxelem);
-                    for (String actionelem : versalex.list(ILexiCom.ACTION, vexHostPath)) {
-                        vexHostPath[2] = "send1";
-                        System.out.println("Action Elem is" + actionelem);
-                        System.out.println("Setting Scheduler for Path" + Arrays.toString(vexHostPath));
-
-                        item = schedule.newItem(vexHostPath);
-                         schedule.saveFromService("true");
-                        //item.setOnlyIfFile(Boolean.parseBoolean(vexHostProps.get("schedule_onlyiffile").toLowerCase()), Boolean.parseBoolean(vexHostProps.get("schedule_continuous").toLowerCase()));
-                        item.setOnlyIfFile(true, true);
-                        schedule.updateItem(item, false);
-                        schedule.save();
-                        System.out.println("Scheduling done");
-
-
-                    }
-                }
-
-
+            for (String arg : args) {
+                System. out.println(arg);
             }
 
+
+            AS2Setup as2setup = new AS2Setup();
+            FTPSetup ftpsetup = new FTPSetup();
+            UtilTestProfile scheduleutil;
+            scheduleutil = new UtilTestProfile();
+
+            if(args.length <2)
+            {
+                System.out.println("Proper Usage is:  java SetupTestProfile 1. Product Name 2. Product Location 3.Protocol Type 4.Host Range(ex: 1-1000) 5. Mailbox Range(ex: 1-100) 7. Action Range (1-400) 8. TP Host IPAddress 9. TP Host Port 10. Server Share ") ;
+                System.exit(0);
             }
-        catch(Exception e)
-        {
+            if(args[2].toLowerCase().startsWith("as2"))
+            {
+                as2setup.setupAS2props(args[0],args[1],args[3],args[4],args[5],args[6],args[7],args[8],args[9],args[10],args[11],args[12]);
 
-            System.out.println("Setting up Scheduler failed with exception"+e.getMessage());
+            }
+            if(args[2].toLowerCase().startsWith("ftp"))
+            {
+                System.out.println("Into FTP");
+                ftpsetup.setupFTPprops(args[0],args[1],args[3],args[4],args[5],args[6],args[7],args[8],args[9],args[10],args[11],args[12]);
+            }
+            if(args[2].toLowerCase().startsWith("true") || args[2].toLowerCase().startsWith("false"))
+            {
+                scheduleutil.setProduct(args[0]);
+                scheduleutil.setVexPath(args[1]);
+                scheduleutil.setupScheduleAutoStartup(args[2]);
+            }
 
-        }
-        finally{
+        } catch (Exception e) {
+
+            System.out.println("Setting up Schedule failed with exception " + e.getMessage());
+
+        } finally {
 
             System.exit(0);
-
         }
 
     }
-
 
 
 }
