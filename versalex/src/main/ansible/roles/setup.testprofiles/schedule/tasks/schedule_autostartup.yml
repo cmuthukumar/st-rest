@@ -1,0 +1,19 @@
+---
+   - name: Setting Dictionary Name JMX Configs Versalex
+     set_fact:
+        sched_start: "{{scedule_autostart.value}}"
+        
+   - name: Print Hostvars
+     debug: msg="Versalex name{{sched_start.name}}"     
+
+   - name: Copy SetupOptions Jar File to remote location
+     copy: src="{{playbook_dir}}/library/versalex_setup-latest.jar" dest="{{sched_start.install_location}}lib/"
+
+   - name: Configure Schedule Actions on Master Server Node using Java
+     shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupSchedule "{{sched_start.name}}" "{{sched_start.install_location}}" "{{sched_auto}}"
+     environment:
+       CLASSPATH: ":lib/versalex_setup-latest.jar:lib/*:lib/api/connector/*:lib/aws/*:lib/connector/*:lib/docdb/*:lib/hadoop/*:lib/help/*:lib/hibernate/*:lib/jersey/*:lib/json/*:lib/saml/*:lib/scim/*:lib/secureshare/*:lib/uri/*:lib/vaadin/*:lib/validator/*:lib/ws/*:webserver/AjaxSwing/lib/ajaxswing.jar:webserver/AjaxSwing/lib/commons-fileupload-1.0.jar:webserver/AjaxSwing/lib/freemarker.jar:webserver/AjaxSwing/lib/jsonrpc-1.0.jar:webserver/AjaxSwing/lib/boot/asboot.jar:webserver/AjaxSwing/lib/install/asm-all-3.1.jar:lax.jar"
+     args:
+       executable: /bin/sh
+       chdir: "{{sched_start.install_location}}"
+     register: schedule_autostartup
