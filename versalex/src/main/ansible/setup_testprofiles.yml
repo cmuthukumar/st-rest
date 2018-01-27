@@ -13,19 +13,19 @@
   hosts: "versalex:proxy"
   roles:
     - { role: setup.testprofiles/common, when: "'servers-versalex' in inventory_hostname",tags: ['rest','common','java'] }
-    - { role: setup.testprofiles/rest/as2/, hostname: "AS2WW",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest','rest-as2'] }
+    - { role: setup.testprofiles/rest/as2/, hostname: "AS2WW",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest','rest-as2','as2'] }
 
-- name: "Setups FTP and SSH FTP Server Profiles"
+- name: "Setups SSH FTP Server and Client Profiles"
   hosts: "versalex:proxy"
   roles:
-    - { role: setup.testprofiles/rest/sshftp/server/, hostname: "SSHFTP",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest','rest-sshftp'] }
-    - { role: setup.testprofiles/rest/sshftp/client/, hostname: "SSHFTP",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest','rest-sshftp'] }    
+    - { role: setup.testprofiles/rest/sshftp/server/, hostname: "SSHFTP",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest','rest-sshftp','sshftp'] }
+    - { role: setup.testprofiles/rest/sshftp/client/, hostname: "SSHFTP",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest','rest-sshftp','sshftp'] }    
    
-- name: "Setups FTP and SSH FTP Client Profiles"
+- name: "Setups FTP Server and Client Profiles"
   hosts: "versalex:proxy"
   roles:
-    - { role: setup.testprofiles/rest/ftp/server/, hostname: "FTPHost",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest','rest-ftp'] }
-    - { role: setup.testprofiles/rest/ftp/client/, hostname: "FTPHost",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest','rest-ftp'] }
+    - { role: setup.testprofiles/rest/ftp/server/, hostname: "FTPHost",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest','rest-ftp','ftp'] }
+    - { role: setup.testprofiles/rest/ftp/client/, hostname: "FTPHost",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest','rest-ftp','ftp'] }
 
 - name: Setups server side profiles using java    
   hosts: "versalex:proxy"

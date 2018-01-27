@@ -98,49 +98,45 @@ sh 'java -version'
   
  withDockerRegistry([credentialsId: 'DockerCleoSysTest', url: 'https://hub.docker.com/r/cleo/ansible/']) {
           try{
-			if(("${doProps[2]['AS2'][0]['FilesPerMin']}" > 0) || ("${doProps[2]['FTP'][0]['FilesPerMin']}" > 0) || ("${doProps[2]['SSHFTP'][0]['FilesPerMin']}" > 0) )			
-				{
+				if(("${doProps[2]['AS2'][0]['FilesPerMin']}" > 0) || ("${doProps[2]['FTP'][0]['FilesPerMin']}" > 0) || ("${doProps[2]['SSHFTP'][0]['FilesPerMin']}" > 0) )			
+					{
 				stage('Setup TestProfiles')
 					{
-    					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'common,setup-sync' "
-
-			parallel(
-				'AS2': {
+    					//sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'schedule-auto-startup,common,setup-sync' "
 					if(("${doProps[2]['AS2'][0]['FilesPerMin']}" > 0))
 					{
-						st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
-    						{       							
-    					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'rest-as2' "
-				
-    						}
+						protocols.add('as2')
 					}
-				},
-	                
-				'FTP': {
 					if(("${doProps[2]['FTP'][0]['FilesPerMin']}" > 0))
 					{
-						st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
-    						{       							
-    					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'rest-ftp' "
-				
-    						}
+						protocols.add('ftp')
 					}
-				},		                
-				'SSH FTP': {
 					if(("${doProps[2]['SSHFTP'][0]['FilesPerMin']}" > 0))
 					{
+						protocols.add('sshftp')
+					}
+					
+					
+					def stepsDatasets = [:]					
+					for (int i = 0; i < protocols.size(); i++) {
+			    		def stepProtocol = protocols[i]
+			   		 stepsDatasets[stepProtocol] = { ->           
+			      			  echo "Running ${stepProtocol}"
+							  
 						st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
     						{       							
-    					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'rest-sshftp' "
+    					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags ${stepProtocol} "
 				
     						}
+							
+							
+			   				 }
 					}
+					
+					parallel stepsDatasets
+					
+					}	              
 				}
-				)			
-						//sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'schedule-actions-server,schedule-actions-tp' "
-
-		            }
-		}
 		    stage('Run Tests')
 		            {
 				st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
