@@ -10,7 +10,7 @@ import hudson.model.Node
 params = ['servers','tpnodes']
 workdir = "versalex/src/main/ansible/"
 doProps = readJSON text: "${DigitalOcean}"
-
+String[] protocols=[]
 node('SysTest') {
 
 
