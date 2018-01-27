@@ -125,7 +125,7 @@ sh 'java -version'
 							  
 						st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
     						{       							
-    					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags ${stepProtocol} "
+    					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags '${stepProtocol}' "
 				
     						}
 							
