@@ -102,7 +102,7 @@ sh 'java -version'
 					{
 				stage('Setup TestProfiles')
 					{
-    					//sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'schedule-auto-startup,common,setup-sync' "
+    					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'schedule-auto-startup,common,setup-sync' "
 					if(("${doProps[2]['AS2'][0]['FilesPerMin']}" > 0))
 					{
 						protocols.add('as2')
