@@ -55,7 +55,7 @@ def get_postresults(url,json_file):
 			results = requests.post(url,headers=head,auth=HTTPBasicAuth('administrator', 'Admin'),data=json.dumps(json_data))
 			json_res=json.loads(results.text)
 			print "FINAL ****RES**",json_res
-			if(json_res['username']):
+			if('username' in json_res):
 				return json_res
 			else:
 				raise ValueError('Results doesnot contain username attribute..so raising exception')
