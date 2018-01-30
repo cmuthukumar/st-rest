@@ -116,12 +116,12 @@ defaults:
         maven_version: "5.1.24"
         app_type: "mysql"
         node_ip: "dbsrv1"
-        # jdbc_url: "jdbc:mysql://2.2.2.2:3306/test1"
         port: 3306
         dbname: mysql
         driver_str: "com.mysql.jdbc.Driver"
+        # jar_path: "{{playbook_dir}}library/mysql_jdbc.jar"
         username: "root"
-        password: "testdocker"
+        password: "cleo"
         docker: "true"
         use_docker_image: "true"
         app_srcdir: "/home/SystemTest/DockerFiles/"
@@ -129,7 +129,8 @@ defaults:
         image_name: testdockerfile
         app_port: "3306:3306"
         image_tag: latest
-        app_args: "MYSQL_ROOT_PASSWORD=testdocker"        
+        app_args: "MYSQL_ROOT_PASSWORD=cleo"
+        jdbc_url: "jdbc:mysql://{{ansible_ssh_host}}:3306/mysql?autoReconnect=true&useSSL=false"
     oracle_11g:
         type: "db"
         repository_url: "http://10.80.80.156/nexus/service/local/repositories/thirdparty/content/"
@@ -140,17 +141,19 @@ defaults:
         maven_destfilename: "ojdbc6.jar"
         app_type: oracle
         node_ip: dbsrv1
+        # jar_path: ""{{playbook_dir}}library/oracle_jdbc.jar""
         # jdbc_url: "jdbc:mysql://2.2.2.2:3306/test1"
         port: 1521
-        dbname: oracle
-        driver_str: "com.oracle.jdbc.Driver"
+        dbname: xe
+        driver_str: "oracle.jdbc.OracleDriver"
         username: system
         password: "cleo"
         docker: "true"
         use_docker_image: "true"
         app_port: "1521:1521,8080:8080"
         image_tag: latest
-        app_args: "DEFAULT_SYS_PASS=cleo"         
+        app_args: "DEFAULT_SYS_PASS=cleo"
+        jdbc_url: "jdbc:oracle:thin:{{username}}/{{password}}@//{{ansible_ssh_host}}:1521/xe"
     ad:
         type: "ldap"
         host: "10.80.80.888"

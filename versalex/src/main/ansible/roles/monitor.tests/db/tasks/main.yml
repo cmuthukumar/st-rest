@@ -1,24 +1,63 @@
 ---
 # tasks file for jmeter
 - block:
-    - name: Validate DB Details for Transactions
-      db_validation:
-            db_ip: "{{ansible_ssh_host}}"
-            db_port: "{{item.value.port}}"
-            db_username: "{{item.value.username}}"
-            db_password: "{{item.value.password}}"
-            dbname: "{{item.value.dbname}}"
-            as2_expected_txns: "{{(as2_filespermin|int*as2_totalmins|int) | default(0)}}"
-            ftp_expected_txns: "{{(ftp_filespermin|int*ftp_totalmins|int)| default(0)}}"
-            sshftp_expected_txns: "{{(sshftp_filespermin|int*sshftp_totalmins|int)| default(0)}}"
-            wait_time: 300
+    # - name: Validate DB Details for Transactions
+      # db_validation:
+            # db_ip: "{{ansible_ssh_host}}"
+            # db_port: "{{item.value.port}}"
+            # db_username: "{{item.value.username}}"
+            # db_password: "{{item.value.password}}"
+            # dbname: "{{item.value.dbname}}"
+            # as2_expected_txns: "{{(as2_filespermin|int*as2_totalmins|int) | default(0)}}"
+            # ftp_expected_txns: "{{(ftp_filespermin|int*ftp_totalmins|int)| default(0)}}"
+            # sshftp_expected_txns: "{{(sshftp_filespermin|int*sshftp_totalmins|int)| default(0)}}"
+            # wait_time: 300
+      # when: "'db' in item.value.type"
+      # with_dict: "{{ integrations | default({}) }}"
+      # async: "{{((as2_filespermin|int * ftp_totalmins |int * sshftp_filespermin|int)* 60)}}"
+      # poll: 10
+      # register: db_results
+
+    - name: Download DB artifact using Maven Artifact
+      maven_artifact:
+        repository_url: "{{item.value.repository_url}}"
+        group_id: "{{item.value.maven_groupid}}"
+        artifact_id: "{{item.value.maven_artifactid}}"
+        version: "{{item.value.maven_version}}"
+        dest: "{{playbook_dir}}/library/{{item.key}}.jar"  
+      when: "'db' in item.value.type"  
+      with_dict: "{{ integrations | default({}) }}"
+      register: jar_download
+      ignore_errors: yes
+      register: jar_download
+      retries: 2
+      delay: 5  
+      until: jar_download|success
+      delegate_to: 127.0.0.1
+  
+      
+    - name: Validate DB Details for Transactions using JDBC
+      query_jdbc:
+        db_ip: "{{ansible_ssh_host}}"
+        db_port: "{{item.value.port}}"
+        driver_str: "{{item.value.driver_str}}"
+        jdbc_string: "{{item.value.jdbc_url}}"
+        jar_path: "{{playbook_dir}}/library/{{item.key}}.jar"
+        db_username: "{{item.value.username}}"
+        db_password: "{{item.value.password}}"
+        dbname: "{{item.value.dbname}}"
+        as2_expected_txns: "{{(as2_filespermin|int*as2_totalmins|int) | default(0)}}"
+        ftp_expected_txns: "{{(ftp_filespermin|int*ftp_totalmins|int)| default(0)}}"
+        sshftp_expected_txns: "{{(sshftp_filespermin|int*sshftp_totalmins|int)| default(0)}}"
+        wait_time: 3
       when: "'db' in item.value.type"
       with_dict: "{{ integrations | default({}) }}"
       async: "{{((as2_filespermin|int * ftp_totalmins |int * sshftp_filespermin|int)* 60)}}"
       poll: 10
-      register: db_results
+      register: query_jdbc
+      delegate_to: 127.0.0.1
       
     - name: Print DB Results
-      debug: var=db_results
+      debug: var=query_jdbc
 - rescue:
     - fail: msg="Monitor DB Role Failed"

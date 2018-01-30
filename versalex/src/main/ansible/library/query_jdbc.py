@@ -1,6 +1,6 @@
 #!/usr/bin/python
 DOCUMENTATION = '''
-module: db_validation
+module: query_jdbc
 short_description: "Connect to DB"
 author:
 - muthukumarc
@@ -27,10 +27,12 @@ import os
 import yaml
 import datetime
 import importlib
-import mysql.connector
-from mysql.connector import Error
+import os
+import jaydebeapi
+from jaydebeapi import _DEFAULT_CONVERTERS, _java_to_py
+_DEFAULT_CONVERTERS.update({'BIGINT': _java_to_py('longValue')})
 
-mysql_db_records={}
+db_records={}
 protocols_txns={}
 def install_package(db_package):
 	try:
@@ -39,9 +41,9 @@ def install_package(db_package):
 	except Exception, e:
 		print "Exception on DB Driver Installation"
 
-def query_dbrecords(ip,port,username,password,dbname,wait_time):
+def query_dbrecords(ip,port,driver_str,jdbc_string,jar_path,username,password,dbname,wait_time):
 	try:	
-		status,res=query_mysql(ip,port,username,password,dbname,wait_time)
+		status,res=query_jdbc(ip,port,driver_str,jdbc_string,jar_path,username,password,dbname,wait_time)
 		for each_record in res:
 			print "Each Protocol Record is",res[each_record][3],res[each_record][0]+'_Txns'
 			if((res[each_record][3]) >= (protocols_txns[res[each_record][0]+'_Txns'])):
@@ -58,84 +60,66 @@ def query_dbrecords(ip,port,username,password,dbname,wait_time):
 	except Exception,e:
 		print "Exception on query_dbrecords",e
 
-def query_oracle(ip,port,username,password,dbname,sleep_time):
+def query_jdbc(ip,port,driver_str,jdbc_string,jar_path,username,password,dbname,sleep_time):
+	print "Querying JDBC based DB"
 	cnt=0
 	max_retry=1
 	while cnt <= max_retry:
 		try:
-			print "Count Value-<",cnt
-			cnx = mysql.connector.connect(host=ip,port=port,user=username, password=password, database=dbname)
-			cursor = cnx.cursor()
+			print "Count Value-<",cnt			
+			# jHome = jpype.getDefaultJVMPath()
+			# jpype.startJVM(jHome, "-Djava.class.path=/etc/oracle/oracle_jdbc-11.2.0.4.0.jar")
+			#jdbc_string="jdbc:oracle:thin:"+username+"/"+password+"@//"+ip+":"+port+"/"+dbname
+			#jdbc_string="jdbc:mysql:"+username+"/"+password+"@//"+ip+":"+port+"/"+dbname
+			#mysq_jdbc_string="jdbc:mysql://"+ip+":"+port+"/"+dbname
+			conn = jaydebeapi.connect(driver_str,jdbc_string,[username,password],jar_path)
+			cursor = conn.cursor()
 			query = ("select Transport,Status,Direction,count(*) as Total from VLTransfers group by Transport,Status,Direction")
 			cursor.execute(query)
 			results = cursor.fetchall()
-			print "DB Results",results
+			# yield "DB Results",results
 			for row in results:
-				print row[0],row[3]
-				mysql_db_records[row[0]+'_'+row[2]+'_reocrds']=row
+				#yield row[0],row[3]
+				db_records[row[0]+'_'+row[2]+'_reocrds']=row
 			if(cnt == max_retry):
 				cursor.close()
-				cnx.close()
-				print "MYSQL Records",mysql_db_records
-				return True,mysql_db_records
+				conn.close()
+				print "Records from DB",db_records
+				return True,db_records
 			else:
 				cursor.close()
-				cnx.close()
-				print "Count->",mysql_db_records
+				conn.close()
+				print "Count->",db_records
 				raise ValueError('DB Count Not mathcing with ..so..Raising Exception and Retrying')
 		except Exception,e:
-			print "Exception on query_mysql",e
+			print "Exception on query_jdbc",e
 			time.sleep(sleep_time)
 			cnt+=1
 			if(cnt>max_retry):
-				raise e,mysql_db_records
-		
-	
-def query_mysql(ip,port,username,password,dbname,sleep_time):
-	cnt=0
-	max_retry=1
-	while cnt <= max_retry:
-		try:
-			print "Count Value-<",cnt
-			cnx = mysql.connector.connect(host=ip,port=port,user=username, password=password, database=dbname)
-			cursor = cnx.cursor()
-			query = ("select Transport,Status,Direction,count(*) as Total from VLTransfers group by Transport,Status,Direction")
-			cursor.execute(query)
-			results = cursor.fetchall()
-			print "DB Results",results
-			for row in results:
-				print row[0],row[3]
-				mysql_db_records[row[0]+'_'+row[2]+'_reocrds']=row
-			if(cnt == max_retry):
-				cursor.close()
-				cnx.close()
-				print "MYSQL Records",mysql_db_records
-				return True,mysql_db_records
-			else:
-				cursor.close()
-				cnx.close()
-				print "Count->",mysql_db_records
-				raise ValueError('DB Count Not mathcing with ..so..Raising Exception and Retrying')
-		except Exception,e:
-			print "Exception on query_mysql",e
-			time.sleep(sleep_time)
-			cnt+=1
-			if(cnt>max_retry):
-				raise e,mysql_db_records
-		# finally:
-			# if(cursor!= None):
-				# cursor.close()
-			# if(cnx!= None):
-				# cnx.close()			
-	
+				raise e,db_records	
+
 def main():
 	try:
+		# db_ip="10.80.80.215"
+		# db_port="1521"
+		# driver_str="oracle.jdbc.OracleDriver"
+		# jar_path="/etc/oracle/"
+		# db_username="system"
+		# db_password="oracle"
+		# dbname="xe"
+		# sleep_time=10
+		# jdbc_string="jdbc:oracle:thin:"+db_username+"/"+db_password+"@//"+db_ip+":"+db_port+"/"+dbname
+		# status,result=query_dbrecords(db_ip,db_port,driver_str,jdbc_string,jar_path,db_username,db_password,dbname,sleep_time)
+		# print "Returned Status",status
 		fields = {
 			"db_ip": {"required": True, "type": "str"},
 			"db_port": {"required": True, "type": "str"},
+			"driver_str": {"required": True, "type": "str" },
+			"jdbc_string": {"required": True, "type": "str" },
+			"jar_path": {"required": True, "type": "str" },
 			"db_username": {"required": True, "type": "str"},
-			"db_password": {"required": False, "type": "str" },
-			"dbname": {"required": False, "type": "str" },
+			"db_password": {"required": True, "type": "str" },
+			"dbname": {"required": True, "type": "str" },
 			"as2_expected_txns": {"required": False, "type": "int" },
 			"ftp_expected_txns": {"required": False, "type": "int" },
 			"sshftp_expected_txns": {"required": False, "type": "int" },
@@ -149,7 +133,14 @@ def main():
 			protocols_txns['FTPs_Txns']=module.params['ftp_expected_txns']
 		if(module.params['sshftp_expected_txns'] > 0):
 			protocols_txns['SSH FTP_Txns']=module.params['sshftp_expected_txns']
-		stat,result=query_dbrecords(module.params['db_ip'],module.params['db_port'],module.params['db_username'],module.params['db_password'],module.params['dbname'],module.params['wait_time'])
+		print "Driver String",module.params['driver_str']
+		print "jdbc_string",module.params['jdbc_string']
+		print "db_ip",module.params['db_ip']
+		print "db_port",module.params['db_port']
+		print "db_username",module.params['db_username']
+		print "db_password",module.params['db_password']
+		print "dbname",module.params['dbname']
+		stat,result=query_dbrecords(module.params['db_ip'],module.params['db_port'],module.params['driver_str'],module.params['jdbc_string'],module.params['jar_path'],module.params['db_username'],module.params['db_password'],module.params['dbname'],module.params['wait_time'])
 		if stat:
 			module.exit_json(meta=result)
 		else:
