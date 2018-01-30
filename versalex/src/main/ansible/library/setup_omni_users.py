@@ -42,7 +42,7 @@ def get_jsonoutput(json_path,render_content):
 		
 def get_postresults(url,json_file):
 	cnt=0
-	max_retry=10
+	max_retry=1
 	while cnt < max_retry:
 		try:
 			if type(json_file) is dict:
@@ -55,7 +55,7 @@ def get_postresults(url,json_file):
 			results = requests.post(url,headers=head,auth=HTTPBasicAuth('administrator', 'Admin'),data=json.dumps(json_data))
 			json_res=json.loads(results.text)
 			print "FINAL ****RES**",json_res
-			if('username' in json_res):
+			if(('username' in json_res) or ('ready' in json_res)):
 				return json_res
 			else:
 				raise ValueError('Results doesnot contain username attribute..so raising exception')
