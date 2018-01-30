@@ -42,7 +42,7 @@ def get_jsonoutput(json_path,render_content):
 		
 def get_postresults(url,json_file):
 	cnt=0
-	max_retry=5
+	max_retry=10
 	while cnt < max_retry:
 		try:
 			if type(json_file) is dict:

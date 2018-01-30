@@ -56,7 +56,8 @@ def query_dbrecords(ip,port,driver_str,jdbc_string,jar_path,username,password,db
 				print "Key ",key,"Value",value
 				result={'changed': False, 'msg': res}
 				return False,result
-		return True,res
+		result={'changed': True, 'msg': res}
+		return True,result
 	except Exception,e:
 		print "Exception on query_dbrecords",e
 
@@ -142,7 +143,7 @@ def main():
 		print "dbname",module.params['dbname']
 		stat,result=query_dbrecords(module.params['db_ip'],module.params['db_port'],module.params['driver_str'],module.params['jdbc_string'],module.params['jar_path'],module.params['db_username'],module.params['db_password'],module.params['dbname'],module.params['wait_time'])
 		if stat:
-			module.exit_json(meta=result)
+			module.exit_json(**result)
 		else:
 			module.fail_json(**result)
 	except Exception,e:
