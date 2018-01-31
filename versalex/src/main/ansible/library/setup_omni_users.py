@@ -41,8 +41,8 @@ def get_jsonoutput(json_path,render_content):
 		print "Exception on get Json Output",e
 		
 def get_postresults(url,json_file):
-	cnt=0
-	max_retry=1
+	cnt=1
+	max_retry=10
 	while cnt < max_retry:
 		try:
 			if type(json_file) is dict:
