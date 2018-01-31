@@ -12,6 +12,7 @@
      with_items:        
         - { property: 'Local Listener' , tag: '<Host><Ftpisselected>', value: "true" }
         - { property: 'Local Listener' , tag: '<Host><Ftpport>', value: "{{portVal}}" }
+        - { property: 'Local Listener' , tag: '<Host><Advanced>', value: "MaximumConcurrentFTPUsers=0" }            
      register: update_ftp
      retries: 3
      delay: 2
