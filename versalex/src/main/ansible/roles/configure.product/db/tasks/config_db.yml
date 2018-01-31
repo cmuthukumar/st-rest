@@ -9,15 +9,25 @@
     group_id: "{{item.value.maven_groupid}}"
     artifact_id: "{{item.value.maven_artifactid}}"
     version: "{{item.value.maven_version}}"
-    dest: "{{vex_db.install_location}}lib/ext/"  
+    dest: "{{playbook_dir}}/library/{{item.value.maven_artifactid}}{{item.value.maven_version}}.jar"  
   when: "'db' in item.value.type"  
   with_dict: "{{ integrations | default({}) }}"
-  register: mysql_download
+  register: dbjar_download
+  delegate_to: 127.0.0.1
   ignore_errors: yes
-  register: maven_db
-  retries: 2
-  delay: 5  
-  until: maven_db|success
+  retries: 3
+  delay: 10  
+  until: dbjar_download|success
+  
+- name: Copy Installer to Remote Install Location
+  copy: src="{{playbook_dir}}/library/{{item.value.maven_artifactid}}{{item.value.maven_version}}.jar" dest="{{vex_db.install_location}}lib/ext/" mode=0777
+  with_dict: "{{ integrations | default({}) }}"
+  register: copy_dbjar_status
+  retries: 3
+  delay: 10
+  until: copy_dbjar_status |success
+  delegate_to: 127.0.0.1
+
         
 - name: Extract DB IP 
   set_fact:
