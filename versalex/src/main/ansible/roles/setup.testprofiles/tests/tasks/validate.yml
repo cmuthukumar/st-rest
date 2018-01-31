@@ -16,7 +16,7 @@
         status_code: 200
      register: conn_certs_status
      with_items:
-            - certs?filter=signatureAlgorithm eq  "SHA1withRSA"
+            - connections?filter=type eq  "as2" or type eq  "ftp" or  type eq  "sftp"
      # when:  testprofile.dname | lower != 'vlproxy' and play_hosts.index(inventory_hostname) == 0
      retries: 3
      delay: 10  
