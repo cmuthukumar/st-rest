@@ -26,8 +26,6 @@
   retries: 3
   delay: 10
   until: copy_dbjar_status |success
-  delegate_to: 127.0.0.1
-
         
 - name: Extract DB IP 
   set_fact:

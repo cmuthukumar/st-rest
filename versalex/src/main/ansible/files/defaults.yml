@@ -126,9 +126,9 @@ defaults:
         use_docker_image: "true"
         app_srcdir: "/home/SystemTest/DockerFiles/"
         app_destdir: "/root/DockerFile/"
-        image_name: testdockerfile
+        image_name: "mysql"
         app_port: "3306:3306"
-        image_tag: latest
+        image_tag: "latest"
         app_args: "MYSQL_ROOT_PASSWORD=cleo"
         jdbc_url: "jdbc:mysql://{{ansible_ssh_host}}:3306/mysql?autoReconnect=true&useSSL=false"
     oracle_11g:
@@ -150,8 +150,9 @@ defaults:
         password: "cleo"
         docker: "true"
         use_docker_image: "true"
+        image_name: "sath89/oracle-xe-11g"
         app_port: "1521:1521,8080:8080"
-        image_tag: latest
+        image_tag: "latest"
         app_args: "DEFAULT_SYS_PASS=cleo"
         jdbc_url: "jdbc:oracle:thin:system/cleo@//{{ansible_ssh_host}}:1521/xe"
     ad:
