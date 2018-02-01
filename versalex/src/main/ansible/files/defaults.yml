@@ -130,7 +130,7 @@ defaults:
         app_port: "3306:3306"
         image_tag: "latest"
         app_args: "MYSQL_ROOT_PASSWORD=cleo"
-        jdbc_url: "jdbc:mysql://{{ groups['integrations'] | map('extract', hostvars, ['ansible_ssh_host']) | join(',') }}:3306/mysql?autoReconnect=true&useSSL=false"
+        jdbc_url: "jdbc:mysql://{{ hostvars[inventory_hostname]['ansible_eth0']['ipv4']['address'] }}:3306/mysql?autoReconnect=true&useSSL=false"
     oracle_11g:
         type: "db"
         repository_url: "http://10.80.80.156/nexus/service/local/repositories/thirdparty/content/"
