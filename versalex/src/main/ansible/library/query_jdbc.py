@@ -45,6 +45,10 @@ def query_dbrecords(ip,port,driver_str,jdbc_string,jar_path,username,password,db
 	try:	
 		status,res=query_jdbc(ip,port,driver_str,jdbc_string,jar_path,username,password,dbname,wait_time)
 		for each_record in res:
+			# if(len(res[each_record][0]) <=1):
+				# recd_list=list(res[each_record])
+				# recd_list[0]='EMPTY'
+				# res[each_record]=tuple(recd_list)
 			print "Each Protocol Record is",res[each_record][3],res[each_record][0]+'_Txns'
 			if((res[each_record][3]) >= (protocols_txns[res[each_record][0]+'_Txns'])):
 				protocols_txns[res[each_record][0]+'_Status']='Success'
@@ -64,7 +68,7 @@ def query_dbrecords(ip,port,driver_str,jdbc_string,jar_path,username,password,db
 def query_jdbc(ip,port,driver_str,jdbc_string,jar_path,username,password,dbname,sleep_time):
 	print "Querying JDBC based DB"
 	cnt=0
-	max_retry=10
+	max_retry=1	
 	while cnt <= max_retry:
 		try:
 			print "Count Value-<",cnt			
@@ -94,7 +98,7 @@ def query_jdbc(ip,port,driver_str,jdbc_string,jar_path,username,password,dbname,
 				raise ValueError('DB Count Not mathcing with ..so..Raising Exception and Retrying')
 		except Exception,e:
 			print "Exception on query_jdbc",e
-			time.sleep(sleep_time)
+			time.sleep(10)
 			cnt+=1
 			if(cnt>max_retry):
 				raise e,db_records	

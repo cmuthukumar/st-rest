@@ -27,19 +27,30 @@
   delay: 10
   until: copy_dbjar_status |success
         
-- name: Extract DB IP 
-  set_fact:
-    db_ip: "{{ groups['integrations'] | map('extract', hostvars, ['ansible_ssh_host']) | join(',') }}"
-  when: "'db' in item.value.type"
-  with_dict: "{{ integrations | default({}) }}"  
-  delegate_to: 127.0.0.1
-  register: db_ip_status
-  retries: 2
-  delay: 5  
-  until: db_ip_status|success
+# - name: Extract DB IP 
+  # set_fact:
+    # db_ip: "{{ groups['integrations'] | map('extract', hostvars, ['ansible_ssh_host']) | join(',') }}"
+  # when: "'db' in item.value.type"
+  # with_dict: "{{ integrations | default({}) }}"  
+  # delegate_to: 127.0.0.1
+  # register: db_ip_status
+  # retries: 2
+  # delay: 5  
+  # until: db_ip_status|success
+
+# - name: Set JDBC Url
+  # set_fact:
+    # jdbc_url: "{{item.value.jdbc_string}}{{db_ip}}:{{item.value.port}}/{{item.value.dbname}}"
+  # when: "'db' in item.value.type"
+  # with_dict: "{{ integrations | default({}) }}"  
+  # delegate_to: 127.0.0.1
+  # register: jdbc_url_status
+  # retries: 2
+  # delay: 5  
+  # until: jdbc_url_status|success
   
 - name: Configure DB in Remote Machines
-  shell: jre/bin/java -cp "$CLASSPATH" com.cleo.systest.SetupOptions "{{vex_db.dname}}" "{{vex_db.install_location}}" "DB" "jdbc:{{item.value.app_type}}://{{db_ip}}:{{item.value.port}}/{{item.value.dbname}}" "{{item.value.driver_str}}" "{{item.value.username}}" "{{item.value.password}}" 1 "jdbc:{{item.value.app_type}}://{{db_ip}}:{{item.value.port}}/{{item.value.dbname}}"
+  shell: jre/bin/java -cp "$CLASSPATH" com.cleo.systest.SetupOptions "{{vex_db.dname}}" "{{vex_db.install_location}}" "DB" "{{item.value.jdbc_url}}" "{{item.value.driver_str}}" "{{item.value.username}}" "{{item.value.password}}" 1 "{{item.value.jdbc_url}}"
   environment:
      CLASSPATH: ":lib/versalex_setup-latest.jar:lib/*:lib/api/connector/*:lib/aws/*:lib/connector/*:lib/docdb/*:lib/hadoop/*:lib/help/*:lib/hibernate/*:lib/jersey/*:lib/json/*:lib/saml/*:lib/scim/*:lib/secureshare/*:lib/uri/*:lib/vaadin/*:lib/validator/*:lib/ws/*:webserver/AjaxSwing/lib/ajaxswing.jar:webserver/AjaxSwing/lib/commons-fileupload-1.0.jar:webserver/AjaxSwing/lib/freemarker.jar:webserver/AjaxSwing/lib/jsonrpc-1.0.jar:webserver/AjaxSwing/lib/boot/asboot.jar:webserver/AjaxSwing/lib/install/asm-all-3.1.jar:lax.jar"
   args:
