@@ -11,8 +11,8 @@ params = ['servers','tpnodes']
 workdir = "versalex/src/main/ansible/"
 doProps = readJSON text: "${DigitalOcean}"
 String[] protocols=[]
-node('SysTest') {
 
+node('SysTest') {
 
 env.WORKSPACE = pwd()
 def mvnHome = tool 'Mvn3.3.9'
@@ -82,9 +82,6 @@ sh 'java -version'
             {
                 configProduct()
             } 
-
-		
-
 			
         }
         finally{

@@ -154,7 +154,7 @@ defaults:
         app_port: "1521:1521,8080:8080"
         image_tag: "latest"
         app_args: "DEFAULT_SYS_PASS=cleo"        
-        jdbc_url: "jdbc:oracle:thin:system/cleo@//{{ groups['integrations'] | map('extract', hostvars, ['ansible_ssh_host']) | join(',') }}:1521/xe"
+        jdbc_url: "jdbc:oracle:thin:system/cleo@//{{ hostvars[inventory_hostname]['ansible_eth0']['ipv4']['address'] }}:1521/xe"
     ad:
         type: "ldap"
         host: "10.80.80.888"
