@@ -24,8 +24,8 @@ software:
         version: "5.4.2-SNAPSHOT"
         install_location: "/root/Harmony/"
    integrations:
-      - name: mysql
-        version: "mysql:latest"
+      - name: oracle_11g
+        version: "sath89/oracle-xe-11g:latest"
    shares:           
       - name: share
         share_path: "/root/share/"        

@@ -35,13 +35,17 @@
       until: jar_download|success
       delegate_to: 127.0.0.1
   
+    - name: Print JDBC Path
+      debug: msg="jdbc path url -{{item.value.jdbc_string}}{{hostvars[inventory_hostname]['ansible_default_ipv4']['address']}}:{{item.value.port}}/{{item.value.dbname}}"
+      with_dict: "{{ integrations | default({}) }}"
+      delegate_to: 127.0.0.1
       
     - name: Validate DB Details for Transactions using JDBC
       query_jdbc:
         db_ip: "{{ansible_ssh_host}}"
         db_port: "{{item.value.port}}"
         driver_str: "{{item.value.driver_str}}"
-        jdbc_string: "{{item.value.jdbc_url}}"
+        jdbc_string: "{{item.value.jdbc_string}}{{hostvars[inventory_hostname]['ansible_default_ipv4']['address']}}:{{item.value.port}}/{{item.value.dbname}}"
         jar_path: "{{playbook_dir}}/library/{{item.key}}.jar"
         db_username: "{{item.value.username}}"
         db_password: "{{item.value.password}}"
@@ -49,7 +53,7 @@
         as2_expected_txns: "{{(as2_filespermin|int*as2_totalmins|int) | default(0)}}"
         ftp_expected_txns: "{{(ftp_filespermin|int*ftp_totalmins|int)| default(0)}}"
         sshftp_expected_txns: "{{(sshftp_filespermin|int*sshftp_totalmins|int)| default(0)}}"
-        wait_time: 30
+        wait_time: 1
       when: "'db' in item.value.type"
       with_dict: "{{ integrations | default({}) }}"
       async: "{{((as2_filespermin|int * ftp_totalmins |int * sshftp_filespermin|int)* 60)}}"
@@ -59,5 +63,6 @@
       
     - name: Print DB Results
       debug: var=query_jdbc
+      delegate_to: 127.0.0.1
 - rescue:
     - fail: msg="Monitor DB Role Failed"

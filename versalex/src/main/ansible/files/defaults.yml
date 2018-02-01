@@ -130,7 +130,8 @@ defaults:
         app_port: "3306:3306"
         image_tag: "latest"
         app_args: "MYSQL_ROOT_PASSWORD=cleo"
-        jdbc_url: "jdbc:mysql://{{ hostvars[inventory_hostname]['ansible_eth0']['ipv4']['address'] }}:3306/mysql?autoReconnect=true&useSSL=false"
+        jdbc_string: "jdbc:mysql://" 
+        jdbc_url: "jdbc:mysql://{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}:3306/mysql?autoReconnect=true&useSSL=false"
     oracle_11g:
         type: "db"
         repository_url: "http://10.80.80.156/nexus/service/local/repositories/thirdparty/content/"
@@ -153,8 +154,9 @@ defaults:
         image_name: "sath89/oracle-xe-11g"
         app_port: "1521:1521,8080:8080"
         image_tag: "latest"
-        app_args: "DEFAULT_SYS_PASS=cleo"        
-        jdbc_url: "jdbc:oracle:thin:system/cleo@//{{ hostvars[inventory_hostname]['ansible_eth0']['ipv4']['address'] }}:1521/xe"
+        app_args: "DEFAULT_SYS_PASS=cleo"
+        jdbc_string: "jdbc:oracle:thin:system/cleo@//"        
+        jdbc_url: "jdbc:oracle:thin:system/cleo@//{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}:1521/xe"
     ad:
         type: "ldap"
         host: "10.80.80.888"
