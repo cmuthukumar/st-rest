@@ -50,13 +50,13 @@
         db_username: "{{item.value.username}}"
         db_password: "{{item.value.password}}"
         dbname: "{{item.value.dbname}}"
-        as2_expected_txns: "{{(as2_filespermin|int*as2_totalmins|int) | default(0)}}"
-        ftp_expected_txns: "{{(ftp_filespermin|int*ftp_totalmins|int)| default(0)}}"
-        sshftp_expected_txns: "{{(sshftp_filespermin|int*sshftp_totalmins|int)| default(0)}}"
+        as2_expected_txns: "{{((as2_filespermin|default(0)|int)*(as2_totalmins|default(0)|int)) | default(0)}}"
+        ftp_expected_txns: "{{((ftp_filespermin|default(0)|int)*(ftp_totalmins|default(0)|int))| default(0)}}"
+        sshftp_expected_txns: "{{((sshftp_filespermin|default(0)|int)*(sshftp_totalmins|default(0)|int))| default(0)}}"
         wait_time: 30
       when: ( (item.value.name is defined)  and (item.value.name == item.key) )
       with_dict: "{{ integrations | default({}) }}"
-      async: "{{((as2_filespermin|int * ftp_totalmins |int * sshftp_filespermin|int)* 60)}}"
+      async: "{{((as2_filespermin|default(0)|int * ftp_totalmins |default(0)|int * sshftp_filespermin|default(0)|int)* 60)}}"
       poll: 10
       register: query_jdbc
       delegate_to: 127.0.0.1

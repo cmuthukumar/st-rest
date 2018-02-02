@@ -50,17 +50,18 @@ def query_dbrecords(ip,port,driver_str,jdbc_string,jar_path,username,password,db
 				# recd_list=list(res[each_record])
 				# recd_list[0]='EMPTY'
 				# res[each_record]=tuple(recd_list)
-			print "Each Protocol Record is",res[each_record][3],res[each_record][0]+'_Txns'
-			if((res[each_record][3]) >= (protocols_txns[res[each_record][0]+'_Txns'])):
-				protocols_txns[res[each_record][0]+'_Status']='Success'
-			else:
-				protocols_txns[res[each_record][0]+'_Status']='Failure'
-		for key,value in protocols_txns.iteritems():
-			print "Each protocols_txns Record is",key,value
-			if('Status' in key and value == 'Failure'):
-				print "Key ",key,"Value",value
-				result={'changed': False, 'msg': res}
-				return False,result
+			#print "Each Protocol Record is",res[each_record][3],res[each_record][0]+'_Txns'
+			if( (res[each_record][0]+'_Txns') in protocols_txns):
+				if((res[each_record][3]) >= (protocols_txns[res[each_record][0]+'_Txns'])):
+					protocols_txns[res[each_record][0]+'_Status']='Success'
+				else:
+					protocols_txns[res[each_record][0]+'_Status']='Failure'
+			for key,value in protocols_txns.iteritems():
+				print "Each protocols_txns Record is",key,value
+				if('Status' in key and value == 'Failure'):
+					print "Key ",key,"Value",value
+					result={'changed': False, 'msg': res}
+					return False,result
 		result={'changed': True, 'msg': res}
 		return True,result
 	except Exception,e:
@@ -72,7 +73,7 @@ def query_jdbc(ip,port,driver_str,jdbc_string,jar_path,username,password,dbname,
 	cnt=0
 	conn = None
 	cursor = None
-	max_retry=20
+	max_retry=10
 	while cnt <= max_retry:
 		try:
 			print "Count Value-<",cnt			
@@ -145,6 +146,8 @@ def main():
 			protocols_txns['FTPs_Txns']=module.params['ftp_expected_txns']
 		if(module.params['sshftp_expected_txns'] > 0):
 			protocols_txns['SSH FTP_Txns']=module.params['sshftp_expected_txns']
+		print "ftp_expected_txns",module.params['ftp_expected_txns']			
+		print "sshftp_expected_txns",module.params['sshftp_expected_txns']		
 		print "Driver String",module.params['driver_str']
 		print "jdbc_string",module.params['jdbc_string']
 		print "db_ip",module.params['db_ip']
