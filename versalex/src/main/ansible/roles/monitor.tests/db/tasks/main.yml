@@ -53,7 +53,7 @@
         as2_expected_txns: "{{(as2_filespermin|int*as2_totalmins|int) | default(0)}}"
         ftp_expected_txns: "{{(ftp_filespermin|int*ftp_totalmins|int)| default(0)}}"
         sshftp_expected_txns: "{{(sshftp_filespermin|int*sshftp_totalmins|int)| default(0)}}"
-        wait_time: 1
+        wait_time: 30
       when: "'db' in item.value.type"
       with_dict: "{{ integrations | default({}) }}"
       async: "{{((as2_filespermin|int * ftp_totalmins |int * sshftp_filespermin|int)* 60)}}"
