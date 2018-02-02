@@ -25,7 +25,7 @@
         artifact_id: "{{item.value.maven_artifactid}}"
         version: "{{item.value.maven_version}}"
         dest: "{{playbook_dir}}/library/{{item.key}}.jar"  
-      when: "'db' in item.value.type"  
+      when: ( (item.value.name is defined)  and (item.value.name == item.key) )
       with_dict: "{{ integrations | default({}) }}"
       register: jar_download
       ignore_errors: yes
@@ -54,7 +54,7 @@
         ftp_expected_txns: "{{(ftp_filespermin|int*ftp_totalmins|int)| default(0)}}"
         sshftp_expected_txns: "{{(sshftp_filespermin|int*sshftp_totalmins|int)| default(0)}}"
         wait_time: 30
-      when: "'db' in item.value.type"
+      when: ( (item.value.name is defined)  and (item.value.name == item.key) )
       with_dict: "{{ integrations | default({}) }}"
       async: "{{((as2_filespermin|int * ftp_totalmins |int * sshftp_filespermin|int)* 60)}}"
       poll: 10

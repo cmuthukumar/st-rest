@@ -42,6 +42,7 @@ def install_package(db_package):
 		print "Exception on DB Driver Installation"
 
 def query_dbrecords(ip,port,driver_str,jdbc_string,jar_path,username,password,dbname,wait_time):
+	result={}
 	try:	
 		status,res=query_jdbc(ip,port,driver_str,jdbc_string,jar_path,username,password,dbname,wait_time)
 		for each_record in res:
@@ -64,6 +65,7 @@ def query_dbrecords(ip,port,driver_str,jdbc_string,jar_path,username,password,db
 		return True,result
 	except Exception,e:
 		print "Exception on query_dbrecords",e
+		raise e
 
 def query_jdbc(ip,port,driver_str,jdbc_string,jar_path,username,password,dbname,sleep_time):
 	print "Querying JDBC based DB"
@@ -79,6 +81,7 @@ def query_jdbc(ip,port,driver_str,jdbc_string,jar_path,username,password,dbname,
 			#jdbc_string="jdbc:oracle:thin:"+username+"/"+password+"@//"+ip+":"+port+"/"+dbname
 			#jdbc_string="jdbc:mysql:"+username+"/"+password+"@//"+ip+":"+port+"/"+dbname
 			#mysq_jdbc_string="jdbc:mysql://"+ip+":"+port+"/"+dbname
+			print "JDBC String to Connect*****",jdbc_string
 			conn = jaydebeapi.connect(driver_str,jdbc_string,[username,password],jar_path)
 			cursor = conn.cursor()
 			query = ("select Transport,Status,Direction,count(*) as Total from VLTransfers group by Transport,Status,Direction")
@@ -96,17 +99,16 @@ def query_jdbc(ip,port,driver_str,jdbc_string,jar_path,username,password,dbname,
 			else:
 				cursor.close()
 				conn.close()
-				print "Count->",db_records
+				print "DB Records->",db_records
 				raise ValueError('DB Count Not mathcing with ..so..Raising Exception and Retrying')
 		except Exception,e:
 			print "Exception on query_jdbc",e
-			time.sleep(sleep_time)
+			time.sleep(2)
 			cnt+=1
 			if(cnt>max_retry):
-				raise e,db_records
-		finally:
-			cursor.close()
-			conn.close()			
+				print "Count and Retries REACHED***",cnt
+				raise e
+
 
 def main():
 	try:
