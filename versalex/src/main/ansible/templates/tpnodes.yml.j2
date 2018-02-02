@@ -26,7 +26,7 @@ software:
         vex_jmx_port: 3022
     integrations:
       - name: {{digi_ocean_vars[1].integrations[0]['Product'] | default('', true)}}
-        version: {{digi_ocean_vars[0].integrations[0]['Version'] | default('', true) }}
+        version: {{digi_ocean_vars[1].integrations[0]['Version'] | default('', true) }}
     shares:           
       - name: share
         server_share_path: "/root/share/"
