@@ -72,7 +72,7 @@ def query_jdbc(ip,port,driver_str,jdbc_string,jar_path,username,password,dbname,
 	cnt=0
 	conn = None
 	cursor = None
-	max_retry=10
+	max_retry=20
 	while cnt <= max_retry:
 		try:
 			print "Count Value-<",cnt			
@@ -103,7 +103,7 @@ def query_jdbc(ip,port,driver_str,jdbc_string,jar_path,username,password,dbname,
 				raise ValueError('DB Count Not mathcing with ..so..Raising Exception and Retrying')
 		except Exception,e:
 			print "Exception on query_jdbc",e
-			time.sleep(2)
+			time.sleep(sleep_time)
 			cnt+=1
 			if(cnt>max_retry):
 				print "Count and Retries REACHED***",cnt
