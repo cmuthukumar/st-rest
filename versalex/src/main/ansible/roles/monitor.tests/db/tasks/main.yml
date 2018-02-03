@@ -56,8 +56,8 @@
         wait_time: 30
       when: ( (item.value.name is defined)  and (item.value.name == item.key) )
       with_dict: "{{ integrations | default({}) }}"
-      async: "{{((as2_filespermin|default(0)|int * ftp_totalmins |default(0)|int * sshftp_filespermin|default(0)|int)* 60)}}"
-      poll: 10
+      # async: "{{((as2_filespermin|default(0)|int * ftp_totalmins |default(0)|int * sshftp_filespermin|default(0)|int)* 60)}}"
+      # poll: 10
       register: query_jdbc
       delegate_to: 127.0.0.1
       
