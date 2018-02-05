@@ -73,14 +73,30 @@ sh 'java -version'
 			}
 
     stage('Install Integrations')
-            {
-                installIntegrations()
+            {			
+		parallel(
+		(params[0]): {
+			installIntegrations(params[0])
+				},
+			(params[1]): {
+			installIntegrations(params[1])
+				}	  
+             )  
+		
             } 
             
             
     stage('Configure Product')
             {
-                configProduct()
+		parallel(
+		(params[0]): {
+			configProduct(params[0])
+				},
+			(params[1]): {
+			configProduct(params[1])
+				}	  
+             ) 
+		
             } 
 			
         }
@@ -206,24 +222,22 @@ sh 'java -version'
 
     }
 
-    def installIntegrations()
+    def installIntegrations(param)
     {
     println "Install Integrations"
-       for(int i=0; i<params.size(); i++ )
-        {
-        println "Installing Product for ${params[i]}"
-           sh "cd ${workdir} && ansible-playbook -i inventories/${params[i]}/ -e machine_type=${params[i]} install_integrations.yml "
-        }
+
+        println "Installing Product for ${param}"
+           sh "cd ${workdir} && ansible-playbook -i inventories/${param}/ -e machine_type=${param} install_integrations.yml "
+
     }
     
-    def configProduct()
+    def configProduct(param)
     {
     println "Configuring Product with DB, LDAP, PROXY Configs"
-       for(int i=0; i<params.size(); i++ )
-        {
-        println "Installing Product for ${params[i]}"
-           sh "cd ${workdir} && ansible-playbook -i inventories/${params[i]}/ -e machine_type=${params[i]} configure_product.yml "
-        }
+  
+        println "Installing Product for ${param}"
+           sh "cd ${workdir} && ansible-playbook -i inventories/${param}/ -e machine_type=${param} configure_product.yml "
+    
     }  
 
 		

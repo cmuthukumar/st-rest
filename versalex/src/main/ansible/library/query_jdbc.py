@@ -113,17 +113,6 @@ def query_jdbc(ip,port,driver_str,jdbc_string,jar_path,username,password,dbname,
 
 def main():
 	try:
-		# db_ip="10.80.80.215"
-		# db_port="1521"
-		# driver_str="oracle.jdbc.OracleDriver"
-		# jar_path="/etc/oracle/"
-		# db_username="system"
-		# db_password="oracle"
-		# dbname="xe"
-		# sleep_time=10
-		# jdbc_string="jdbc:oracle:thin:"+db_username+"/"+db_password+"@//"+db_ip+":"+db_port+"/"+dbname
-		# status,result=query_dbrecords(db_ip,db_port,driver_str,jdbc_string,jar_path,db_username,db_password,dbname,sleep_time)
-		# print "Returned Status",status
 		fields = {
 			"db_ip": {"required": True, "type": "str"},
 			"db_port": {"required": True, "type": "str"},
@@ -146,15 +135,6 @@ def main():
 			protocols_txns['FTPs_Txns']=module.params['ftp_expected_txns']
 		if(module.params['sshftp_expected_txns'] > 0):
 			protocols_txns['SSH FTP_Txns']=module.params['sshftp_expected_txns']
-		print "ftp_expected_txns",module.params['ftp_expected_txns']			
-		print "sshftp_expected_txns",module.params['sshftp_expected_txns']		
-		print "Driver String",module.params['driver_str']
-		print "jdbc_string",module.params['jdbc_string']
-		print "db_ip",module.params['db_ip']
-		print "db_port",module.params['db_port']
-		print "db_username",module.params['db_username']
-		print "db_password",module.params['db_password']
-		print "dbname",module.params['dbname']
 		stat,result=query_dbrecords(module.params['db_ip'],module.params['db_port'],module.params['driver_str'],module.params['jdbc_string'],module.params['jar_path'],module.params['db_username'],module.params['db_password'],module.params['dbname'],module.params['wait_time'])
 		if stat:
 			module.exit_json(**result)
@@ -164,4 +144,4 @@ def main():
 		print "Exception on Main",e
 	
 if __name__ == "__main__":
-	main()
+	main()	
