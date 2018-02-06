@@ -7,10 +7,10 @@
     maven_artifact: 
             group_id: "{{systest_jar.nexus_systest_groupid}}"
             artifact_id: "{{systest_jar.nexus_systest_artifactid}}"
-            version: latest
+            version: "{{systest_jar.nexus_systest_version}}"
             extension: "jar"
             repository_url: "{{systest_jar.nexus_systest_repourl}}"
-            dest: "{{playbook_dir}}/library/"
+            dest: "{{playbook_dir}}/library/versalex_setup-latest.jar"
             state: present
     run_once: true
     delegate_to: 127.0.0.1 
@@ -20,4 +20,4 @@
     until: systest_dload|success
      
   - name: Copy SetupOptions Jar File to remote location
-    copy: src="{{playbook_dir}}/library/" dest="{{systest_jar.install_location}}lib/"
+    copy: src="{{playbook_dir}}/library/versalex_setup-latest.jar" dest="{{systest_jar.install_location}}lib/"

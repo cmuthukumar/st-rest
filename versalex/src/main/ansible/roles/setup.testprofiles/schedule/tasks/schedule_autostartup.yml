@@ -9,7 +9,7 @@
    - name: Copy SetupOptions Jar File to remote location
      copy: src="{{playbook_dir}}/library/versalex_setup-latest.jar" dest="{{sched_start.install_location}}lib/"
 
-   - name: Configure Schedule Actions on Versalex
+   - name: Configure Schedule Auto Startup on Versalex Instances
      shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupSchedule "{{sched_start.name}}" "{{sched_start.install_location}}" "{{sched_auto}}"
      environment:
        CLASSPATH: ":lib/versalex_setup-latest.jar:lib/*:lib/api/connector/*:lib/aws/*:lib/connector/*:lib/docdb/*:lib/hadoop/*:lib/help/*:lib/hibernate/*:lib/jersey/*:lib/json/*:lib/saml/*:lib/scim/*:lib/secureshare/*:lib/uri/*:lib/vaadin/*:lib/validator/*:lib/ws/*:webserver/AjaxSwing/lib/ajaxswing.jar:webserver/AjaxSwing/lib/commons-fileupload-1.0.jar:webserver/AjaxSwing/lib/freemarker.jar:webserver/AjaxSwing/lib/jsonrpc-1.0.jar:webserver/AjaxSwing/lib/boot/asboot.jar:webserver/AjaxSwing/lib/install/asm-all-3.1.jar:lax.jar"
