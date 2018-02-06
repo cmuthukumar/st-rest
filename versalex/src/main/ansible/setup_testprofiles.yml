@@ -8,7 +8,7 @@
   hosts: "tpnodes-versalex"
   roles:
     - { role: setup.testprofiles/schedule/, sched_auto: "true", tags: ['schedule-auto-startup','rest'] }
-    
+        
 - name: Setups sync between master and other versalex  instances of server side
   hosts: "servers-versalex"
   roles:

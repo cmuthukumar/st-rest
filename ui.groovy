@@ -28,6 +28,7 @@ def jsonEditorOptions = Boon.fromJson(/{
  "versalex": {
                          "type": "array",
                          "format": "table",
+                         "propertyOrder": 1,
                          "items": {
                              "type": "object",
                               "properties": {
@@ -91,6 +92,7 @@ def jsonEditorOptions = Boon.fromJson(/{
  "integrations": {
                          "type": "array",
                          "format": "table",
+                         "propertyOrder": 3,
                          "items": {
                              "type": "object",
                               "properties": {
@@ -109,8 +111,15 @@ def jsonEditorOptions = Boon.fromJson(/{
                                       "type": "string", 
                                         "enum": [
                                               "mysql:latest",
-                                               "11.2.0.4.0"
+                                               "sath89\/oracle-xe-11g:latest"
                                             ],
+                                            "options": {
+					        "enum_titles": [
+					          "mysql:latest",
+					          "oracle_11.2.0.4.0"
+    						]
+    					},
+                                            "default": "mysql:latest",
                                             "propertyOrder": 2
                                   },                                   
 
@@ -153,6 +162,7 @@ def jsonEditorOptions = Boon.fromJson(/{
  "proxies": {
                          "type": "array",
                          "format": "table",
+                         "propertyOrder": 2,
                          "items": {
                              "type": "object",
                               "properties": {
@@ -216,6 +226,7 @@ def jsonEditorOptions = Boon.fromJson(/{
  "shares": {
                          "type": "array",
                          "format": "table",
+                         "propertyOrder": 4,
                          "items": {
                              "type": "object",
                               "properties": {
