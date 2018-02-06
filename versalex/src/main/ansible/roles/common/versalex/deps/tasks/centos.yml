@@ -42,6 +42,16 @@
   retries: 3
   delay: 2
   until: etc_status|success
+
+- name: Modify limits of Open File Descriptors in all versalex instances
+  pam_limits:
+    domain: '*'
+    limit_type: "{{item.l_type}}"
+    limit_item: nofile
+    value: "{{item.l_val}}"
+  with_items:
+    - {l_type: soft, l_val: 65535}
+    - {l_type: hard, l_val: 65535}
   
 - name: "Restart rngd,sshd,network service on {{inventory_hostname}} host"
   service:

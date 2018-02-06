@@ -31,11 +31,11 @@
   roles:
     - { role: setup.testprofiles/tests, tags: ['rest','java'] }
     
-- name: Start and stop scheduler using command line interface
-  hosts: "versalex"
-  roles:
-    - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,stop' ,tags: ['rest'] }
-    - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,start' ,tags: ['rest'] }
+# - name: Start and stop scheduler using command line interface
+  # hosts: "versalex"
+  # roles:
+    # - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,stop' ,tags: ['rest'] }
+    # - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,start' ,tags: ['rest'] }
     
 # - hosts: "tpnodes-versalex"
   # roles:
