@@ -60,7 +60,7 @@
       # poll: 10
       register: query_jdbc
       retries: 6
-      delay: 10
+      delay: 30
       until: query_jdbc|success
       delegate_to: 127.0.0.1
       
