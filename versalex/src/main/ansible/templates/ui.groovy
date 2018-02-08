@@ -45,7 +45,10 @@ def jsonEditorOptions = Boon.fromJson(/{
                                   
                                   "Version" : {
                                       "type": "string", 
-                                        "enum": "[u'5.5-Portal-SNAPSHOT', u'5.5-SNAPSHOT', u'5.4.2-SNAPSHOT', u'5.4.1-SNAPSHOT', u'5.4-SNAPSHOT', u'5.3.1-SNAPSHOT', u'5.3.0.x-SNAPSHOT', u'5.3.0-SNAPSHOT', u'5.3-SNAPSHOT', u'5.3.0.0-RC-SNAPSHOT', u'5.2.2-SNAPSHOT', u'5.2.1-SNAPSHOT', u'5.2.1-RC-SNAPSHOT', u'1.0.0.0-SNAPSHOT', u'Jenkins-test-SNAPSHOT']",
+                                        "enum": "[5.5-Portal-SNAPSHOT, 5.5-SNAPSHOT, 5.4.2-SNAPSHOT, 5.4.1-SNAPSHOT, 5.4-SNAPSHOT,
+  5.3.1-SNAPSHOT, 5.3.0.x-SNAPSHOT, 5.3.0-SNAPSHOT, 5.3-SNAPSHOT, 5.3.0.0-RC-SNAPSHOT,
+  5.2.2-SNAPSHOT, 5.2.1-SNAPSHOT, 5.2.1-RC-SNAPSHOT, 1.0.0.0-SNAPSHOT, Jenkins-test-SNAPSHOT]
+",
                                             "propertyOrder": 2
                                   },                                  
 
@@ -181,7 +184,10 @@ def jsonEditorOptions = Boon.fromJson(/{
 
                                   "Version" : {
                                       "type": "string", 
-                                        "enum": "[u'5.5-Portal-SNAPSHOT', u'5.5-SNAPSHOT', u'5.4.2-SNAPSHOT', u'5.4.1-SNAPSHOT', u'5.4-SNAPSHOT', u'5.3.1-SNAPSHOT', u'5.3.0.x-SNAPSHOT', u'5.3.0-SNAPSHOT', u'5.3-SNAPSHOT', u'5.3.0.0-RC-SNAPSHOT', u'5.2.2-SNAPSHOT', u'5.2.1-SNAPSHOT', u'5.2.1-RC-SNAPSHOT', u'1.0.0.0-SNAPSHOT', u'Jenkins-test-SNAPSHOT']",
+                                        "enum": "[5.5-Portal-SNAPSHOT, 5.5-SNAPSHOT, 5.4.2-SNAPSHOT, 5.4.1-SNAPSHOT, 5.4-SNAPSHOT,
+  5.3.1-SNAPSHOT, 5.3.0.x-SNAPSHOT, 5.3.0-SNAPSHOT, 5.3-SNAPSHOT, 5.3.0.0-RC-SNAPSHOT,
+  5.2.2-SNAPSHOT, 5.2.1-SNAPSHOT, 5.2.1-RC-SNAPSHOT, 1.0.0.0-SNAPSHOT, Jenkins-test-SNAPSHOT]
+",
                                             "propertyOrder": 2
                                   },  
 
