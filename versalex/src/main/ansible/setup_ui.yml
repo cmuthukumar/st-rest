@@ -1,0 +1,25 @@
+---
+- hosts: localhost  
+  tasks:
+        - name: Update UI groovy file with versions
+          setup_ui:
+            snapshot_url: "http://10.80.80.156/nexus/service/local/lucene/search?g=com.cleo.installers&a=Harmony&repositoryId=InstallerSnapshots"
+          register: ui_res
+          retries: 3
+          delay: 5  
+          until: ui_res|success          
+          
+        - name: Set SnapShot Versions Fact  
+          set_fact:
+                snapVersions: "{{ui_res['msg']}}"
+                
+        - name: Set SE Name Fact  
+          set_fact:
+                se_name: "{% raw -%} {{  self.name  }} {% endraw -%} "
+        
+        - name: Render Grooy UI Script
+          template: src="{{playbook_dir}}/templates/ui.groovy.j2" dest="{{playbook_dir}}/templates/ui.groovy"
+          register: ui_groovy_temp
+        
+        - name: Print Rendering Results
+          debug: msg="Groovy UI results-{{ui_groovy_temp}}"         
