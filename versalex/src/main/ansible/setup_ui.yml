@@ -11,7 +11,7 @@
           
         - name: Set SnapShot Versions Fact  
           set_fact:
-                snapVersions: "{{ui_res['msg']}}"
+                snapVersions: "{{ui_res['msg']|to_yaml}}"
                 
         - name: Set SE Name Fact  
           set_fact:
