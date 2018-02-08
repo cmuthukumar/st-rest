@@ -67,7 +67,10 @@ def jsonEditorOptions = Boon.fromJson(/{
                                         "enum": [
                                                "2gb",
                                                "4gb",
-                                               "8gb"
+                                               "8gb",
+											   "16gb",
+											   "32gb",
+											   "48gb"											   
                                             ],
                                             "propertyOrder": 4
                                   },
@@ -136,7 +139,10 @@ def jsonEditorOptions = Boon.fromJson(/{
                                         "enum": [
                                               "2gb",
                                                "4gb",
-                                               "8gb"
+                                               "8gb",
+											   "16gb",
+											   "32gb",
+											   "48gb"											   
                                             ],
                                             "propertyOrder": 4
                                   },
@@ -175,10 +181,7 @@ def jsonEditorOptions = Boon.fromJson(/{
 
                                   "Version" : {
                                       "type": "string", 
-                                        "enum": [
-                                              "5.4.1-SNAPSHOT",
-                                               "5.4.2-SNAPSHOT"
-                                            ],
+                                        "enum": "[u'5.5-Portal-SNAPSHOT', u'5.5-SNAPSHOT', u'5.4.2-SNAPSHOT', u'5.4.1-SNAPSHOT', u'5.4-SNAPSHOT', u'5.3.1-SNAPSHOT', u'5.3.0.x-SNAPSHOT', u'5.3.0-SNAPSHOT', u'5.3-SNAPSHOT', u'5.3.0.0-RC-SNAPSHOT', u'5.2.2-SNAPSHOT', u'5.2.1-SNAPSHOT', u'5.2.1-RC-SNAPSHOT', u'1.0.0.0-SNAPSHOT', u'Jenkins-test-SNAPSHOT']",
                                             "propertyOrder": 2
                                   },  
 
@@ -200,7 +203,10 @@ def jsonEditorOptions = Boon.fromJson(/{
                                         "enum": [
                                               "2gb",
                                                "4gb",
-                                               "8gb"
+                                               "8gb",
+											   "16gb",
+											   "32gb",
+											   "48gb"											   
                                             ],
                                             "propertyOrder": 4
                                   },
@@ -242,7 +248,10 @@ def jsonEditorOptions = Boon.fromJson(/{
                                         "enum": [
                                               "2gb",
                                                "4gb",
-                                               "8gb"
+                                               "8gb",
+											   "16gb",
+											   "32gb",
+											   "48gb"
                                             ],
                                             "propertyOrder": 2
                                   },
@@ -451,22 +460,22 @@ def jsonEditorOptions = Boon.fromJson(/{
              {
 "name": "dataset",
 	"AS2": [{
-		"Total Hosts": 200,
-		"Total Mins": 10,
-		"FilesPerMin": 100,		
-		"HoststoRun": 10
+		"Total Hosts": 1500,
+		"Total Mins": 30,
+		"FilesPerMin": 1000,		
+		"HoststoRun": 259
 		}],
 	"FTP": [{
-		"Total Mins": 10,
-		"FilesPerMin": 100,
-		"Total Hosts": 200,
-		"HoststoRun": 10
+		"Total Mins": 30,
+		"FilesPerMin": 1000,
+		"Total Hosts": 500,
+		"HoststoRun": 359
 		}],		
 	"SSHFTP": [{
-		"Total Mins": 10,
-		"FilesPerMin": 100,
-		"Total Hosts": 200,
-		"HoststoRun": 10
+		"Total Mins": 30,
+		"FilesPerMin": 1000,
+		"Total Hosts": 500,
+		"HoststoRun": 459
 		}]		
                 
                 },
