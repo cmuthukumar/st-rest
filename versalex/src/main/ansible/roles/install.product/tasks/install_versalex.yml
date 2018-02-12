@@ -84,10 +84,12 @@
      until: serifile.stdout.find('-') != -1
      retries: 10
      delay: 5
+     when: inventory_hostname |search('versalex')
 
    - name: Set the serial number fact
      set_fact:
         serialno: "{{serifile.stdout}}"
+     when: inventory_hostname |search('versalex')   
          
    - name: Append to Host variable file
      lineinfile:
@@ -100,5 +102,5 @@
      with_items:
         - {  line: "{{serifile.stdout|replace(' ','')}}", insertafter: EOF}
      delegate_to: 127.0.0.1
-    
+     when: inventory_hostname |search('versalex')     
      
