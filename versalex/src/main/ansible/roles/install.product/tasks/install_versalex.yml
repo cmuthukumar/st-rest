@@ -81,6 +81,9 @@
      args:
       chdir: "{{install.install_location}}"
      register: serifile
+     until: serifile.stdout.find('-') != -1
+     retries: 10
+     delay: 5
 
    - name: Set the serial number fact
      set_fact:
