@@ -2,11 +2,11 @@
 # defaults file for setup.group.vars
 defaults:
     versalex: &vexref
-        vex_heapmem_min: 256M
-        vex_heapmem_max: 2048M
+        vex_heapmem_min: 2G
+        vex_heapmem_max: 4G
         vex_jmx_port: 2098
-        karaf_heapmem_min: 256M
-        karaf_heapmem_max: 2G
+        karaf_heapmem_min: 1G
+        karaf_heapmem_max: 4G
         port: 5080
         karaf_jmx_port: 2099
         macro_name: "%datashare%"

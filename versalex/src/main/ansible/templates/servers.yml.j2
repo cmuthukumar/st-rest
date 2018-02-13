@@ -32,6 +32,8 @@ software:
         version: {{digi_ocean_vars[0].versalex[0]['Version'] | default('', true) }}
         install_location: "/root/Harmony/"
         vex_jmx_port: 3022
+        vex_heapmem_max: {{((digi_ocean_vars[0].versalex[0]['RAM'][:-2]|int*3/4)|int|abs)|default('', true)}}
+        karaf_heapmem_max: {{((digi_ocean_vars[0].versalex[0]['RAM'][:-2]|int)-((digi_ocean_vars[0].versalex[0]['RAM'][:-2]|int*3/4)|int|abs))|default('', true)}}
     integrations:
       - name: {{digi_ocean_vars[0].integrations[0]['Product'] | default('', true) }}
         version: {{digi_ocean_vars[0].integrations[0]['Version'] | default('', true) }}
