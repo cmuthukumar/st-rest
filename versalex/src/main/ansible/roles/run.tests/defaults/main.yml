@@ -3,7 +3,7 @@
 jmeter_version: 3.3
 jmeter_get_utl: "https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-{{jmeter_version}}.tgz"
 jmeter_dir: "/root/jmeter/"
-fileSizes: "5000 10000 20000 40000 80000 100000 200000 400000 500000 1000000"
+fileSizes: "1000000 1500000 500000"
 jmeter_plugins_tst_url: "https://jmeter-plugins.org/files/packages/jpgc-tst-2.1.zip"
 jmeter_plugins_paramctrller_url: "https://jmeter-plugins.org/files/packages/jpgc-prmctl-0.3.zip"
 files_per_hour: "{{files_per_hr}}"
@@ -11,7 +11,7 @@ server_datasets:
     as2:
         threads: 10
         destPath: "/root/share/as2/outboxes/"
-        fileSize: "5000 10000"
+        fileSize: "1000000 1500000 500000"
         filespermin: 0
         totalmins: 0
         totalhosts: 0
@@ -19,7 +19,7 @@ tp_datasets:
     as2:
         threads: 10
         destPath: "/root/share/as2/outboxes/"
-        fileSize: "5000 10000"
+        fileSize: "1000000 1500000 500000"
         filespermin: 0
         totalmins: 0
         totalhosts: 0
@@ -27,7 +27,7 @@ tp_datasets:
     ftp:
         threads: 10
         destPath: "/root/share/ftp/outboxes/"        
-        fileSize: "5000 10000 20000"
+        fileSize: "1000000 1500000 500000"
         filespermin: 0
         totalmins: 0
         totalhosts: 0
@@ -35,7 +35,7 @@ tp_datasets:
     sshftp:
         threads: 10
         destPath: "/root/share/sshftp/outboxes/"        
-        fileSize: "5000 10000 20000"
+        fileSize: "1000000 1500000 500000"
         filespermin: 0
         totalmins: 0
         totalhosts: 0
