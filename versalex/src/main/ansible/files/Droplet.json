@@ -4,6 +4,5 @@
   "size": "{{ram_size}}",
   "image": "{{os_image}}",
   "ssh_keys": ["{{sshkey_id}}"],
-  "ipv4": true,
   "tags": ["{{droplet_tag}}"]
 }
