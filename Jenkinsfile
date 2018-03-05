@@ -10,7 +10,7 @@ import hudson.model.Node
 params = ['servers','tpnodes']
 workdir = "versalex/src/main/ansible/"
 String[] protocols=[]
-
+deleteDroplets = 'false'
 node('SysTest') {
 
 env.WORKSPACE = pwd()
@@ -212,7 +212,7 @@ sh 'java -version'
 	{
 	
 		println "Destroy Droplets"
-		if(("${destroyDroplets}" == "true"))
+		if(("${deleteDroplets}" == "true"))
 		{
 			for(int i=0; i<params.size(); i++ )
 				{
