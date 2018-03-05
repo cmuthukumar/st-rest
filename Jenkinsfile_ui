@@ -9,6 +9,7 @@ import hudson.model.Node
 
 params = ['servers','tpnodes']
 workdir = "versalex/src/main/ansible/"
+#doProps = readJSON text: "${DigitalOcean}"
 String[] protocols=[]
 
 node('SysTest') {
@@ -40,6 +41,11 @@ sh 'java -version'
     st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
     {    
     try{
+	    stage('Build Vars')
+            {
+
+              buildVars()
+            }
     stage('Create Nodes')
             {
 		parallel(
@@ -104,13 +110,26 @@ sh 'java -version'
   
   
  withDockerRegistry([credentialsId: 'DockerCleoSysTest', url: 'https://hub.docker.com/r/cleo/ansible/']) {
-          try{				
+          try{
+				if(("${doProps[2]['AS2'][0]['FilesPerMin']}" > 0) || ("${doProps[2]['FTP'][0]['FilesPerMin']}" > 0) || ("${doProps[2]['SSHFTP'][0]['FilesPerMin']}" > 0) )			
+					{
 				stage('Setup TestProfiles')
 					{
     					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'schedule-auto-startup,common,setup-sync' "
+					if(("${doProps[2]['AS2'][0]['FilesPerMin']}" > 0))
+					{
 						protocols.add('as2')
+					}
+					if(("${doProps[2]['FTP'][0]['FilesPerMin']}" > 0))
+					{
 						protocols.add('ftp')
-						protocols.add('sshftp')	
+					}
+					if(("${doProps[2]['SSHFTP'][0]['FilesPerMin']}" > 0))
+					{
+						protocols.add('sshftp')
+					}
+					
+					
 					def stepsDatasets = [:]					
 					for (int i = 0; i < protocols.size(); i++) {
 			    		def stepProtocol = protocols[i]
@@ -130,13 +149,13 @@ sh 'java -version'
 					parallel stepsDatasets
 					
 					}	              
-				
+				}
 		    stage('Run Tests')
 		            {
 				st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
 		    		{       							
 					//sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=${doProps[2]['AS2'][0]['FilesPerMin']} -e as2_totalmins=${doProps[2]['AS2'][0]['Total Mins']} -e as2_totalhosts=${doProps[2]['AS2'][0]['HoststoRun']} -e ftp_filespermin=${doProps[2]['FTP'][0]['FilesPerMin']} -e ftp_totalmins=${doProps[2]['FTP'][0]['Total Mins']} -e ftp_totalhosts=${doProps[2]['FTP'][0]['HoststoRun']} -e sshftp_filespermin=${doProps[2]['SSHFTP'][0]['FilesPerMin']} -e sshftp_totalmins=${doProps[2]['SSHFTP'][0]['Total Mins']} -e sshftp_totalhosts=${doProps[2]['SSHFTP'][0]['HoststoRun']} run_tests.yml "
-					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_totalcreatehosts=1500 -e as2_filespermin=700 -e as2_totalmins=30 -e as2_totalhosts=1500 -e ftp_totalcreatehosts=500 -e ftp_filespermin=700 -e ftp_totalmins=30 -e ftp_totalhosts=500 -e sshftp_totalcreatehosts=500 -e sshftp_filespermin=700 -e sshftp_totalmins=30 -e sshftp_totalhosts=500 run_tests.yml "
+					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_totalcreatehosts=${doProps[2]['AS2'][0]['Total Hosts']} -e as2_filespermin=${doProps[2]['AS2'][0]['FilesPerMin']} -e as2_totalmins=${doProps[2]['AS2'][0]['Total Mins']} -e as2_totalhosts=${doProps[2]['AS2'][0]['HoststoRun']} -e ftp_totalcreatehosts=${doProps[2]['FTP'][0]['Total Hosts']} -e ftp_filespermin=${doProps[2]['FTP'][0]['FilesPerMin']} -e ftp_totalmins=${doProps[2]['FTP'][0]['Total Mins']} -e ftp_totalhosts=${doProps[2]['FTP'][0]['HoststoRun']} -e sshftp_totalcreatehosts=${doProps[2]['SSHFTP'][0]['Total Hosts']} -e sshftp_filespermin=${doProps[2]['SSHFTP'][0]['FilesPerMin']} -e sshftp_totalmins=${doProps[2]['SSHFTP'][0]['Total Mins']} -e sshftp_totalhosts=${doProps[2]['SSHFTP'][0]['HoststoRun']} run_tests.yml "
 						
     				}		               
 		            }
@@ -144,7 +163,7 @@ sh 'java -version'
 		            {
 		        st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
 			       	{       							
-					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=700 -e as2_totalmins=30 -e ftp_filespermin=700 -e ftp_totalmins=30  -e sshftp_filespermin=700 -e sshftp_totalmins=30  monitor_tests.yml "
+					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=${doProps[2]['AS2'][0]['FilesPerMin']} -e as2_totalmins=${doProps[2]['AS2'][0]['Total Mins']} -e ftp_filespermin=${doProps[2]['FTP'][0]['FilesPerMin']} -e ftp_totalmins=${doProps[2]['FTP'][0]['Total Mins']}  -e sshftp_filespermin=${doProps[2]['SSHFTP'][0]['FilesPerMin']} -e sshftp_totalmins=${doProps[2]['SSHFTP'][0]['Total Mins']}  monitor_tests.yml "
 			       						
     				}	
 		            }
@@ -166,7 +185,21 @@ sh 'java -version'
 
 }
 
-
+	def buildVars()
+	{
+	if(("${doProps[0]['integrations'][0]['Total Droplets']}" <= 0) || ("${doProps[0]['shares'][0]['Total Droplets']}" <= 0) || ("${doProps[0]['versalex'][0]['Total Droplets']}" <= 0))
+		{
+			echo "Servers Variables Passed by User ${doProps[0]}"
+			error("Failing the Build as Servers Integrations/Shares/Versalex Total Droplets Can not be Zero")
+		}
+	if(("${doProps[1]['integrations'][0]['Total Droplets']}" <= 0) || ("${doProps[1]['shares'][0]['Total Droplets']}" <= 0) || ("${doProps[1]['versalex'][0]['Total Droplets']}" <= 0))
+		{
+			echo "TPNodes Variables Passed by User ${doProps[1]}"
+			error("Failing the Build as TPNodes Integrations/Shares/Versalex Total Droplets Can not be Zero")
+		}
+		sh "cd ${workdir} && ansible-playbook setup_uservars.yml -e 'do_vars=${DigitalOcean}'   "
+	
+	}	
 	
     def createNodes(param)
     {
@@ -207,16 +240,32 @@ sh 'java -version'
     
     }  
 
+		
+    def runTests()
+    {
+    println "Running Tests ${doProps[2]['AS2'][0]['Total Hosts']}"
+
+		//sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_totalcreatehosts=${doProps[2]['AS2'][0]['Total Hosts']} -e as2_filespermin=${doProps[2]['AS2'][0]['FilesPerMin']} -e as2_totalmins=${doProps[2]['AS2'][0]['Total Mins']} -e as2_totalhosts=${doProps[2]['AS2'][0]['HoststoRun']} -e ftp_totalcreatehosts=${doProps[2]['FTP'][0]['Total Hosts']} -e ftp_filespermin=${doProps[2]['FTP'][0]['FilesPerMin']} -e ftp_totalmins=${doProps[2]['FTP'][0]['Total Mins']} -e ftp_totalhosts=${doProps[2]['FTP'][0]['HoststoRun']} -e sshftp_totalcreatehosts=${doProps[2]['SSHFTP'][0]['Total Hosts']} -e sshftp_filespermin=${doProps[2]['SSHFTP'][0]['FilesPerMin']} -e sshftp_totalmins=${doProps[2]['SSHFTP'][0]['Total Mins']} -e sshftp_totalhosts=${doProps[2]['SSHFTP'][0]['HoststoRun']} run_tests.yml "
+
+     
+    } 
+    
+    def monitorTests()
+    {
+		println "Monitor Tests in DB"		
+		sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=${doProps[2]['AS2'][0]['FilesPerMin']} -e as2_totalmins=${doProps[2]['AS2'][0]['Total Mins']} -e ftp_filespermin=${doProps[2]['FTP'][0]['FilesPerMin']} -e ftp_totalmins=${doProps[2]['FTP'][0]['Total Mins']}  -e sshftp_filespermin=${doProps[2]['SSHFTP'][0]['FilesPerMin']} -e sshftp_totalmins=${doProps[2]['SSHFTP'][0]['Total Mins']}  monitor_tests.yml "
+     
+    } 
 	
     def destroyDroplets(params)
 	{
 	
 		println "Destroy Droplets"
-		if(("${destroyDroplets}" == "true"))
+		if(("${doProps[3]['General'][0]['Delete Droplets Afer Tests']}" == "true"))
 		{
 			for(int i=0; i<params.size(); i++ )
 				{
-			sh "cd ${workdir} && ansible-playbook destroy_topology.yml -e machine_type=${params[i]}  -e do_api_token=${env.do_ap_token} -e username='jenkins' "
+			sh "cd ${workdir} && ansible-playbook destroy_topology.yml -e machine_type=${params[i]}  -e do_api_token=${env.do_ap_token} -e username=${doProps[3]['General'][0]['Username']} "
 				}
 		}
 		else
