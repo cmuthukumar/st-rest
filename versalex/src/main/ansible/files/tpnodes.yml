@@ -3,29 +3,29 @@ hardware:
    versalex:           
       - name: harmony
         ram_size: 4gb
-        region: nyc3
+        region: nyc1
         image_name: "centos-6-x64"
         qty: 2
    integrations:           
       - name: mysql
         ram_size: 1gb
-        region: nyc3
+        region: nyc1
         image_name: "centos-6-x64"
         qty: 1
    shares:           
       - name: share
         ram_size: 4gb
-        region: nyc3
+        region: nyc1
         image_name: "centos-6-x64"
         qty: 1       
 software:
    versalex:
       - name: harmony
-        version: "5.4.2-SNAPSHOT"
+        version: "5.4.1-SNAPSHOT"
         install_location: "/root/Harmony/"
    integrations:
-      - name: oracle_11g
-        version: "sath89/oracle-xe-11g:latest"
+      - name: mysql
+        version: "mysql:latest"
    shares:           
       - name: share
         share_path: "/root/share/"        

@@ -2,13 +2,13 @@
 hardware:
     versalex:           
       - name: harmony
-        ram_size: 8gb
+        ram_size: 4gb
         region: nyc1
         image_name: "centos-7-x64"
-        qty: 4
+        qty: 2
     integrations:           
       - name: oracle_11g
-        ram_size: 8gb
+        ram_size: 4gb
         region: nyc1
         image_name: "centos-7-x64"
         qty: 1
@@ -20,7 +20,7 @@ hardware:
         qty: 2
     shares:           
       - name: share
-        ram_size: 8gb
+        ram_size: 4gb
         region: nyc1
         image_name: "centos-7-x64"
         qty: 1
@@ -31,8 +31,8 @@ software:
         install_location: "/root/Harmony/"
         vex_jmx_port: 3022
     integrations:
-      - name: oracle_11g
-        version: "sath89/oracle-xe-11g:latest"
+      - name: mysql
+        version: "mysql:latest"
     proxy:
       - name: vlproxy
         version: 5.4.1-SNAPSHOT
@@ -44,7 +44,7 @@ software:
 dataset:
     versalex:
       - name: as2
-        total: 500
+        total: 1500
         schedule_actions: true
     
       - name: ftp
