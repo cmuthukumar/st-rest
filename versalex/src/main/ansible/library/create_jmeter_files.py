@@ -63,7 +63,7 @@ def create_dest_files(protocol_type,destPath,jmeterPath,totalHoststoRun):
 		for i in range(0,len(dirNames),hostsLoop):
 			print "Directory Index", i
 			print "Directory name", dirNames[i]
-			dest_dir_path=destPath+dirNames[i]+os.linesep
+			dest_dir_path=destPath+dirNames[i]+'/'+os.linesep
 			dest_csv_path=jmeterPath+protocol_type.upper()+"_Dest.csv"
 			with open(dest_csv_path, 'a+') as destf:				
 				destf.write(dest_dir_path)
