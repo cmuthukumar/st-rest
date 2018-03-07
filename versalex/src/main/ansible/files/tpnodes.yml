@@ -3,20 +3,20 @@ hardware:
    versalex:           
       - name: harmony
         ram_size: 4gb
-        region: blr1
-        image_name: "centos-6-x64"
+        region: nyc3
+        image_name: "centos-7-x64"
         qty: 2
    integrations:           
       - name: mysql
-        ram_size: 1gb
-        region: blr1
-        image_name: "centos-6-x64"
+        ram_size: 4gb
+        region: nyc3
+        image_name: "centos-7-x64"
         qty: 1
    shares:           
       - name: share
         ram_size: 4gb
-        region: blr1
-        image_name: "centos-6-x64"
+        region: nyc3
+        image_name: "centos-7-x64"
         qty: 1       
 software:
    versalex:

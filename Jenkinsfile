@@ -136,7 +136,7 @@ sh 'java -version'
 				st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
 		    		{       							
 					//sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=${doProps[2]['AS2'][0]['FilesPerMin']} -e as2_totalmins=${doProps[2]['AS2'][0]['Total Mins']} -e as2_totalhosts=${doProps[2]['AS2'][0]['HoststoRun']} -e ftp_filespermin=${doProps[2]['FTP'][0]['FilesPerMin']} -e ftp_totalmins=${doProps[2]['FTP'][0]['Total Mins']} -e ftp_totalhosts=${doProps[2]['FTP'][0]['HoststoRun']} -e sshftp_filespermin=${doProps[2]['SSHFTP'][0]['FilesPerMin']} -e sshftp_totalmins=${doProps[2]['SSHFTP'][0]['Total Mins']} -e sshftp_totalhosts=${doProps[2]['SSHFTP'][0]['HoststoRun']} run_tests.yml "
-					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_totalcreatehosts=1500 -e as2_filespermin=700 -e as2_totalmins=30 -e as2_totalhosts=1500 -e ftp_totalcreatehosts=500 -e ftp_filespermin=700 -e ftp_totalmins=30 -e ftp_totalhosts=500 -e sshftp_totalcreatehosts=500 -e sshftp_filespermin=700 -e sshftp_totalmins=30 -e sshftp_totalhosts=500 run_tests.yml "
+					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_totalcreatehosts=1500 -e as2_filespermin=800 -e as2_totalmins=30 -e as2_totalhosts=1500 -e ftp_totalcreatehosts=500 -e ftp_filespermin=800 -e ftp_totalmins=30 -e ftp_totalhosts=500 -e sshftp_totalcreatehosts=500 -e sshftp_filespermin=800 -e sshftp_totalmins=30 -e sshftp_totalhosts=500 run_tests.yml "
 						
     				}		               
 		            }
@@ -144,7 +144,7 @@ sh 'java -version'
 		            {
 		        st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
 			       	{       							
-					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=700 -e as2_totalmins=30 -e ftp_filespermin=700 -e ftp_totalmins=30  -e sshftp_filespermin=700 -e sshftp_totalmins=30  monitor_tests.yml "
+					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=800 -e as2_totalmins=30 -e ftp_filespermin=800 -e ftp_totalmins=30  -e sshftp_filespermin=800 -e sshftp_totalmins=30  monitor_tests.yml "
 			       						
     				}	
 		            }

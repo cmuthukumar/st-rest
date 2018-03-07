@@ -3,25 +3,25 @@ hardware:
     versalex:           
       - name: harmony
         ram_size: 4gb
-        region: blr1
+        region: nyc3
         image_name: "centos-7-x64"
         qty: 2
     integrations:           
       - name: oracle_11g
         ram_size: 4gb
-        region: blr1
+        region: nyc3
         image_name: "centos-7-x64"
         qty: 1
     proxy:    
       - name: vlproxy
         ram_size: 4gb
-        region: blr1
+        region: nyc3
         image_name: "centos-7-x64"
         qty: 2
     shares:           
       - name: share
         ram_size: 4gb
-        region: blr1
+        region: nyc3
         image_name: "centos-7-x64"
         qty: 1
 software:
