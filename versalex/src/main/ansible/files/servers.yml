@@ -7,7 +7,7 @@ hardware:
         image_name: "centos-7-x64"
         qty: 2
     integrations:           
-      - name: oracle_11g
+      - name: mysql
         ram_size: 4gb
         region: nyc3
         image_name: "centos-7-x64"
