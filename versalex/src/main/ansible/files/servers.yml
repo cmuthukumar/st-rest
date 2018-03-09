@@ -27,7 +27,7 @@ hardware:
 software:
     versalex:
       - name: harmony
-        version: 5.4.1-SNAPSHOT
+        version: "5.4.1.16"
         install_location: "/root/Harmony/"
         vex_jmx_port: 3022
     integrations:
@@ -35,7 +35,7 @@ software:
         version: "mysql:latest"
     proxy:
       - name: vlproxy
-        version: 5.4.1-SNAPSHOT
+        version: "5.4.1.16"
         install_location: "/root/VLProxy/"
         vex_jmx_port: 3022
     shares:           
