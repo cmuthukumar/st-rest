@@ -107,7 +107,7 @@ sh 'java -version'
           try{				
 				stage('Setup TestProfiles')
 					{
-    					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'schedule-auto-startup,common,setup-sync' "
+    					sh "cd ${workdir} && ansible-playbook -i inventories/${CloudProviders}/${params[0]}/ -i inventories/${CloudProviders}/${params[1]}/ setup_testprofiles.yml --tags 'schedule-auto-startup,common,setup-sync' "
 						protocols.add('as2')
 						protocols.add('ftp')
 						protocols.add('sshftp')	
