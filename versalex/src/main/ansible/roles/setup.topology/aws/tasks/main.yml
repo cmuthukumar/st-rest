@@ -7,15 +7,11 @@
 #    2. setup.topology/aws/
 #        Create Droplets using Rest Api
 #    3. setup.topology/aws/create_hosts
-    - name: Destroy EC2 Instances Created for Systest on AWS
-      ec2:
-         wait: true
-         region: "{{outer_item.region}}"
-         count: 1
-         assign_public_ip: yes
-         vpc_subnet_id: "{{outer_item.vpc_subnet_id}}"
-         instance_tags:
-            Name: "{{mac_type}}-{{swtype}}-{{item}}"
-            type: "{{mac_type}}-{{username}}"
-      with_sequence: start=1 end="{{outer_item.qty}}" stride=1       
-      register: ec2_status
+    - name: Create EC2 Instances on AWS
+      include_tasks: "control_flow.yml"
+      vars:
+        mach_type: "{{machine_type}}"      
+      with_dict: "{{ hardware |default({}) }}"
+      loop_control:
+         loop_var: group_item
+      delegate_to: 127.0.0.1  
