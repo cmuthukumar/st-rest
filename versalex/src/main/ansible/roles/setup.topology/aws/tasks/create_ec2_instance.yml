@@ -35,7 +35,7 @@
     
     - name: "Add IP's of Machines Created in AWS to Groups"
       add_host: 
-        name: "{{item.1.tags.Name}} ansible_ssh_host={{item.1.public_ip}} ansible_user=ec2-user ansible_become=true appl={{outer_item.name}} subtype={{swtype}}"
+        name: "{{item.1.tags.Name}} ansible_ssh_host={{item.1.public_ip}} aws_id={{item.1.id}} aws_region={{item.1.region}} ansible_user=ec2-user ansible_become=true appl={{outer_item.name}} subtype={{swtype}}"
         hostname: "{{item.1.tags.Name}}"
         type: "{{mac_type}}"
         ansible_host: "{{item.1.public_ip}}"       
