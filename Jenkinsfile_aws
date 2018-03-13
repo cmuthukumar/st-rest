@@ -170,14 +170,30 @@ sh 'java -version'
 	
     def createNodes(param)
     {
-    withCredentials([[$class: 'StringBinding', credentialsId: 'doCredentials', variable: 'do_ap_token']]) {
+		if(("${CloudProviders}" == 'aws'))
+		{
+				println "In AWS ${param}"
+		withCredentials([[$class: 'StringBinding', credentialsId: 'systest_aws_access_key_id', variable: 'systest_aws_access_key'], [$class: 'StringBinding', credentialsId: '49b954ef-6c35-4d5e-a3a8-49791bdab948', variable: 'systest_secret_access_key']]) {
+	
+			   sh "cd ${workdir} && ansible-playbook setup_topology.yml -c local -e machine_type=${param} -e cloud_provider=${CloudProviders} -e aws_access_key=${env.systest_aws_access_key} -e aws_secret_access_key=${env.systest_secret_access_key} -e username='jenkins' -e sshkey_name='st-versalex' --tags ${CloudProviders} "
+			   
+			   sh "cd ${workdir} && ansible-playbook setup_vars.yml -c local -i inventories/${CloudProviders}/${param}/ -e cloud_provider=${CloudProviders} -e machine_type=${param} "
 
-        println "Creating Nodes for ${param}"
-           sh "cd ${workdir} && ansible-playbook setup_topology.yml -c local -e machine_type=${param} -e cloud_provider=${CloudProviders} -e do_api_token=${env.do_ap_token} -e username='jenkins' -e sshkey_name='st-versalex' --tags ${CloudProviders} "
-		   
-           sh "cd ${workdir} && ansible-playbook setup_vars.yml -c local -i inventories/${CloudProviders}/${param}/ -e cloud_provider=${CloudProviders} -e machine_type=${param} "
+				}	
+		}
+		else
+		{
+			println "In AWS ${param}"
+		withCredentials([[$class: 'StringBinding', credentialsId: 'doCredentials', variable: 'do_ap_token']]) {
 
-        }
+			println "Creating Nodes for ${param}"
+			   sh "cd ${workdir} && ansible-playbook setup_topology.yml -c local -e machine_type=${param} -e cloud_provider=${CloudProviders} -e do_api_token=${env.do_ap_token} -e username='jenkins' -e sshkey_name='st-versalex' --tags ${CloudProviders} "
+			   
+			   sh "cd ${workdir} && ansible-playbook setup_vars.yml -c local -i inventories/${CloudProviders}/${param}/ -e cloud_provider=${CloudProviders} -e machine_type=${param} "
+
+			}
+			
+		}
     }
     
     def installProduct(param)

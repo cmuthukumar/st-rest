@@ -7,6 +7,8 @@
       ec2:
          group: "{{outer_item.security_group}}"
          key_name: "{{outer_item.key_pair}}"
+         aws_access_key: "{{aws_access_key}}"
+         aws_secret_key: "{{aws_secret_access_key}}"
          instance_type: "{{outer_item.instance_type}}"         
          image: "{{outer_item.image}}"
          wait: true
