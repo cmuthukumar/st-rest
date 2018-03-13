@@ -46,6 +46,8 @@ RUN alternatives --install /usr/bin/java java /opt/jdk1.8.0_161/bin/java 2 \
 RUN pip install mysql-connector==2.1.4
 RUN yum -y install gcc gcc-c++
 RUN pip install JayDeBeApi
+RUN pip install boto
+RUN pip install boto3
 ENV JAVA_HOME /opt/jdk1.8.0_161
 ENV JRE_HOME /opt/jdk1.8.0_161/jre
 ENV PATH $PATH:/opt/jdk1.8.0_161/bin:/opt/jdk1.8.0_161/jre/bin

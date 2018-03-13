@@ -1,0 +1,17 @@
+---
+# roles/setup.topology/aws/tasks/main.yml
+# Author: muthukumarc
+# Description:
+#    1. setup.topology/aws/upload_sshkey
+#       Upload SSH key to aws from Local Host machine            
+#    2. setup.topology/aws/
+#        Create Droplets using Rest Api
+#    3. setup.topology/aws/create_hosts
+    - name: Include Create Machines Role
+      include_tasks: "control_flow.yml"
+      vars:
+        mach_type: "{{machine_type}}"      
+      with_dict: "{{ hardware |default({}) }}"
+      loop_control:
+         loop_var: group_item
+      delegate_to: 127.0.0.1   

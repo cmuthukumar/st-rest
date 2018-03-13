@@ -36,7 +36,7 @@
       delegate_to: 127.0.0.1
   
     - name: Print JDBC Path
-      debug: msg="jdbc path url -{{item.value.jdbc_string}}{{hostvars[inventory_hostname]['ansible_default_ipv4']['address']}}:{{item.value.port}}/{{item.value.dbname}}"
+      debug: msg="jdbc path url -{{item.value.jdbc_string}}{{ansible_ssh_host}}:{{item.value.port}}/{{item.value.dbname}}"
       with_dict: "{{ integrations | default({}) }}"
       delegate_to: 127.0.0.1
       
@@ -45,7 +45,7 @@
         db_ip: "{{ansible_ssh_host}}"
         db_port: "{{item.value.port}}"
         driver_str: "{{item.value.driver_str}}"
-        jdbc_string: "{{item.value.jdbc_string}}{{hostvars[inventory_hostname]['ansible_default_ipv4']['address']}}:{{item.value.port}}/{{item.value.dbname}}"
+        jdbc_string: "{{item.value.jdbc_string}}{{ansible_ssh_host}}:{{item.value.port}}/{{item.value.dbname}}"
         jar_path: "{{playbook_dir}}/library/{{item.key}}.jar"
         db_username: "{{item.value.username}}"
         db_password: "{{item.value.password}}"

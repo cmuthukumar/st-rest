@@ -3,7 +3,7 @@
   hosts: localhost
   connection: local
   vars_files:
-    - "{{playbook_dir}}/files/{{machine_type}}.yml"
+    - "{{playbook_dir}}/files/{{cloud_provider}}/{{machine_type}}.yml"
   roles:   
     - {role: setup.topology/digitalocean/tests }  
       
@@ -13,15 +13,15 @@
   tasks:   
     - name: Create Inventory Dir
       file: 
-        path: "{{playbook_dir}}/inventories/{{machine_type}}/host_vars/"
+        path: "{{playbook_dir}}/inventories/{{cloud_provider}}/{{machine_type}}/host_vars/"
         state: directory
         recurse: yes
       delegate_to: 127.0.0.1
         
     - name: Create Host Vars
       setup_host_vars:
-        usr_src: "{{playbook_dir}}/files/{{machine_type}}.yml"
-        hostvars_dest: "{{playbook_dir}}/inventories/{{machine_type}}/host_vars/{{inventory_hostname}}.yml"
+        usr_src: "{{playbook_dir}}/files/{{cloud_provider}}/{{machine_type}}.yml"
+        hostvars_dest: "{{playbook_dir}}/inventories/{{cloud_provider}}/{{machine_type}}/host_vars/{{inventory_hostname}}.yml"
       register: host_vars
 
 - name: "Setup group_vars files"
@@ -30,18 +30,19 @@
   tasks:
     - name: Create group_vars Dir
       file: 
-        path: "{{playbook_dir}}/inventories/{{machine_type}}/group_vars/"
+        path: "{{playbook_dir}}/inventories/{{cloud_provider}}/{{machine_type}}/group_vars/"
         state: directory
 
     - name: "Create {{machine_type}} Dir"
       file: 
-        path: "{{playbook_dir}}/inventories/{{machine_type}}/group_vars/"
+        path: "{{playbook_dir}}/inventories/{{cloud_provider}}/{{machine_type}}/group_vars/"
         state: directory
         
     - name: Create Group Vars 
       setup_group_vars:
         mach_type: "{{machine_type}}"
-        usr_src: "{{playbook_dir}}/files/{{machine_type}}.yml"
+        cloud_provider: "{{cloud_provider}}"
+        usr_src: "{{playbook_dir}}/files/{{cloud_provider}}/{{machine_type}}.yml"
         default_src: "{{playbook_dir}}/files/defaults.yml"
       register: group_vars
      
