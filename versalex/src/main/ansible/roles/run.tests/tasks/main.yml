@@ -33,8 +33,9 @@
         url: "{{ jmeter_get_utl }}"
         dest: "{{ jmeter_dir }}"
       register: jmeter_dload_status
+      timeout: 1800
       retries: 3
-      delay: 3
+      delay: 10
       until: jmeter_dload_status | success
         
     - name: Extract JMeter to Dest Dir
