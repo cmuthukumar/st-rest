@@ -10,9 +10,10 @@ import hudson.model.Node
 params = ['servers','tpnodes']
 workdir = "versalex/src/main/ansible/"
 String[] protocols=[]
-deleteDroplets = 'false'
-node('SysTest') {
+node('SysTest')
+{
 
+color='good'
 env.WORKSPACE = pwd()
 def mvnHome = tool 'Mvn3.3.9'
 sh "cd ${env.WORKSPACE}"
@@ -36,22 +37,23 @@ sh 'java -version'
             }
 //def systestvexImage=docker.build('st-versalex:1.0','.')
     def st_ansibleImage =  docker.image('cleo/ansible:st_6.0');
+try
+{
     withDockerRegistry([credentialsId: 'DockerCleoSysTest', url: 'https://hub.docker.com/r/cleo/ansible/']) {
     st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/ -v /root/.aws/:/root/.aws/')
-    {    
-    try{
+    {
     stage('Create Nodes')
-            {
-		parallel(
-		(params[0]): {
-			createNodes(params[0])
-				},
-		(params[1]): {
-				createNodes(params[1])
-			}	  
-          )
+           {
+			parallel(
+			(params[0]): {
+				createNodes(params[0])
+					},
+			(params[1]): {
+					createNodes(params[1])
+				}	  
+			  )
 
-            }
+           }
     stage('Install Product')
             {
 			 
@@ -94,18 +96,9 @@ sh 'java -version'
             } 
 			
         }
-        finally{
-        
-            echo "End of System Testing"
-        }
-    }
-    
-    }
-  
-  
- withDockerRegistry([credentialsId: 'DockerCleoSysTest', url: 'https://hub.docker.com/r/cleo/ansible/']) {
-          try{				
-				stage('Setup TestProfiles')
+		
+		
+		stage('Setup TestProfiles')
 					{
     					sh "cd ${workdir} && ansible-playbook -i inventories/${CloudProviders}/${params[0]}/ -i inventories/${CloudProviders}/${params[1]}/ setup_testprofiles.yml --tags 'schedule-auto-startup,common,setup-sync' "
 						protocols.add('as2')
@@ -133,7 +126,7 @@ sh 'java -version'
 				
 		    stage('Run Tests')
 		            {
-				st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
+				st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/ -v /root/.aws/:/root/.aws/'')
 		    		{       							
 					//sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=${doProps[2]['AS2'][0]['FilesPerMin']} -e as2_totalmins=${doProps[2]['AS2'][0]['Total Mins']} -e as2_totalhosts=${doProps[2]['AS2'][0]['HoststoRun']} -e ftp_filespermin=${doProps[2]['FTP'][0]['FilesPerMin']} -e ftp_totalmins=${doProps[2]['FTP'][0]['Total Mins']} -e ftp_totalhosts=${doProps[2]['FTP'][0]['HoststoRun']} -e sshftp_filespermin=${doProps[2]['SSHFTP'][0]['FilesPerMin']} -e sshftp_totalmins=${doProps[2]['SSHFTP'][0]['Total Mins']} -e sshftp_totalhosts=${doProps[2]['SSHFTP'][0]['HoststoRun']} run_tests.yml "
 					sh "cd ${workdir} && ansible-playbook -i inventories/${CloudProviders}/${params[0]}/ -i inventories/${CloudProviders}/${params[1]}/ -e as2_totalcreatehosts=1500 -e as2_filespermin=500 -e as2_totalmins=30 -e as2_totalhosts=1500 -e ftp_totalcreatehosts=500 -e ftp_filespermin=500 -e ftp_totalmins=30 -e ftp_totalhosts=500 -e sshftp_totalcreatehosts=500 -e sshftp_filespermin=500 -e sshftp_totalmins=30 -e sshftp_totalhosts=500 run_tests.yml "
@@ -142,7 +135,7 @@ sh 'java -version'
 		            }
 		    stage('Monitor Tests')
 		            {
-		        st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
+		        st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/ -v /root/.aws/:/root/.aws/'')
 			       	{       							
 					sh "cd ${workdir} && ansible-playbook -i inventories/${CloudProviders}/${params[0]}/ -i inventories/${CloudProviders}/${params[1]}/ -e as2_filespermin=500 -e as2_totalmins=30 -e ftp_filespermin=500 -e ftp_totalmins=30  -e sshftp_filespermin=500 -e sshftp_totalmins=30  monitor_tests.yml "
 			       						
@@ -153,16 +146,27 @@ sh 'java -version'
 		            {
 		                destroyDroplets(params)
             			} 
-            			
-          }
-          finally{
-        
-            echo "End of Setup , Run,Monitor Tests"
-        }
-          
-      
-  
-}
+		
+		
+
+    }
+		color='good'
+ }
+ catch(Exception e)
+ {
+	
+		currentBuild.result = 'FAILURE'
+		color='danger'
+ 
+ }
+ finally
+ {
+        echo "End of SysTest..Sending Slack Message"
+		url = env.RUN_DISPLAY_URL ?: env.BUILD_URL
+		msg="SysTest Job Results branch: `${gitBranch}` status: ${color} "
+		message = "<${url}|${env.JOB_NAME}:${env.BUILD_NUMBER}>\n".plus("${msg}")
+		slackSend channel: 'systest-jenkins', color: "${color}", message: "${message}"
+ }
 
 }
 
@@ -227,20 +231,29 @@ sh 'java -version'
     def destroyDroplets(params)
 	{
 	
-		println "Destroy Droplets"
-		if(("${deleteDroplets}" == "true"))
+		println "Destroy Droplets ${deleteDroplets}"
+		if(("${deleteDroplets}" == true))
 		{
 			for(int i=0; i<params.size(); i++ )
 				{
-			sh "cd ${workdir} && ansible-playbook destroy_topology.yml -e machine_type=${params[i]}  -e do_api_token=${env.do_ap_token} -e username='jenkins' "
+				
+				if(("${CloudProviders}" == 'aws'))
+					{				
+						sh "cd ${workdir} && ansible-playbook destroy_topology.yml -i inventories/${CloudProviders}/${params[i]}/ -e machine_type=${params[i]} -e username='jenkins' --tags 'aws' "
+					}
+					else
+					{
+					
+					sh "cd ${workdir} && ansible-playbook destroy_topology.yml -e machine_type=${params[i]}  -e do_api_token=${env.do_ap_token} -e username='jenkins' --tags 'digitalocean' "
+					
+					}
 				}
 		}
 		else
 		{
 		
 			println "Not Running the Stage as destroy droplets flag Set to false"
-		}
-		
+		}	
 
 	
 	}
