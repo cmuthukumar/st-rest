@@ -56,7 +56,7 @@ software:
 dataset:
     versalex:
       - name: as2
-        total: 500
+        total: 1000
         schedule_actions: true
     
       - name: ftp
