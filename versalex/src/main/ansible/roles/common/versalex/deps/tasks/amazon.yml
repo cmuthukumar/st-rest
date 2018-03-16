@@ -38,7 +38,7 @@
   until: pkg_install|success
  
 - name: Update /etc/hosts from inventory
-  lineinfile: dest=/etc/hosts regexp='.*{{inventory_hostname}}$' line="{{ansible_default_ipv4.address}} {{inventory_hostname}}" state=present
+  lineinfile: dest=/etc/hosts regexp='.*{{inventory_hostname}}$' line="{{ansible_default_ipv4.address}} {{aws_public_dns_name}}" state=present
   register: etc_status
   retries: 3
   delay: 2

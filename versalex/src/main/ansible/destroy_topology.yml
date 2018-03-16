@@ -1,6 +1,18 @@
 ---
 - hosts: localhost
   connection: local
-  roles:
-    - {role: destroy.topology, tag_name: "{{machine_type}}-{{username}}"}
-   
+  tasks:
+      - name: Destroy Droplets on DigitalOcean using tag name
+        include_role:
+            name: "destroy.topology/{{cloud_provider}}/"
+        vars:
+            tag_name: "{{machine_type}}-{{username}}"
+        tags: ['digitalocean']
+    
+- hosts: "{{machine_type}}"
+  connection: local
+  tasks:  
+      - name: Destroy EC2 Instances on AWS based on hosts file
+        include_role:
+            name: "destroy.topology/{{cloud_provider}}/"
+        tags: ['aws']

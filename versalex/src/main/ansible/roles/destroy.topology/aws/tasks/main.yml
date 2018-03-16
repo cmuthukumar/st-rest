@@ -1,15 +1,18 @@
 ---
 # tasks file for destroy.topology
-    - name: Tag Name to Delete
-      debug: msg="Tag name {{tag_name}}"
       
     - name: Deleting EC2 Instances by Id on AWS 
       ec2:         
          region: "{{aws_region}}"
          instance_ids: "{{ aws_id }}"
          wait: true
-      register: ec2_status
+      register: ec2_status      
+      retries: 3
+      delay: 2  
+      until: ec2_status|success
+      delegate_to: 127.0.0.1
      
-    - name: Delete Droplets Status
+    - name: Delete EC2 Instances Status
       debug: msg="Delete Droplets Status {{ec2_status}}"
+      delegate_to: 127.0.0.1
 
