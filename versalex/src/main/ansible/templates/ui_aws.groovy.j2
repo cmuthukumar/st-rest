@@ -27,8 +27,8 @@ def jsonEditorOptions = Boon.fromJson(/{
 				  }
 				     },
 				     
- "systest": {
-             "title": "systest",
+ "digitalocean": {
+             "title": "digitalocean",
              "type": "array",
              "format":"tabs",
              "items": {
@@ -82,8 +82,8 @@ def jsonEditorOptions = Boon.fromJson(/{
                                             "default": 0,
                                             "propertyOrder": 5
                                   },
-
-                                  "RAM" : {
+								  
+								   "RAM" : {
                                       "type": "string", 
                                         "enum": [
                                                "2gb",
@@ -95,7 +95,7 @@ def jsonEditorOptions = Boon.fromJson(/{
                                             ],
                                             "propertyOrder": 4
                                   },
-
+								  
                                   "OS" : {
                                       "type": "string", 
                                         "enum": [
@@ -103,7 +103,7 @@ def jsonEditorOptions = Boon.fromJson(/{
                                                "centos-7-x64"
                                             ],
                                             "default": "centos-7-x64",
-                                             "propertyOrder": 3
+                                            "propertyOrder": 3
                                   }
 
                               }
@@ -154,7 +154,7 @@ def jsonEditorOptions = Boon.fromJson(/{
                                             "propertyOrder": 5
                                             
                                   },
-
+								  
                                   "RAM" : {
                                       "type": "string", 
                                         "enum": [
@@ -166,7 +166,7 @@ def jsonEditorOptions = Boon.fromJson(/{
 											   "48gb"											   
                                             ],
                                             "propertyOrder": 4
-                                  },
+                                  },								  
 
                                   "OS" : {
                                       "type": "string", 
@@ -230,7 +230,7 @@ def jsonEditorOptions = Boon.fromJson(/{
 											   "48gb"											   
                                             ],
                                             "propertyOrder": 4
-                                  },
+                                  },								  
 
                                   "OS" : {
                                       "type": "string", 
@@ -263,6 +263,7 @@ def jsonEditorOptions = Boon.fromJson(/{
                                             "default": 0,
                                             "propertyOrder": 3
                                   },
+								  
 
                                   "RAM" : {
                                       "type": "string", 
@@ -272,19 +273,19 @@ def jsonEditorOptions = Boon.fromJson(/{
                                                "8gb",
 											   "16gb",
 											   "32gb",
-											   "48gb"
+											   "48gb"											   
                                             ],
-                                            "propertyOrder": 2
-                                  },
+                                            "propertyOrder": 4
+                                  },									  
 
-                                  "OS" : {
+		                                  "OS" : {
                                       "type": "string", 
                                         "enum": [
                                               "centos-6-x64",
                                                "centos-7-x64"
                                             ],
                                             "default": "centos-7-x64",
-                                            "propertyOrder": 1
+                                            "propertyOrder": 3
                                   }
 
                               }
@@ -439,7 +440,439 @@ def jsonEditorOptions = Boon.fromJson(/{
                      
   }
   }
+	},	
+	 "aws": {
+             "title": "aws",
+             "type": "array",
+             "format":"tabs",
+             "items": {
+                 "title": "{% raw -%}{{self.name}}{% endraw -%}",
+                 "headerTemplate":  "{% raw -%}{{self.name}}{% endraw -%}",
+                 "type": "object",
+                 "properties": {
+                    "name" : {
+                         "title": "systest",
+                         "type": "string",
+                         "options": {
+			 "hidden": true
+				  }
+ 
+                     },	     
+				     
+				     
+ "versalex": {
+                         "type": "array",
+                         "format": "table",
+                         "propertyOrder": 1,
+                         "items": {
+                             "type": "object",
+                              "properties": {
+
+                                  "Product" : {
+                                      "type": "string", 
+                                        "enum": [
+                                              "Harmony",
+                                               "VLTrader"                                               
+                                            ],
+                                            "default": "Harmony",
+                                            "propertyOrder": 1
+                                  },
+                                  
+                                  "Version" : {
+                                      "type": "string", 
+                                        "enum": {{snapVersions}},
+                                            "propertyOrder": 2
+                                  },                                  
+
+                                  "Total Instances" : {
+                                      "type": "integer", 
+                                        "enum": [
+                                        	0,
+                                                1,
+                                                2,                                                
+                                                4,                                                
+                                                6
+                                            ],
+                                            "default": 0,
+                                            "propertyOrder": 5
+                                  },
+
+                                  "Instance Type" : {
+                                      "type": "string", 
+                                        "enum": [
+                                               "t2.medium",
+                                               "t2.large",
+                                               "t2.xlarge",
+											   "t2.2xlarge"											   
+                                            ],
+                                            "propertyOrder": 4
+                                  },
+
+                                  "OS" : {
+                                      "type": "string", 
+                                        "enum": [
+										  "ami-d874e0a0",	
+										  "ami-223f945a"										  
+                                            ],
+														"options": {
+										"enum_titles": [
+										"Amazon Linux 1",
+										"RHEL 7.4"								
+										]
+									},
+                                            "default": "Amazon Linux 1",
+                                             "propertyOrder": 3
+                                  }
+
+                              }
+                         }
+                     },                    
+                     
+ "integrations": {
+                         "type": "array",
+                         "format": "table",
+                         "propertyOrder": 3,
+                         "items": {
+                             "type": "object",
+                              "properties": {
+
+                                  "Product" : {
+                                      "type": "string", 
+                                        "enum": [
+                                              "mysql",
+                                              "oracle_11g"
+                                            ],
+                                            "default": "mysql",
+                                            "propertyOrder": 1
+                                  },
+                                  
+                                  "Version" : {
+                                      "type": "string", 
+                                        "enum": [
+                                              "mysql:latest",
+                                               "sath89\/oracle-xe-11g:latest"
+                                            ],
+                                            "options": {
+					        "enum_titles": [
+					          "mysql:latest",
+					          "oracle_11.2.0.4.0"
+    						]
+    					},
+                                            "default": "mysql:latest",
+                                            "propertyOrder": 2
+                                  },                                   
+
+                                  "Total Instances" : {
+                                      "type": "integer", 
+                                        "enum": [
+                                        	0,
+                                                1                                                
+                                            ],
+                                            "default": 0,
+                                            "propertyOrder": 5
+                                            
+                                  },
+
+                                  "Instance Type" : {
+                                      "type": "string", 
+                                        "enum": [
+                                               "t2.medium",
+                                               "t2.large",
+                                               "t2.xlarge",
+											   "t2.2xlarge"
+                                            ],
+                                            "propertyOrder": 4
+                                  },
+
+                                  "OS" : {
+                                      "type": "string", 
+                                        "enum": [
+										  "ami-223f945a",
+										  "ami-d874e0a0"
+                                            ],
+														"options": {
+										"enum_titles": [
+										"RHEL 7.4",
+										"Amazon Linux 1"
+										]
+									},
+                                            "default": "Amazon Linux 1",
+                                             "propertyOrder": 3
+                                  }
+
+                              }
+                         }
+                     },
+                                          
+                                          
+ "proxies": {
+                         "type": "array",
+                         "format": "table",
+                         "propertyOrder": 2,
+                         "items": {
+                             "type": "object",
+                              "properties": {
+
+                                  "Product" : {
+                                      "type": "string", 
+                                        "enum": [
+                                              "VLProxy"
+                                            ],
+                                            "default": "VLProxy",
+                                            "propertyOrder": 1
+                                  },
+
+                                  "Version" : {
+                                      "type": "string", 
+                                        "enum": {{snapVersions}},
+                                            "propertyOrder": 2
+                                  },  
+
+                                  "Total Instances" : {
+                                      "type": "integer", 
+                                        "enum": [
+                                        	0,
+                                                1,
+                                                2,                                                
+                                                4,                                                
+                                                6
+                                            ],
+                           	"default": 0,
+                           	"propertyOrder": 5
+                                  },
+								  
+                                  "Instance Type" : {
+                                      "type": "string", 
+                                        "enum": [
+                                               "t2.medium",
+                                               "t2.large",
+                                               "t2.xlarge",
+											   "t2.2xlarge"
+                                            ],
+                                            "propertyOrder": 4
+                                  },
+
+                                  "OS" : {
+                                      "type": "string", 
+                                        "enum": [
+										  "ami-223f945a",
+										  "ami-d874e0a0"
+                                            ],
+														"options": {
+										"enum_titles": [
+										"RHEL 7.4",
+										"Amazon Linux 1"
+										]
+									},
+                                            "default": "Amazon Linux 1",
+                                             "propertyOrder": 3
+                                  }
+
+                              }
+                         }
+                     },
+                     
+
+ "shares": {
+                         "type": "array",
+                         "format": "table",
+                         "propertyOrder": 4,
+                         "items": {
+                             "type": "object",
+                              "properties": {
+                                  "Total Droplets" : {
+                                      "type": "integer", 
+                                        "enum": [
+                                        	0,
+                                                1                                                
+                                            ],
+                                            "default": 0,
+                                            "propertyOrder": 3
+                                  },
+		
+                                  "Instance Type" : {
+                                      "type": "string", 
+                                        "enum": [
+                                               "t2.medium",
+                                               "t2.large",
+                                               "t2.xlarge",
+											   "t2.2xlarge"
+                                            ],
+                                            "propertyOrder": 2
+                                  },
+								  
+                                  "OS" : {
+                                      "type": "string", 
+                                        "enum": [
+										  "ami-223f945a",
+										  "ami-d874e0a0"
+                                            ],
+														"options": {
+										"enum_titles": [
+										"RHEL 7.4",
+										"Amazon Linux 1"
+										]
+									},
+                                            "default": "Amazon Linux 1",
+                                             "propertyOrder": 3
+                                  }
+
+                              }
+                         }
+                     },                    
+
+
+ "AS2": {
+                         "type": "array",
+                         "format": "table",
+                         "items": {
+                             "type": "object",
+                              "properties": {
+                                  "Total Mins" : {
+                                      "type": "integer", 
+                                       "default": 0,
+                                       "propertyOrder": 3
+                                  },
+
+                                  "FilesPerMin" : {
+                                      "type": "integer",
+                                       "default": 0,
+                                       "propertyOrder": 2
+
+                                  },
+
+                                  "Total Hosts" : {
+                                      "type": "integer", 
+                                      "default": 0,
+                                      "propertyOrder": 1
+                                       
+                                  },
+                                  
+                                  "HoststoRun" : {
+                                      "type": "integer", 
+                                      "default": 0,
+                                      "propertyOrder": 4
+                                       
+                                  }
+                                  
+
+                              }
+                         }
+                     } ,                    
+                     
+ "FTP": {
+                         "type": "array",
+                         "format": "table",
+                         "items": {
+                             "type": "object",
+                              "properties": {
+                                  "Total Mins" : {
+                                      "type": "integer", 
+                                       "default": 0,
+                                       "propertyOrder": 3
+                                  },
+
+                                  "FilesPerMin" : {
+                                      "type": "integer",
+                                       "default": 0,
+                                       "propertyOrder": 2
+                                  },
+
+                                  "Total Hosts" : {
+                                      "type": "integer", 
+                                      "default": 0,
+                                       "propertyOrder": 1                                      
+                                       
+                                  },
+                                  
+                                  "HoststoRun" : {
+                                      "type": "integer", 
+                                      "default": 0,
+                                      "propertyOrder": 4                                                                            
+                                       
+                                  }
+                                  
+
+                              }
+                         }
+                     },
+                     
+ "SSHFTP": {
+                         "type": "array",
+                         "format": "table",
+                         "items": {
+                             "type": "object",
+                              "properties": {
+                                  "Total Mins" : {
+                                      "type": "integer", 
+                                       "default": 0,
+                                       "propertyOrder": 3
+                                  },
+
+                                  "FilesPerMin" : {
+                                      "type": "integer",
+                                       "default": 0,
+                                       "propertyOrder": 2
+                                  },
+
+                                  "Total Hosts" : {
+                                      "type": "integer", 
+                                      "default": 0,
+                                       "propertyOrder": 1                                      
+                                       
+                                  },
+                                  
+                                  "HoststoRun" : {
+                                      "type": "integer", 
+                                      "default": 0,
+                                      "propertyOrder": 4                                                                            
+                                       
+                                  }
+                                  
+
+                              }
+                         }
+                     },
+                     
+ "General": {
+                         "type": "array",
+                         "format": "table",
+                         "items": {
+                             "type": "object",
+                              "properties": {
+                                  "GitHubBranch" : {
+                                      "type": "string", 
+                                       "default": "S-12506-SFTP-protocol-setup",
+                                       "propertyOrder": 1
+                                  },
+
+                                  "Username" : {
+                                      "type": "string",
+                                       "default": 0,
+                                       "propertyOrder": 2
+                                  },
+
+                                  "Delete Droplets Afer Tests" : {
+                                      "type": "boolean", 
+                                      "default": false,
+                                       "propertyOrder": 3                                      
+                                       
+                                  },
+   
+                                  
+
+                              }
+                         }
+                     },                     
+                     
+                                                               
+                     
   }
+  }
+	}
+	
+	
+	
   }
 }
   
@@ -447,7 +880,7 @@ def jsonEditorOptions = Boon.fromJson(/{
    startval: [
 {
 "name": "digitalocean",
-"systest": [
+"digitalocean": [
 {
 "name": "servers",
 "versalex": [{
@@ -524,7 +957,7 @@ def jsonEditorOptions = Boon.fromJson(/{
              },
              {
 	     "name": "aws",	     
-	     "systest": [
+	     "aws": [
 	     {
 	     "name": "servers",
 	     "versalex": [{
@@ -541,7 +974,7 @@ def jsonEditorOptions = Boon.fromJson(/{
 	                  ],
 	                  
 	     "shares": [{
-	                         "RAM":,
+	                         "Instance Type":,
 	                   }
 	                  ]
 	     },
@@ -556,7 +989,7 @@ def jsonEditorOptions = Boon.fromJson(/{
 	                   }
 	                  ],             
 	     "shares": [{
-	                         "RAM":,
+	                         "Instance Type":,
 	                   }
 	                  ]
 	                  
