@@ -57,7 +57,12 @@ def schedule_actions(server_hosts,schedule_option,action_type,total_actions):
 					action_json_req['alias']=action_type
 					put_action=action_base_url+"/"+each_id['id']
 					action_output=get_jsonoutput("./files/Sched_Action.json",action_json_req)
-					sched_action_results = requests.put(put_action,headers=head,auth=HTTPBasicAuth('administrator', 'Admin'),data=action_output)
+					action_json_path="./files/"+action_json_req['alias']+".json"
+					with open(action_json_path, 'w+') as jsonfile:
+						jsonfile.write(action_output)
+					with open(action_json_path, 'r') as jsfile:
+						json_data=json.load(jsfile)
+					sched_action_results = requests.put(put_action,headers=head,auth=HTTPBasicAuth('administrator', 'Admin'),data=json.dumps(json_data))
 					print "Schedule Actions Response",sched_action_results					
 			else:
 					return True,"No Actions are Present"
