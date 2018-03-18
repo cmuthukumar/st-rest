@@ -38,7 +38,7 @@ def update_schedule_action(action_json_req,put_action_url):
 	max_retry=10
 	while cnt < max_retry:
 		try:		
-			action_output=get_jsonoutput("./files//Sched_Action.json",action_json_req)
+			action_output=get_jsonoutput("./files/Sched_Action.json",action_json_req)
 			action_json_path=action_json_req['sched_action_path']+action_json_req['id']+".json"
 			head ={ 'Content-type':'application/json','Accept':'application/json'}
 			with open(action_json_path, 'w+') as jsonfile:
