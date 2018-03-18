@@ -68,9 +68,9 @@ def schedule_actions(server_hosts,schedule_option,action_type,total_actions):
 		action_json_req= {}
 		for srv_host in server_hosts:
 			print "Host to Post URL",srv_host
-			if not os.path.exists("./files//"+srv_host+"/sched_action_jsons/"):
-				os.makedirs("./files//"+srv_host+"/sched_action_jsons/")
-			action_json_req['sched_action_path']="./files//"+srv_host+"/sched_action_jsons/"
+			if not os.path.exists("./files/"+srv_host+"/sched_action_jsons/"):
+				os.makedirs("./files/"+srv_host+"/sched_action_jsons/")
+			action_json_req['sched_action_path']="./files/"+srv_host+"/sched_action_jsons/"
 			action_base_url="http://"+srv_host+":5080/api/actions"						
 			total_actions=str(total_actions)
 			get_url ='http://'+srv_host+':5080/api/actions?filter=alias eq "'+action_type+'"'+'&count='+total_actions
@@ -97,19 +97,19 @@ def schedule_actions(server_hosts,schedule_option,action_type,total_actions):
 
 def main():
  	try:
-		stat,result=schedule_actions(["35.163.2.87"],"on file polling continuously","send",1000)
- 		# fields = {
- 			# "hosts": {"required": True, "type": "list"},
-			# "schedule_option": {"required": True, "type": "str"},
-			# "action_type": {"required": True, "type": "str"},
-			# "total_actions": {"required": True, "type": "str"},
- 		# }
- 		# module = AnsibleModule(argument_spec=fields)
-		# stat,result=schedule_actions(module.params['hosts'],module.params['schedule_option'],module.params['action_type'],module.params['total_actions'])
- 		# if stat:
-			# module.exit_json(meta=result)
- 		# else:
- 			# module.fail_json(meta=result)
+		#stat,result=schedule_actions(["35.163.2.87"],"on file polling continuously","send",1000)
+ 		fields = {
+ 			"hosts": {"required": True, "type": "list"},
+			"schedule_option": {"required": True, "type": "str"},
+			"action_type": {"required": True, "type": "str"},
+			"total_actions": {"required": True, "type": "str"},
+ 		}
+ 		module = AnsibleModule(argument_spec=fields)
+		stat,result=schedule_actions(module.params['hosts'],module.params['schedule_option'],module.params['action_type'],module.params['total_actions'])
+ 		if stat:
+			module.exit_json(meta=result)
+ 		else:
+ 			module.fail_json(meta=result)
  	except Exception,e:
 		print "Exception on Main",e
 	
