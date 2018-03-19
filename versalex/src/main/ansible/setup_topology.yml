@@ -8,6 +8,8 @@
     - name: Upload SSH Key for Digital Ocean
       include_role:
             name: "setup.topology/{{cloud_provider}}/upload_sshkey"
+      vars:
+        do_token: "{{do_api_token}}"
       tags: ['ssh-key','digitalocean']
     
     - name: Create Instances based on Cloud Provider    
