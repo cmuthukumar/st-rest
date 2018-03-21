@@ -8,6 +8,7 @@ hardware:
         image: "ami-d874e0a0"
         region: "us-west-2"
         vpc_subnet_id: "subnet-81618ae6"
+        volume_size: 10
         qty: 2
     integrations:           
       - name: mysql
@@ -17,6 +18,7 @@ hardware:
         image: "ami-d874e0a0"
         region: "us-west-2"
         vpc_subnet_id: "subnet-81618ae6"
+        volume_size: 10
         qty: 1
     proxy:    
       - name: vlproxy
@@ -26,6 +28,7 @@ hardware:
         image: "ami-d874e0a0"
         region: "us-west-2"
         vpc_subnet_id: "subnet-81618ae6"
+        volume_size: 10
         qty: 2
     shares:           
       - name: share
@@ -35,6 +38,7 @@ hardware:
         image: "ami-d874e0a0"
         region: "us-west-2"
         vpc_subnet_id: "subnet-81618ae6"
+        volume_size: 40
         qty: 1
 software:
     versalex:

@@ -19,7 +19,10 @@
          instance_tags:
             Name: "{{mac_type}}-{{swtype}}-{{item}}"
             type: "{{mac_type}}-{{username}}"
-      with_sequence: start=1 end="{{outer_item.qty}}" stride=1       
+         volumes:
+            - device_name: /dev/xvda
+              volume_size: "{{outer_item.volume_size}}"
+      with_sequence: start=1 end="{{outer_item.qty}}" stride=1      
       register: ec2_status
       retries: 3
       delay: 5
