@@ -1,0 +1,31 @@
+---
+hardware:
+   versalex:           
+      - name: harmony
+        ram_size: 4gb
+        region: nyc1
+        image_name: "centos-6-x64"
+        qty: 2
+   integrations:           
+      - name: mysql
+        ram_size: 1gb
+        region: nyc1
+        image_name: "centos-6-x64"
+        qty: 1
+   shares:           
+      - name: share
+        ram_size: 4gb
+        region: nyc1
+        image_name: "centos-6-x64"
+        qty: 1       
+software:
+   versalex:
+      - name: harmony
+        version: "{{ version |default('5.4.1-SNAPSHOT') }}"
+        install_location: "/root/Harmony/"
+   integrations:
+      - name: mysql
+        version: "mysql:latest"
+   shares:           
+      - name: share
+        share_path: "/root/share/"        
