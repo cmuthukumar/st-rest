@@ -1,37 +1,46 @@
 ---
 hardware:
     versalex:           
-      - name: {{cp_user_vars[cloud_provider][1].versalex[0]['Product']| lower | default('', true) }}
+      - name: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['Product']| lower | default('', true) }}
 	    security_group: "systest_sg"
 		key_pair: "systest_kp"
-        instance_type: {{cp_user_vars[cloud_provider][1].versalex[0]['Instance Type'] | default('', true)}}
+        instance_type: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['Instance Type'] | default('', true)}}
+		image: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['OS'] | default('', true)}}
         region: "us-west-2"
-		image: {{cp_user_vars[cloud_provider][1].versalex[0]['OS'] | default('', true)}}
-        vpc_subnet_id: "subnet-81618ae6"		
-        qty: {{cp_user_vars[cloud_provider][1].versalex[0]['Total Droplets'] }}
+        vpc_subnet_id: "subnet-81618ae6"
+		volume_size: 10
+        qty: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['Total Instances'] }}
     integrations:           
-      - name: {{cp_user_vars[cloud_provider][1].integrations[0]['Product'] | default('', true) }}
-        instance_type: {{cp_user_vars[cloud_provider][1].integrations[0]['Instance Type'] | default('', true) }}
+      - name: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['Product']| lower | default('', true) }}
+	    security_group: "systest_sg"
+		key_pair: "systest_kp"
+        instance_type: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['Instance Type'] | default('', true)}}
+		image: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['OS'] | default('', true)}}
         region: "us-west-2"
-        image: "{{cp_user_vars[cloud_provider][1].integrations[0]['OS'] | default('', true)}}"
-        qty: {{cp_user_vars[cloud_provider][1].integrations[0]['Total Droplets']}}
+        vpc_subnet_id: "subnet-81618ae6"
+		volume_size: 10
+        qty: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['Total Instances'] }}
     shares:           
       - name: share
-        ram_size: {{cp_user_vars[cloud_provider][1].shares[0]['Instance Type'] | default('', true) }}
+	    security_group: "systest_sg"
+		key_pair: "systest_kp"
+        instance_type: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['shares'][0]['Instance Type'] | default('', true)}}
+		image: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['shares'][0]['OS'] | default('', true)}}
         region: "us-west-2"
-        image: "{{cp_user_vars[cloud_provider][1].shares[0]['OS'] | default('', true)}}"
-        qty: {{cp_user_vars[cloud_provider][1].shares[0]['Total Droplets'] }}
+        vpc_subnet_id: "subnet-81618ae6"
+		volume_size: 40
+        qty: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['shares'][0]['Total Instances'] }}
 software:
     versalex:
-      - name: "{{cp_user_vars[cloud_provider][1].versalex[0]['Product'] | lower| default('', true) }}"
-        version: "{{cp_user_vars[cloud_provider][1].versalex[0]['Version'] | default('', true) }}"
+      - name: "{{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['Product'] | lower| default('', true) }}"
+        version: "{{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['Version'] | default('', true) }}"
         install_location: "/root/Harmony/"
         vex_jmx_port: 3022
-        vex_heapmem_max: {{((cp_user_vars[cloud_provider][1].versalex[0]['Instance Type'][:-2]|int*3/4)|int|abs)|default('', true)}}G
-        karaf_heapmem_max: {{((cp_user_vars[cloud_provider][1].versalex[0]['Instance Type'][:-2]|int)-((cp_user_vars[cloud_provider][1].versalex[0]['Instance Type'][:-2]|int*3/4)|int|abs))|default('', true)}}G
+        vex_heapmem_max: 2G
+        karaf_heapmem_max: 1G
     integrations:
-      - name: {{cp_user_vars[cloud_provider][1].integrations[0]['Product'] | default('', true) }}
-        version: {{cp_user_vars[cloud_provider][1].integrations[0]['Version'] | default('', true) }}
+      - name: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['Product'] | default('', true) }}
+        version: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['Version'] | default('', true) }}
     shares:           
       - name: share
         server_share_path: "/root/share/"

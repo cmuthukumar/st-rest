@@ -1,49 +1,62 @@
 ---
 hardware:
     versalex:           
-      - name: {{cp_user_vars[cloud_provider][0].versalex[0]['Product']| lower | default('', true) }}
+      - name: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['Product']| lower | default('', true) }}
 	    security_group: "systest_sg"
 		key_pair: "systest_kp"
-        instance_type: {{cp_user_vars[cloud_provider][0].versalex[0]['Instance Type'] | default('', true)}}
+        instance_type: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['Instance Type'] | default('', true)}}
+		image: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['OS'] | default('', true)}}
         region: "us-west-2"
-		image: {{cp_user_vars[cloud_provider][0].versalex[0]['OS'] | default('', true)}}
-        vpc_subnet_id: "subnet-81618ae6"		
-        qty: {{cp_user_vars[cloud_provider][0].versalex[0]['Total Droplets'] }}
+        vpc_subnet_id: "subnet-81618ae6"
+		volume_size: 10
+        qty: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['Total Instances'] }}
     integrations:           
-      - name: {{cp_user_vars[cloud_provider][0].integrations[0]['Product'] | default('', true) }}
-        instance_type: {{cp_user_vars[cloud_provider][0].integrations[0]['Instance Type'] | default('', true) }}
+      - name: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['Product']| lower | default('', true) }}
+	    security_group: "systest_sg"
+		key_pair: "systest_kp"
+        instance_type: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['Instance Type'] | default('', true)}}
+		image: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['OS'] | default('', true)}}
         region: "us-west-2"
-        image: "{{cp_user_vars[cloud_provider][0].integrations[0]['OS'] | default('', true)}}"
-        qty: {{cp_user_vars[cloud_provider][0].integrations[0]['Total Droplets']}}
-{% if (cp_user_vars[cloud_provider][0].proxies[0]['Total Droplets'] > 0)  %}
+        vpc_subnet_id: "subnet-81618ae6"
+		volume_size: 10
+        qty: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['Total Instances'] }}
+{% if (cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['Total Instances'] > 0)  %}
     proxy:    
-      - name: {{cp_user_vars[cloud_provider][0].proxies[0]['Product'] | lower| default('', true) }}
-        ram_size: {{cp_user_vars[cloud_provider][0].proxies[0]['Instance Type'] | default('', true)}}
+      - name: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['Product']| lower | default('', true) }}
+	    security_group: "systest_sg"
+		key_pair: "systest_kp"
+        instance_type: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['Instance Type'] | default('', true)}}
+		image: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['OS'] | default('', true)}}
         region: "us-west-2"
-        image: "{{cp_user_vars[cloud_provider][0].proxies[0]['OS'] | default('', true)}}"
-        qty: {{cp_user_vars[cloud_provider][0].proxies[0]['Total Droplets']}}
+        vpc_subnet_id: "subnet-81618ae6"
+		volume_size: 10
+        qty: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['Total Instances'] }}
 {% endif %}
     shares:           
       - name: share
-        ram_size: {{cp_user_vars[cloud_provider][0].shares[0]['Instance Type'] | default('', true) }}
+	    security_group: "systest_sg"
+		key_pair: "systest_kp"
+        instance_type: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['shares'][0]['Instance Type'] | default('', true)}}
+		image: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['shares'][0]['OS'] | default('', true)}}
         region: "us-west-2"
-        image: "{{cp_user_vars[cloud_provider][0].shares[0]['OS'] | default('', true)}}"
-        qty: {{cp_user_vars[cloud_provider][0].shares[0]['Total Droplets'] }}
+        vpc_subnet_id: "subnet-81618ae6"
+		volume_size: 40
+        qty: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['shares'][0]['Total Instances'] }}
 software:
     versalex:
-      - name: "{{cp_user_vars[cloud_provider][0].versalex[0]['Product'] | lower| default('', true) }}"
-        version: "{{cp_user_vars[cloud_provider][0].versalex[0]['Version'] | default('', true) }}"
+      - name: "{{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['Product'] | lower| default('', true) }}"
+        version: "{{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['Version'] | default('', true) }}"
         install_location: "/root/Harmony/"
         vex_jmx_port: 3022
-        vex_heapmem_max: {{((cp_user_vars[cloud_provider][0].versalex[0]['Instance Type'][:-2]|int*3/4)|int|abs)|default('', true)}}G
-        karaf_heapmem_max: {{((cp_user_vars[cloud_provider][0].versalex[0]['Instance Type'][:-2]|int)-((cp_user_vars[cloud_provider][0].versalex[0]['Instance Type'][:-2]|int*3/4)|int|abs))|default('', true)}}G
+        vex_heapmem_max: 2G
+        karaf_heapmem_max: 1G
     integrations:
-      - name: {{cp_user_vars[cloud_provider][0].integrations[0]['Product'] | default('', true) }}
-        version: {{cp_user_vars[cloud_provider][0].integrations[0]['Version'] | default('', true) }}
-{% if (cp_user_vars[cloud_provider][0].proxies[0]['Total Droplets'] >0)  %}
+      - name: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['Product'] | default('', true) }}
+        version: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['Version'] | default('', true) }}
+{% if (cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['Total Instances'] >0)  %}
     proxy:
-      - name: {{cp_user_vars[cloud_provider][0].proxies[0]['Product'] | lower| default('', true) }}
-        version: {{cp_user_vars[cloud_provider][0].proxies[0]['Version'] | default('', true) }}
+      - name: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['Product'] | lower| default('', true) }}
+        version: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['Version'] | default('', true) }}
         install_location: "/root/VLProxy/"
         vex_jmx_port: 3022
 {% endif %}
@@ -52,18 +65,18 @@ software:
         server_share_path: "/root/share/"   
 dataset:
     versalex:
-{% if (cp_user_vars[cloud_provider][2].AS2[0]['Total Hosts'] > 0)  %}
+{% if (cp_user_vars[c_p_indx|int][cloud_provider][2]['AS2'][0]['Total Hosts'] > 0)  %}
       - name: as2
-        total: {{cp_user_vars[cloud_provider][2].AS2[0]['Total Hosts'] | default(0, true) }}
+        total: {{cp_user_vars[c_p_indx|int][cloud_provider][2]['AS2'][0]['Total Hosts'] | default(0, true) }}
         schedule_actions: true
 {% endif %}
-{% if (cp_user_vars[cloud_provider][2].FTP[0]['Total Hosts'] > 0)  %}    
+{% if (cp_user_vars[c_p_indx|int][cloud_provider][2]['FTP'][0]['Total Hosts'] > 0)  %}    
       - name: ftp
-        total: {{cp_user_vars[cloud_provider][2].FTP[0]['Total Hosts'] | default(0, true) }}
+        total: {{cp_user_vars[c_p_indx|int][cloud_provider][2]['FTP'][0]['Total Hosts'] | default(0, true) }}
         schedule_actions: true
 {% endif %}
-{% if (cp_user_vars[cloud_provider][2].SSHFTP[0]['Total Hosts'] > 0)  %}            
+{% if (cp_user_vars[c_p_indx|int][cloud_provider][2]['SSHFTP'][0]['Total Hosts'] > 0)  %}            
       - name: sshftp
-        total: {{cp_user_vars[cloud_provider][2].SSHFTP[0]['Total Hosts'] | default(0, true) }}
+        total: {{cp_user_vars[c_p_indx|int][cloud_provider][2]['SSHFTP'][0]['Total Hosts'] | default(0, true) }}
         schedule_actions: true
 {% endif %}
