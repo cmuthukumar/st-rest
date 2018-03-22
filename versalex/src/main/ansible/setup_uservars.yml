@@ -2,24 +2,14 @@
 - name: Setting up User Variables
   hosts: localhost
   connection: local
-  tasks:
-    - name: Print Before Values
-      debug: msg="Before integrations Values {{do_vars}}"
-      
+  tasks:      
     - name: Convert to JSOn
       set_fact:
           cp_user_vars: "{{do_vars|from_json}}" 
 
     - name: Print All High Level Values
       debug: msg="All High Level {{cp_user_vars[c_p_indx|int][cloud_provider][0]}}"
-          
-    - name: Print integratons vex product
-      debug: msg="All integratons product {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['Product']}}"
 
-
-    - name: Print proxies vex product
-      debug: msg="All proxies product {{cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['Product']}}"      
-      
     - name: "Create Servers and TPNodes Files"
       template: src="{{playbook_dir}}/templates/{{cloud_provider}}/{{item}}.j2" dest="{{playbook_dir}}/files/{{cloud_provider}}/{{item}}"
       with_items: 
