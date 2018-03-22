@@ -5,7 +5,9 @@
   tasks:      
     - name: Convert to JSOn
       set_fact:
-          cp_user_vars: "{{do_vars|from_json}}" 
+          cp_user_vars: "{{do_vars|from_json}}"
+      tags:
+        - custom_vars          
 
     - name: "Create Servers and TPNodes Under Host Vars using Templates "
       template: src="{{playbook_dir}}/files/{{cloud_provider}}/{{item}}.j2" dest="{{playbook_dir}}/files/{{cloud_provider}}/{{item}}"
@@ -17,7 +19,9 @@
         
     - name: Print All High Level Values
       debug: msg="All High Level {{cp_user_vars[c_p_indx|int][cloud_provider][0]}}"
-
+      tags:
+        - custom_vars
+        
     - name: "Create Servers and TPNodes Files"
       template: src="{{playbook_dir}}/templates/{{cloud_provider}}/{{item}}.j2" dest="{{playbook_dir}}/files/{{cloud_provider}}/{{item}}"
       with_items: 
