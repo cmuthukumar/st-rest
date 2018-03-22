@@ -7,6 +7,12 @@
       set_fact:
           cp_user_vars: "{{do_vars|from_json}}" 
 
+    - name: "Create Servers and TPNodes Under Host Vars using Templates "
+      template: src="{{playbook_dir}}/files/{{cloud_provider}}/{{item}}.j2" dest="{{playbook_dir}}/files/{{cloud_provider}}/{{item}}"
+      with_items: 
+            - "servers.yml"
+            - "tpnodes.yml"          
+          
     - name: Print All High Level Values
       debug: msg="All High Level {{cp_user_vars[c_p_indx|int][cloud_provider][0]}}"
 
