@@ -177,10 +177,9 @@ try
 		{
 				println "In AWS ${param}"
 		//withCredentials([[$class: 'StringBinding', credentialsId: 'systest_aws_access_key_id', variable: 'systest_aws_access_key'], [$class: 'StringBinding', credentialsId: '49b954ef-6c35-4d5e-a3a8-49791bdab948', variable: 'systest_secret_access_key']]) {
-	
-			   sh "cd ${workdir} && ansible-playbook setup_topology.yml -c local -e machine_type=${param} -e cloud_provider=${CloudProviders}  -e username='jenkins' -e sshkey_name='st-versalex' --tags ${CloudProviders} "
-			   
   			   sh "cd ${workdir} && ansible-playbook setup_uservars.yml -e cloud_provider=${CloudProviders} -e version=${Version} --tags 'default_vars' "
+				
+			   sh "cd ${workdir} && ansible-playbook setup_topology.yml -c local -e machine_type=${param} -e cloud_provider=${CloudProviders}  -e username='jenkins' -e sshkey_name='st-versalex' --tags ${CloudProviders} "
 
 			   sh "cd ${workdir} && ansible-playbook setup_vars.yml -c local -i inventories/${CloudProviders}/${param}/ -e cloud_provider=${CloudProviders} -e machine_type=${param} "
 
