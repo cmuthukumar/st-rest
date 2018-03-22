@@ -180,7 +180,7 @@ try
 	
 			   sh "cd ${workdir} && ansible-playbook setup_topology.yml -c local -e machine_type=${param} -e cloud_provider=${CloudProviders}  -e username='jenkins' -e sshkey_name='st-versalex' --tags ${CloudProviders} "
 			   
-  			   sh "cd ${workdir} && ansible-playbook setup_uservars.yml -e cloud_provider=${CloudProviders} --tags 'default_vars' "
+  			   sh "cd ${workdir} && ansible-playbook setup_uservars.yml -e cloud_provider=${CloudProviders} -e version=${Version} --tags 'default_vars' "
 
 			   sh "cd ${workdir} && ansible-playbook setup_vars.yml -c local -i inventories/${CloudProviders}/${param}/ -e cloud_provider=${CloudProviders} -e machine_type=${param} "
 
