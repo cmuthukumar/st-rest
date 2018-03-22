@@ -12,7 +12,9 @@
       with_items: 
             - "servers.yml"
             - "tpnodes.yml"          
-          
+      tags:
+        - default_vars
+        
     - name: Print All High Level Values
       debug: msg="All High Level {{cp_user_vars[c_p_indx|int][cloud_provider][0]}}"
 
@@ -21,3 +23,5 @@
       with_items: 
             - "servers.yml"
             - "tpnodes.yml"
+      tags:
+        - custom_vars            
