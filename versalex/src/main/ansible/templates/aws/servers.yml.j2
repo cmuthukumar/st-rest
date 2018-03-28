@@ -2,46 +2,46 @@
 hardware:
     versalex:           
       - name: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['Product']| lower | default('', true) }}
-		security_group: "systest_sg"
-		key_pair: "systest_kp"
-		instance_type: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['Instance Type'] | default('', true)}}
-		image: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['OS'] | default('', true)}}
-		region: "us-west-2"
-		vpc_subnet_id: "subnet-81618ae6"
-		volume_size: 10
-		qty: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['Total Instances'] }}
+	security_group: "systest_sg"
+	key_pair: "systest_kp"
+	instance_type: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['Instance Type'] | default('', true)}}
+	image: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['OS'] | default('', true)}}
+	region: "us-west-2"
+	vpc_subnet_id: "subnet-81618ae6"
+	volume_size: 10
+	qty: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['Total Instances'] }}
     integrations:           
       - name: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['Product']| lower | default('', true) }}
-		security_group: "systest_sg"
-		key_pair: "systest_kp"
-		instance_type: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['Instance Type'] | default('', true)}}
-		image: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['OS'] | default('', true)}}
-		region: "us-west-2"
-		vpc_subnet_id: "subnet-81618ae6"
-		volume_size: 10
-		qty: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['Total Instances'] }}
+	security_group: "systest_sg"
+	key_pair: "systest_kp"
+	instance_type: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['Instance Type'] | default('', true)}}
+	image: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['OS'] | default('', true)}}
+	region: "us-west-2"
+	vpc_subnet_id: "subnet-81618ae6"
+	volume_size: 10
+	qty: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['Total Instances'] }}
 {% if (cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['Total Instances'] > 0)  %}
     proxy:    
-      - name: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['Product']| lower | default('', true) }}
-		security_group: "systest_sg"
-		key_pair: "systest_kp"
-		instance_type: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['Instance Type'] | default('', true)}}
-		image: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['OS'] | default('', true)}}
-		region: "us-west-2"
-		vpc_subnet_id: "subnet-81618ae6"
-		volume_size: 10
-		qty: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['Total Instances'] }}
+	- name: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['Product']| lower | default('', true) }}
+	security_group: "systest_sg"
+	key_pair: "systest_kp"
+	instance_type: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['Instance Type'] | default('', true)}}
+	image: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['OS'] | default('', true)}}
+	region: "us-west-2"
+	vpc_subnet_id: "subnet-81618ae6"
+	volume_size: 10
+	qty: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['Total Instances'] }}
 {% endif %}
     shares:           
       - name: share
-		security_group: "systest_sg"
-		key_pair: "systest_kp"
-		instance_type: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['shares'][0]['Instance Type'] | default('', true)}}
-		image: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['shares'][0]['OS'] | default('', true)}}
-		region: "us-west-2"
-		vpc_subnet_id: "subnet-81618ae6"
-		volume_size: 40
-		qty: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['shares'][0]['Total Instances'] }}
+	security_group: "systest_sg"
+	key_pair: "systest_kp"
+	instance_type: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['shares'][0]['Instance Type'] | default('', true)}}
+	image: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['shares'][0]['OS'] | default('', true)}}
+	region: "us-west-2"
+	vpc_subnet_id: "subnet-81618ae6"
+	volume_size: 40
+	qty: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['shares'][0]['Total Instances'] }}
 software:
     versalex:
       - name: "{{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['Product'] | lower| default('', true) }}"
