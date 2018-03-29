@@ -128,7 +128,7 @@ try
 				//st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/ -v /root/.aws/:/root/.aws/')
 		    		//{       							
 					//sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=${doProps[2]['AS2'][0]['FilesPerMin']} -e as2_totalmins=${doProps[2]['AS2'][0]['Total Mins']} -e as2_totalhosts=${doProps[2]['AS2'][0]['HoststoRun']} -e ftp_filespermin=${doProps[2]['FTP'][0]['FilesPerMin']} -e ftp_totalmins=${doProps[2]['FTP'][0]['Total Mins']} -e ftp_totalhosts=${doProps[2]['FTP'][0]['HoststoRun']} -e sshftp_filespermin=${doProps[2]['SSHFTP'][0]['FilesPerMin']} -e sshftp_totalmins=${doProps[2]['SSHFTP'][0]['Total Mins']} -e sshftp_totalhosts=${doProps[2]['SSHFTP'][0]['HoststoRun']} run_tests.yml "
-					sh "cd ${workdir} && ansible-playbook -i inventories/${CloudProviders}/${params[0]}/ -i inventories/${CloudProviders}/${params[1]}/ -e as2_totalcreatehosts=600 -e as2_filespermin=100 -e as2_totalmins=120 -e as2_totalhosts=600 -e ftp_totalcreatehosts=300 -e ftp_filespermin=100 -e ftp_totalmins=120 -e ftp_totalhosts=300 -e sshftp_totalcreatehosts=300 -e sshftp_filespermin=100 -e sshftp_totalmins=120 -e sshftp_totalhosts=300 run_tests.yml "
+					sh "cd ${workdir} && ansible-playbook -i inventories/${CloudProviders}/${params[0]}/ -i inventories/${CloudProviders}/${params[1]}/ -e as2_totalcreatehosts=600 -e as2_filespermin=200 -e as2_totalmins=120 -e as2_totalhosts=600 -e ftp_totalcreatehosts=300 -e ftp_filespermin=200 -e ftp_totalmins=120 -e ftp_totalhosts=300 -e sshftp_totalcreatehosts=300 -e sshftp_filespermin=200 -e sshftp_totalmins=120 -e sshftp_totalhosts=300 run_tests.yml "
 						
     				//}		               
 		            }
@@ -136,7 +136,7 @@ try
 		            {
 		        //st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/ -v /root/.aws/:/root/.aws/')
 			       //	{       							
-					sh "cd ${workdir} && ansible-playbook -i inventories/${CloudProviders}/${params[0]}/ -i inventories/${CloudProviders}/${params[1]}/ -e as2_filespermin=100 -e as2_totalmins=120 -e ftp_filespermin=100 -e ftp_totalmins=120  -e sshftp_filespermin=100 -e sshftp_totalmins=120  monitor_tests.yml "
+					sh "cd ${workdir} && ansible-playbook -i inventories/${CloudProviders}/${params[0]}/ -i inventories/${CloudProviders}/${params[1]}/ -e as2_filespermin=200 -e as2_totalmins=120 -e ftp_filespermin=200 -e ftp_totalmins=120  -e sshftp_filespermin=200 -e sshftp_totalmins=120  monitor_tests.yml "
 			       						
     				//}	
 		            }
