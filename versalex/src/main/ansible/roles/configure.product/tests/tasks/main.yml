@@ -1,14 +1,14 @@
 ---
 # tasks file for configure.product
 - block:
-    - name: Checking Proxy Status..
-      wait_for:
-        host: "{{ansible_ssh_host}}"
-        port: "8080"
-        state: started
-        timeout: 60
-      when: "'proxy' in inventory_hostname"
-      register: proxy_status      
+    # - name: Checking Proxy Status..
+      # wait_for:
+        # host: "{{ansible_ssh_host}}"
+        # port: "8080"
+        # state: started
+        # timeout: 60
+      # when: "'proxy' in inventory_hostname"
+      # register: proxy_status      
 
       
     - name: Validate Client Share Mount Point`
