@@ -52,6 +52,11 @@
       with_items:
         - "{{jmeter_plugins_tst_url}}"
         - "{{jmeter_plugins_paramctrller_url}}"
+      register: jmeter_extract_status
+      timeout: 1800
+      retries: 3
+      delay: 10
+      until: jmeter_extract_status | success
 
     - name: Copy TestPlan(JMX) file to Shares
       copy: src="{{playbook_dir}}/files/SysTest_Linux.jmx" dest="{{jmeter_dir}}apache-jmeter-{{jmeter_version}}/bin/"
