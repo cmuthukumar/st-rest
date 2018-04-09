@@ -921,22 +921,22 @@ def jsonEditorOptions = Boon.fromJson(/{
              {
 "name": "dataset",
 	"AS2": [{
-		"Total Hosts": 1500,
-		"Total Mins": 30,
-		"FilesPerMin": 1000,		
-		"HoststoRun": 259
+		"Total Hosts": 600,
+		"Total Mins": 120,
+		"FilesPerMin": 250,		
+		"HoststoRun": 600
 		}],
 	"FTP": [{
-		"Total Mins": 30,
-		"FilesPerMin": 1000,
-		"Total Hosts": 500,
-		"HoststoRun": 359
+		"Total Mins": 120,
+		"FilesPerMin": 250,
+		"Total Hosts": 300,
+		"HoststoRun": 300
 		}],		
 	"SSHFTP": [{
-		"Total Mins": 30,
-		"FilesPerMin": 1000,
-		"Total Hosts": 500,
-		"HoststoRun": 459
+		"Total Mins": 120,
+		"FilesPerMin": 250,
+		"Total Hosts": 300,
+		"HoststoRun": 300
 		}]		
                 
                 },
@@ -998,22 +998,22 @@ def jsonEditorOptions = Boon.fromJson(/{
 	                  {
 	     "name": "dataset",
 	     	"AS2": [{
-	     		"Total Hosts": 200,
-	     		"Total Mins": 10,
-	     		"FilesPerMin": 100,		
-	     		"HoststoRun": 10
+	     		"Total Hosts": 600,
+	     		"Total Mins": 120,
+	     		"FilesPerMin": 250,		
+	     		"HoststoRun": 600
 	     		}],
 	     	"FTP": [{
-	     		"Total Mins": 10,
-	     		"FilesPerMin": 100,
-	     		"Total Hosts": 200,
-	     		"HoststoRun": 10
+	     		"Total Mins": 120,
+	     		"FilesPerMin": 250,
+	     		"Total Hosts": 300,
+	     		"HoststoRun": 300
 	     		}],		
 	     	"SSHFTP": [{
-	     		"Total Mins": 10,
-	     		"FilesPerMin": 100,
-	     		"Total Hosts": 200,
-	     		"HoststoRun": 10
+	     		"Total Mins": 120,
+	     		"FilesPerMin": 250,
+	     		"Total Hosts": 300,
+	     		"HoststoRun": 300
 	     		}]		
 	                     
 	                     },
