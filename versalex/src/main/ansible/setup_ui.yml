@@ -18,7 +18,7 @@
 
         - name: Print UI Res
           set_fact:
-                relsnapVersions: "{{ relsnapVersions }} + {{ item.msg }}"
+                relsnapVersions: "{{ relsnapVersions }} + {{ item.msg |to_json }}"
           # when: item.msg |int| version_compare('5.4.1','>=')      
           with_items: "{{ui_res.results}}"
           
