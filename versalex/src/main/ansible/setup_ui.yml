@@ -18,14 +18,16 @@
 
         - name: Print UI Res
           set_fact:
-                relsnapVersions: "{{ relsnapVersions }} + {{ item.msg |to_json }}"
+                relsnapVersions: "{{ relsnapVersions }} + {{ item.msg }}"
           # when: item.msg |int| version_compare('5.4.1','>=')      
           with_items: "{{ui_res.results}}"
           
         # - name: Debug Versions
           # debug: msg="Ver:- {{relsnapVersions}}" 
           # when: relsnapVersions | version_compare('5.4.1','>=')
-
+        - name: Set fact for relsnapVersions
+          set_fact:
+                relsnapVersions: "{{relsnapVersions|to_json}}"
                 
         - debug: msg="{{ relsnapVersions  }}"                
                 
