@@ -24,6 +24,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 import json
 from base64 import b64encode
+from distutils.version import LooseVersion, StrictVersion
 import os
 import yaml
 
@@ -63,8 +64,10 @@ def setup_ui_groovy(snapshot_url):
 		status,json_res=get_results(snapshot_url)
 		for i in range(len(json_res['data'])):
 			print "Version is ---",json_res['data'][i]['version']
-			snapshotVersions.append(json_res['data'][i]['version'])	
-		print "RESULTS RETURNED***",snapshotVersions
+			ver=json_res['data'][i]['version']
+			if( LooseVersion(ver) > LooseVersion("5.4.1") ):
+				snapshotVersions.append(json_res['data'][i]['version'])
+		print "RESULTS RETURNED***",snapshotVersions			
 		snapshotRes = {'changed': True,'msg': snapshotVersions}
 		return True,snapshotRes
 	except Exception,e:

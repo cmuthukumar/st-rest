@@ -27,8 +27,8 @@ def jsonEditorOptions = Boon.fromJson(/{
 				  }
 				     },
 				     
- "do": {
-             "title": "do",
+ "digitalocean": {
+             "title": "digitalocean",
              "type": "array",
              "format":"tabs",
              "items": {
@@ -66,7 +66,7 @@ def jsonEditorOptions = Boon.fromJson(/{
                                   
                                   "Version" : {
                                       "type": "string", 
-                                        "enum": ["5.5-Portal-SNAPSHOT", "5.5-SNAPSHOT", "5.4.2-SNAPSHOT", "5.4.1-SNAPSHOT", "5.4-SNAPSHOT", "5.3.1-SNAPSHOT", "5.3.0.x-SNAPSHOT", "5.3.0-SNAPSHOT", "5.3-SNAPSHOT", "5.3.0.0-RC-SNAPSHOT", "5.2.2-SNAPSHOT", "5.2.1-SNAPSHOT", "5.2.1-RC-SNAPSHOT", "1.0.0.0-SNAPSHOT", "Jenkins-test-SNAPSHOT"],
+                                        "enum": [u'5.6-SNAPSHOT', u'5.5-Portal-SNAPSHOT', u'5.5.0-SNAPSHOT', u'5.5-SNAPSHOT', u'5.4.2-SNAPSHOT', u'5.4.1-SNAPSHOT', u'5.4-SNAPSHOT', u'nickp20180318-SNAPSHOT', u'Jenkins-test-SNAPSHOT', u'develop-SNAPSHOT', u'5.5.0.0', u'5.5-RC-4.0', u'5.5-RC-3.0', u'5.5-RC-2.0', u'5.5-RC-1.0', u'5.5-RC-0.6', u'5.5-RC-0.5', u'5.5-RC-0.4', u'5.5-RC-0.3', u'5.5-RC-0.2', u'5.5-RC-0.1', u'5.4.1.17', u'5.4.1.16', u'5.4.1.15', u'5.4.1.14', u'5.4.1.13', u'5.4.1.12', u'5.4.1.11', u'5.4.1.10', u'5.4.1.9', u'5.4.1.8', u'5.4.1.7', u'5.4.1.6', u'5.4.1.4', u'5.4.1.3', u'5.4.1.2', u'5.4.1.1', u'5.4.1.0', u'5.4.1.0-RC-5.0', u'5.4.1.0-RC-4.0', u'5.4.1.0-RC-3.0', u'5.4.1.0-RC-2.0', u'5.4.1.0-RC-1.3', u'5.4.1.0-RC-1.2', u'5.4.1.0-RC-1.1', u'jenkins-version-test-12', u'jenkins-version-test-11', u'jenkins-version-test-9', u'jenkins-version-test-8', u'jenkins-version-test-7', u'jenkins-version-test-6', u'jenkins-version-test-3', u'jenkins-version-test-2', u'jenkins-version-test-1'],
                                             "propertyOrder": 2
                                   },                                  
 
@@ -202,7 +202,7 @@ def jsonEditorOptions = Boon.fromJson(/{
 
                                   "Version" : {
                                       "type": "string", 
-                                        "enum": ["5.5-Portal-SNAPSHOT", "5.5-SNAPSHOT", "5.4.2-SNAPSHOT", "5.4.1-SNAPSHOT", "5.4-SNAPSHOT", "5.3.1-SNAPSHOT", "5.3.0.x-SNAPSHOT", "5.3.0-SNAPSHOT", "5.3-SNAPSHOT", "5.3.0.0-RC-SNAPSHOT", "5.2.2-SNAPSHOT", "5.2.1-SNAPSHOT", "5.2.1-RC-SNAPSHOT", "1.0.0.0-SNAPSHOT", "Jenkins-test-SNAPSHOT"],
+                                        "enum": [u'5.6-SNAPSHOT', u'5.5-Portal-SNAPSHOT', u'5.5.0-SNAPSHOT', u'5.5-SNAPSHOT', u'5.4.2-SNAPSHOT', u'5.4.1-SNAPSHOT', u'5.4-SNAPSHOT', u'nickp20180318-SNAPSHOT', u'Jenkins-test-SNAPSHOT', u'develop-SNAPSHOT', u'5.5.0.0', u'5.5-RC-4.0', u'5.5-RC-3.0', u'5.5-RC-2.0', u'5.5-RC-1.0', u'5.5-RC-0.6', u'5.5-RC-0.5', u'5.5-RC-0.4', u'5.5-RC-0.3', u'5.5-RC-0.2', u'5.5-RC-0.1', u'5.4.1.17', u'5.4.1.16', u'5.4.1.15', u'5.4.1.14', u'5.4.1.13', u'5.4.1.12', u'5.4.1.11', u'5.4.1.10', u'5.4.1.9', u'5.4.1.8', u'5.4.1.7', u'5.4.1.6', u'5.4.1.4', u'5.4.1.3', u'5.4.1.2', u'5.4.1.1', u'5.4.1.0', u'5.4.1.0-RC-5.0', u'5.4.1.0-RC-4.0', u'5.4.1.0-RC-3.0', u'5.4.1.0-RC-2.0', u'5.4.1.0-RC-1.3', u'5.4.1.0-RC-1.2', u'5.4.1.0-RC-1.1', u'jenkins-version-test-12', u'jenkins-version-test-11', u'jenkins-version-test-9', u'jenkins-version-test-8', u'jenkins-version-test-7', u'jenkins-version-test-6', u'jenkins-version-test-3', u'jenkins-version-test-2', u'jenkins-version-test-1'],
                                             "propertyOrder": 2
                                   },  
 
@@ -480,11 +480,11 @@ def jsonEditorOptions = Boon.fromJson(/{
                                   
                                   "Version" : {
                                       "type": "string", 
-                                        "enum": ["5.5-Portal-SNAPSHOT", "5.5-SNAPSHOT", "5.4.2-SNAPSHOT", "5.4.1-SNAPSHOT", "5.4-SNAPSHOT", "5.3.1-SNAPSHOT", "5.3.0.x-SNAPSHOT", "5.3.0-SNAPSHOT", "5.3-SNAPSHOT", "5.3.0.0-RC-SNAPSHOT", "5.2.2-SNAPSHOT", "5.2.1-SNAPSHOT", "5.2.1-RC-SNAPSHOT", "1.0.0.0-SNAPSHOT", "Jenkins-test-SNAPSHOT"],
+                                        "enum": [u'5.6-SNAPSHOT', u'5.5-Portal-SNAPSHOT', u'5.5.0-SNAPSHOT', u'5.5-SNAPSHOT', u'5.4.2-SNAPSHOT', u'5.4.1-SNAPSHOT', u'5.4-SNAPSHOT', u'nickp20180318-SNAPSHOT', u'Jenkins-test-SNAPSHOT', u'develop-SNAPSHOT', u'5.5.0.0', u'5.5-RC-4.0', u'5.5-RC-3.0', u'5.5-RC-2.0', u'5.5-RC-1.0', u'5.5-RC-0.6', u'5.5-RC-0.5', u'5.5-RC-0.4', u'5.5-RC-0.3', u'5.5-RC-0.2', u'5.5-RC-0.1', u'5.4.1.17', u'5.4.1.16', u'5.4.1.15', u'5.4.1.14', u'5.4.1.13', u'5.4.1.12', u'5.4.1.11', u'5.4.1.10', u'5.4.1.9', u'5.4.1.8', u'5.4.1.7', u'5.4.1.6', u'5.4.1.4', u'5.4.1.3', u'5.4.1.2', u'5.4.1.1', u'5.4.1.0', u'5.4.1.0-RC-5.0', u'5.4.1.0-RC-4.0', u'5.4.1.0-RC-3.0', u'5.4.1.0-RC-2.0', u'5.4.1.0-RC-1.3', u'5.4.1.0-RC-1.2', u'5.4.1.0-RC-1.1', u'jenkins-version-test-12', u'jenkins-version-test-11', u'jenkins-version-test-9', u'jenkins-version-test-8', u'jenkins-version-test-7', u'jenkins-version-test-6', u'jenkins-version-test-3', u'jenkins-version-test-2', u'jenkins-version-test-1'],
                                             "propertyOrder": 2
                                   },                                  
 
-                                  "Total Droplets" : {
+                                  "Total Instances" : {
                                       "type": "integer", 
                                         "enum": [
                                         	0,
@@ -511,16 +511,16 @@ def jsonEditorOptions = Boon.fromJson(/{
                                   "OS" : {
                                       "type": "string", 
                                         "enum": [
-										  "ami-223f945a",
-										  "ami-79873901"
+										  "ami-d874e0a0",	
+										  "ami-223f945a"										  
                                             ],
 														"options": {
 										"enum_titles": [
-										"RHEL 7.4",
-										"Ubuntu 16.04"
+										"Amazon Linux 1",
+										"RHEL 7.4"								
 										]
 									},
-                                            "default": "RHEL 7.4",
+                                            "default": "Amazon Linux 1",
                                              "propertyOrder": 3
                                   }
 
@@ -562,7 +562,7 @@ def jsonEditorOptions = Boon.fromJson(/{
                                             "propertyOrder": 2
                                   },                                   
 
-                                  "Total Droplets" : {
+                                  "Total Instances" : {
                                       "type": "integer", 
                                         "enum": [
                                         	0,
@@ -588,15 +588,15 @@ def jsonEditorOptions = Boon.fromJson(/{
                                       "type": "string", 
                                         "enum": [
 										  "ami-223f945a",
-										  "ami-79873901"
+										  "ami-d874e0a0"
                                             ],
 														"options": {
 										"enum_titles": [
 										"RHEL 7.4",
-										"Ubuntu 16.04"
+										"Amazon Linux 1"
 										]
 									},
-                                            "default": "RHEL 7.4",
+                                            "default": "Amazon Linux 1",
                                              "propertyOrder": 3
                                   }
 
@@ -624,11 +624,11 @@ def jsonEditorOptions = Boon.fromJson(/{
 
                                   "Version" : {
                                       "type": "string", 
-                                        "enum": ["5.5-Portal-SNAPSHOT", "5.5-SNAPSHOT", "5.4.2-SNAPSHOT", "5.4.1-SNAPSHOT", "5.4-SNAPSHOT", "5.3.1-SNAPSHOT", "5.3.0.x-SNAPSHOT", "5.3.0-SNAPSHOT", "5.3-SNAPSHOT", "5.3.0.0-RC-SNAPSHOT", "5.2.2-SNAPSHOT", "5.2.1-SNAPSHOT", "5.2.1-RC-SNAPSHOT", "1.0.0.0-SNAPSHOT", "Jenkins-test-SNAPSHOT"],
+                                        "enum": [u'5.6-SNAPSHOT', u'5.5-Portal-SNAPSHOT', u'5.5.0-SNAPSHOT', u'5.5-SNAPSHOT', u'5.4.2-SNAPSHOT', u'5.4.1-SNAPSHOT', u'5.4-SNAPSHOT', u'nickp20180318-SNAPSHOT', u'Jenkins-test-SNAPSHOT', u'develop-SNAPSHOT', u'5.5.0.0', u'5.5-RC-4.0', u'5.5-RC-3.0', u'5.5-RC-2.0', u'5.5-RC-1.0', u'5.5-RC-0.6', u'5.5-RC-0.5', u'5.5-RC-0.4', u'5.5-RC-0.3', u'5.5-RC-0.2', u'5.5-RC-0.1', u'5.4.1.17', u'5.4.1.16', u'5.4.1.15', u'5.4.1.14', u'5.4.1.13', u'5.4.1.12', u'5.4.1.11', u'5.4.1.10', u'5.4.1.9', u'5.4.1.8', u'5.4.1.7', u'5.4.1.6', u'5.4.1.4', u'5.4.1.3', u'5.4.1.2', u'5.4.1.1', u'5.4.1.0', u'5.4.1.0-RC-5.0', u'5.4.1.0-RC-4.0', u'5.4.1.0-RC-3.0', u'5.4.1.0-RC-2.0', u'5.4.1.0-RC-1.3', u'5.4.1.0-RC-1.2', u'5.4.1.0-RC-1.1', u'jenkins-version-test-12', u'jenkins-version-test-11', u'jenkins-version-test-9', u'jenkins-version-test-8', u'jenkins-version-test-7', u'jenkins-version-test-6', u'jenkins-version-test-3', u'jenkins-version-test-2', u'jenkins-version-test-1'],
                                             "propertyOrder": 2
                                   },  
 
-                                  "Total Droplets" : {
+                                  "Total Instances" : {
                                       "type": "integer", 
                                         "enum": [
                                         	0,
@@ -656,15 +656,15 @@ def jsonEditorOptions = Boon.fromJson(/{
                                       "type": "string", 
                                         "enum": [
 										  "ami-223f945a",
-										  "ami-79873901"
+										  "ami-d874e0a0"
                                             ],
 														"options": {
 										"enum_titles": [
 										"RHEL 7.4",
-										"Ubuntu 16.04"
+										"Amazon Linux 1"
 										]
 									},
-                                            "default": "RHEL 7.4",
+                                            "default": "Amazon Linux 1",
                                              "propertyOrder": 3
                                   }
 
@@ -705,15 +705,15 @@ def jsonEditorOptions = Boon.fromJson(/{
                                       "type": "string", 
                                         "enum": [
 										  "ami-223f945a",
-										  "ami-79873901"
+										  "ami-d874e0a0"
                                             ],
 														"options": {
 										"enum_titles": [
 										"RHEL 7.4",
-										"Ubuntu 16.04"
+										"Amazon Linux 1"
 										]
 									},
-                                            "default": "RHEL 7.4",
+                                            "default": "Amazon Linux 1",
                                              "propertyOrder": 3
                                   }
 
@@ -880,7 +880,7 @@ def jsonEditorOptions = Boon.fromJson(/{
    startval: [
 {
 "name": "digitalocean",
-"do": [
+"digitalocean": [
 {
 "name": "servers",
 "versalex": [{

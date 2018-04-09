@@ -3,22 +3,38 @@
   tasks:
         - name: Update UI groovy file with versions
           setup_ui:
-            snapshot_url: "http://10.80.80.156/nexus/service/local/lucene/search?g=com.cleo.installers&a=Harmony&repositoryId=InstallerSnapshots"
+            snapshot_url: "{{item}}"
+          with_items:
+                - http://10.80.80.156/nexus/service/local/lucene/search?g=com.cleo.installers&a=Harmony&repositoryId=InstallerSnapshots
+                - http://10.80.80.156/nexus/service/local/lucene/search?g=com.cleo.installers&a=Harmony&repositoryId=releases
           register: ui_res
           retries: 3
           delay: 5  
           until: ui_res|success          
           
-        - name: Set SnapShot Versions Fact  
+        - name: Set Fact Release
           set_fact:
-                snapVersions: "{{ui_res['msg']|to_json}}"
+                relsnapVersions: []
+
+        - name: Print UI Res
+          set_fact:
+                relsnapVersions: "{{ relsnapVersions }} + {{ item.msg }}"
+          # when: item.msg |int| version_compare('5.4.1','>=')      
+          with_items: "{{ui_res.results}}"
+          
+        # - name: Debug Versions
+          # debug: msg="Ver:- {{relsnapVersions}}" 
+          # when: relsnapVersions | version_compare('5.4.1','>=')
+
+                
+        - debug: msg="{{ relsnapVersions  }}"                
                 
         - name: Set SE Name Fact  
           set_fact:
                 se_name: "{% raw -%} {{  self.name  }} {% endraw -%} "
         
         - name: Render Grooy UI Script
-          template: src="{{playbook_dir}}/templates/ui.groovy.j2" dest="{{playbook_dir}}/templates/ui.groovy"
+          template: src="{{playbook_dir}}/templates/ui_aws.groovy.j2" dest="{{playbook_dir}}/templates/ui_aws.groovy"
           register: ui_groovy_temp
         
         - name: Print Rendering Results

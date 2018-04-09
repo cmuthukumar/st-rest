@@ -3,261 +3,311 @@ import org.yaml.snakeyaml.Yaml
 import hudson.slaves.*
 import hudson.plugins.sshslaves.*
 import hudson.model.Node
-
-
-//Define Global Vars
+import groovy.json.JsonSlurper
 
 params = ['servers','tpnodes']
-workdir = "versalex/src/main/ansible/"
-doProps = readJSON text: "${DigitalOcean}"
 String[] protocols=[]
+String[] cloudproviders=[]
+//doProps = readJSON text: "${DigitalOcean}"
+doProps = new JsonSlurper().parseText(DigitalOcean)
+methodParams = ['Build Vars':params,'Create Nodes':params,'Install Product':params,'Install Integrations':params,'Configure Product':params,'Setup Sync':params[0],'Setup Test Profiles':protocols,'Run Tests':['Run Tests'],'Monitor Tests':['Monitor Tests']]
+stagesMethods = ['Build Vars':'buildVars','Create Nodes':'createNodes','Install Product':'installProduct','Install Integrations':'installIntegrations','Configure Product':'configureProduct','Setup Sync':'setupSync','Setup Test Profiles':'setupTestProfiles','Run Tests':'runTests','Monitor Tests':'monitorTests']
+workdir = "versalex/src/main/ansible/"
 
-node('SysTest') {
-
-env.WORKSPACE = pwd()
-def mvnHome = tool 'Mvn3.3.9'
-sh "cd ${env.WORKSPACE}"
-env.JAVA_HOME="${tool 'JDK1.8'}"
-env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
-sh 'java -version'
-
-//withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: '683540f0-61a9-48c1-acef-dc5520fb6466', passwordVariable: 'GITPWD', usernameVariable: 'GITUSR']]) {
-    stage('Clean')
+node('SysTest_RH7'){
+    try {
+	    stage('Clean')
         {
         deleteDir()
         sh 'ls -lah'
+		sh 'sync; echo 3 > /proc/sys/vm/drop_caches '
             }
-            
-    stage('CheckOut')
-        {
-// Checkout Github Branch to Specific Directory        
-       //checkout scm
-		checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: "${gitBranch}"]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '79815ffd-ea78-431b-ae29-277ccd0807f6', url: 'https://github.com/CleoDev/st.git']]]
-        sh 'printenv'
-            }
-//def systestvexImage=docker.build('st-versalex:1.0','.')
-    def st_ansibleImage =  docker.image('cleo/ansible:st_5.0');
-    withDockerRegistry([credentialsId: 'DockerCleoSysTest', url: 'https://hub.docker.com/r/cleo/ansible/']) {
-    st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
-    {    
-    try{
-	    stage('Build Vars')
-            {
-
-              buildVars()
-            }
-    stage('Create Nodes')
-            {
-		parallel(
-		(params[0]): {
-			createNodes(params[0])
-				},
-		(params[1]): {
-				createNodes(params[1])
-			}	  
-          )
-
-            }
-    stage('Install Product')
-            {
-			 
-	parallel(
-		(params[0]): {
-			installProduct(params[0])
-				},
-			(params[1]): {
-			installProduct(params[1])
-				}	  
-             )   
-				//installProduct(params)
+            println "Total Droplets for ALL ${doProps}"    
+			println "Total Droplets AWS ${doProps['aws']}"
+			println "Total Droplets AWS Inside ${doProps['aws'][1][0]}"
+			println "Total Droplets DO ${doProps['digitalocean']}"
+			if(doProps['digitalocean'][0][0]['versalex'][0]['Total Droplets'] > 0)
+			{
+			cloudproviders.add('digitalocean')
 			}
-
-    stage('Install Integrations')
-            {			
-		parallel(
-		(params[0]): {
-			installIntegrations(params[0])
-				},
-			(params[1]): {
-			installIntegrations(params[1])
-				}	  
-             )  
-		
-            } 
-            
-            
-    stage('Configure Product')
-            {
-		parallel(
-		(params[0]): {
-			configProduct(params[0])
-				},
-			(params[1]): {
-			configProduct(params[1])
-				}	  
-             ) 
-		
-            } 
 			
-        }
-        finally{
-        
-            echo "End of System Testing"
-        }
-    }
-    
-    }
-  
-  
- withDockerRegistry([credentialsId: 'DockerCleoSysTest', url: 'https://hub.docker.com/r/cleo/ansible/']) {
-          try{
-				if(("${doProps[2]['AS2'][0]['FilesPerMin']}" > 0) || ("${doProps[2]['FTP'][0]['FilesPerMin']}" > 0) || ("${doProps[2]['SSHFTP'][0]['FilesPerMin']}" > 0) )			
-					{
-				stage('Setup TestProfiles')
-					{
-    					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags 'schedule-auto-startup,common,setup-sync' "
-					if(("${doProps[2]['AS2'][0]['FilesPerMin']}" > 0))
-					{
-						protocols.add('as2')
+			if(doProps['aws'][1][0]['versalex'][0]['Total Instances'] > 0)
+			{
+			cloudproviders.add('aws')
+			}
+			
+			println "Test"
+			
+			if(cloudproviders)
+			{
+				println "Cloud Providers Available --${cloudproviders}"
+	
+	
+			}else
+			{
+				println "No Cloud Providers DO /AWS Total Machines Less than Zero"
+			}
+			
+		   stage('CheckOut')
+			{
+       //checkout scm
+       			println "Cloud Providers Available Size--${cloudproviders.size()}"
+                def cpIndex=-1
+				for (int i = 0; i < cloudproviders.size(); i++) 
+				{
+				//println "Cloud PR- ${doProps[cloudproviders[i]][i+1][3]['General'][0]['GitHubBranch']}"
+				//	checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: "${doProps[cloudproviders[i]][i][3]['General'][0]['GitHubBranch']}"]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '79815ffd-ea78-431b-ae29-277ccd0807f6', url: 'https://github.com/CleoDev/st.git']]]
+    				    if(cloudproviders[i] == 'aws')
+    				    {
+    				     cpIndex=1
+    				     println "AWS CP Index  ${cpIndex}"
+    				    
+    				    }
+    				    else
+    				    {
+    				         println "DO CP Index  ${cpIndex}"
+    				        cpIndex=0
+    				    }
+				  
+			
+					checkout([$class: 'GitSCM', branches: [[name: "${doProps[cloudproviders[i]][cpIndex][3]['General'][0]['GitHubBranch']}"]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '683540f0-61a9-48c1-acef-dc5520fb6466', url: 'https://github.com/CleoDev/st.git']]])
+					sh 'printenv'
 					}
-					if(("${doProps[2]['FTP'][0]['FilesPerMin']}" > 0))
-					{
-						protocols.add('ftp')
-					}
-					if(("${doProps[2]['SSHFTP'][0]['FilesPerMin']}" > 0))
-					{
-						protocols.add('sshftp')
-					}
-					
-					
-					def stepsDatasets = [:]					
-					for (int i = 0; i < protocols.size(); i++) {
-			    		def stepProtocol = protocols[i]
-			   		 stepsDatasets[stepProtocol] = { ->           
-			      			  echo "Running ${stepProtocol}"
-							  
-						st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
-    						{       							
-    					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ setup_testprofiles.yml --tags ${stepProtocol} "
-				
-    						}
-							
-							
+            }
+
+			  
+				def stepsCProviders = [:]					
+					for (int j = 0; j < cloudproviders.size(); j++) {
+			    		def stepCP = cloudproviders[j]
+			    		echo "Running ${stepCP} Index:- ${j}"
+						def cpindx=-1	
+						
+					if(cloudproviders[j] == 'aws')
+    				    {
+    				        cpindx=1
+    				     println "AWS CP Index  ${cpindx}"
+    				    
+    				    }
+    				    else
+    				    {
+    				         println "DO CP Index  ${cpindx}"
+    				        cpindx=0
+    				    }
+
+
+			   		 stepsCProviders[stepCP] = { ->           
+			      			 echo "Running Step Inside ${stepCP} Index:- ${cpindx}" 						
+							runwithAnsibleImage(stepCP,cpindx,protocols)
 			   				 }
 					}
 					
-					parallel stepsDatasets
-					
-					}	              
-				}
-		    stage('Run Tests')
-		            {
-				st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
-		    		{       							
-					//sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=${doProps[2]['AS2'][0]['FilesPerMin']} -e as2_totalmins=${doProps[2]['AS2'][0]['Total Mins']} -e as2_totalhosts=${doProps[2]['AS2'][0]['HoststoRun']} -e ftp_filespermin=${doProps[2]['FTP'][0]['FilesPerMin']} -e ftp_totalmins=${doProps[2]['FTP'][0]['Total Mins']} -e ftp_totalhosts=${doProps[2]['FTP'][0]['HoststoRun']} -e sshftp_filespermin=${doProps[2]['SSHFTP'][0]['FilesPerMin']} -e sshftp_totalmins=${doProps[2]['SSHFTP'][0]['Total Mins']} -e sshftp_totalhosts=${doProps[2]['SSHFTP'][0]['HoststoRun']} run_tests.yml "
-					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_totalcreatehosts=${doProps[2]['AS2'][0]['Total Hosts']} -e as2_filespermin=${doProps[2]['AS2'][0]['FilesPerMin']} -e as2_totalmins=${doProps[2]['AS2'][0]['Total Mins']} -e as2_totalhosts=${doProps[2]['AS2'][0]['HoststoRun']} -e ftp_totalcreatehosts=${doProps[2]['FTP'][0]['Total Hosts']} -e ftp_filespermin=${doProps[2]['FTP'][0]['FilesPerMin']} -e ftp_totalmins=${doProps[2]['FTP'][0]['Total Mins']} -e ftp_totalhosts=${doProps[2]['FTP'][0]['HoststoRun']} -e sshftp_totalcreatehosts=${doProps[2]['SSHFTP'][0]['Total Hosts']} -e sshftp_filespermin=${doProps[2]['SSHFTP'][0]['FilesPerMin']} -e sshftp_totalmins=${doProps[2]['SSHFTP'][0]['Total Mins']} -e sshftp_totalhosts=${doProps[2]['SSHFTP'][0]['HoststoRun']} run_tests.yml "
+					parallel stepsCProviders
+			
+
+    }catch (e) {
+    println("Each Stage failed ${e.toString()}")	
+
+	}
+}
+
+
+def runwithAnsibleImage(cloudProvider,cpIndx,protocols)
+{  
+  try {
+			println "Cloud Provider CPIndex-- ${doProps[cloudProvider][cpIndx][2]['AS2'][0]['FilesPerMin']}"
+			if(("${doProps[cloudProvider][cpIndx][2]['AS2'][0]['FilesPerMin']}" > 0))
+			{
+				protocols.add('as2')
+			}
+			if(("${doProps[cloudProvider][cpIndx][2]['FTP'][0]['FilesPerMin']}" > 0))
+			{
+				protocols.add('ftp')
+			}
+			if(("${doProps[cloudProvider][cpIndx][2]['SSHFTP'][0]['FilesPerMin']}" > 0))
+			{
+				protocols.add('sshftp')
+			}
+		    def aImage =  docker.image('cleo/ansible:st_6.0');
+			withDockerRegistry([credentialsId: 'DockerCleoSysTest', url: 'https://hub.docker.com/r/cleo/ansible/']) {
+			aImage.inside('-v /root/.ssh/:/root/.ssh/ -v /root/.aws/:/root/.aws/')
+			{   
+				for (def item in mapToList(stagesMethods)) {
+				println  "Running Stage ${item[0]}"
+				runStages(cloudProvider,cpIndx,"${item[0]}",stagesMethods."${item[0]}",methodParams."${item[0]}")
 						
-    				}		               
-		            }
-		    stage('Monitor Tests')
-		            {
-		        st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
-			       	{       							
-					sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=${doProps[2]['AS2'][0]['FilesPerMin']} -e as2_totalmins=${doProps[2]['AS2'][0]['Total Mins']} -e ftp_filespermin=${doProps[2]['FTP'][0]['FilesPerMin']} -e ftp_totalmins=${doProps[2]['FTP'][0]['Total Mins']}  -e sshftp_filespermin=${doProps[2]['SSHFTP'][0]['FilesPerMin']} -e sshftp_totalmins=${doProps[2]['SSHFTP'][0]['Total Mins']}  monitor_tests.yml "
-			       						
-    				}	
-		            }
+				}
 					
-		    stage('Destroy Droplets')
-		            {
-		                destroyDroplets(params)
-            			} 
-            			
-          }
-          finally{
-        
-            echo "End of Setup , Run,Monitor Tests"
-        }
-          
-      
-  
-}
+			}
+					
+			}
+				
 
-}
-
-	def buildVars()
+}				
+catch(e)
 	{
-	if(("${doProps[0]['integrations'][0]['Total Droplets']}" <= 0) || ("${doProps[0]['shares'][0]['Total Droplets']}" <= 0) || ("${doProps[0]['versalex'][0]['Total Droplets']}" <= 0))
+    println(" runwithAnsibleImage Method failed. ${e.toString()}")	
+	}				
+
+}
+
+def runStages(cProvider,cpIndx,stageName,methodName,params)
+{  
+    try{
+		def clProvider=cProvider+'-'+stageName
+		println "Staage Name Added ${clProvider}"
+	    stage(clProvider)
+            {		
+				println "Method name ${methodName}"
+				println "Param name ${params}"
+				def stepsDatasets = [:]								
+				for (int i = 0; i < params.size(); i++) {
+					def stepProtocol = params[i]
+				 stepsDatasets[stepProtocol] = { ->
+				 "$methodName"(cProvider,cpIndx,stepProtocol)
+		
+			 }
+				}
+				
+					parallel stepsDatasets
+				    println "END OF IT stage"
+		
+            }
+            
+	}
+	catch(e)
+	{
+	
+    println(" runStageParallel Method failed. ${e.toString()}")	
+	}
+
+
+}
+
+//Convert Map to List
+@NonCPS
+List<List<?>> mapToList(Map map) {
+  return map.collect { it ->
+    [it.key, it.value]
+  }
+}
+
+def runPlaybook(playbook,inventory,extraVars,tags) {
+retry(1)
+    {
+    try{
+        
+        echo "Running Playbook ${playbook}"		
+		sh "cd ${workdir} && ansible-playbook ${inventory} ${extraVars} ${playbook} --tags ${tags} "
+		echo "Running Playbook ${playbook} Done"
+        
+    }catch(Exception e)
+    {
+        
+     println "Run Playbook Exception-${e.toString()}"
+    }
+    finally
+    {
+        echo "Finally Block Playbook"
+        
+    }
+    
+    }    
+}
+
+	def buildVars(cP,cPIndx,param)
+	{
+	if(("${doProps[cP][cPIndx][0]['integrations'][0]['Total Droplets']}" <= 0) || ("${doProps[cP][cPIndx][0]['shares'][0]['Total Droplets']}" <= 0) || ("${doProps[cP][cPIndx][0]['versalex'][0]['Total Droplets']}" <= 0))
 		{
-			echo "Servers Variables Passed by User ${doProps[0]}"
+			echo "Servers Variables Passed by User ${doProps[cP][cPIndx][0]}"
 			error("Failing the Build as Servers Integrations/Shares/Versalex Total Droplets Can not be Zero")
 		}
-	if(("${doProps[1]['integrations'][0]['Total Droplets']}" <= 0) || ("${doProps[1]['shares'][0]['Total Droplets']}" <= 0) || ("${doProps[1]['versalex'][0]['Total Droplets']}" <= 0))
+	if(("${doProps[cP][cPIndx][1]['integrations'][0]['Total Droplets']}" <= 0) || ("${doProps[cP][cPIndx][1]['shares'][0]['Total Droplets']}" <= 0) || ("${doProps[cP][cPIndx][1]['versalex'][0]['Total Droplets']}" <= 0))
 		{
-			echo "TPNodes Variables Passed by User ${doProps[1]}"
+			echo "TPNodes Variables Passed by User ${doProps[cP][cPIndx][1]}"
 			error("Failing the Build as TPNodes Integrations/Shares/Versalex Total Droplets Can not be Zero")
 		}
-		sh "cd ${workdir} && ansible-playbook setup_uservars.yml -e 'do_vars=${DigitalOcean}'   "
+		runPlaybook("setup_uservars.yml","","-e 'do_vars=${DigitalOcean}' -e 'cloud_provider=${cP}' -e 'c_p_indx=${cPIndx}' ","all")
 	
 	}	
 	
-    def createNodes(param)
+
+    def createNodes(cP,cPIndx,param)
     {
-    withCredentials([[$class: 'StringBinding', credentialsId: 'doCredentials', variable: 'do_ap_token']]) {
-
-        println "Creating Nodes for ${param}"
-           sh "cd ${workdir} && ansible-playbook setup_topology.yml -c local -e machine_type=${param} -e do_api_token=${env.do_ap_token} -e username=${doProps[3]['General'][0]['Username']} -e sshkey_name='st-versalex' "
-		   
-           sh "cd ${workdir} && ansible-playbook setup_vars.yml -c local -i inventories/${param}/ -e machine_type=${param} "
-
-        }
-    }
+	withCredentials([[$class: 'StringBinding', credentialsId: 'doCredentials', variable: 'do_ap_token']]) {
     
-    def installProduct(param)
-    {
-    println "Install Product for ${param} "
+		println "Create Nodes Running for Cloud Provider ${cP}-${param} "
 
-			sh "cd ${workdir} && ansible-playbook -i inventories/${param}/ -e machine_type=${param} install_product.yml "
-			
-
-    }
-
-    def installIntegrations(param)
-    {
-    println "Install Integrations"
-
-        println "Installing Product for ${param}"
-           sh "cd ${workdir} && ansible-playbook -i inventories/${param}/ -e machine_type=${param} install_integrations.yml "
-
-    }
-    
-    def configProduct(param)
-    {
-    println "Configuring Product with DB, LDAP, PROXY Configs"
-  
-        println "Installing Product for ${param}"
-           sh "cd ${workdir} && ansible-playbook -i inventories/${param}/ -e machine_type=${param} configure_product.yml "
-    
-    }  
-
+		if(("${cP}" == 'aws'))
+		{
+		runPlaybook("setup_topology.yml","-c local","-e machine_type=${param} -e username=${doProps[cP][cPIndx][3]['General'][0]['Username']} -e cloud_provider=${cP}","${cP}")		
 		
-    def runTests()
-    {
-    println "Running Tests ${doProps[2]['AS2'][0]['Total Hosts']}"
+		}
+		else
+		{
+		runPlaybook("setup_topology.yml","-c local","-e do_api_token=${env.do_ap_token} -e machine_type=${param} -e username=${doProps[cP][cPIndx][3]['General'][0]['Username']} -e sshkey_name='st-versalex' -e cloud_provider=${cP} ","${cP}")
+		
+		}
+		println "final playbook"
+		
+		runPlaybook("setup_vars.yml","-c local -i inventories/${cP}/${param}/","-e machine_type=${param} -e cloud_provider=${cP}","all")
 
-		//sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_totalcreatehosts=${doProps[2]['AS2'][0]['Total Hosts']} -e as2_filespermin=${doProps[2]['AS2'][0]['FilesPerMin']} -e as2_totalmins=${doProps[2]['AS2'][0]['Total Mins']} -e as2_totalhosts=${doProps[2]['AS2'][0]['HoststoRun']} -e ftp_totalcreatehosts=${doProps[2]['FTP'][0]['Total Hosts']} -e ftp_filespermin=${doProps[2]['FTP'][0]['FilesPerMin']} -e ftp_totalmins=${doProps[2]['FTP'][0]['Total Mins']} -e ftp_totalhosts=${doProps[2]['FTP'][0]['HoststoRun']} -e sshftp_totalcreatehosts=${doProps[2]['SSHFTP'][0]['Total Hosts']} -e sshftp_filespermin=${doProps[2]['SSHFTP'][0]['FilesPerMin']} -e sshftp_totalmins=${doProps[2]['SSHFTP'][0]['Total Mins']} -e sshftp_totalhosts=${doProps[2]['SSHFTP'][0]['HoststoRun']} run_tests.yml "
+		}
+    }
 
-     
-    } 
-    
-    def monitorTests()
+    def installProduct(cP,cPIndx,param)
     {
-		println "Monitor Tests in DB"		
-		sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=${doProps[2]['AS2'][0]['FilesPerMin']} -e as2_totalmins=${doProps[2]['AS2'][0]['Total Mins']} -e ftp_filespermin=${doProps[2]['FTP'][0]['FilesPerMin']} -e ftp_totalmins=${doProps[2]['FTP'][0]['Total Mins']}  -e sshftp_filespermin=${doProps[2]['SSHFTP'][0]['FilesPerMin']} -e sshftp_totalmins=${doProps[2]['SSHFTP'][0]['Total Mins']}  monitor_tests.yml "
-     
-    } 
+		println "installProduct Running Install Product for ${param} "
+		runPlaybook("install_product.yml","-i inventories/${cP}/${param}/","-e machine_type=${param} -e cloud_provider=${cP}", "all")
+
+    }
 	
-    def destroyDroplets(params)
+	def installIntegrations(cP,cPIndx,param)
+    {
+		println "installIntegrations Running Install Product for ${param} "
+		runPlaybook("install_integrations.yml","-i inventories/${cP}/${param}/","-e machine_type=${param}", "all")
+
+    }
+	def configureProduct(cP,cPIndx,param)
+    {
+		println "configureProduct Running Install Product for ${param} "
+		runPlaybook("configure_product.yml","-i inventories/${cP}/${param}/","-e machine_type=${param}", "all")
+
+    }
+	
+	def setupSync(cP,cPIndx,param)
+    {
+		if(("${doProps[cP][cPIndx][2]['AS2'][0]['FilesPerMin']}" > 0) || ("${doProps[cP][cPIndx][2]['FTP'][0]['FilesPerMin']}" > 0) || ("${doProps[cP][cPIndx][2]['SSHFTP'][0]['FilesPerMin']}" > 0) )			
+		{
+		println "setupSync Running  ${param} "
+		runPlaybook("setup_testprofiles.yml","-i inventories/${cP}/${params[0]}/ -i inventories/${cP}/${params[1]}/","","schedule-auto-startup,common,setup-sync")
+		}
+    }
+	
+	def setupTestProfiles(cP,cPIndx,param)
+    {
+		//if(("${doProps[cP][cPIndx][2]['AS2'][0]['FilesPerMin']}" > 0) || ("${doProps[cP][cPIndx][2]['FTP'][0]['FilesPerMin']}" > 0) || ("${doProps[cP][cPIndx][2]['SSHFTP'][0]['FilesPerMin']}" > 0) )			
+		//{
+		println "setupTestProfiles Running  ${param} "
+		runPlaybook("setup_testprofiles.yml","-i inventories/${cP}/${params[0]}/ -i inventories/${cP}/${params[1]}/","","${param}")
+		//}
+    }
+	
+	def runTests(cP,cPIndx,param)
+    {
+		println "runTests Running Install Product for ${param} "
+		runPlaybook("run_tests.yml","-i inventories/${cP}/${params[0]}/ -i inventories/${cP}/${params[1]}/","-e as2_totalcreatehosts=${doProps[cP][cPIndx][2]['AS2'][0]['Total Hosts']} -e as2_filespermin=${doProps[cP][cPIndx][2]['AS2'][0]['FilesPerMin']}  -e as2_totalmins=${doProps[cP][cPIndx][2]['AS2'][0]['Total Mins']} -e as2_totalhosts=${doProps[cP][cPIndx][2]['AS2'][0]['HoststoRun']} -e ftp_totalcreatehosts=${doProps[cP][cPIndx][2]['FTP'][0]['Total Hosts']} -e ftp_filespermin=${doProps[cP][cPIndx][2]['FTP'][0]['FilesPerMin']}  -e ftp_totalmins=${doProps[cP][cPIndx][2]['FTP'][0]['Total Mins']} -e ftp_totalhosts=${doProps[cP][cPIndx][2]['FTP'][0]['HoststoRun']} -e sshftp_totalcreatehosts=${doProps[cP][cPIndx][2]['SSHFTP'][0]['Total Hosts']} -e sshftp_filespermin=${doProps[cP][cPIndx][2]['SSHFTP'][0]['FilesPerMin']}  -e sshftp_totalmins=${doProps[cP][cPIndx][2]['SSHFTP'][0]['Total Mins']} -e sshftp_totalhosts=${doProps[cP][cPIndx][2]['SSHFTP'][0]['HoststoRun']}", "all")
+
+    }
+	
+	
+	def monitorTests(cP,cPIndx,param)
+    {
+		println "monitorTests Running Install Product for ${param} "
+		runPlaybook("monitor_tests.yml","-i inventories/${cP}/${params[0]}/ -i inventories/${cP}/${params[1]}/","-e as2_filespermin=${doProps[cP][cPIndx][2]['AS2'][0]['FilesPerMin']}  -e as2_totalmins=${doProps[cP][cPIndx][2]['AS2'][0]['Total Mins']} -e ftp_filespermin=${doProps[cP][cPIndx][2]['FTP'][0]['FilesPerMin']}  -e ftp_totalmins=${doProps[cP][cPIndx][2]['FTP'][0]['Total Mins']}  -e sshftp_filespermin=${doProps[cP][cPIndx][2]['SSHFTP'][0]['FilesPerMin']}  -e sshftp_totalmins=${doProps[cP][cPIndx][2]['SSHFTP'][0]['Total Mins']} ", "all")
+
+    }
+	
+def destroyDroplets(cP,cPIndx,param)
 	{
 	
 		println "Destroy Droplets"
