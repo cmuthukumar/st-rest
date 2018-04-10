@@ -131,8 +131,7 @@ def jsonEditorOptions = Boon.fromJson(/{
                                   "Version" : {
                                       "type": "string", 
                                         "enum": [
-                                              "mysql:latest",
-                                               "sath89\/oracle-xe-11g:latest"
+                                              "mysql:latest"                                               
                                             ],
                                             "options": {
 					        "enum_titles": [
@@ -511,8 +510,8 @@ def jsonEditorOptions = Boon.fromJson(/{
                                   "OS" : {
                                       "type": "string", 
                                         "enum": [
-										  "ami-d874e0a0",	
-										  "ami-223f945a"										  
+										  "ami-223f945a",
+										  "ami-d874e0a0"										  										  
                                             ],
 														"options": {
 										"enum_titles": [
@@ -592,8 +591,8 @@ def jsonEditorOptions = Boon.fromJson(/{
                                             ],
 														"options": {
 										"enum_titles": [
-										"RHEL 7.4",
-										"Amazon Linux 1"
+										"Amazon Linux 1",
+										"RHEL 7.4"
 										]
 									},
                                             "default": "Amazon Linux 1",
@@ -660,8 +659,8 @@ def jsonEditorOptions = Boon.fromJson(/{
                                             ],
 														"options": {
 										"enum_titles": [
-										"RHEL 7.4",
-										"Amazon Linux 1"
+										"Amazon Linux 1",
+										"RHEL 7.4"
 										]
 									},
                                             "default": "Amazon Linux 1",
@@ -680,7 +679,7 @@ def jsonEditorOptions = Boon.fromJson(/{
                          "items": {
                              "type": "object",
                               "properties": {
-                                  "Total Droplets" : {
+                                  "Total Instances" : {
                                       "type": "integer", 
                                         "enum": [
                                         	0,
@@ -709,8 +708,8 @@ def jsonEditorOptions = Boon.fromJson(/{
                                             ],
 														"options": {
 										"enum_titles": [
-										"RHEL 7.4",
-										"Amazon Linux 1"
+										"Amazon Linux 1",
+										"RHEL 7.4"
 										]
 									},
                                             "default": "Amazon Linux 1",
