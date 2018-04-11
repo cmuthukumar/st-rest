@@ -3,7 +3,7 @@
 - block:
    - name: Set macro name if defined
      set_fact: 
-        macro_name: "%datashare%"
+        macro_name: "file:%25datashare%25"
      when: shares is defined
 
    - name: Setup Omni Users Hosts and Mailbox for FTP on Server

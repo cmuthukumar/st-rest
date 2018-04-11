@@ -166,7 +166,7 @@ def main():
 		}
 		module = AnsibleModule(argument_spec=fields)
 		omni_host_req['host_type']=module.params['host_type']
-		omni_host_req['default_home_dir']=module.params['default_home_dir']+"/"+omni_host_req['host_type']+"/%username%/"
+		omni_host_req['default_home_dir']=module.params['default_home_dir']+"/"+omni_host_req['host_type']+"/%25username%25/"
 		stat,result=setup_omni_host_mailbox(module.params['host_name'],module.params['server_hosts'],module.params['tp_hosts'],module.params['dataset'])			
 		if stat:
 			module.exit_json(meta=result)
