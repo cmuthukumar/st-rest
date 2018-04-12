@@ -188,10 +188,12 @@ try
 		}
 		else
 		{
-			println "In AWS ${param}"
+			println "In DO ${param}"
 		withCredentials([[$class: 'StringBinding', credentialsId: 'doCredentials', variable: 'do_ap_token']]) {
 
 			println "Creating Nodes for ${param}"
+ 			   sh "cd ${workdir} && ansible-playbook setup_uservars.yml -e cloud_provider=${CloudProviders} -e version=${Version} --tags 'default_vars' "
+
 			   sh "cd ${workdir} && ansible-playbook setup_topology.yml -c local -e machine_type=${param} -e cloud_provider=${CloudProviders} -e do_api_token=${env.do_ap_token} -e username='jenkins' -e sshkey_name='st-versalex' --tags ${CloudProviders} "
 			   
 			   sh "cd ${workdir} && ansible-playbook setup_vars.yml -c local -i inventories/${CloudProviders}/${param}/ -e cloud_provider=${CloudProviders} -e machine_type=${param} "

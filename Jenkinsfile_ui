@@ -15,6 +15,7 @@ stagesMethods = ['Build Vars':'buildVars','Create Nodes':'createNodes','Install 
 workdir = "versalex/src/main/ansible/"
 
 node('SysTest_RH7'){
+color='good'
     try {
 	    stage('Clean')
         {
@@ -103,11 +104,25 @@ node('SysTest_RH7'){
 					
 					parallel stepsCProviders
 			
+			currentBuild.result = 'SUCCESS'
+			color='good'
 
-    }catch (e) {
-    println("Each Stage failed ${e.toString()}")	
-
+    }
+	catch (e)
+	{
+		currentBuild.result = 'FAILURE'
+		color='danger'
+		println("Each Stage failed ${e.toString()}")
 	}
+	finally{	
+	    echo "End of SysTest UI Job..Sending Slack Message"
+		url = env.RUN_DISPLAY_URL ?: env.BUILD_URL
+		msg="System Testing UI Results branch: `${gitBranch}` status: ${color} "
+		message = "<${url}|${env.JOB_NAME}-${cloudproviders}:${env.BUILD_NUMBER}>\n".plus("${msg}")
+		slackSend channel: 'systest-jenkins', color: "${color}", message: "${message}"	
+	}
+	
+	
 }
 
 
