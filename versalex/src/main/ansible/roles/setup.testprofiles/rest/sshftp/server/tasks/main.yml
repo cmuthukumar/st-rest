@@ -3,7 +3,7 @@
 - block:
    - name: Set macro name if defined
      set_fact: 
-        macro_name: "%25datashare%25"
+        macro_name: "file:%25datashare%25"
      when: shares is defined
 
    - name: Setup Omni Users Hosts and Mailbox for SSH FTP on Server
