@@ -8,7 +8,7 @@
  "notes": "test notes",
    "home": {
      "dir": {
-       "default": "{{default_home_dir}}"
+       "default": "file:{{default_home_dir}}"
    }
 }
 }
