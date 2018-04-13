@@ -10,7 +10,7 @@ String[] protocols=[]
 String[] cloudproviders=[]
 //doProps = readJSON text: "${DigitalOcean}"
 doProps = new JsonSlurper().parseText(DigitalOcean)
-methodParams = ['Build Vars':params,'Create Nodes':params,'Install Product':params,'Install Integrations':params,'Configure Product':params,'Setup Sync':params[0],'Setup Test Profiles':protocols,'Run Tests':['Run Tests'],'Monitor Tests':['Monitor Tests']]
+methodParams = ['Build Vars':params,'Create Nodes':params,'Install Product':params,'Install Integrations':params,'Configure Product':params,'Setup Sync':[params[0]],'Setup Test Profiles':protocols,'Run Tests':['Run Tests'],'Monitor Tests':['Monitor Tests']]
 stagesMethods = ['Build Vars':'buildVars','Create Nodes':'createNodes','Install Product':'installProduct','Install Integrations':'installIntegrations','Configure Product':'configureProduct','Setup Sync':'setupSync','Setup Test Profiles':'setupTestProfiles','Run Tests':'runTests','Monitor Tests':'monitorTests']
 workdir = "versalex/src/main/ansible/"
 
