@@ -59,7 +59,7 @@
       # async: "{{((as2_filespermin|default(0)|int * ftp_totalmins |default(0)|int * sshftp_filespermin|default(0)|int)* 60)}}"
       # poll: 10
       register: query_jdbc
-      retries: 10
+      retries: 3
       delay: 30
       until: query_jdbc|success
       delegate_to: 127.0.0.1
