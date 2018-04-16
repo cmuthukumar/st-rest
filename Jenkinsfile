@@ -160,7 +160,7 @@ try
 	stage('Destroy Instances')
 			{
 			try {	
-				runMethodsParallely(destroyDroplets,params)
+				runMethodsParallely('destroyDroplets',params)
 				}
 			catch(e)
 				{
