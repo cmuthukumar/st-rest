@@ -46,7 +46,7 @@ try
 	stage('Build Vars')	
 	{
 	try {	
-		runMethodsParallely('buildUserVars',params[0])
+		runMethodsParallely('buildUserVars',[params[0]])
 		}
 	catch(e)
 		{
@@ -107,7 +107,7 @@ try
 	stage('Setup TestProfiles')
 		{
 		try {	
-				runMethodsParallely('setupSync',params[0])
+				runMethodsParallely('setupSync',[params[0]])
 			}
 			catch(e)
 			{
@@ -135,7 +135,7 @@ try
 			{
 			
 			try {	
-				runMethodsParallely('runTests',params[0])
+				runMethodsParallely('runTests',[params[0]])
 				}
 			catch(e)
 				{
@@ -147,7 +147,7 @@ try
 	stage('Monitor Tests')
 			{
 			try {	
-				runMethodsParallely('monitorTests',params[0])
+				runMethodsParallely('monitorTests',[params[0]])
 				}
 			catch(e)
 				{
