@@ -278,7 +278,7 @@ retry(1)
     def installProduct(param)
     {
 		println "Install Product for ${param} "			
-		runPlaybook("install_product.yml","-i inventories/${CloudProviders}/${param}/","-c local -e 'cloud_provider=${CloudProviders}' -e 'machine_type=${param}' ","all")
+		runPlaybook("install_product.yml","-i inventories/${CloudProviders}/${param}/","-e 'cloud_provider=${CloudProviders}' -e 'machine_type=${param}' ","all")
 
 
     }
