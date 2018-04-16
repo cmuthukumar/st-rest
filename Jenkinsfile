@@ -251,7 +251,7 @@ retry(1)
 	
 	}
 	
-    def createNodes(cProvider,param)
+    def createNodes(param)
     {
 
 		if(("${CloudProviders}" == 'aws'))
