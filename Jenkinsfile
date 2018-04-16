@@ -46,7 +46,7 @@ try
 	stage('Build Vars')	
 	{
 	try {	
-		runMethodsParallely(buildUserVars,params[0])
+		runMethodsParallely('buildUserVars',params[0])
 		}
 	catch(e)
 		{
@@ -57,7 +57,7 @@ try
     stage('Create Nodes')
            {
 			try {	
-				runMethodsParallely(createNodes,params)
+				runMethodsParallely('createNodes',params)
 				}
 			catch(e)
 				{
@@ -69,7 +69,7 @@ try
     stage('Install Product')
             {			
 			try {	
-				runMethodsParallely(installProduct,params)
+				runMethodsParallely('installProduct',params)
 				}
 			catch(e)
 				{
@@ -80,7 +80,7 @@ try
     stage('Install Integrations')
             {
 			try {	
-				runMethodsParallely(installIntegrations,params)
+				runMethodsParallely('installIntegrations',params)
 				}
 			catch(e)
 				{
@@ -95,7 +95,7 @@ try
             {
 			
 			try {	
-				runMethodsParallely(configProduct,params)
+				runMethodsParallely('configProduct',params)
 				}
 			catch(e)
 				{
@@ -107,7 +107,7 @@ try
 	stage('Setup TestProfiles')
 		{
 		try {	
-				runMethodsParallely(setupSync,params[0])
+				runMethodsParallely('setupSync',params[0])
 			}
 			catch(e)
 			{
@@ -121,7 +121,7 @@ try
 				protocols.add('ftp')
 				protocols.add('sshftp')							
 			try {	
-				runMethodsParallely(setupTestProfiles,protocols)
+				runMethodsParallely('setupTestProfiles',protocols)
 				}
 			catch(e)
 				{
@@ -135,7 +135,7 @@ try
 			{
 			
 			try {	
-				runMethodsParallely(runTests,params[0])
+				runMethodsParallely('runTests',params[0])
 				}
 			catch(e)
 				{
@@ -147,7 +147,7 @@ try
 	stage('Monitor Tests')
 			{
 			try {	
-				runMethodsParallely(monitorTests,params[0])
+				runMethodsParallely('monitorTests',params[0])
 				}
 			catch(e)
 				{
