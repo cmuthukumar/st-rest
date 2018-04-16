@@ -229,17 +229,12 @@ retry(1)
         echo "Running Playbook ${playbook}"		
 		sh "cd ${workdir} && ansible-playbook ${inventory} ${extraVars} ${playbook} --tags ${tags} "
 		echo "Running Playbook ${playbook} Done"
-        
+        return
     }catch(Exception e)
     {        
 		println "Run Playbook Exception-${e.toString()}"
     }
-    finally
-    {
-        echo "Finally Block Running Playbook"
-        
-    }
-    
+
     }    
 }
 
@@ -269,10 +264,10 @@ retry(1)
 			runPlaybook("setup_topology.yml","","-c local -e 'cloud_provider=${CloudProviders}' -e 'machine_type=${param}' -e 'version=${Version}' -e 'do_api_token=${env.do_ap_token}' -e 'sshkey_name=st-versalex' -e 'username=jenkins' ","${CloudProviders}")
 
 		}
+		println "Running Setup Vars Playbook"
 			runPlaybook("setup_vars.yml","-i inventories/${CloudProviders}/${param}/","-c local -e 'cloud_provider=${CloudProviders}' -e 'machine_type=${param}' ","all")
 
-			
-		}
+		
     }
     
     def installProduct(param)
