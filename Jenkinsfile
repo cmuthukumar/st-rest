@@ -311,7 +311,7 @@ retry(1)
     def setupTestProfiles(param)
     {
         println "setupTestProfiles for ${param}"
-    	runPlaybook("setup_testprofiles.yml","-i inventories/${CloudProviders}/${params[0]}/ -i inventories/${CloudProviders}/${params[1]}","","${stepProtocol}")
+    	runPlaybook("setup_testprofiles.yml","-i inventories/${CloudProviders}/${params[0]}/ -i inventories/${CloudProviders}/${params[1]}","","${param}")
 
     }  	
 	
