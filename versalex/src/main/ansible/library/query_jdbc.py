@@ -52,7 +52,7 @@ def query_dbrecords(ip,port,driver_str,jdbc_string,jar_path,username,password,db
 				# res[each_record]=tuple(recd_list)
 			#print "Each Protocol Record is",res[each_record][3],res[each_record][0]+'_Txns'
 			if( (res[each_record][0]+'_Txns') in protocols_txns):
-				if((res[each_record][3]) >= (protocols_txns[res[each_record][0]+'_Txns'])):
+				if((res[each_record][3]) == (protocols_txns[res[each_record][0]+'_Txns'])):
 					protocols_txns[res[each_record][0]+'_Status']='Success'
 				else:
 					protocols_txns[res[each_record][0]+'_Status']='Failure'
