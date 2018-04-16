@@ -259,10 +259,11 @@ retry(1)
 		else
 		{
 			println "In DO ${param}"
-		withCredentials([[$class: 'StringBinding', credentialsId: 'doCredentials', variable: 'do_ap_token']]) {
+		withCredentials([[$class: 'StringBinding', credentialsId: 'doCredentials', variable: 'do_ap_token']]) 
+			{
 			println "Creating Nodes for ${param}"
 			runPlaybook("setup_topology.yml","","-c local -e 'cloud_provider=${CloudProviders}' -e 'machine_type=${param}' -e 'version=${Version}' -e 'do_api_token=${env.do_ap_token}' -e 'sshkey_name=st-versalex' -e 'username=jenkins' ","${CloudProviders}")
-
+			}
 		}
 		println "Running Setup Vars Playbook"
 			runPlaybook("setup_vars.yml","-i inventories/${CloudProviders}/${param}/","-c local -e 'cloud_provider=${CloudProviders}' -e 'machine_type=${param}' ","all")
@@ -348,3 +349,5 @@ retry(1)
 
 	
 	}
+	
+}
