@@ -212,8 +212,7 @@ retry(1)
 		echo "Running Playbook ${playbook} Done"
         
     }catch(Exception e)
-    {
-        
+    {        
      println "Run Playbook Exception-${e.toString()}"
     }
     finally

@@ -36,115 +36,138 @@ sh 'java -version'
 		checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: "${gitBranch}"]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '79815ffd-ea78-431b-ae29-277ccd0807f6', url: 'https://github.com/CleoDev/st.git']]]
         sh 'printenv'
             }
-//def systestvexImage=docker.build('st-versalex:1.0','.')
     def st_ansibleImage =  docker.image('cleo/ansible:st_6.0');
 try
 {
     withDockerRegistry([credentialsId: 'DockerCleoSysTest', url: 'https://hub.docker.com/r/cleo/ansible/']) {
     st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/ -v /root/.aws/:/root/.aws/')
     {
+	
+	stage('Build Vars')	
+	{
+	try {	
+		runMethodsParallely(buildUserVars,params[0])
+		}
+	catch(e)
+		{
+		println(" Stage Build Vars  failed. ${e.toString()}")	
+		}
+	
+	}	
     stage('Create Nodes')
            {
-			parallel(
-			(params[0]): {
-				createNodes(params[0])
-					},
-			(params[1]): {
-					createNodes(params[1])
-				}	  
-			  )
+			try {	
+				runMethodsParallely(createNodes,params)
+				}
+			catch(e)
+				{
+				println(" Stage Create Nodes  failed. ${e.toString()}")	
+				}
 
            }
+		   
     stage('Install Product')
-            {
-			 
-	parallel(
-		(params[0]): {
-			installProduct(params[0])
-				},
-			(params[1]): {
-			installProduct(params[1])
-				}	  
-             )   
-				//installProduct(params)
+            {			
+			try {	
+				runMethodsParallely(installProduct,params)
+				}
+			catch(e)
+				{
+				println(" Stage installProduct  failed. ${e.toString()}")	
+				}
 			}
 
     stage('Install Integrations')
-            {			
-		parallel(
-		(params[0]): {
-			installIntegrations(params[0])
-				},
-			(params[1]): {
-			installIntegrations(params[1])
-				}	  
-             )  
+            {
+			try {	
+				runMethodsParallely(installIntegrations,params)
+				}
+			catch(e)
+				{
+				println(" Stage installIntegrations  failed. ${e.toString()}")	
+				}		
+
 		
             } 
             
             
     stage('Configure Product')
             {
-		parallel(
-		(params[0]): {
-			configProduct(params[0])
-				},
-			(params[1]): {
-			configProduct(params[1])
-				}	  
-             ) 
+			
+			try {	
+				runMethodsParallely(configProduct,params)
+				}
+			catch(e)
+				{
+				println(" Stage configProduct  failed. ${e.toString()}")	
+				}	
 		
             } 
-			
+
+	stage('Setup TestProfiles')
+		{
+		try {	
+				runMethodsParallely(setupSync,params[0])
+			}
+			catch(e)
+			{
+				println(" Stage setupSync  failed. ${e.toString()}")	
+			}
+		}			
       		
-		stage('Setup TestProfiles')
-					{
-    					sh "cd ${workdir} && ansible-playbook -i inventories/${CloudProviders}/${params[0]}/ -i inventories/${CloudProviders}/${params[1]}/ setup_testprofiles.yml --tags 'schedule-auto-startup,common,setup-sync' "
-						protocols.add('as2')
-						protocols.add('ftp')
-						protocols.add('sshftp')	
-					def stepsDatasets = [:]					
-					for (int i = 0; i < protocols.size(); i++) {
-			    		def stepProtocol = protocols[i]
-			   		 stepsDatasets[stepProtocol] = { ->           
-			      			  echo "Running ${stepProtocol}"
-							  
-					//	st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/')
-    					//	{       							
-    					sh "cd ${workdir} && ansible-playbook -i inventories/${CloudProviders}/${params[0]}/ -i inventories/${CloudProviders}/${params[1]}/ setup_testprofiles.yml --tags ${stepProtocol} "
+	stage('Setup TestProfiles')
+		{
+				protocols.add('as2')
+				protocols.add('ftp')
+				protocols.add('sshftp')							
+			try {	
+				runMethodsParallely(setupTestProfiles,protocols)
+				}
+			catch(e)
+				{
+				println(" Stage Setup Test Profiles  failed. ${e.toString()}")	
+				}					
 				
-    					//	}
-							
-							
-			   				 }
-					}
-					
-					parallel stepsDatasets
-					
-					}	              
 				
-		    stage('Run Tests')
-		            {
-				//st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/ -v /root/.aws/:/root/.aws/')
-		    		//{       							
-					//sh "cd ${workdir} && ansible-playbook -i inventories/${params[0]}/ -i inventories/${params[1]}/ -e as2_filespermin=${doProps[2]['AS2'][0]['FilesPerMin']} -e as2_totalmins=${doProps[2]['AS2'][0]['Total Mins']} -e as2_totalhosts=${doProps[2]['AS2'][0]['HoststoRun']} -e ftp_filespermin=${doProps[2]['FTP'][0]['FilesPerMin']} -e ftp_totalmins=${doProps[2]['FTP'][0]['Total Mins']} -e ftp_totalhosts=${doProps[2]['FTP'][0]['HoststoRun']} -e sshftp_filespermin=${doProps[2]['SSHFTP'][0]['FilesPerMin']} -e sshftp_totalmins=${doProps[2]['SSHFTP'][0]['Total Mins']} -e sshftp_totalhosts=${doProps[2]['SSHFTP'][0]['HoststoRun']} run_tests.yml "
-					sh "cd ${workdir} && ansible-playbook -i inventories/${CloudProviders}/${params[0]}/ -i inventories/${CloudProviders}/${params[1]}/ -e as2_totalcreatehosts=600 -e as2_filespermin=200 -e as2_totalmins=120 -e as2_totalhosts=600 -e ftp_totalcreatehosts=300 -e ftp_filespermin=200 -e ftp_totalmins=120 -e ftp_totalhosts=300 -e sshftp_totalcreatehosts=300 -e sshftp_filespermin=200 -e sshftp_totalmins=120 -e sshftp_totalhosts=300 run_tests.yml "
-						
-    				//}		               
-		            }
-		    stage('Monitor Tests')
-		            {
-		        //st_ansibleImage.inside('-v /root/.ssh/:/root/.ssh/ -v /root/.aws/:/root/.aws/')
-			       //	{       							
-					sh "cd ${workdir} && ansible-playbook -i inventories/${CloudProviders}/${params[0]}/ -i inventories/${CloudProviders}/${params[1]}/ -e as2_filespermin=200 -e as2_totalmins=120 -e ftp_filespermin=200 -e ftp_totalmins=120  -e sshftp_filespermin=200 -e sshftp_totalmins=120  monitor_tests.yml "
-			       						
-    				//}	
-		            }
-					
-		    stage('Destroy Droplets')
-		            {
-		                destroyDroplets(params)
-            		} 
+		}	              
+				
+	stage('Run Tests')
+			{
+			
+			try {	
+				runMethodsParallely(runTests,params[0])
+				}
+			catch(e)
+				{
+				println(" Stage Run Tests  failed. ${e.toString()}")	
+				}
+
+			}
+
+	stage('Monitor Tests')
+			{
+			try {	
+				runMethodsParallely(monitorTests,params[0])
+				}
+			catch(e)
+				{
+				println(" Stage Monitor Tests  failed. ${e.toString()}")	
+				}					  							
+								
+
+			}
+			
+	stage('Destroy Instances')
+			{
+			try {	
+				runMethodsParallely(destroyDroplets,params)
+				}
+			catch(e)
+				{
+				println(" Stage Destroy Instances  failed. ${e.toString()}")	
+				}	
+		  
+			} 
 		
 		
 	  }
@@ -171,44 +194,92 @@ try
 }
 
 
-	
-    def createNodes(param)
+
+def runMethodsParallely(methodName,params)
+{  
+    try{	
+				println "Method name ${methodName}"
+				println "Param name ${params}"
+				def stepsDatasets = [:]								
+				for (int i = 0; i < params.size(); i++)
+				{
+					def stepProtocol = params[i]
+				 stepsDatasets[stepProtocol] = { ->
+				 "$methodName"(stepProtocol)		
+						}
+				}				
+					parallel stepsDatasets
+				    println "END OF runMethodsParallely"
+		
+            
+	}
+	catch(e)
+	{	
+		println("runMethodsParallely Method failed. ${e.toString()}")	
+	}
+
+
+}
+
+def runPlaybook(playbook,inventory,extraVars,tags) {
+retry(1)
     {
+    try{
+        
+        echo "Running Playbook ${playbook}"		
+		sh "cd ${workdir} && ansible-playbook ${inventory} ${extraVars} ${playbook} --tags ${tags} "
+		echo "Running Playbook ${playbook} Done"
+        
+    }catch(Exception e)
+    {        
+		println "Run Playbook Exception-${e.toString()}"
+    }
+    finally
+    {
+        echo "Finally Block Running Playbook"
+        
+    }
+    
+    }    
+}
+
+
+
+	def buildUserVars(param)
+	{
+			runPlaybook("setup_uservars.yml","","-e 'cloud_provider=${CloudProviders}' -e 'version=${Version}'","default_vars")
+	
+	}
+	
+    def createNodes(cProvider,param)
+    {
+
 		if(("${CloudProviders}" == 'aws'))
 		{
 				println "In AWS ${param}"
 		//withCredentials([[$class: 'StringBinding', credentialsId: 'systest_aws_access_key_id', variable: 'systest_aws_access_key'], [$class: 'StringBinding', credentialsId: '49b954ef-6c35-4d5e-a3a8-49791bdab948', variable: 'systest_secret_access_key']]) {
-  			   sh "cd ${workdir} && ansible-playbook setup_uservars.yml -e cloud_provider=${CloudProviders} -e version=${Version} --tags 'default_vars' "
-				
-			   sh "cd ${workdir} && ansible-playbook setup_topology.yml -c local -e machine_type=${param} -e cloud_provider=${CloudProviders}  -e username='jenkins' -e sshkey_name='st-versalex' --tags ${CloudProviders} "
-
-			   sh "cd ${workdir} && ansible-playbook setup_vars.yml -c local -i inventories/${CloudProviders}/${param}/ -e cloud_provider=${CloudProviders} -e machine_type=${param} "
-
+			runPlaybook("setup_topology.yml","","-c local -e 'cloud_provider=${CloudProviders}' -e 'machine_type=${param}' -e 'version=${Version}' -e 'username=jenkins' ","${CloudProviders}")
 				//}	
 		}
 		else
 		{
 			println "In DO ${param}"
 		withCredentials([[$class: 'StringBinding', credentialsId: 'doCredentials', variable: 'do_ap_token']]) {
-
 			println "Creating Nodes for ${param}"
- 			   sh "cd ${workdir} && ansible-playbook setup_uservars.yml -e cloud_provider=${CloudProviders} -e version=${Version} --tags 'default_vars' "
+			runPlaybook("setup_topology.yml","","-c local -e 'cloud_provider=${CloudProviders}' -e 'machine_type=${param}' -e 'version=${Version}' -e 'do_api_token=${env.do_ap_token}' -e 'sshkey_name=st-versalex' -e 'username=jenkins' ","${CloudProviders}")
 
-			   sh "cd ${workdir} && ansible-playbook setup_topology.yml -c local -e machine_type=${param} -e cloud_provider=${CloudProviders} -e do_api_token=${env.do_ap_token} -e username='jenkins' -e sshkey_name='st-versalex' --tags ${CloudProviders} "
-			   
-			   sh "cd ${workdir} && ansible-playbook setup_vars.yml -c local -i inventories/${CloudProviders}/${param}/ -e cloud_provider=${CloudProviders} -e machine_type=${param} "
+		}
+			runPlaybook("setup_vars.yml","-i inventories/${CloudProviders}/${param}/","-c local -e 'cloud_provider=${CloudProviders}' -e 'machine_type=${param}' ","all")
 
-			}
 			
 		}
     }
     
     def installProduct(param)
     {
-    println "Install Product for ${param} "
+		println "Install Product for ${param} "			
+		runPlaybook("install_product.yml","-i inventories/${CloudProviders}/${param}/","-c local -e 'cloud_provider=${CloudProviders}' -e 'machine_type=${param}' ","all")
 
-			sh "cd ${workdir} && ansible-playbook -i inventories/${CloudProviders}/${param}/ -e cloud_provider='${CloudProviders}' -e machine_type=${param} install_product.yml "
-			
 
     }
 
@@ -217,7 +288,7 @@ try
     println "Install Integrations"
 
         println "Installing Product for ${param}"
-           sh "cd ${workdir} && ansible-playbook -i inventories/${CloudProviders}/${param}/ -e machine_type=${param} install_integrations.yml "
+		runPlaybook("install_integrations.yml","-i inventories/${CloudProviders}/${param}/","-e 'machine_type=${param}' ","all")
 
     }
     
@@ -226,36 +297,58 @@ try
     println "Configuring Product with DB, LDAP, PROXY Configs"
   
         println "Installing Product for ${param}"
-           sh "cd ${workdir} && ansible-playbook -i inventories/${CloudProviders}/${param}/ -e machine_type=${param} configure_product.yml "
-    
+    	runPlaybook("configure_product.yml","-i inventories/${CloudProviders}/${param}/","-e 'machine_type=${param}' ","all")
+
     }  
 
+    def setupSync(param)
+    {
+        println "setupSync Method"
+    	runPlaybook("setup_testprofiles.yml","-i inventories/${CloudProviders}/${params[0]}/ -i inventories/${CloudProviders}/${params[1]}","","schedule-auto-startup,common,setup-sync")
+
+    }  
+
+    def setupTestProfiles(param)
+    {
+        println "setupTestProfiles for ${param}"
+    	runPlaybook("setup_testprofiles.yml","-i inventories/${CloudProviders}/${params[0]}/ -i inventories/${CloudProviders}/${params[1]}","","${stepProtocol}")
+
+    }  	
 	
-    def destroyDroplets(params)
+    def runTests(param)
+    {
+        println "Run Tests for ${param}"
+    	runPlaybook("run_tests.yml","-i inventories/${CloudProviders}/${params[0]}/ -i inventories/${CloudProviders}/${params[1]}","-e as2_totalcreatehosts=600 -e as2_filespermin=200 -e as2_totalmins=120 -e as2_totalhosts=600 -e ftp_totalcreatehosts=300 -e ftp_filespermin=200 -e ftp_totalmins=120 -e ftp_totalhosts=300 -e sshftp_totalcreatehosts=300 -e sshftp_filespermin=200 -e sshftp_totalmins=120 -e sshftp_totalhosts=300","all")
+
+    }  	
+
+    def monitorTests(param)
+    {
+        println "Monitor Tests for ${param}"
+    	runPlaybook("monitor_tests.yml","-i inventories/${CloudProviders}/${params[0]}/ -i inventories/${CloudProviders}/${params[1]}","-e as2_filespermin=200 -e as2_totalmins=120 -e ftp_filespermin=200 -e ftp_totalmins=120  -e sshftp_filespermin=200 -e sshftp_totalmins=120","all")
+
+    }  	
+	
+    def destroyDroplets(param)
 	{
 	
 		println "Destroy Droplets ${deleteDroplets}"
 		if(("${deleteDroplets}" == true))
 		{
-			for(int i=0; i<params.size(); i++ )
-				{
-				
-				if(("${CloudProviders}" == 'aws'))
-					{				
-						sh "cd ${workdir} && ansible-playbook destroy_topology.yml -i inventories/${CloudProviders}/${params[i]}/ -e machine_type=${params[i]} -e username='jenkins' --tags 'aws' "
-					}
-					else
-					{
-					
-					sh "cd ${workdir} && ansible-playbook destroy_topology.yml -e machine_type=${params[i]}  -e do_api_token=${env.do_ap_token} -e username='jenkins' --tags 'digitalocean' "
-					
-					}
+			if(("${CloudProviders}" == 'aws'))
+				{				
+					runPlaybook("destroy_topology.yml","-i inventories/${CloudProviders}/${param}/","-e 'machine_type=${param}' -e 'username=jenkins' ","aws")
 				}
+				else
+				{
+					runPlaybook("destroy_topology.yml","-i inventories/${CloudProviders}/${param}/","-e 'machine_type=${param}' -e do_api_token=${env.do_ap_token} -e 'username=jenkins' ","digitalocean")	
+				}
+				
 		}
 		else
 		{
 		
-			println "Not Running the Stage as destroy droplets flag Set to false"
+			println "Not Running the destroyDroplets as flag Set to false"
 		}	
 
 	
