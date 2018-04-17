@@ -316,14 +316,14 @@ retry(1)
     def runTests(param)
     {
         println "Run Tests for ${param}"
-    	runPlaybook("run_tests.yml","-i inventories/${CloudProviders}/${params[0]}/ -i inventories/${CloudProviders}/${params[1]}","-e as2_totalcreatehosts=600 -e as2_filespermin=200 -e as2_totalmins=120 -e as2_totalhosts=600 -e ftp_totalcreatehosts=300 -e ftp_filespermin=200 -e ftp_totalmins=120 -e ftp_totalhosts=300 -e sshftp_totalcreatehosts=300 -e sshftp_filespermin=200 -e sshftp_totalmins=120 -e sshftp_totalhosts=300","all")
+    	runPlaybook("run_tests.yml","-i inventories/${CloudProviders}/${params[0]}/ -i inventories/${CloudProviders}/${params[1]}","-e as2_totalcreatehosts=600 -e as2_filespermin=180 -e as2_totalmins=120 -e as2_totalhosts=600 -e ftp_totalcreatehosts=300 -e ftp_filespermin=180 -e ftp_totalmins=120 -e ftp_totalhosts=300 -e sshftp_totalcreatehosts=300 -e sshftp_filespermin=180 -e sshftp_totalmins=120 -e sshftp_totalhosts=300","all")
 
     }  	
 
     def monitorTests(param)
     {
         println "Monitor Tests for ${param}"
-    	runPlaybook("monitor_tests.yml","-i inventories/${CloudProviders}/${params[0]}/ -i inventories/${CloudProviders}/${params[1]}","-e as2_filespermin=200 -e as2_totalmins=120 -e ftp_filespermin=200 -e ftp_totalmins=120  -e sshftp_filespermin=200 -e sshftp_totalmins=120","all")
+    	runPlaybook("monitor_tests.yml","-i inventories/${CloudProviders}/${params[0]}/ -i inventories/${CloudProviders}/${params[1]}","-e as2_filespermin=180 -e as2_totalmins=120 -e ftp_filespermin=180 -e ftp_totalmins=120  -e sshftp_filespermin=180 -e sshftp_totalmins=120","all")
 
     }  	
 	
