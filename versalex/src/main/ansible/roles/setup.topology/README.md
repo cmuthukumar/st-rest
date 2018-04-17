@@ -1,7 +1,7 @@
 Setup Topology
 ===================
 
-  * Creates Droplets on Digital Ocean based on servers and tpnodes yaml configurations passed by user
+  * Creates Droplets/EC2 Instacnces on Digital Ocean or AWS based on servers and tpnodes yaml configurations passed by user
 
 Requirements:-
 --------------------
@@ -14,6 +14,21 @@ Requirements:-
 	* Generate SSH Key Pair locally (using sshkeygen like tools). 
 	
 	* Add SSH Public key to your Digital Ocean Account.Note down SSH Key name.
+
+### AWS:-
+
+    * Place AWS credentials in below location on the machine
+
+             cat /root/.aws/credentials
+                 [default]
+                 aws_access_key_id=<AWS Access Key Id from your account>
+                 aws_secret_access_key=<AWS Secret Key from your account>
+
+    * Place SSH Key to below location on the machine for connecting to EC2 instances
+
+              cat /root/.ssh/config
+                IdentityFile ~/.ssh/id_rsa_aws
+
 
 Role Variables:-
 --------------
@@ -28,6 +43,22 @@ Role Variables:-
 		image_name: "centos-6-x64" -- (CentOS, Ubuntu...
 		qty: 2 -- No of Nodes need to be created
         
+	AWS:-
+	
+	hardware:
+          versalex:           
+              - name: harmony
+                security_group: (Security group name from aws account)
+                key_pair: (Keypair from aws account)
+                instance_type: (instacne types from aws..like t2.medium, t2.large,t2.xlarge..etc...)
+                image: (EC2 instance image)
+                region: (Region name to create ec2 instacnes)
+                vpc_subnet_id: (Subnet id of VPC instances belongs to)
+                volume_size: (Disk size of ec2 instacne)
+                qty: (No of instances of to create)
+	
+	
+	
 ```       
  	
 Dependencies:-
@@ -53,7 +84,7 @@ Sub Roles:-
 ```
 
 	1. Creates DigitalOCean Droplets based on SSH Key and API Token passed by user	
-
+        
 ```
 
 * create_hosts
@@ -136,15 +167,31 @@ Run Playbook with tags
 		    ansible-playbook setup_topology.yml -e machine_type=servers -e 'cloud_provider=<'aws' or 'digitalocean'> -e username="<any string represents your name>" --tags 'aws' or 'digitalocean' "
 
 
-	- hosts: localhost
-	  connection: local
-	  become: true
-	  vars_files:
-	    - "{{playbook_dir}}/files/{{machine_type}}.yml"
-	  roles:
-	    - {role: setup.topology/digitalocean/upload_sshkey,tags: 'ssh-key' }
-	    - {role: setup.topology/digitalocean/, machine_type: "{{machine_type}}", username: "{{username}}",tags: 'create-droplet'}
-	    - {role: setup.topology/digitalocean/create_hosts,tags: 'hosts-file' }
+- hosts: localhost
+  connection: local
+  gather_facts: true
+  vars_files:
+    - "{{playbook_dir}}/files/{{cloud_provider}}/{{machine_type}}.yml"
+  tasks:
+    - name: Upload SSH Key for Digital Ocean
+      include_role:
+            name: "setup.topology/{{cloud_provider}}/upload_sshkey"
+      vars:
+        do_token: "{{do_api_token}}"
+      tags: ['ssh-key','digitalocean']
+    
+    - name: Create Instances based on Cloud Provider    
+      include_role:
+            name: "setup.topology/{{cloud_provider}}/"
+      vars:
+        machine_type: "{{machine_type}}"
+        username: "{{username}}"
+      tags: ['aws','digitalocean']
+
+    - name: Create Hosts File based on Groups of Servers and TP Nodes   
+      include_role:
+            name: "setup.topology/{{cloud_provider}}/create_hosts"
+      tags: ['aws','digitalocean']
 
 	        
 ```
