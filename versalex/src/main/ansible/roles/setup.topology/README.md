@@ -18,8 +18,8 @@ Requirements:-
 Role Variables:-
 --------------
 ```
-	servers.yml:- <checkout dir>st/versalex/src/main/ansible/files/servers.yml
-	servers.yml:- <checkout dir>st/versalex/src/main/ansible/files/tpnodes.yml
+	servers.yml:- <checkout dir>st/versalex/src/main/ansible/files/'aws or digitalocean'/ servers.yml
+	servers.yml:- <checkout dir>st/versalex/src/main/ansible/files/'aws' or digitalocean'/tpnodes.yml
 	hardware:
 	   versalex:           
 	      - name: harmony -- (Versalex product names.. ex: harmony, lexicom, vltrader)
@@ -60,7 +60,9 @@ Sub Roles:-
 ```
 
 	1. Creates hosts inventory file for further processing	like below	
-
+           
+           DigitalOcean:-
+           
 		[root@localhost ansible]# cat inventories/servers/hosts
 		[versalex]
 		servers-versalex-1 ansible_ssh_host=67.205.136.55  appl=harmony subtype=versalex
@@ -98,6 +100,16 @@ Sub Roles:-
 		servers-proxy-1 ansible_ssh_host=162.243.163.13  appl=proxy subtype=proxy
 		servers-proxy-2 ansible_ssh_host=67.205.181.129  appl=proxy subtype=proxy
 		
+	 AWS:-
+	 	[servers]
+		servers-shares-1 ansible_ssh_host=34.217.120.137 aws_id=i-0117f184053212f70 aws_region=us-west-2 aws_public_dns_name=ec2-34-217-120-137.us-west-2.compute.amazonaws.com ansible_user=ec2-user ansible_become=true appl=share subtype=shares
+		servers-proxy-1 ansible_ssh_host=34.217.46.177 aws_id=i-08eacc71490e32cae aws_region=us-west-2 aws_public_dns_name=ec2-34-217-46-177.us-west-2.compute.amazonaws.com ansible_user=ec2-user ansible_become=true appl=vlproxy subtype=proxy
+		servers-proxy-2 ansible_ssh_host=52.33.112.14 aws_id=i-0bc8ac2c6456ef951 aws_region=us-west-2 aws_public_dns_name=ec2-52-33-112-14.us-west-2.compute.amazonaws.com ansible_user=ec2-user ansible_become=true appl=vlproxy subtype=proxy
+		servers-versalex-1 ansible_ssh_host=54.245.46.66 aws_id=i-07b6626f9ddcc94f9 aws_region=us-west-2 aws_public_dns_name=ec2-54-245-46-66.us-west-2.compute.amazonaws.com ansible_user=ec2-user ansible_become=true appl=harmony subtype=versalex
+		servers-versalex-2 ansible_ssh_host=34.216.42.28 aws_id=i-0ebf1c379008730dc aws_region=us-west-2 aws_public_dns_name=ec2-34-216-42-28.us-west-2.compute.amazonaws.com ansible_user=ec2-user ansible_become=true appl=harmony subtype=versalex
+		servers-integrations-1 ansible_ssh_host=52.24.191.209 aws_id=i-0405d975d37afd352 aws_region=us-west-2 aws_public_dns_name=ec2-52-24-191-209.us-west-2.compute.amazonaws.com ansible_user=ec2-user ansible_become=true appl=mysql subtype=integrations
+		
+		
 
 ```
 
@@ -112,11 +124,17 @@ Run Playbook with tags
 
     Run with defaults:- Run all sub roles in the playbook
     
-        	ansible-playbook setup_topology.yml -e machine_type=servers -e do_api_token="<API token from digitalocean>" -e username="<any string represents your name>" -e sshkey_name="<ssh key name  from digitalocean>"
+        	ansible-playbook setup_topology.yml -e machine_type=servers -e 'cloud_provider=<'aws' or 'digitalocean'> -e do_api_token="<API token from digitalocean>" -e username="<any string represents your name>" -e sshkey_name="<ssh key name  from digitalocean>"
+        	
+        	ansible-playbook setup_topology.yml -e machine_type=servers -e 'cloud_provider=<'aws' or 'digitalocean'> -e username="<any string represents your name>" --tags 'aws' or 'digitalocean' "
+
     
     Run with specifying tags:- 
     
 		    ansible-playbook setup_topology.yml -e machine_type=servers -e do_api_token="<API token from digitalocean>" -e username="<any string represents your name>" -e sshkey_name="<ssh key name  from digitalocean>" --tags ['ssh-key','create-droplet','hosts-file']
+		    
+		    ansible-playbook setup_topology.yml -e machine_type=servers -e 'cloud_provider=<'aws' or 'digitalocean'> -e username="<any string represents your name>" --tags 'aws' or 'digitalocean' "
+
 
 	- hosts: localhost
 	  connection: local
