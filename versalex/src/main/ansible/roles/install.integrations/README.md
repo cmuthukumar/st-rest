@@ -45,9 +45,9 @@ Dependencies:-
 		2. TPNodes.yml
 		3. Defaults.ym;
 		
-       ansible-playbook setup_vars.yml -i inventories/servers/ -e machine_type=servers
+       ansible-playbook setup_vars.yml -i inventories/<'aws' or 'digitalocean'>/servers/ -e machine_type=servers
 
-       ansible-playbook setup_vars.yml -i inventories/tpnodes/ -e machine_type=tpnodes
+       ansible-playbook setup_vars.yml -i inventories/<'aws' or 'digitalocean'>/tpnodes/ -e machine_type=tpnodes
 
 	
 Sub Roles:-
@@ -70,7 +70,7 @@ Run Playbook with tags
 	cd to <check out dir>/st/versalex/src/main/ansible/roles/install.product/
 
     Run with defaults:- Run all sub roles in the playbook
-        ansible-playbook install.product.yml -e machine_type=servers -e machine_type=servers
+        ansible-playbook install.product.yml -e cloud_provider=<'aws' or 'digitalocean'> -e machine_type=servers -e machine_type=servers
     
     Run with specifying tags:- 
     	
@@ -78,7 +78,7 @@ Run Playbook with tags
     
     		Install integrations like db,other applications   for versalex instances
     		
-		    ansible-playbook install_integrations.yml -e machine_type=servers   		    
+		    ansible-playbook install_integrations.yml -e cloud_provider=<'aws' or 'digitalocean'> -e machine_type=servers   		    
 		    
 		[root@localhost ansible]# cat install_integrations.yml
 		---

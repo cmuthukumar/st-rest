@@ -33,9 +33,9 @@ Dependencies:-
 		2. TPNodes.yml
 		3. Defaults.ym;
 		
-       ansible-playbook setup_vars.yml -i inventories/servers/ -e machine_type=servers
+       ansible-playbook setup_vars.yml -i inventories/<'aws' or 'digitalocean'>servers/ -e machine_type=servers
 
-       ansible-playbook setup_vars.yml -i inventories/tpnodes/ -e machine_type=tpnodes
+       ansible-playbook setup_vars.yml -i inventories/<'aws' or 'digitalocean'>tpnodes/ -e machine_type=tpnodes
 
 
 * Install NFS Utils for Client and Server Shares on instances
@@ -115,11 +115,11 @@ Run Playbook with tags
     
     		Configures Server Share , Client Share , Memory, and Restart
     		
-		    ansible-playbook configure_product.yml -i inventories/servers/ -e machine_type=servers  --tags: ['server_share','client_share','mem',''versalex-restart']
+		    ansible-playbook configure_product.yml -i inventories/<'aws' or 'digitalocean'>/servers/ -e machine_type=servers  --tags: ['server_share','client_share','mem',''versalex-restart']
 		    
     		Configures Server Share , Client Share , Memory,Versalex Proxy, VLProxy,and Restart
     		
-		    ansible-playbook configure_product.yml -i inventories/tpnodes/ -e machine_type=tpnodes  --tags: ['server_share','client_share','mem','vex_proxy','setup_vlproxy','versalex-restart']
+		    ansible-playbook configure_product.yml -i inventories/<'aws' or 'digitalocean'>/tpnodes/ -e machine_type=tpnodes  --tags: ['server_share','client_share','mem','vex_proxy','setup_vlproxy','versalex-restart']
 
 	[root@localhost ansible]# cat configure_product.yml
 	---
