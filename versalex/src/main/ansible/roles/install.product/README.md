@@ -13,7 +13,7 @@ Requirements:-
 
 ```	
 
-	[root@localhost ansible]# cat inventories/servers/hosts
+	[root@localhost ansible]# cat <inventories/'aws' or 'digitalocean'>servers/hosts
 	
 	[versalex]
 	servers-versalex-1 ansible_ssh_host=67.205.136.55  appl=harmony subtype=versalex
@@ -90,9 +90,9 @@ Dependencies:-
 		2. TPNodes.yml
 		3. Defaults.ym;
 		
-       ansible-playbook setup_vars.yml -i inventories/servers/ -e machine_type=servers
+       ansible-playbook setup_vars.yml -i <inventories/'aws' or 'digitalocean'>servers/ -e machine_type=servers
 
-       ansible-playbook setup_vars.yml -i inventories/tpnodes/ -e machine_type=tpnodes
+       ansible-playbook setup_vars.yml -i <inventories/'aws' or 'digitalocean'>tpnodes/ -e machine_type=tpnodes
 
 	
 Sub Roles:-
