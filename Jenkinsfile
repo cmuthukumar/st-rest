@@ -233,11 +233,13 @@ retry(1)
     }catch(Exception e)
     {        
 		println "Run Playbook Exception-${e.toString()}"
+		currentBuild.result = 'FAILURE'
+		color='danger'
+		throw e
     }
 
     }    
 }
-
 
 
 	def buildUserVars(param)
