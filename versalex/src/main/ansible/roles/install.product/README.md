@@ -136,7 +136,7 @@ Run Playbook with tags
 	cd to <check out dir>/st/versalex/src/main/ansible/roles/install.product/
 
     Run with defaults:- Run all sub roles in the playbook
-        ansible-playbook install.product.yml -e machine_type=servers -e machine_type=servers
+        ansible-playbook install.product.yml -e cloud_provider=<'aws' or 'digitalocean'> -e machine_type=servers -e machine_type=servers
     
     Run with specifying tags:- 
     	
