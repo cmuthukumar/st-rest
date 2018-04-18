@@ -1,7 +1,7 @@
 #!/usr/bin/python
 DOCUMENTATION = '''
 module: setup_client
-short_description: "Creates FTP Client Profiles and Setups in Both Server and TP Nodes"
+short_description: "Setups Client Profiles for FTP , SSH FTP servers"
 author:
   - muthukumarc
 requirements:

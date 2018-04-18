@@ -1,7 +1,7 @@
 #!/usr/bin/python
 DOCUMENTATION = '''
 module: create_dropleet_rest
-short_description: "Creates AS2 Profiles and Setups in Both Server and TP Nodes"
+short_description: "Creates Droples in Digital Ocean using Rest API"
 author:
   - muthukumarc
 requirements:
@@ -10,6 +10,7 @@ requirements:
 options:
   create_hosts:
     description:
+		
 		"droplet_results": {"required": True, "type": "str"},
 example:  create_hosts: host_name="Host Name to be passed"  server_hosts="Server Hosts IP's" proxy_hosts="Proxy Hosts IP's" tp_hosts="TP Hosts IP's" dataset="DataSet Passed by User for AS2 Setup"
 '''

@@ -2,7 +2,7 @@
 - hosts: localhost  
   tasks:
         - name: Update UI groovy file with versions
-          setup_ui:
+          setup_jenkins_ui:
             snapshot_url: "{{item}}"
           with_items:
                 - http://10.80.80.156/nexus/service/local/lucene/search?g=com.cleo.installers&a=Harmony&repositoryId=InstallerSnapshots

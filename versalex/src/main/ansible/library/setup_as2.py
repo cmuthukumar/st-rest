@@ -1,7 +1,7 @@
 #!/usr/bin/python
 DOCUMENTATION = '''
 module: setup_as2
-short_description: "Creates AS2 Profiles and Setups in Both Server and TP Nodes"
+short_description: "Creates AS2 Profiles and Setups in Both Server and TP Nodes using Rest"
 author:
   - muthukumarc
 requirements:

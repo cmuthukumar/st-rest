@@ -1,7 +1,7 @@
 #!/usr/bin/python
 DOCUMENTATION = '''
 module: create_jmeter_files
-short_description: "Setup GUI Interface Groovy Scrript"
+short_description: "Creates Source Files for Running the tests based on file sizes configured "
 author:
   - muthukumarc
 requirements:

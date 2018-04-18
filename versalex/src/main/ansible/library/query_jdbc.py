@@ -1,7 +1,7 @@
 #!/usr/bin/python
 DOCUMENTATION = '''
 module: query_jdbc
-short_description: "Connect to DB"
+short_description: "Validates DB transactions against expected transactins passed by user"
 author:
 - muthukumarc
 requirements:

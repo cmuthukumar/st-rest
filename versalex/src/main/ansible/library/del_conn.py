@@ -1,7 +1,7 @@
 #!/usr/bin/python
 DOCUMENTATION = '''
 module: del_conn
-short_description: "Create Host Vars Based on User Passed Configs"
+short_description: "Deletes connectioons of AS2, FTP,SSHFTP, proctocols using Rest API"
 author:
   - muthukumarc
 requirements:

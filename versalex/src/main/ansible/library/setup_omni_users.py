@@ -1,7 +1,7 @@
 #!/usr/bin/python
 DOCUMENTATION = '''
 module: setup_omni_users
-short_description: "Creates AS2 Profiles and Setups in Both Server and TP Nodes"
+short_description: "Creates Omni Hosts Profiles for Servers and TP Nodes"
 author:
   - muthukumarc
 requirements:
