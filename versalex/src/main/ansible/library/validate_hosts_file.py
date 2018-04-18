@@ -21,7 +21,7 @@ import os
 
 def validate_hosts(machine_type,hosts_names):
 	try:
-		usr_src="./files/"+machine_type+".yml"
+		usr_src="./files/digitalocean/"+machine_type+".yml"
 		srvr_stream = open(usr_src, "r")
 		srvrs = yaml.load(srvr_stream)
 		parent= {}
