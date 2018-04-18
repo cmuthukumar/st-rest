@@ -36,7 +36,7 @@
                 se_name: "{% raw -%} {{  self.name  }} {% endraw -%} "
         
         - name: Render Grooy UI Script
-          template: src="{{playbook_dir}}/templates/ui_aws.groovy.j2" dest="{{playbook_dir}}/templates/ui_aws.groovy"
+          template: src="{{playbook_dir}}/templates/jenkins_ui.groovy.j2" dest="{{playbook_dir}}/templates/jenkins_ui.groovy"
           register: ui_groovy_temp
         
         - name: Print Rendering Results
