@@ -10,7 +10,7 @@
         - user_vars          
 
     - name: "Create Servers and TPNodes Under Host Vars using Templates "
-      template: src="{{playbook_dir}}/files/{{cloud_provider}}/{{item}}.j2" dest="{{playbook_dir}}/files/{{cloud_provider}}/{{item}}"
+      template: src="{{playbook_dir}}/templates/default/{{cloud_provider}}/{{item}}.j2" dest="{{playbook_dir}}/files/{{cloud_provider}}/{{item}}"
       with_items: 
             - "servers.yml"
             - "tpnodes.yml"          
@@ -23,7 +23,7 @@
         - user_vars
         
     - name: "Create Servers and TPNodes Files"
-      template: src="{{playbook_dir}}/templates/{{cloud_provider}}/{{item}}.j2" dest="{{playbook_dir}}/files/{{cloud_provider}}/{{item}}"
+      template: src="{{playbook_dir}}/templates/custom/{{cloud_provider}}/{{item}}.j2" dest="{{playbook_dir}}/files/{{cloud_provider}}/{{item}}"
       with_items: 
             - "servers.yml"
             - "tpnodes.yml"
