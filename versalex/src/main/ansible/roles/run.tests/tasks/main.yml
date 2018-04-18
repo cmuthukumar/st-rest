@@ -92,7 +92,7 @@
       debug: msg="Jmeter res {{jmeter_arg.meta}}"
       
     - name: Creating files for Server Side
-      create_jmeter_files:
+      create_jmeter_source_files:
             protocol_dest_path: "{{item.value.destPath}}" 
             jmeter_bin_path: "{{jmeter_dir}}apache-jmeter-{{jmeter_version}}/bin/"
             protocol_type: "{{item.key}}"
@@ -102,7 +102,7 @@
       when: "'servers-shares' in inventory_hostname"
 
     - name: Creating files for TP Node Side
-      create_jmeter_files:
+      create_jmeter_source_files:
             protocol_dest_path: "{{item.value.destPath}}" 
             jmeter_bin_path: "{{jmeter_dir}}apache-jmeter-{{jmeter_version}}/bin/"
             protocol_type: "{{item.key}}"
