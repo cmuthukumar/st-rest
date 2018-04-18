@@ -9,6 +9,11 @@
       tags:
         - user_vars          
 
+    - name: Creates Cloud Provider Directory
+      file:
+        path: "{{playbook_dir}}/files/{{cloud_provider}}/"
+        state: directory
+        
     - name: "Create Servers and TPNodes Under Host Vars using Templates "
       template: src="{{playbook_dir}}/templates/default/{{cloud_provider}}/{{item}}.j2" dest="{{playbook_dir}}/files/{{cloud_provider}}/{{item}}"
       with_items: 
