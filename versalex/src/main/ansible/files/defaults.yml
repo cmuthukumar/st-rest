@@ -116,7 +116,7 @@ defaults:
         repository_url: "http://repo1.maven.org/maven2"
         maven_artifactid: "mysql-connector-java"
         maven_groupid: "mysql"
-        version: "mysql:latest"
+        version: "mysql:5.7"
         maven_version: "5.1.24"
         app_type: "mysql"
         node_ip: "dbsrv1"
