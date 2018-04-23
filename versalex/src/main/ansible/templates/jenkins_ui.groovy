@@ -66,7 +66,7 @@ def jsonEditorOptions = Boon.fromJson(/{
                                   
                                   "Version" : {
                                       "type": "string", 
-                                        "enum": ["5.6-SNAPSHOT", "5.5-Portal-SNAPSHOT", "5.5.0-SNAPSHOT", "5.5-SNAPSHOT", "5.4.2-SNAPSHOT", "5.4.1-SNAPSHOT", "5.4-SNAPSHOT", "nickp20180318-SNAPSHOT", "Jenkins-test-SNAPSHOT", "develop-SNAPSHOT", "5.5.0.0", "5.5-RC-4.0", "5.5-RC-3.0", "5.5-RC-2.0", "5.5-RC-1.0", "5.5-RC-0.6", "5.5-RC-0.5", "5.5-RC-0.4", "5.5-RC-0.3", "5.5-RC-0.2", "5.5-RC-0.1", "5.4.1.18", "5.4.1.17", "5.4.1.16", "5.4.1.15", "5.4.1.14", "5.4.1.13", "5.4.1.12", "5.4.1.11", "5.4.1.10", "5.4.1.9", "5.4.1.8", "5.4.1.7", "5.4.1.6", "5.4.1.4", "5.4.1.3", "5.4.1.2", "5.4.1.1", "5.4.1.0", "5.4.1.0-RC-5.0", "5.4.1.0-RC-4.0", "5.4.1.0-RC-3.0", "5.4.1.0-RC-2.0", "5.4.1.0-RC-1.3", "5.4.1.0-RC-1.2", "5.4.1.0-RC-1.1", "jenkins-version-test-12", "jenkins-version-test-11", "jenkins-version-test-9", "jenkins-version-test-8", "jenkins-version-test-7", "jenkins-version-test-6", "jenkins-version-test-3", "jenkins-version-test-2", "jenkins-version-test-1"],
+                                        "enum": ["5.6-SNAPSHOT", "5.5-Portal-SNAPSHOT", "5.5.0-SNAPSHOT", "5.5-SNAPSHOT", "5.4.2-SNAPSHOT", "5.4.1-SNAPSHOT", "5.4-SNAPSHOT", "nickp20180318-SNAPSHOT", "Jenkins-test-SNAPSHOT", "develop-SNAPSHOT", "5.5.0.0", "5.5-RC-4.0", "5.5-RC-3.0", "5.5-RC-2.0", "5.5-RC-1.0", "5.5-RC-0.6", "5.5-RC-0.5", "5.5-RC-0.4", "5.5-RC-0.3", "5.5-RC-0.2", "5.5-RC-0.1", "5.4.1.19", "5.4.1.18", "5.4.1.17", "5.4.1.16", "5.4.1.15", "5.4.1.14", "5.4.1.13", "5.4.1.12", "5.4.1.11", "5.4.1.10", "5.4.1.9", "5.4.1.8", "5.4.1.7", "5.4.1.6", "5.4.1.4", "5.4.1.3", "5.4.1.2", "5.4.1.1", "5.4.1.0", "5.4.1.0-RC-5.0", "5.4.1.0-RC-4.0", "5.4.1.0-RC-3.0", "5.4.1.0-RC-2.0", "5.4.1.0-RC-1.3", "5.4.1.0-RC-1.2", "5.4.1.0-RC-1.1", "jenkins-version-test-12", "jenkins-version-test-11", "jenkins-version-test-9", "jenkins-version-test-8", "jenkins-version-test-7", "jenkins-version-test-6", "jenkins-version-test-3", "jenkins-version-test-2", "jenkins-version-test-1"],
                                             "propertyOrder": 2
                                   },                                  
 
@@ -131,15 +131,15 @@ def jsonEditorOptions = Boon.fromJson(/{
                                   "Version" : {
                                       "type": "string", 
                                         "enum": [
-                                              "mysql:latest"                                               
+                                              "mysql:5.7"                                               
                                             ],
                                             "options": {
 					        "enum_titles": [
-					          "mysql:latest",
+					          "mysql:5.7",
 					          "oracle_11.2.0.4.0"
     						]
     					},
-                                            "default": "mysql:latest",
+                                            "default": "mysql:5.7",
                                             "propertyOrder": 2
                                   },                                   
 
@@ -201,7 +201,7 @@ def jsonEditorOptions = Boon.fromJson(/{
 
                                   "Version" : {
                                       "type": "string", 
-                                        "enum": ["5.6-SNAPSHOT", "5.5-Portal-SNAPSHOT", "5.5.0-SNAPSHOT", "5.5-SNAPSHOT", "5.4.2-SNAPSHOT", "5.4.1-SNAPSHOT", "5.4-SNAPSHOT", "nickp20180318-SNAPSHOT", "Jenkins-test-SNAPSHOT", "develop-SNAPSHOT", "5.5.0.0", "5.5-RC-4.0", "5.5-RC-3.0", "5.5-RC-2.0", "5.5-RC-1.0", "5.5-RC-0.6", "5.5-RC-0.5", "5.5-RC-0.4", "5.5-RC-0.3", "5.5-RC-0.2", "5.5-RC-0.1", "5.4.1.18", "5.4.1.17", "5.4.1.16", "5.4.1.15", "5.4.1.14", "5.4.1.13", "5.4.1.12", "5.4.1.11", "5.4.1.10", "5.4.1.9", "5.4.1.8", "5.4.1.7", "5.4.1.6", "5.4.1.4", "5.4.1.3", "5.4.1.2", "5.4.1.1", "5.4.1.0", "5.4.1.0-RC-5.0", "5.4.1.0-RC-4.0", "5.4.1.0-RC-3.0", "5.4.1.0-RC-2.0", "5.4.1.0-RC-1.3", "5.4.1.0-RC-1.2", "5.4.1.0-RC-1.1", "jenkins-version-test-12", "jenkins-version-test-11", "jenkins-version-test-9", "jenkins-version-test-8", "jenkins-version-test-7", "jenkins-version-test-6", "jenkins-version-test-3", "jenkins-version-test-2", "jenkins-version-test-1"],
+                                        "enum": ["5.6-SNAPSHOT", "5.5-Portal-SNAPSHOT", "5.5.0-SNAPSHOT", "5.5-SNAPSHOT", "5.4.2-SNAPSHOT", "5.4.1-SNAPSHOT", "5.4-SNAPSHOT", "nickp20180318-SNAPSHOT", "Jenkins-test-SNAPSHOT", "develop-SNAPSHOT", "5.5.0.0", "5.5-RC-4.0", "5.5-RC-3.0", "5.5-RC-2.0", "5.5-RC-1.0", "5.5-RC-0.6", "5.5-RC-0.5", "5.5-RC-0.4", "5.5-RC-0.3", "5.5-RC-0.2", "5.5-RC-0.1", "5.4.1.19", "5.4.1.18", "5.4.1.17", "5.4.1.16", "5.4.1.15", "5.4.1.14", "5.4.1.13", "5.4.1.12", "5.4.1.11", "5.4.1.10", "5.4.1.9", "5.4.1.8", "5.4.1.7", "5.4.1.6", "5.4.1.4", "5.4.1.3", "5.4.1.2", "5.4.1.1", "5.4.1.0", "5.4.1.0-RC-5.0", "5.4.1.0-RC-4.0", "5.4.1.0-RC-3.0", "5.4.1.0-RC-2.0", "5.4.1.0-RC-1.3", "5.4.1.0-RC-1.2", "5.4.1.0-RC-1.1", "jenkins-version-test-12", "jenkins-version-test-11", "jenkins-version-test-9", "jenkins-version-test-8", "jenkins-version-test-7", "jenkins-version-test-6", "jenkins-version-test-3", "jenkins-version-test-2", "jenkins-version-test-1"],
                                             "propertyOrder": 2
                                   },  
 
@@ -479,7 +479,7 @@ def jsonEditorOptions = Boon.fromJson(/{
                                   
                                   "Version" : {
                                       "type": "string", 
-                                        "enum": ["5.6-SNAPSHOT", "5.5-Portal-SNAPSHOT", "5.5.0-SNAPSHOT", "5.5-SNAPSHOT", "5.4.2-SNAPSHOT", "5.4.1-SNAPSHOT", "5.4-SNAPSHOT", "nickp20180318-SNAPSHOT", "Jenkins-test-SNAPSHOT", "develop-SNAPSHOT", "5.5.0.0", "5.5-RC-4.0", "5.5-RC-3.0", "5.5-RC-2.0", "5.5-RC-1.0", "5.5-RC-0.6", "5.5-RC-0.5", "5.5-RC-0.4", "5.5-RC-0.3", "5.5-RC-0.2", "5.5-RC-0.1", "5.4.1.18", "5.4.1.17", "5.4.1.16", "5.4.1.15", "5.4.1.14", "5.4.1.13", "5.4.1.12", "5.4.1.11", "5.4.1.10", "5.4.1.9", "5.4.1.8", "5.4.1.7", "5.4.1.6", "5.4.1.4", "5.4.1.3", "5.4.1.2", "5.4.1.1", "5.4.1.0", "5.4.1.0-RC-5.0", "5.4.1.0-RC-4.0", "5.4.1.0-RC-3.0", "5.4.1.0-RC-2.0", "5.4.1.0-RC-1.3", "5.4.1.0-RC-1.2", "5.4.1.0-RC-1.1", "jenkins-version-test-12", "jenkins-version-test-11", "jenkins-version-test-9", "jenkins-version-test-8", "jenkins-version-test-7", "jenkins-version-test-6", "jenkins-version-test-3", "jenkins-version-test-2", "jenkins-version-test-1"],
+                                        "enum": ["5.6-SNAPSHOT", "5.5-Portal-SNAPSHOT", "5.5.0-SNAPSHOT", "5.5-SNAPSHOT", "5.4.2-SNAPSHOT", "5.4.1-SNAPSHOT", "5.4-SNAPSHOT", "nickp20180318-SNAPSHOT", "Jenkins-test-SNAPSHOT", "develop-SNAPSHOT", "5.5.0.0", "5.5-RC-4.0", "5.5-RC-3.0", "5.5-RC-2.0", "5.5-RC-1.0", "5.5-RC-0.6", "5.5-RC-0.5", "5.5-RC-0.4", "5.5-RC-0.3", "5.5-RC-0.2", "5.5-RC-0.1", "5.4.1.19", "5.4.1.18", "5.4.1.17", "5.4.1.16", "5.4.1.15", "5.4.1.14", "5.4.1.13", "5.4.1.12", "5.4.1.11", "5.4.1.10", "5.4.1.9", "5.4.1.8", "5.4.1.7", "5.4.1.6", "5.4.1.4", "5.4.1.3", "5.4.1.2", "5.4.1.1", "5.4.1.0", "5.4.1.0-RC-5.0", "5.4.1.0-RC-4.0", "5.4.1.0-RC-3.0", "5.4.1.0-RC-2.0", "5.4.1.0-RC-1.3", "5.4.1.0-RC-1.2", "5.4.1.0-RC-1.1", "jenkins-version-test-12", "jenkins-version-test-11", "jenkins-version-test-9", "jenkins-version-test-8", "jenkins-version-test-7", "jenkins-version-test-6", "jenkins-version-test-3", "jenkins-version-test-2", "jenkins-version-test-1"],
                                             "propertyOrder": 2
                                   },                                  
 
@@ -548,16 +548,16 @@ def jsonEditorOptions = Boon.fromJson(/{
                                   "Version" : {
                                       "type": "string", 
                                         "enum": [
-                                              "mysql:latest",
+                                              "mysql:5.7",
                                                "sath89\/oracle-xe-11g:latest"
                                             ],
                                             "options": {
 					        "enum_titles": [
-					          "mysql:latest",
+					          "mysql:5.7",
 					          "oracle_11.2.0.4.0"
     						]
     					},
-                                            "default": "mysql:latest",
+                                            "default": "mysql:5.7",
                                             "propertyOrder": 2
                                   },                                   
 
@@ -623,7 +623,7 @@ def jsonEditorOptions = Boon.fromJson(/{
 
                                   "Version" : {
                                       "type": "string", 
-                                        "enum": ["5.6-SNAPSHOT", "5.5-Portal-SNAPSHOT", "5.5.0-SNAPSHOT", "5.5-SNAPSHOT", "5.4.2-SNAPSHOT", "5.4.1-SNAPSHOT", "5.4-SNAPSHOT", "nickp20180318-SNAPSHOT", "Jenkins-test-SNAPSHOT", "develop-SNAPSHOT", "5.5.0.0", "5.5-RC-4.0", "5.5-RC-3.0", "5.5-RC-2.0", "5.5-RC-1.0", "5.5-RC-0.6", "5.5-RC-0.5", "5.5-RC-0.4", "5.5-RC-0.3", "5.5-RC-0.2", "5.5-RC-0.1", "5.4.1.18", "5.4.1.17", "5.4.1.16", "5.4.1.15", "5.4.1.14", "5.4.1.13", "5.4.1.12", "5.4.1.11", "5.4.1.10", "5.4.1.9", "5.4.1.8", "5.4.1.7", "5.4.1.6", "5.4.1.4", "5.4.1.3", "5.4.1.2", "5.4.1.1", "5.4.1.0", "5.4.1.0-RC-5.0", "5.4.1.0-RC-4.0", "5.4.1.0-RC-3.0", "5.4.1.0-RC-2.0", "5.4.1.0-RC-1.3", "5.4.1.0-RC-1.2", "5.4.1.0-RC-1.1", "jenkins-version-test-12", "jenkins-version-test-11", "jenkins-version-test-9", "jenkins-version-test-8", "jenkins-version-test-7", "jenkins-version-test-6", "jenkins-version-test-3", "jenkins-version-test-2", "jenkins-version-test-1"],
+                                        "enum": ["5.6-SNAPSHOT", "5.5-Portal-SNAPSHOT", "5.5.0-SNAPSHOT", "5.5-SNAPSHOT", "5.4.2-SNAPSHOT", "5.4.1-SNAPSHOT", "5.4-SNAPSHOT", "nickp20180318-SNAPSHOT", "Jenkins-test-SNAPSHOT", "develop-SNAPSHOT", "5.5.0.0", "5.5-RC-4.0", "5.5-RC-3.0", "5.5-RC-2.0", "5.5-RC-1.0", "5.5-RC-0.6", "5.5-RC-0.5", "5.5-RC-0.4", "5.5-RC-0.3", "5.5-RC-0.2", "5.5-RC-0.1", "5.4.1.19", "5.4.1.18", "5.4.1.17", "5.4.1.16", "5.4.1.15", "5.4.1.14", "5.4.1.13", "5.4.1.12", "5.4.1.11", "5.4.1.10", "5.4.1.9", "5.4.1.8", "5.4.1.7", "5.4.1.6", "5.4.1.4", "5.4.1.3", "5.4.1.2", "5.4.1.1", "5.4.1.0", "5.4.1.0-RC-5.0", "5.4.1.0-RC-4.0", "5.4.1.0-RC-3.0", "5.4.1.0-RC-2.0", "5.4.1.0-RC-1.3", "5.4.1.0-RC-1.2", "5.4.1.0-RC-1.1", "jenkins-version-test-12", "jenkins-version-test-11", "jenkins-version-test-9", "jenkins-version-test-8", "jenkins-version-test-7", "jenkins-version-test-6", "jenkins-version-test-3", "jenkins-version-test-2", "jenkins-version-test-1"],
                                             "propertyOrder": 2
                                   },  
 
