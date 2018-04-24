@@ -208,17 +208,17 @@ retry(1)
     try{
         
         echo "Running Playbook ${playbook}"		
+		//def  statusCode = sh script: "cd ${workdir} && ansible-playbook ${inventory} ${extraVars} ${playbook} --tags ${tags}",returnStatus: true
+
 		sh "cd ${workdir} && ansible-playbook ${inventory} ${extraVars} ${playbook} --tags ${tags} "
 		echo "Running Playbook ${playbook} Done"
+		return
         
     }catch(Exception e)
     {        
      println "Run Playbook Exception-${e.toString()}"
-    }
-    finally
-    {
-        echo "Finally Block Playbook"
-        
+	 currentBuild.result = 'FAILURE'
+	 throw e
     }
     
     }    
