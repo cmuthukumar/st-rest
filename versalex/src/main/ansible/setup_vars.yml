@@ -4,8 +4,8 @@
   connection: local
   vars_files:
     - "{{playbook_dir}}/files/{{cloud_provider}}/{{machine_type}}.yml"
-  roles:   
-    - {role: setup.topology/digitalocean/tests }  
+  # roles:   
+    # - {role: setup.topology/digitalocean/tests }  
       
 - name: "Setup host_vars files"
   hosts: "{{machine_type}}"
