@@ -4,19 +4,28 @@
         vex_db: "{{config_db.value}}"
         
 - name: Download DB artifact from Maven Central
-  maven_artifact: 
+  maven_artifact:
+    repository_url: "{{item.value.repository_url}}"
     group_id: "{{item.value.maven_groupid}}"
     artifact_id: "{{item.value.maven_artifactid}}"
     version: "{{item.value.maven_version}}"
-    dest: "{{vex_db.install_location}}lib/ext/"  
+    dest: "{{playbook_dir}}/library/{{item.value.maven_artifactid}}{{item.value.maven_version}}.jar"  
   when: "'db' in item.value.type"  
   with_dict: "{{ integrations | default({}) }}"
-  register: mysql_download
+  register: dbjar_download
+  delegate_to: 127.0.0.1
   ignore_errors: yes
-  register: maven_db
-  retries: 2
-  delay: 5  
-  until: maven_db|success
+  retries: 3
+  delay: 10  
+  until: dbjar_download|success
+  
+- name: Copy Installer to Remote Install Location
+  copy: src="{{playbook_dir}}/library/{{item.value.maven_artifactid}}{{item.value.maven_version}}.jar" dest="{{vex_db.install_location}}lib/ext/" mode=0777
+  with_dict: "{{ integrations | default({}) }}"
+  register: copy_dbjar_status
+  retries: 3
+  delay: 10
+  until: copy_dbjar_status |success
         
 - name: Extract DB IP 
   set_fact:
@@ -28,11 +37,30 @@
   retries: 2
   delay: 5  
   until: db_ip_status|success
+
+- name: Print DB IP
+  debug: msg="DB IP {{db_ip}}"
+  delegate_to: 127.0.0.1
+
+- name: Set JDBC Url
+  set_fact:
+    jdbc_path: "{{item.value.jdbc_string}}{{db_ip}}:{{item.value.port}}/{{item.value.dbname}}"
+  when: "'db' in item.value.type"
+  with_dict: "{{ integrations | default({}) }}"  
+  delegate_to: 127.0.0.1
+  register: jdbc_url_status
+  retries: 2
+  delay: 5  
+  until: jdbc_url_status|success
+  
+- name: Print JDBC path
+  debug: msg="JDBC path IP {{jdbc_path}}"
+  delegate_to: 127.0.0.1
   
 - name: Configure DB in Remote Machines
-  shell: jre/bin/java -cp "$CLASSPATH" com.cleo.systest.SetupOptions "{{vex_db.dname}}" "{{vex_db.install_location}}" "DB" "jdbc:{{item.value.app_type}}://{{db_ip}}:{{item.value.port}}/{{item.value.dbname}}" "{{item.value.driver_str}}" "{{item.value.username}}" "{{item.value.password}}" 1 "jdbc:{{item.value.app_type}}://{{db_ip}}:{{item.value.port}}/{{item.value.dbname}}"
+  shell: jre/bin/java -cp "$CLASSPATH" com.cleo.systest.SetupOptions "{{vex_db.dname}}" "{{vex_db.install_location}}" "DB" "{{jdbc_path}}" "{{item.value.driver_str}}" "{{item.value.username}}" "{{item.value.password}}" 1 "{{jdbc_path}}"
   environment:
-     CLASSPATH: ":{{vex_db.install_location}}lib/versalex_setup-latest.jar:{{vex_db.install_location}}lib/*:{{vex_db.install_location}}lib/help/*:{{vex_db.install_location}}lib/hibernate/*:{{vex_db.install_location}}lib/secureshare/*:{{vex_db.install_location}}webserver/AjaxSwing/lib/*:{{vex_db.install_location}}lib/json/*"
+     CLASSPATH: ":lib/versalex_setup-latest.jar:lib/*:lib/api/connector/*:lib/aws/*:lib/connector/*:lib/docdb/*:lib/hadoop/*:lib/help/*:lib/hibernate/*:lib/jersey/*:lib/json/*:lib/saml/*:lib/scim/*:lib/secureshare/*:lib/uri/*:lib/vaadin/*:lib/validator/*:lib/ws/*:webserver/AjaxSwing/lib/ajaxswing.jar:webserver/AjaxSwing/lib/commons-fileupload-1.0.jar:webserver/AjaxSwing/lib/freemarker.jar:webserver/AjaxSwing/lib/jsonrpc-1.0.jar:webserver/AjaxSwing/lib/boot/asboot.jar:webserver/AjaxSwing/lib/install/asm-all-3.1.jar:lax.jar"
   args:
      chdir: "{{vex_db.install_location}}"
   when: "'db' in item.value.type"

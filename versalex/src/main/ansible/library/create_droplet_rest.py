@@ -1,7 +1,7 @@
 #!/usr/bin/python
 DOCUMENTATION = '''
 module: create_dropleet_rest
-short_description: "Creates AS2 Profiles and Setups in Both Server and TP Nodes"
+short_description: "Creates Droples in Digital Ocean using Rest API"
 author:
   - muthukumarc
 requirements:
@@ -10,6 +10,7 @@ requirements:
 options:
   create_hosts:
     description:
+		
 		"droplet_results": {"required": True, "type": "str"},
 example:  create_hosts: host_name="Host Name to be passed"  server_hosts="Server Hosts IP's" proxy_hosts="Proxy Hosts IP's" tp_hosts="TP Hosts IP's" dataset="DataSet Passed by User for AS2 Setup"
 '''
@@ -54,7 +55,7 @@ def create_droplet_json(droplet_name,region,ram_size,os_image,sshkey_id,droplet_
 
 def get_droplet_details_id(url,droplet_res):
 	cnt=0
-	max_retry=3
+	max_retry=20
 	while cnt < max_retry:
 		try:
 			print "Droplet ID to Retrieve Details",droplet_res['droplet']['id']
@@ -70,7 +71,7 @@ def get_droplet_details_id(url,droplet_res):
 				raise ValueError('Droplet JSON Networks Not found in Response')
 		except Exception,e:
 			print "Exception on get_droplet_details_id method",e
-			time.sleep(5**cnt)			
+			time.sleep(10**cnt)			
 			cnt += 1
 			if cnt >= max_retry:
 				raise e
@@ -98,7 +99,7 @@ def get_postresults(url,json_file):
 				raise ValueError('Droplet is not Created..Please Retry')
 		except Exception,e:
 			print "Exception on get_postresults method",e
-			time.sleep(5**cnt)			
+			time.sleep(10**cnt)			
 			cnt += 1
 			if cnt >= max_retry:
 				raise e

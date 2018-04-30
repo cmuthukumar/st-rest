@@ -2,27 +2,31 @@
 # defaults file for setup.group.vars
 defaults:
     versalex: &vexref
-        vex_heapmem_min: 256M
-        vex_heapmem_max: 2048M
+        vex_heapmem_min: 512m
+        vex_heapmem_max: 4096m
         vex_jmx_port: 2098
-        karaf_heapmem_min: 256M
-        karaf_heapmem_max: 2G
+        karaf_heapmem_min: 512m
+        karaf_heapmem_max: 4096m
         port: 5080
         karaf_jmx_port: 2099
         macro_name: "%datashare%"
         custom_macro: "%datashare%=/root/share"
         client_local_path: "/root/share/"
         docker: "false"
-        nexus_maven_repourl: "http://10.80.80.156/nexus/service/local/repositories/InstallerSnapshots/content/"
+        nexus_maven_repourl: "http://10.80.80.156/nexus/service/local/repositories/releases/content/"
+        nexus_releases_repourl: "http://10.80.80.156/nexus/service/local/repositories/releases/content/"
         nexus_systest_repourl: "http://10.80.80.156/nexus/service/local/repositories/snapshots/content/"
+        nexus_installersnapshots_repourl: "http://10.80.80.156/nexus/service/local/repositories/InstallerSnapshots/content/"
         nexus_prod_repourl: "http://10.10.1.57/nexus/service/local/repo_groups/cleo/content/"
         find_version_url: "http://contd.cleo.com/nexus/service/local/artifact/maven/resolve"
         download_version_url: "http://contd.cleo.com/nexus/service/local/artifact/maven/content"
-        nexus_repoid: "InstallerSnapshots"
-        nexus_groupid: "com.cleo.installers"
-        nexus_systest_groupid: "com.cleo.systest"
+        nexus_releases_repoid: "releases"
+        nexus_installersnapshots_repoid: "InstallerSnapshots"
+        nexus_releases_groupid: "com.cleo.installers"
+        nexus_installersnapshots_groupid: "com.cleo.installers"
+        nexus_systest_groupid: "com.cleo.st"
         nexus_systest_artifactid: "versalex_setup"
-        nexus_systest_version: "0.1-SNAPSHOT"
+        nexus_systest_version: "0.3-SNAPSHOT"
         #nexus_artifactid: Harmony 
         nexus_classifier: "linux64-jre18"
         nexus_packaging: bin    
@@ -96,44 +100,67 @@ defaults:
         host_custom_props: "{'Defaulthomedir':'%datashare%/ftp/%username%'}"
         mailbox_custom_props: "{}"
         action_custom_props: "{}"
+    sshftp:
+        host_range: 1-20
+        mailbox_range: 1-1
+        action_range: 1-1
+        port: 9052
+        create_certs: true       
+        host_custom_props: "{'Defaulthomedir':'%datashare%/sshftp/%username%'}"
+        mailbox_custom_props: "{}"
+        action_custom_props: "{}"        
     share:
-        server_share_path: "/root/share/"
-        
+        server_share_path: "/root/share/"        
     mysql:
         type: "db"
+        repository_url: "http://repo1.maven.org/maven2"
         maven_artifactid: "mysql-connector-java"
         maven_groupid: "mysql"
+        version: "mysql:5.7"
         maven_version: "5.1.24"
         app_type: "mysql"
         node_ip: "dbsrv1"
-        # jdbc_url: "jdbc:mysql://2.2.2.2:3306/test1"
         port: 3306
         dbname: mysql
         driver_str: "com.mysql.jdbc.Driver"
+        # jar_path: "{{playbook_dir}}library/mysql_jdbc.jar"
         username: "root"
-        password: "testdocker"
+        password: "cleo"
         docker: "true"
         use_docker_image: "true"
         app_srcdir: "/home/SystemTest/DockerFiles/"
         app_destdir: "/root/DockerFile/"
-        image_name: testdockerfile
-        app_port: 3306
-        image_tag: latest
-        app_args: "MYSQL_ROOT_PASSWORD=testdocker"        
-    oracle:
+        image_name: "mysql"
+        app_port: "3306:3306"
+        image_tag: "latest"
+        app_args: "MYSQL_ROOT_PASSWORD=cleo"
+        jdbc_string: "jdbc:mysql://" 
+        jdbc_url: "jdbc:mysql://{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}:3306/mysql?autoReconnect=true&useSSL=false"
+    oracle_11g:
         type: "db"
-        maven_artifactid: oracle-connector-java
-        maven_groupid: oracle
-        maven_version: 5.1.24
-        maven_destfilename: "oracle.jar"
+        repository_url: "http://10.80.80.156/nexus/service/local/repositories/thirdparty/content/"
+        maven_artifactid: "oracle_jdbc"
+        maven_groupid: "com.oracle"
+        version: "11.2.0.4.0"
+        maven_version: "11.2.0.4.0"
+        maven_destfilename: "ojdbc6.jar"
         app_type: oracle
         node_ip: dbsrv1
+        # jar_path: ""{{playbook_dir}}library/oracle_jdbc.jar""
         # jdbc_url: "jdbc:mysql://2.2.2.2:3306/test1"
-        port: 3306
-        dbname: oracle
-        driver_str: "com.oracle.jdbc.Driver"
-        username: root
-        password: testdocker      
+        port: 1521
+        dbname: xe
+        driver_str: "oracle.jdbc.driver.OracleDriver"
+        username: system
+        password: "cleo"
+        docker: "true"
+        use_docker_image: "true"
+        image_name: "sath89/oracle-xe-11g"
+        app_port: "1521:1521,8080:8080"
+        image_tag: "latest"
+        app_args: "DEFAULT_SYS_PASS=cleo"
+        jdbc_string: "jdbc:oracle:thin:system/cleo@//"        
+        jdbc_url: "jdbc:oracle:thin:system/cleo@//{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}:1521/xe"
     ad:
         type: "ldap"
         host: "10.80.80.888"

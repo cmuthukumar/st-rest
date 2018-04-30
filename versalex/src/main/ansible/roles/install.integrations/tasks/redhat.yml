@@ -1,0 +1,97 @@
+---
+# tasks file for dockerized.install
+   - name: Install Python Setup Tools 
+     package:
+        name: python-setuptools
+        state: latest
+        update_cache: yes
+     register: pythontool
+     until: "'failed' not in pythontool"
+     retries: 3
+     delay: 10
+
+   - name: check to see if pip is already installed
+     command: "pip --version"
+     ignore_errors: true
+     register: pip_install_status
+     changed_when: false
+     
+   - block:
+   
+       - name: Get Pip install Python script
+         get_url: url=https://bootstrap.pypa.io/get-pip.py  dest=/tmp
+
+       - name: Install Pip
+         command: "python /tmp/get-pip.py"
+         
+       - name: delete get-pip.py
+         file: state=absent path=/tmp/get-pip.py
+         
+     when: pip_install_status.rc != 0     
+   # - name: Install Python Index Package Manager
+     # easy_install: name=pip
+     # register: pipstatus
+     # until: "'failed' not in pythontool"
+     # retries: 3
+     # delay: 10
+     
+   - name: Install Docker-Python package
+     pip: name=docker-py     
+     until: "'failed' not in pythontool"
+     retries: 1
+     delay: 3
+     register: dockerpy
+     ignore_errors: yes
+
+   - name: "Check if yum_utils installed for Docker"
+     package: 
+        name: yum-utils
+        state: present
+        
+   - name: Add Docker Repository for RHEL or CentOs
+     yum_repository:
+        name: docker-ce
+        description: "docker community edition"
+      #  baseurl: "https://download.docker.com/linux/centos/7/"         
+        baseurl: "https://yum.dockerproject.org/repo/main/centos/{{ansible_distribution_version[:1]}}/"
+        gpgkey: "https://yum.dockerproject.org/gpg"
+        gpgcheck: yes
+        state: present
+     register: docker_repo
+   # - name: Add Docker Repo to RHEL and CentOS
+     # shell: "rpm -iUvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm"
+     # register: docker_rpm
+   - name: Install Docker 
+     package:
+        name: docker-engine
+        state: present
+     register: docker_details
+     ignore_errors: true
+     until: "'failed' not in pythontool"
+     retries: 1
+     delay: 3
+#   - name: Printing Docker Details 
+#     debug: msg="Docker Details:{{docker_details}}"
+   - name: Check Docker is Running
+     service:
+        name: docker
+        state: started
+        enabled: yes
+        
+   # - name: Disable YUM Repository
+     # yum_repository:
+        # name: epel
+        # state: absent
+     # register: yum_repostate
+     
+   # - name: Printing yum repo state
+     # debug: msg="Repo State is {{yum_repostate}}"
+   # - name: Remove old epel repo from yum as this can cause conflicts with the mirrors
+     # shell: rm -rf /etc/yum.repos.d/epel.repo
+     # ignore_errors: yes
+   # - name: Add Docker Repo to RHEL and CentOS
+     # yum: name=http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm state=present
+     # register: docker_repo
+     # until: docker_repo | success
+     # retries: 3
+     # delay: 3

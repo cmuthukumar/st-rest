@@ -21,11 +21,11 @@ hardware:
 software:
    versalex:
       - name: harmony
-        version: "5.4.2-SNAPSHOT"
+        version: "{{ version |default('5.4.1-SNAPSHOT') }}"
         install_location: "/root/Harmony/"
    integrations:
       - name: mysql
-        version: "mysql:latest"
+        version: "mysql:5.7"
    shares:           
       - name: share
         share_path: "/root/share/"        

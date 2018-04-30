@@ -1,0 +1,7 @@
+---      
+    - name: Validate hosts file for "{{machine_type}}"
+      validate_hosts_file:
+            machine_type: "{{machine_type}}"
+            host_names: "{{ groups[machine_type] | map('extract', hostvars, ['inventory_hostname']) | join(',') }}"
+      register: host_validation
+      delegate_to: 127.0.0.1

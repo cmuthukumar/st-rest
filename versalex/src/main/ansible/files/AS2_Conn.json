@@ -31,12 +31,6 @@
     "encrypt": true,
     "sign": true,
     "compress": false,
-    "receipt": {
-      "type": "async-http",
-      "micAlgorithm": "sha1",
-      "sign": true,
-      "forwardToEmail": false
-    },
     "storage": {
       "outbox": "file:%25datashare%25/as2/outboxes/{{host_name|upper}}",
       "sentbox": "file:%25datashare%25/as2/sentbox/{{host_name|upper}}"

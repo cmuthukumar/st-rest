@@ -32,14 +32,25 @@
    - name: Print IP of Shares
      debug: msg="IPAddress- {{hostvars[groups['shares'][0]]['ansible_eth0']['ipv4']['address']}}"
      
-   - name: Setup Shares in Client boxes
-     mount:
-       name: "{{vexcli.client_local_path}}"
-       src: "{{hostvars[groups['shares'][0]]['ansible_eth0']['ipv4']['address']}}:{{item.value.server_share_path}}"
-       state: mounted
-       fstype: "nfs"     
-     with_dict: "{{ shares }}"
-     register: shares_client
-     retries: 3
-     delay: 5
-     until: shares_client|success     
+   - name: Setup Shares in Client boxes using Block Rescue
+     block:        
+       - name: Setup Shares in Client boxes
+         mount:
+           name: "{{vexcli.client_local_path}}"
+           src: "{{hostvars[groups['shares'][0]]['ansible_eth0']['ipv4']['address']}}:{{item.value.server_share_path}}"
+           state: mounted
+           fstype: "nfs"     
+         with_dict: "{{ shares }}"
+         register: shares_client
+         retries: 3
+         delay: 5
+         until: shares_client|success
+     rescue:
+       - name: Restart nfs Service as mount command had issues
+         service:
+            name: nfs
+            state: restarted            
+         register: nfs_status
+         retries: 2
+         delay: 4
+         until: nfs_status |success

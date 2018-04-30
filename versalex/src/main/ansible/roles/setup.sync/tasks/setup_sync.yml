@@ -53,7 +53,7 @@
      register: rest_addnode
      with_fileglob: "{{playbook_dir}}/files/sync_json/*.json" 
      when:  play_hosts.index(inventory_hostname) == 0
-     retries: 1
+     retries: 3
      delay: 5  
      until: rest_addnode|success
      delegate_to: 127.0.0.1
@@ -62,7 +62,7 @@
 
    - name: Setup Sync Using REST-Initialize
      uri:
-        url: "http://{{ansible_ssh_host}}:5080/api/nodes/{{item}}/initialize"
+        url: "http://{{ansible_ssh_host}}:5080/api/nodes/{{serialno}}/initialize/{{item}}"
         method: POST
         user: administrator
         password: Admin

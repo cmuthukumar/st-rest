@@ -1,0 +1,66 @@
+---
+hardware:
+    versalex:           
+      - name: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['Product']| lower | default('', true) }}
+        ram_size: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['RAM'] | default('', true)}}
+        region: nyc1
+        image_name: "{{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['OS'] | default('', true)}}"
+        qty: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['Total Droplets'] }}
+    integrations:           
+      - name: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['Product'] | default('', true) }}
+        ram_size: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['RAM'] | default('', true) }}
+        region: nyc1
+        image_name: "{{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['OS'] | default('', true) }}"
+        qty: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['Total Droplets']}}
+{% if (cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['Total Droplets'] > 0)  %}
+    proxy:    
+      - name: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['Product'] | lower| default('', true) }}
+        ram_size: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['RAM'] | default('', true)}}
+        region: nyc1
+        image_name: "{{cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['OS'] | default('', true) }}"
+        qty: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['Total Droplets']}}
+{% endif %}
+    shares:           
+      - name: share
+        ram_size: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['shares'][0]['RAM'] | default('', true) }}
+        region: nyc1
+        image_name: "{{cp_user_vars[c_p_indx|int][cloud_provider][0]['shares'][0]['OS'] | default('', true) }}"
+        qty: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['shares'][0]['Total Droplets'] }}
+software:
+    versalex:
+      - name: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['Product'] | lower| default('', true) }}
+        version: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['Version'] | default('', true) }}
+        install_location: "/root/Harmony/"
+        vex_jmx_port: 3022
+        vex_heapmem_max: {{((cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['RAM'][:-2]|int*3/4)|int|abs)|default('', true)}}G
+        karaf_heapmem_max: {{((cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['RAM'][:-2]|int)-((cp_user_vars[c_p_indx|int][cloud_provider][0]['versalex'][0]['RAM'][:-2]|int*3/4)|int|abs))|default('', true)}}G
+    integrations:
+      - name: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['Product'] | default('', true) }}
+        version: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['integrations'][0]['Version'] | default('', true) }}
+{% if (cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['Total Droplets'] >0)  %}
+    proxy:
+      - name: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['Product'] | lower| default('', true) }}
+        version: {{cp_user_vars[c_p_indx|int][cloud_provider][0]['proxies'][0]['Version'] | default('', true) }}
+        install_location: "/root/VLProxy/"
+        vex_jmx_port: 3022
+{% endif %}
+    shares:           
+      - name: share
+        server_share_path: "/root/share/"   
+dataset:
+    versalex:
+{% if (cp_user_vars[c_p_indx|int][cloud_provider][2]['AS2'][0]['Total Hosts'] > 0)  %}
+      - name: as2
+        total: {{cp_user_vars[c_p_indx|int][cloud_provider][2]['AS2'][0]['Total Hosts'] | default(0, true) }}
+        schedule_actions: true
+{% endif %}
+{% if (cp_user_vars[c_p_indx|int][cloud_provider][2]['FTP'][0]['Total Hosts'] > 0)  %}    
+      - name: ftp
+        total: {{cp_user_vars[c_p_indx|int][cloud_provider][2]['FTP'][0]['Total Hosts'] | default(0, true) }}
+        schedule_actions: true
+{% endif %}
+{% if (cp_user_vars[c_p_indx|int][cloud_provider][2]['SSHFTP'][0]['Total Hosts'] > 0)  %}            
+      - name: sshftp
+        total: {{cp_user_vars[c_p_indx|int][cloud_provider][2]['SSHFTP'][0]['Total Hosts'] | default(0, true) }}
+        schedule_actions: true
+{% endif %}

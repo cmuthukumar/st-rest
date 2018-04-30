@@ -3,15 +3,27 @@
   set_fact:
         jmx: "{{jmx_grp.value}}"
 
+- name: "Edit versalexc.lax for JMX Configs File with Public DNS Name"
+  lineinfile:
+     create: no
+     dest: "{{jmx.install_location}}{{jmx.dname}}c.lax"
+     regexp: '^(lax.nl.java.option.additional=.*)'
+     line: '\1 -Djava.net.preferIPv4Stack=true -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port={{jmx.vex_jmx_port}} -Dcom.sun.management.jmxremote.rmi.port=3023 -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname={{aws_public_dns_name}}'
+     state: present       
+     backrefs: yes
+  register: pns_lax
+  when: aws_public_dns_name is defined
+        
 - name: "Edit versalexc.lax for JMX Configs File"
   lineinfile:
      create: no
      dest: "{{jmx.install_location}}{{jmx.dname}}c.lax"
      regexp: '^(lax.nl.java.option.additional=.*)'
-     line: '\1 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port={{jmx.vex_jmx_port}} -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname={{ansible_ssh_host}}'
+     line: '\1 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port={{jmx.vex_jmx_port}} -Dcom.sun.management.jmxremote.rmi.port=3023 -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname={{ansible_ssh_host}}'
      state: present       
      backrefs: yes
-  register: harmonyc_lax  
+  register: harmonyc_lax
+  when: aws_public_dns_name is not defined
   
 - name: "Edit setenv for JMX Configs karaf  File"
   lineinfile:

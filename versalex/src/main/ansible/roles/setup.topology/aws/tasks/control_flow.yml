@@ -1,0 +1,8 @@
+---
+# tasks file for create.topology
+      
+   - name: Create EC2 Instances for Servers and TPNodes
+     include_tasks: create_ec2_instance.yml mac_type="{{mach_type}}" swtype="{{group_item.key}}"
+     with_items: "{{group_item.value | default([])}}"
+     loop_control:
+        loop_var: outer_item

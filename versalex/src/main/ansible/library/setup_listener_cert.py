@@ -51,13 +51,14 @@ def get_postresults(url,json_file):
 	except Exception,e:
 		print "Exception on get_postresults method",e
 		
-def create_cert_json(cert_name):
+def create_cert_json(cert_name,protocol_name):
 	try:
 		alias= {"alias": cert_name}
+		protocol_name=protocol_name.upper()
 		json_dir="./files/as2jsons/"
 		if not os.path.exists(json_dir):
 			os.makedirs(json_dir)
-		json_out=get_jsonoutput("./files/AS2_Cert.json",alias)
+		json_out=get_jsonoutput("./files/"+protocol_name+"_Cert.json",alias)
 		json_path=json_dir+cert_name+".json"
 		with open(json_path, 'w+') as jsonfile:
 			jsonfile.write(json_out)
@@ -90,11 +91,12 @@ def import_cert(partner_ip,cert_code):
 		print "Exception on import_cert method",e		
 		
 	
-def setup_local_listener_cert(hostip,cert_name):
+def setup_local_listener_cert(hostip,cert_name,protocol_name):
 	try:
 		print "Local Listener Cert to Create",cert_name
-		cert_json_path=create_cert_json(cert_name)
+		cert_json_path=create_cert_json(cert_name,protocol_name)
 		cert_res=create_cert(hostip,cert_json_path)
+		time.sleep(5)
 		# cert_import_res=import_cert(hostip,cert_res['certificate'])
 		print "Cert Results",cert_res
 		return True,cert_res
@@ -117,9 +119,10 @@ def main():
 		fields = {
 			"host_ip": {"required": True, "type": "str"},
 			"cert_name": {"required": True, "type": "str"},
+			"protocol_name": {"required": True, "type": "str"},
 		}
 		module = AnsibleModule(argument_spec=fields)		
-		stat,result=setup_local_listener_cert(module.params['host_ip'],module.params['cert_name'])
+		stat,result=setup_local_listener_cert(module.params['host_ip'],module.params['cert_name'],module.params['protocol_name'])
 		if stat:
 			module.exit_json(**result)
 		else:

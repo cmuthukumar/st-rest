@@ -1,7 +1,7 @@
 #!/usr/bin/python
 DOCUMENTATION = '''
 module: setup_as2
-short_description: "Creates AS2 Profiles and Setups in Both Server and TP Nodes"
+short_description: "Creates AS2 Profiles and Setups in Both Server and TP Nodes using Rest"
 author:
   - muthukumarc
 requirements:
@@ -40,20 +40,27 @@ def get_jsonoutput(json_path,render_content):
 		print "Exception on get Json Output",e
 		
 def get_postresults(url,json_file):
-	try:
-		if type(json_file) is dict:
-			json_data=json_file
-		else:
-			with open(json_file, 'r') as jsfile:
-				json_data=json.load(jsfile)
-		print "Cert Json DATA-",json_data
-		head ={ 'Content-type':'application/json','Accept':'application/json'}
-		results = requests.post(url,headers=head,auth=HTTPBasicAuth('administrator', 'Admin'),data=json.dumps(json_data))
-		json_res=json.loads(results.text)
-		print "FINAL ****RES**",json_res
-		return json_res
-	except Exception,e:
-		print "Exception on get_postresults method",e
+	cnt=0
+	max_retry=5
+	while cnt < max_retry:
+		try:
+			if type(json_file) is dict:
+				json_data=json_file
+			else:
+				with open(json_file, 'r') as jsfile:
+					json_data=json.load(jsfile)
+			print "Cert Json DATA-",json_data
+			head ={ 'Content-type':'application/json','Accept':'application/json'}
+			results = requests.post(url,headers=head,auth=HTTPBasicAuth('administrator', 'Admin'),data=json.dumps(json_data))
+			json_res=json.loads(results.text)
+			print "FINAL ****RES**",json_res
+			return json_res
+		except Exception,e:
+			print "Exception on setup_as2 get_postresults method",e				
+			time.sleep(10**cnt)			
+			cnt += 1
+			if cnt >= max_retry:
+				raise e
 		
 def create_cert_json(cert_name):
 	try:
@@ -165,22 +172,30 @@ def setup_receiver_cert(certname,sender_ip,tp_ip,master_ip):
 def setup_as2_with_proxy(host_name,server_hosts,tphosts,dataset,proxy_hosts):
 	try:
 		tp_cnt=len(tphosts)
+		proxy_cnt=len(proxy_hosts)
+		proxy_indx=0
 		master_ip=server_hosts[0]
 		total_host=get_totalhost(dataset)
 		host_pernode=(total_host/tp_cnt)
 		start=1
 		end=int(host_pernode)
 		for tp_ip in tphosts:
-			print "TP Host Index",tphosts.index(tp_ip)
-			print "Server Hosts",server_hosts[tphosts.index(tp_ip)]
-			print "TP Hosts",tphosts[tphosts.index(tp_ip)]		
+			print "setup_as2_with_proxy TP Host Index",tphosts.index(tp_ip)
+			print "setup_as2_with_proxy Proxy Index",proxy_indx
+			print "setup_as2_with_proxy Proxy Count",proxy_cnt
+			print "setup_as2_with_proxy Server Hosts",server_hosts[tphosts.index(tp_ip)]
+			print "setup_as2_with_proxy TP Hosts",tphosts[tphosts.index(tp_ip)]
+			if((tphosts.index(tp_ip) > (proxy_cnt-1))):
+				proxy_indx=(tphosts.index(tp_ip)-proxy_cnt)
 			for i in range(start,end+1):
-				setup_sender_cert((host_name+str(i)),proxy_hosts[tphosts.index(tp_ip)],tp_ip,master_ip)
-				setup_receiver_cert((host_name+str(i)),tp_ip,proxy_hosts[tphosts.index(tp_ip)],master_ip)
+				setup_sender_cert((host_name+str(i)),proxy_hosts[proxy_indx],tp_ip,master_ip)
+				setup_receiver_cert((host_name+str(i)),tp_ip,proxy_hosts[proxy_indx],master_ip)
 				setup_connection((host_name+str(i)),master_ip,sender_json_req)
 				setup_connection((host_name+str(i)),tp_ip,receiver_json_req)
 			start=start+int(host_pernode)
 			end=end+int(host_pernode)
+			if((tphosts.index(tp_ip) <= proxy_cnt)):
+				proxy_indx=proxy_indx+1
 		return True,"success"
 	except Exception,e:
 		print "Exception on setup_as2",e
@@ -195,9 +210,9 @@ def setup_as2_without_proxy(host_name,server_hosts,tphosts,dataset):
 		start=1
 		end=int(host_pernode)
 		for tp_ip in tphosts:
-			print "TP Host Index",tphosts.index(tp_ip)
-			print "Server Hosts",server_hosts[tphosts.index(tp_ip)]
-			print "TP Hosts",tphosts[tphosts.index(tp_ip)]		
+			print "setup_as2_without_proxy TP Host Index",tphosts.index(tp_ip)
+			print "setup_as2_without_proxy Server Hosts",server_hosts[tphosts.index(tp_ip)]
+			print "setup_as2_without_proxy TP Hosts",tphosts[tphosts.index(tp_ip)]		
 			for i in range(start,end+1):
 				setup_sender_cert((host_name+str(i)),server_hosts[tphosts.index(tp_ip)],tp_ip,master_ip)
 				setup_receiver_cert((host_name+str(i)),tp_ip,server_hosts[tphosts.index(tp_ip)],master_ip)

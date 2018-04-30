@@ -7,7 +7,7 @@ import com.cleo.lexicom.external.ISchedule;
 import com.cleo.lexicom.external.LexiComFactory;
 import com.cleo.security.hashing.VLPBKDF2Authenticator;
 import com.jinfonet.web.util.json.JSONObject;
-import com.opencsv.CSVReader;
+import com.opencsv.*;
 
 import java.io.*;
 import java.util.*;
@@ -383,6 +383,8 @@ public class UtilTestProfile {
             while (keys.hasNext()) {
                 String key = (String) keys.next();
                 String value = vexCustomProps.getString(key);
+                System.out.println("Host CUstom Key is"+key);
+                System.out.println("Host CUstom Value is"+value);
                 if (type.toLowerCase().startsWith("host"))
                     versalex.setProperty(ILexiCom.HOST, vexpath, key, value);
                 if (type.toLowerCase().startsWith("mailbox"))
@@ -628,12 +630,12 @@ public class UtilTestProfile {
     public void loadTestdata() throws IOException {
 
         CSVReader csvReader = new CSVReader(new FileReader(this.csvpath));
-        ;
+
 
         try {
 
             int total_rows = 0;
-            List<String[]> hosts = csvReader.readAll();
+           List<String[]> hosts = csvReader.readAll();
             String[] headers = hosts.get(0);
             System.out.println("Headers are::" + Arrays.toString(headers));
             for (String[] row : hosts) {
@@ -671,17 +673,9 @@ public class UtilTestProfile {
 
     }
 
-
-    /**
-     * Sets up Schedule for Actions
-     *
-     * @throws Exception
-     */
-
     public void setupSchedule() throws Exception {
 
         try {
-
             getVersalex();
             ISchedule schedule = this.versalex.getSchedule();
             schedule.setAutoStartup(true);
@@ -716,6 +710,33 @@ public class UtilTestProfile {
 
             }
 
+            schedule.save();
+        } catch (Exception e)
+
+        {
+
+            System.out.println("Exception thrown while setting up Schedule is " + e.getMessage());
+        } finally {
+            if (versalex != null) {
+
+                versalex.close();
+            }
+        }
+
+    }
+
+    /**
+     * Sets up Schedule for Actions
+     *
+     * @throws Exception
+     */
+
+    public void setupScheduleAutoStartup(String autoStartup) throws Exception {
+        try {
+            getVersalex();
+            ISchedule schedule = this.versalex.getSchedule();
+            schedule.setAutoStartup(Boolean.parseBoolean(autoStartup));
+            schedule.save();
         } catch (Exception e)
 
         {

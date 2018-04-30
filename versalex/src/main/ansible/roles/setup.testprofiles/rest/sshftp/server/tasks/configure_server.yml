@@ -1,0 +1,55 @@
+---
+   - name: Print Hostvars
+     debug: msg="Versalex name{{group_item.key}}"     
+
+   # - name: Copy SetupOptions Jar File to remote location
+     # copy: src="{{playbook_dir}}/library/versalex_setup-latest.jar" dest="{{conf_server.install_location}}lib/"
+
+   - name: Set Dataset key
+     set_fact:
+          conf_server: "{{group_item.value}}"
+          
+   - name: Set macro name to Empty if shares not defined
+     set_fact: 
+        macro_name: ""
+     when: shares is not defined
+   
+   - name: Set macro name if defined
+     set_fact: 
+        macro_name: "%datashare%"
+     when: shares is defined
+
+   - name: Setup Omni Users for Hosts and Mailbox
+     setup_omni_users:
+       host_name: "SSHFTP"
+       server_hosts: "{{ groups['servers-versalex'] | map('extract', hostvars, ['ansible_ssh_host']) | join(',') }}"
+       proxy_hosts: "{{ groups['servers-proxy'] | map('extract', hostvars, ['ansible_ssh_host']) | join(',') }}"
+       tp_hosts: "{{ groups['tpnodes-versalex'] | map('extract', hostvars, ['ansible_ssh_host']) | join(',') }}"
+       dataset: "{{dataset |default({})}}"
+       host_type: "sshftp"
+       default_home_dir: "%datashare%"
+     register: omni_users
+     with_dict: "{{dataset}}"
+     when: (item.key|lower == 'sshftp')
+     when: (play_hosts.index(inventory_hostname) == 0)      
+     delegate_to: 127.0.0.1
+      
+     
+   # - name: Configure Test Profiles in Remote Machines on SSH FTP Server
+     # shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupOmniUsers "{{conf_server.name}}" "{{conf_server.install_location}}" "{{item.value.name}}" "{{macro_name}}" "{}" "{}" "{}" "{{item.value.total}}" "SSHFTP" "9052" "false"
+     # environment:
+       # CLASSPATH: ":lib/versalex_setup-latest.jar:lib/*:lib/api/connector/*:lib/aws/*:lib/connector/*:lib/docdb/*:lib/hadoop/*:lib/help/*:lib/hibernate/*:lib/jersey/*:lib/json/*:lib/saml/*:lib/scim/*:lib/secureshare/*:lib/uri/*:lib/vaadin/*:lib/validator/*:lib/ws/*:webserver/AjaxSwing/lib/ajaxswing.jar:webserver/AjaxSwing/lib/commons-fileupload-1.0.jar:webserver/AjaxSwing/lib/freemarker.jar:webserver/AjaxSwing/lib/jsonrpc-1.0.jar:webserver/AjaxSwing/lib/boot/asboot.jar:webserver/AjaxSwing/lib/install/asm-all-3.1.jar:lax.jar"
+     # args:
+       # executable: /bin/sh
+       # chdir: "{{conf_server.install_location}}"
+     # with_dict: "{{dataset}}"
+     # when: (item.key|lower == 'sshftp')
+     # register: profile_config
+   # - name: Configure Schedule Actions on Server Node
+     # shell: jre/bin/java -cp $CLASSPATH com.cleo.systest.SetupTestProfile "{{conf_server.name}}" "{{conf_server.install_location}}" "true"
+     # environment:
+       # CLASSPATH: ":{{conf_server.install_location}}SetupTestProfile.jar:{{conf_server.install_location}}lib/*:{{conf_server.install_location}}lib/help/*:{{conf_server.install_location}}lib/hibernate/*:{{conf_server.install_location}}lib/secureshare/*:{{conf_server.install_location}}webserver/AjaxSwing/lib/*:{{conf_server.install_location}}lib/json/*"
+     # args:
+       # executable: /bin/sh
+       # chdir: "{{conf_server.install_location}}"
+     # register: schedule_actions      

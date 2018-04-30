@@ -12,14 +12,15 @@
         user: administrator
         password: Admin
         force_basic_auth: yes
+        timeout: 300
         return_content: yes
         status_code: 200
      register: conn_certs_status
      with_items:
-            - certs?filter=signatureAlgorithm eq  "SHA1/RSA"
+            - connections?filter=type eq  "as2" or type eq  "ftp" or  type eq  "sftp"
      # when:  testprofile.dname | lower != 'vlproxy' and play_hosts.index(inventory_hostname) == 0
-     retries: 3
-     delay: 5  
+     retries: 10
+     delay: 20  
      until: conn_certs_status|success
      delegate_to: 127.0.0.1
      

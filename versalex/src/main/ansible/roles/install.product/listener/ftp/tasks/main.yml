@@ -1,0 +1,10 @@
+---
+# tasks file for setup.testprofiles
+- block:     
+   - name: "Resource Update Properties using Command line"
+     include_tasks: "update_resource.yml"
+     with_dict: "{{ versalex | default({}) }}"
+     loop_control:
+        loop_var: update_ftp        
+- rescue:
+   - fail: msg="Resource Update on Versalex Failed"

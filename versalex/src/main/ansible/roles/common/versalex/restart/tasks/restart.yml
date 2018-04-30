@@ -29,5 +29,5 @@
   register: startvexstatus
 
 - name: Wait for Versalex Port to Come up
-  wait_for: host="{{ansible_ssh_host}}" port="{{vex_restart.port}}" delay=10 timeout=320 state=started  
-  
+  wait_for: host="{{ansible_ssh_host}}" port="{{vex_restart.port}}" delay=10 timeout=600 state=started  
+  ignore_errors: yes

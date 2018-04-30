@@ -1,0 +1,7 @@
+{
+  "username": "{{username}}",
+  "email": "{{username}}@cleo.com",
+  "accept": {
+    "password": "cleo"
+  }
+}

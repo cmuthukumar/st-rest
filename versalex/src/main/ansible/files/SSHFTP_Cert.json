@@ -1,0 +1,11 @@
+{
+  "requestType":"generateCert",
+  "alias":"{{alias|upper}}",
+  "dn":"cn={{alias|upper}},c=us,st=in,email=st@cleo.com",
+  "validity":"24 months",
+  "alg":"sha1",
+  "keyAlg":"rsa",
+  "keySize":1024,
+  "keyUsage":["digitalSignature"],
+  "password":"cleo"
+}

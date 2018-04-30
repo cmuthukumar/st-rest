@@ -2,6 +2,10 @@
     - name: "Pull Docker Image from Docker Hub"
       docker_image:
         name: "{{integrations.version}}"
+      register: docker_image_details
+      until: docker_image_details|success
+      retries: 3
+      delay: 10        
         
     - name: "Run Docker Container for the image"     
       docker_container:
@@ -11,17 +15,17 @@
         pull: true
         env: "{{integrations.app_args}}"
            # MYSQL_ROOT_PASSWORD: "testdocker"        
-        exposed_ports: "{{integrations.app_port}}"        
+        exposed_ports: "{{integrations.port}}"        
         network_mode: bridge
-        published_ports: "{{integrations.app_port}}:{{integrations.app_port}}"        
+        published_ports: "{{integrations.app_port}}"        
         recreate: true
         restart_policy: always
         # command: 'mysql -u root -ptestdocker -D mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;" '
       register: docker_details
       # recreate: yes
-      # until: "'failed' not in docker_details"
-      # retries: 3
-      # delay: 10
+      until: docker_details|success
+      retries: 3
+      delay: 10
       
     - name: Docker Container IP address
       debug: msg="IP Address is:{{docker_details.ansible_facts.docker_container['NetworkSettings']['IPAddress']}}"

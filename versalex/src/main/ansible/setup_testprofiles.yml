@@ -1,30 +1,36 @@
----
+---    
+- name: Schedule AutoStartup for server master node
+  hosts: "servers-versalex[0]"
+  roles:
+    - { role: setup.testprofiles/schedule/, sched_auto: "true", tags: ['schedule-auto-startup','rest'] }
+
+- name: Schedule AutoStartup for TP Nodes
+  hosts: "tpnodes-versalex"
+  roles:
+    - { role: setup.testprofiles/schedule/, sched_auto: "true", tags: ['schedule-auto-startup','rest'] }
+        
 - name: Setups sync between master and other versalex  instances of server side
   hosts: "servers-versalex"
   roles:
-    - {role: setup.sync,tags: ['setup-sync','rest','java']}
+    - {role: setup.sync,tags: ['setup-sync','rest']}
 
 - name: Setups as2 profiles for server and tpnodes using rest
   hosts: "versalex:proxy"
   roles:
-    - { role: setup.testprofiles/common, when: "'servers-versalex' in inventory_hostname",tags: ['rest','java'] }
-    - { role: setup.testprofiles/rest/as2/, hostname: "AS2H",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest'] }
+    - { role: setup.testprofiles/common, when: "'servers-versalex' in inventory_hostname",tags: ['rest','common','java'] }
+    - { role: setup.testprofiles/rest/as2/, hostname: "AS2WW",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest','rest-as2','as2'] }
 
-- name: "Setups ftp profiles for server(java) and tpnodes(rest)"
+- name: "Setups SSH FTP  Server and Client Profiles"
   hosts: "versalex:proxy"
   roles:
-    - { role: setup.testprofiles/rest/ftp/server/, when: "'servers-versalex' in inventory_hostname",tags: ['rest'] }
-    - { role: setup.testprofiles/rest/ftp/client/, hostname: "FTPHost",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest'] }
-
-- name: Schedule actions for server master node
-  hosts: "servers-versalex[0]"
+    - { role: setup.testprofiles/rest/sshftp/server/, hostname: "SSHFTP",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest','rest-sshftp','sshftp'] }
+    - { role: setup.testprofiles/rest/sshftp/client/, hostname: "SSHFTP",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest','rest-sshftp','sshftp'] }    
+   
+- name: "Setups FTP Server and Client Profiles"
+  hosts: "versalex:proxy"
   roles:
-    - { role: setup.testprofiles/rest/schedule_actions/, schedule_option: "on file polling continuously",action_type: "send", tags: ['schedule-actions-server','rest'] }
-
-- name: Schedule actions for tp nodes
-  hosts: "tpnodes-versalex"
-  roles:
-    - { role: setup.testprofiles/rest/schedule_actions/,schedule_option: "on file polling continuously",action_type: "send", tags: ['schedule-actions-tp','rest'] }    
+    - { role: setup.testprofiles/rest/ftp/server/, hostname: "FTPHost",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest','rest-ftp','ftp'] }
+    - { role: setup.testprofiles/rest/ftp/client/, hostname: "FTPHost",when: "'servers-versalex-1' in inventory_hostname",tags: ['rest','rest-ftp','ftp'] }
 
 - name: Setups server side profiles using java    
   hosts: "versalex:proxy"

@@ -1,4 +1,20 @@
----    
+---
+- name: Cluster Sync Wait for Server Versalex Nodes
+  hosts: "servers-versalex"
+  roles:
+    - { role: setup.testprofiles/cluster_sync/, as2_total_create_hosts: "{{as2_totalcreatehosts|default(0)}}",ftp_total_create_hosts: "{{ftp_totalcreatehosts|default(0)}}",sshftp_total_create_hosts: "{{sshftp_totalcreatehosts|default(0)}}",tags: ['cluster_sync'] }
+    
+- name: Schedule actions for server master node
+  hosts: "servers-versalex[0]"
+  roles:
+    - { role: setup.testprofiles/rest/schedule_actions/, schedule_option: "on file polling continuously",action_type: "send", tags: ['schedule-actions-server','rest'] }
+
+- name: Schedule actions for tp nodes
+  hosts: "tpnodes-versalex"
+  roles:
+    - { role: setup.testprofiles/rest/schedule_actions/,schedule_option: "on file polling continuously",action_type: "send", tags: ['schedule-actions-tp','rest'] }    
+
+    
 - name: Configures jmx for versalex instances
   hosts: "versalex"
   roles:
@@ -15,11 +31,11 @@
   roles:
     - { role: setup.testprofiles/tests, tags: ['rest','java'] }
     
-- name: Start and stop scheduler using command line interface
-  hosts: "versalex"
-  roles:
-    - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,stop' ,tags: ['rest'] }
-    - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,start' ,tags: ['rest'] }
+# - name: Start and stop scheduler using command line interface
+  # hosts: "versalex"
+  # roles:
+    # - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,stop' ,tags: ['rest'] }
+    # - { role: setup.testprofiles/str_command/,cmdline_str: 'scheduler,start' ,tags: ['rest'] }
     
 # - hosts: "tpnodes-versalex"
   # roles:
@@ -27,4 +43,4 @@
 - name: Run tests for server and tpnodes
   hosts: "shares"
   roles: 
-      - { role: run.tests/,as2_filespermin: "{{as2_filespermin|default(0)}}",as2_totalmins: "{{as2_totalmins|default(0)}}",as2_totalhosts: "{{as2_totalhosts|default(0)}}",ftp_filespermin: "{{ftp_filespermin|default(0)}}",ftp_totalmins: "{{ftp_totalmins|default(0)}}",ftp_totalhosts: "{{ ftp_totalhosts|default(0)  }}",tags: 'run_tests' }
+      - { role: run.tests/,as2_filespermin: "{{as2_filespermin|default(0)}}",as2_totalmins: "{{as2_totalmins|default(0)}}",as2_totalhosts: "{{as2_totalhosts|default(0)}}",ftp_filespermin: "{{ftp_filespermin|default(0)}}",ftp_totalmins: "{{ftp_totalmins|default(0)}}",ftp_totalhosts: "{{ ftp_totalhosts|default(0)  }}",sshftp_filespermin: "{{sshftp_filespermin|default(0)}}",sshftp_totalmins: "{{sshftp_totalmins|default(0)}}",sshftp_totalhosts: "{{ sshftp_totalhosts|default(0)  }}",tags: 'run_tests' }

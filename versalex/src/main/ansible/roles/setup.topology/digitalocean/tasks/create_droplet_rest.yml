@@ -83,9 +83,9 @@
       delegate_to: 127.0.0.1
       
     - name: Wait for SSH to come up
-      wait_for: host="{{item.1.ip_address}}" port=22 delay=2 timeout=160 state=started
+      wait_for: host="{{item.1.ip_address}}" port=22 delay=2 timeout=300 state=started
       with_subelements:
             - "{{droplet_status.results}}"
             - droplet.networks.v4
       delegate_to: 127.0.0.1
-      no_log: true
+      no_log: false

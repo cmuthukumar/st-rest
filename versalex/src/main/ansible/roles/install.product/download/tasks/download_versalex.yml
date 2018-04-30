@@ -12,20 +12,58 @@
      # delegate_to: 127.0.0.1
      
    - name: Download Versalex Bin Package from Nexus Central with Run Once enabled
-     maven_artifact:
-        group_id: "{{dload.nexus_groupid}}"
-        artifact_id: "{{dload.dname}}"
-        version: "{{dload.version}}"
-        classifier: "{{dload.nexus_classifier}}"
-        extension: "{{dload.nexus_packaging}}"
-        repository_url: "{{dload.nexus_maven_repourl}}"
-        dest: "{{dload.download_location}}"
-        state: present
-        mode: 0777
-     delegate_to: 127.0.0.1
-     register: dload_status
-     retries: 5
-     delay: 2
-     until: dload_status|success 
-     run_once: true     
+     block:
+       - name: Download Versalex Bin Package from Release Repo
+         maven_artifact:
+            group_id: "{{dload.nexus_releases_groupid}}"
+            artifact_id: "{{dload.dname}}"
+            version: "{{dload.version}}"
+            classifier: "{{dload.nexus_classifier}}"
+            extension: "{{dload.nexus_packaging}}"
+            repository_url: "{{dload.nexus_releases_repourl}}"
+            dest: "{{dload.download_location}}"
+            state: present
+            mode: 0777
+         delegate_to: 127.0.0.1
+         register: release_status
+         retries: 5
+         delay: 2
+         until: release_status|success 
+     rescue:
+       - name: Download Versalex Bin Package from Installer Snapshots Repo
+         maven_artifact:
+            group_id: "{{dload.nexus_installersnapshots_groupid}}"
+            artifact_id: "{{dload.dname}}"
+            version: "{{dload.version}}"
+            classifier: "{{dload.nexus_classifier}}"
+            extension: "{{dload.nexus_packaging}}"
+            repository_url: "{{dload.nexus_installersnapshots_repourl}}"
+            dest: "{{dload.download_location}}"
+            state: present
+            mode: 0777
+         delegate_to: 127.0.0.1
+         register: instsnapshot_status
+         retries: 5
+         delay: 2
+         until: instsnapshot_status|success 
+     always:
+       - debug: msg="Downloading Versalex Bin package from Nexus Done"         
+     
+   # - name: Download Versalex Bin Package from Nexus Central with Run Once enabled
+     # maven_artifact:
+        # group_id: "{{dload.nexus_groupid}}"
+        # artifact_id: "{{dload.dname}}"
+        # version: "{{dload.version}}"
+        # classifier: "{{dload.nexus_classifier}}"
+        # extension: "{{dload.nexus_packaging}}"
+        # repository_url: "{{dload.nexus_maven_repourl}}"
+        # dest: "{{dload.download_location}}"
+        # state: present
+        # mode: 0777
+     # delegate_to: 127.0.0.1
+     # register: dload_status
+     # retries: 5
+     # delay: 2
+     # until: dload_status|success 
+     # run_once: true     
      

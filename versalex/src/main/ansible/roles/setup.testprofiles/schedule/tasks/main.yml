@@ -1,0 +1,13 @@
+---
+# tasks file for setup.testprofiles
+- block:
+   - name: Setup AutoStartup in Server Master Node
+     include_tasks: "schedule_autostartup.yml"
+     with_dict: "{{ versalex | default({}) }}"
+     loop_control:
+        loop_var: scedule_autostart     
+
+   - name: Printing for Schedule Auto Start
+     debug: msg="Done with Schedule Auto Start "  
+- rescue:
+   - fail: msg="Schedule Auto Start Module Failed"     

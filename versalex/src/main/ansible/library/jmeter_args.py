@@ -1,7 +1,7 @@
 #!/usr/bin/python
 DOCUMENTATION = '''
 module: jmeter_args
-short_description: "Lists all actions from each node and schedule actions for it"
+short_description: "Convert User passed values like filespermin, total mins to Jmeter run time format"
 author:
   - muthukumarc
 requirements:

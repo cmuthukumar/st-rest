@@ -1,0 +1,6 @@
+---    
+- name: Validate DB for transactions processed
+  hosts: "integrations"
+  # connection: local
+  roles:
+    - { role: monitor.tests/db,tags: ['monitor-db'] }

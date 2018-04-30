@@ -33,14 +33,30 @@
   hosts: "versalex"
   connection: local  
   roles:
-    - { role: install.product/listener/,certname: "LOC_LIST",tags: ['setup-listener'] }
+    - { role: install.product/listener/,protocol_name: "AS2",certname: "LOC_LISTM",tags: ['setup-listener'] }
 
 - name: Apply Listener Properties with Signing Certificates    
   hosts: "versalex"
   roles:
-    - { role: install.product/listener/update_props,certname: "LOC_LIST",tags: ['setup-listener'] }
-    - { role: common/versalex/restart/,tags: ['versalex-restart'],tags: ['setup-listener'] }
+    - { role: install.product/listener/update_props,certname: "LOC_LISTM",tags: ['setup-listener'] }
 
+- name: Apply Listener Properties for FTP 
+  hosts: "versalex"
+  roles:
+    - { role: install.product/listener/ftp,when: (dataset is defined and dataset.ftp|default('undefined') ) ,portVal: "9021", tags: ['setup-listener-ftp'] }
+    
+- name: Generates Signing Certificates using Python module for SSHFTP
+  hosts: "versalex"
+  connection: local  
+  roles:
+    - { role: install.product/listener/,when: (dataset is defined and dataset.sshftp|default('undefined') ),protocol_name: "SSHFTP",certname: "SSHFTP_MM",tags: ['setup-listener-sshftp'] }
+    
+- name: Apply Listener Properties with Signing Certificates for SSHFTP 
+  hosts: "versalex"
+  roles:
+    - { role: install.product/listener/sshftp,when: (dataset is defined and dataset.sshftp|default('undefined') ) ,certname: "SSHFTP_MM",portVal: "9052", tags: ['setup-listener-sshftp'] }
+    - { role: common/versalex/restart/,tags: ['versalex-restart'],tags: ['setup-listener-sshftp'] }
+    
 - name: Validates versalex instances by rest calls        
   hosts: "versalex"
   strategy: free

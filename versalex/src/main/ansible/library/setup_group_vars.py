@@ -25,9 +25,9 @@ import yaml
 import os
 
 
-def build_grp_vars(machine_type,usr_src,default_src):
+def build_grp_vars(machine_type,cloud_provider,usr_src,default_src):
     fileDir = os.path.dirname(os.path.realpath('__file__'))
-    grpvar_path=fileDir+'/inventories/'+machine_type+'/group_vars'
+    grpvar_path=fileDir+'/inventories/'+cloud_provider+'/'+machine_type+'/group_vars'
     # srvr_stream = open(os.path.join(fileDir, 'files/'+usr_src), "r") 
     srvr_stream = open(usr_src, "r")
     srvrs = yaml.load(srvr_stream)
@@ -74,11 +74,12 @@ def main():
     
     fields = {
         "mach_type": {"required": True, "type": "str"},
+		"cloud_provider": {"required": True, "type": "str"},
         "usr_src": {"required": True, "type": "str"},
         "default_src": {"required": True, "type": "str" },
     }
     module = AnsibleModule(argument_spec=fields)
-    stat, result= build_grp_vars(module.params['mach_type'],module.params['usr_src'],module.params['default_src']) 
+    stat, result= build_grp_vars(module.params['mach_type'],module.params['cloud_provider'],module.params['usr_src'],module.params['default_src']) 
     if stat:
         module.exit_json(meta=result)
     else:
