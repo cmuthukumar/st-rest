@@ -1,0 +1,19 @@
+---
+# tasks file for jmeter
+- block:
+    - name: Monitor File Systems for Outboxes in share machines       
+      file_monitor:
+            outboxes: "{{outboxes}}"
+            log_name: "{{ansible_hostname}}"
+            smtp_host: "{{smtp_host}}"
+            to_mail_address: "{{to_address}}"
+            seconds: "{{max_seconds}}"
+            total_backlog: "{{max_backlog}}"
+      register: f_monitor
+      async: 60
+      poll: 0
+      
+    - name: Print file monitor variables
+      debug: msg="File Monitor Results-{{f_monitor}}"
+- rescue:
+    - fail: msg="Monitor File Systems Outboxes Failed"

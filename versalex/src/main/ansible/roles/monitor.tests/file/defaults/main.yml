@@ -1,0 +1,8 @@
+---
+# tasks file for jmeter
+smtp_host: "cleo-com.mail.protection.outlook.com"
+to_address: "muthukumarc@cleo.com"
+from_address: "systemtest@cleo.com"
+outboxes: "['/home/share/sentboxes/']"
+max_backlog: 10000
+max_seconds: 300
